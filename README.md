@@ -1,2 +1,4 @@
 # flashing-large-mammals
 My master's thesis
+-------------------
+This is a version control repository which I've created after having deleted (i.e. emptied) a script on accident. Luckily much of the script could be retrieved in the RStudio History, but it's time to prepare for worse accidents.
