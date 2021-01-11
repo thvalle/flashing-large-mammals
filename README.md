@@ -6,3 +6,4 @@ This is a version control repository which I've created after having deleted (i.
 This is also my introduction to git and github, so here goes!
 A line I wrote on my local computer
 Ei høna med slips frå min lokale datamaskin
+A third line I wrote on my local computer
