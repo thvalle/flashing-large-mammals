@@ -1,6 +1,13 @@
+library(tidyverse)
+library(here)
+library(sp)     # vector tools
+library(raster) # raster tools
+library(rgdal)  # spatial data tools (geospatial data abstraction library)
+library(fields) # colour ramps (e.g. tim.colors)
+library(rgbif)  # global biodiversity data (GBIF) tools
 
 # True setup -------------------------------
-stations <- read.csv("/home/torgeir/Documents/Master/Flashing Large Mammals/Analyse/prosjekt/geo/kameraliste.csv", header = T)
+stations <- read.csv("geo/kameraliste.csv", header = T)
 names(stations)
 stations <- stations[c(3,9,10,2,7)] #subset variables I want
 names(stations) <- c("loc","x", "y", "abc","cam_mod")
@@ -25,11 +32,7 @@ levels(stations$cam_mod)
 # stations <- read.csv('stations.csv')
 
 
-library(sp)     # vector tools
-library(raster) # raster tools
-library(rgdal)  # spatial data tools (geospatial data abstraction library)
-library(fields) # colour ramps (e.g. tim.colors)
-library(rgbif)  # global biodiversity data (GBIF) tools
+
 loc_points <- data.frame(x=stations$x,y=stations$y)
 loc_points <- SpatialPoints(loc_points,proj4string=CRS("+proj=utm +zone=32 +datum=WGS84"))
 loc_UTM33 <- spTransform(loc_points,CRS("+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"))
@@ -38,11 +41,10 @@ stations$y <- loc_UTM33$y
 
 
 # write.csv(stations,'stations.csv', row.names = FALSE)
-# stations <- read.csv('stations.csv')
-
+stations <- read.csv('stations.csv')
 
 # plotting
-plot(stations[,2],stations[,3], type="n", xlab="cam_modr",ylab="")
+plot(stations$x, stations$y, type="n", xlab="cam_mod",ylab="")
 points(stations[stations$cam_mod=="Reconyx",2],
        stations[stations$cam_mod=="Reconyx",3],pch=19,col="black")
 points(stations[stations$cam_mod=="Browning",2],
@@ -56,22 +58,23 @@ legend("bottomleft",legend=c("Reconyx","Browning"),
 
 
 # Kommune-kart ------------------------------------------------------
-Vik <- "/home/torgeir/Documents/Master/Flashing Large Mammals/Analyse/prosjekt/geo/Nedlastingspakke/Basisdata_30_Viken_25833_Kommuner_GML.gml"
-Osl <- "/home/torgeir/Documents/Master/Flashing Large Mammals/Analyse/prosjekt/geo/Nedlastingspakke/Basisdata_03_Oslo_25833_Kommuner_GML.gml"
-library(sp)     # vector tools
-library(raster) # raster tools
-library(rgdal)  # spatial data tools (geospatial data abstraction library)
-Viken <- readOGR(Vik)
-Oslo <- readOGR(Osl)
-ogrListLayers(Vik)
+Viken <- readOGR(here("geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
+Oslo <- readOGR(here("geo","Nedlastingspakke","Basisdata_03_Oslo_25833_Kommuner_GML.gml"))
+ogrListLayers(here("geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
 
 # Connect Oslo & Viken
 OsloViken<-rbind(Viken,Oslo)
 stopifnot(proj4string(OsloViken) == proj4string(loc_UTM33))  # Check in same projection before combining!
 plot(Viken)
 plot(Oslo, col = "blue", add = T) #Lagt til Oslo
+coordinates(stations) <- ~ x + y
+raster::spplot(Viken, "navn", scales = list(draw = TRUE), xlab = "easting", ylab = "northing", #col.regions = rainbow(99, start=.1),
+               sp.layout=list("sp.points", stations[,2:3], cex = 2, pch = 20, col="green"), 
+               main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey", maxpixels = 10000) #sp.points må nok vere i eit glm-format
+
 cam.layer <- list("sp.points", stations, col="green")
-spplot(Viken, "navn",sp.layout=cam.layer, main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey") #sp.points må nok vere i eit glm-format
+spplot(Viken,"navn", sp.layout=cam.layer, main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey") #sp.points må nok vere i eit glm-format
+
 
 #Studieområde - base R------------------------------------
 #plot differing factors in differing colours
