@@ -9,3 +9,4 @@ Ei høna med slips frå min lokale datamaskin
 A third line I wrote on my local computer
 testing again
 This is a line from RStudio
+This is yet a line from RStudio
