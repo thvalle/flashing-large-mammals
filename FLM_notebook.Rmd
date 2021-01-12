@@ -1,0 +1,205 @@
+---
+title: "Flashing Large Mammals - exploring the data"
+output: html_notebook
+date: 2021-01-06
+code_folding: hide
+theme: readable
+highlight: espresso
+---
+
+
+
+```{r setup}
+library(tidyverse)
+library(lubridate)
+library(overlap)
+# All the tibbles from Data_explor_setup.R, and package + function from Density.R
+{
+  obs <- read_csv("obs_datexpl.csv", col_types = cols(
+    loc = col_factor(),
+    date = col_date(format = ""),
+    image_id = col_double(),
+    timeserie_id = col_double(),
+    dataset = col_double(),
+    captured_at_exif = col_datetime(format = ""),
+    predicted_species = col_character(),
+    validated_species = col_character(),
+    distance = col_double(),
+    num_animals = col_double(),
+    datetime = col_datetime(format = ""),
+    `Kam.nr. til blitskamera` = col_double(),
+    flash = col_logical(),
+    period = col_factor(levels = c("0_1", "1_1", "0_2", "1_2", "0_3", "Control")),
+    hour = col_double(),
+    mins = col_double(),
+    rad = col_double()
+  ))
+  effort <- read_csv("effort_datexpl.csv", col_types = cols(
+    loc = col_factor(),
+    date = col_date(format = ""),
+    period = col_factor(levels = c("0_1", "1_1", "0_2", "1_2", "0_3", "Control")),
+    abc = col_factor(levels = c("A", "B", "C")),
+    cam_mod = col_factor()
+  ))
+  stations <- read_csv("stations.csv", col_types = cols(
+    loc = col_factor(),
+    x = col_double(),
+    y = col_double(),
+    abc = col_factor(levels = c("A", "B", "C")),
+    cam_mod = col_factor()
+  ))
+}
+# functions building on overlap package
+overlap_flash <- function(x, colour = c("black", "blue")) {
+  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad
+  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad
+  overlapPlot(x1, x0, main = str_to_title(x), linecol = rep(colour, 2), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey")
+  x.est <- round(overlapEst(x1, x0, type = "Dhat4"), 3)
+  legend("top", legend = str_c("Dhat4", x.est, sep = " = "), bty = "n")
+  legend("bottomleft", legend = c("Flash", "No flash"), col = colour, lty = c(1, 2), lwd = 2, bty = "n")
+}
+overlap_flash_2sp <- function(x, y, col_x, col_y) {
+  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad
+  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad
+  y1 <- obs[obs$validated_species %in% y & obs$flash == TRUE, ]$rad
+  y0 <- obs[obs$validated_species %in% y & obs$flash == FALSE, ]$rad
+  par(mfrow = c(2, 2))
+  overlap_flash(x, col_x)
+  overlap_flash(y, col_y)
+  overlapPlot(x0, y0,
+    main = str_to_title("whithout flash"), linecol = c(col_x, col_y),
+    linetype = c(1, 1), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
+  )
+  xy0.est <- round(overlapEst(x0, y0, type = "Dhat4"), 3)
+  xy1.est <- round(overlapEst(x1, y1, type = "Dhat4"), 3)
+  legend("top", legend = str_c("Dhat4", xy0.est, sep = " = "), bty = "n")
+  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(1, 1), lwd = 2, bty = "n")
+  overlapPlot(x1, y1,
+    main = str_to_title("with flash"), linecol = c(col_x, col_y),
+    linetype = c(2, 2), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
+  )
+  legend("top", legend = str_c("Dhat4", xy1.est, sep = " = "), bty = "n")
+  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(2, 2), lwd = 2, bty = "n")
+}
+```
+
+
+## time series of all cameras
+```{r time_series}
+p_timeseries <- ggplot(data = effort) +
+  geom_jitter(mapping = aes(date, period, col = abc), alpha = 1 / 5, width = 0, height = 0.1)
+p_timeseries +   labs(title = "Active days of each period") + # TODO # find a way to mark n cameras by groups (A = 19, B = 20, C = 20)
+p_timeseries_facet <- ggplot(effort, aes(date, as.factor(loc))) +
+  theme(axis.text.x = element_text(angle = 20)) +
+  facet_wrap(~period, nrow = 2) +
+  scale_y_discrete(guide = guide_axis(check.overlap = T))
+p_timeseries_facet + geom_point(aes(col = abc), size = .8) + labs(title = "Active days of each camera faceted by periods")
+```
+The cameras were divided into 3 groups a 20 cameras. Group A were the control group, and stayed unchanged. Group B and C were each equipped with an additional PC850 Reconyx camera, which has a white LED flash, with alternating periods of 3 months. Group B was first, as seen in the first plot.
+
+The second plots shows the effort from each camera, faceted by the periods. Unfortunately there is some debugging to do as a camera from group B and one from C has fallen into the control period.
+
+
+
+## Which species did we get?
+```{r sp_focus, echo=TRUE}
+sp_all <- c("hare", "elg", "rev", "grevling", "maar", "gaupe", "ekorn", "raadyr", "hjort") # interesting species with enough datapoints
+by_sp <- obs %>%
+  left_join(stations, by = "loc") %>%
+  group_by(validated_species)
+passes <- summarise(by_sp,
+  count = n(),
+  # flashed = mean(flash, na.rm = T), # don't know if i can find a relevant use of this
+  abc = abc,
+  period = period,
+  flash = flash,)
+passes %>% 
+  filter(!is.na(validated_species), !(validated_species %in% "nothing")) %>% 
+  ggplot() +
+  geom_bar(aes(validated_species, fill = validated_species), position = "dodge") + geom_hline(yintercept = 200) # shows actual counts of each species
+
+# most datapoints on ekorn, elg, grevling, hare, raadyr, rev. They all have >100 passings in each abc-grouping
+fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "ukjent", "sau", "ku", "fugl") # uninteresting or too general groups
+p_sp_focus <- passes %>% 
+    filter(count > 200, !(validated_species %in% fjern), !is.na(validated_species)) %>% # removing low counts and sp in 'fjern'
+  # filter(validated_species %in% sp_focus) %>% 
+  ggplot() + scale_fill_brewer() + theme_dark()
+p_sp_focus + geom_bar(aes(validated_species, fill = validated_species), position = "dodge") + geom_hline(yintercept = 200) # same as first plot, more filtered
+p_sp_focus + geom_bar(aes(abc, fill = validated_species), position = "dodge") + geom_hline(yintercept = 100) # same as first plot, more filtered
+p_sp_focus + geom_bar(aes(period, fill = validated_species), position = "dodge") + geom_hline(yintercept = 100) 
+p_sp_focus + geom_bar(aes(flash, fill = validated_species), position = "dodge") + geom_hline(yintercept = 100)
+
+sp_focus <- c("ekorn", "elg", "grevling", "hare", "raadyr", "rev")
+```
+Removing sightings of "nothing", things related to humans, as well as NAs and birds (too general group), I am left with quite a few species still. Filtering for counts lower than 200 renders me the selection shown in the dark themed plots.
+
+Roe deer and red fox are the species with decidedly most data. The flash true/false-plot shows a similar pattern of detection abundances.
+
+## Density plots showing activity patterns with and without flash
+```{r overlap_flash, echo=FALSE}
+overlap_flash("rev", "red") 
+overlap_flash_2sp("rev", "raadyr", "red", "blue")
+```
+Sites without white flash produces a more bumpy curve than does the sites with a flash. Proportion of foxes at sites are markedly lower before sunrise, and then higher afterwards. Could this simply be because of a lower detection rate when lacking the additional white flash? There is a resembling phenomenon happening in the evening twilight as well, right before the peak activity time of the fox, which happens before midnight.
+
+The Dhat4 calculation reveals a larger difference in activity for foxes, than for roe deer, but seems to mainly stem from the twilight hours. Thus, it could be because of the size of the animals, rather than a reaction to the flash.
+
+## Box plots
+### of periods
+```{r box_plots_periods, eval=FALSE}
+freq <- read_csv("freq_datexpl.csv", col_types = cols(
+  loc = col_factor(),
+  period = col_factor(levels = c("0_1", "1_1", "0_2", "1_2", "0_3", "Control")),
+  validated_species = col_character(),
+  n.obs = col_double(),
+  n.days = col_double(),
+  freq = col_double(),
+  flash = col_logical()
+))
+# frequency on periods, single or plural species
+sp <- c("rev", "raadyr", "ekorn", )
+p_freq_per <- freq %>%
+  filter(validated_species %in% sp) %>%
+  left_join(stations, by = "loc") %>%
+  ggplot(aes(period, freq)) +
+  facet_wrap(~validated_species, scales = "free", nrow = 2) +
+  labs(title = "Frequencies of species in periods")
+
+# coloured with abc-grouping
+p_freq_per + geom_boxplot(outlier.shape = NA) + # Remove outliers when overlaying boxplot with original data points
+  geom_jitter(aes(col = abc), width = 0.1) # add points for each camera
+
+```
+
+### flash on/of
+```{r box_plot_flash, eval=FALSE}
+# frequency on flash
+p_freq_fla <- freq %>%
+  filter(validated_species %in% sp) %>%
+  left_join(stations, by = "loc") %>%
+  ggplot(aes(flash, freq)) +
+  facet_wrap(~validated_species, scales = "free", nrow = 2) +
+  labs(title = "Frequencies of species w/ | w/o flash")
+
+p_freq_fla + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(col = abc), width = 0.1) # add points for each camera
+
+p_freq_fla + geom_boxplot(aes(fill = abc)) # split into differing abc-groups. 257(group B) mess up the control-box
+
+p_freq_fla + geom_violin(aes(fill = abc), draw_quantiles = .5) # violin plot, scale = "count" -> Scale maximum width proportional to sample size
+p_freq_fla + geom_violin(draw_quantiles = .5, scale = "count") # violin plot, scale = "count" -> Scale maximum width proportional to sample size
+```
+
+
+
+
+
+```{r sessionInfo}
+sessionInfo()
+# packrat
+# checkpoint
+```
+
+If you want your code to be reproducible in the long-run (i.e. so you can come back to run it next month or next year), you’ll need to track the versions of the packages that your code uses.
+A rigorous approach is to use _packrat_, [link](http://rstudio.github.io/packrat/), which stores packages in your project directory,
+or _checkpoint_, [link](https://github.com/RevolutionAnalytics/checkpoint), which will reinstall packages available on a specified date. A quick and dirty hack is to include a chunk that runs sessionInfo() — that won’t let you easily recreate your packages as they are today, but at least you’ll know what they were.
