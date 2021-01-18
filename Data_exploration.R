@@ -3,13 +3,14 @@ library(lubridate)
 
 # readr tibbles
 {
-  obs <- read_csv("obs_datexpl.csv", col_types = cols(
+   obs <- read_csv("obs_datexpl.csv", 
+    col_types = cols(
     loc = col_factor(),
     date = col_date(format = ""),
     image_id = col_double(),
     timeserie_id = col_double(),
     dataset = col_double(),
-    captured_at_exif = col_datetime(format = ""),
+    captured_at_exif = col_character(), #(format = ""),
     predicted_species = col_character(),
     validated_species = col_character(),
     distance = col_double(),
@@ -20,6 +21,7 @@ library(lubridate)
     period = col_factor(levels = c("0_1", "1_1", "0_2", "1_2", "0_3", "Control")),
     hour = col_double(),
     mins = col_double(),
+    secs = col_double(),
     rad = col_double()
   ))
   freq <- read_csv("freq_datexpl.csv", col_types = cols(
@@ -47,6 +49,7 @@ library(lubridate)
   ))
 }
 
+names(obs)
 # For å bytte fargepalett------------------------------------
 library(RColorBrewer)
 display.brewer.all()
@@ -65,13 +68,17 @@ obs %>%
   geom_bar()
 
 # according to month
+obs %>%  # unfiltered
+  mutate(Month = month(date, label = T)) %>%
+  ggplot(aes(Month)) +
+  geom_bar()
 obs %>%
-  mutate(month = month(captured_at_exif, label = T)) %>%
-  filter(validated_species %in% sp_all) %>% # filtered by sp_all
-  ggplot(aes(month)) +
-  geom_bar(aes(fill = validated_species)) +
-  scale_fill_brewer(direction = -1) +
-  theme_dark()
+  mutate(Month = month(date, label = T), Year = as_factor(year(obs$date))) %>% # TODO enter total cameradays as labels per month
+#  filter(!validated_species %in% "nothing") %>% # filtered by sp_all
+  ggplot(aes(Month)) +
+  geom_bar(aes(fill = Year), position = position_stack(reverse = TRUE)) # position_stack places the last years on top
+
+
 
 # Prop of SP ~ flash || ~ period-----------------------------------------------------------------------------------------------
 # Proportions and counts of animal species on different groupings. Which animals are well represented in the data?
@@ -173,6 +180,21 @@ p_freq_fla + geom_violin(draw_quantiles = .5, scale = "count") # violin plot, sc
 
 
 
+# frequency on flash
+p_freq_fla <- freq %>% # plot of frequency grouped by flash T/F
+  filter(validated_species %in% sp) %>%
+  left_join(stations, by = "loc") %>%
+  ggplot(aes(flash, freq)) +
+  facet_wrap(~validated_species, scales = "free", nrow = 2) + # scales = "free" zooms in on each species plot (i.e. not considering frames of the others)
+  labs(title = "Frequencies of species w/ | w/o flash")
+p_freq_fla + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(col = abc), width = 0.1) # add points for each camera
+p_freq_fla + geom_boxplot(aes(fill = abc)) # split into differing abc-groups. 257(group B) mess up the control-box
+
+p_freq_fla + geom_violin(aes(fill = abc), draw_quantiles = .5) 
+p_freq_fla + geom_violin(draw_quantiles = .5, scale = "count") # violin plot, scale = "count" -> Scale maximum width proportional to sample size
+
+
 # Burde dele opp control i enkelt-perioder for å ha kontroll opp mot kvar enkelt periode?
 # Nå er 0_1,0_2,1_1,1_2 2sesonger a 40kam kvar, 0_3 er 1sesong a 20kamera, og Control er 5sesonger a 20kam
 
@@ -267,3 +289,65 @@ obs %>%
 
 
 # ser videre op dette om eg får lyst/tid. Mykje å sette seg inn i utan å vite kva i all verden eg kan bruke det til
+
+
+# Resultater intro ------------------------------------------
+# tabell med antall bilder av mest sette dyr
+obstation <- obs %>% left_join(stations, by = "loc") %>% filter(validated_species %in% sp) %>% unite(abc, abc, flash) # unite lager ny faktor med alle kombinasjoner
+with(obstation, table(validated_species, abc)) # %>% plot()
+
+obstation %>% with(table(validated_species, abc)) %>% 
+  knitr::kable(caption = "Table with kable" , format = 'latex')
+
+library(knitr)
+
+d1 = head(iris)
+d2 = head(mtcars)
+# pipe tables by default
+kable(d1)
+kable(d2[, 1:5])
+# more padding
+kable(d2, format = "pipe", padding = 2)
+kable(d1, format = "latex")
+kable(d1, format = "html")
+kable(d1, format = "latex", caption = "Title of the table")
+kable(d1, format = "html", caption = "Title of the table")
+
+# use the booktabs package
+kable(mtcars, format = "latex", booktabs = TRUE)
+
+# use the longtable package
+kable(matrix(1000, ncol = 5), format = "latex", digits = 2, longtable = TRUE)
+
+# change LaTeX default table environment
+kable(d1, format = "latex", caption = "My table", table.envir = "table*")
+
+# no row names
+kable(d2, format = "rst", row.names = FALSE)
+# format numbers using , as decimal point, and ' as thousands separator
+x = as.data.frame(matrix(rnorm(60, 1e+06, 10000), 10))
+kable(x, format.args = list(decimal.mark = ",", big.mark = "'"))
+# save the value
+x = kable(d2, format = "html")
+cat(x, sep = "\n")
+
+
+# Citations --------------------------------------
+library(rstudioapi)
+x <- list(
+  a = citation(),
+  b = versionInfo()$citation,
+  c = citation("tidyverse"),
+  d = citation("lubridate"),
+  e = citation("overlap"),
+  f = toBibtex(citation("survival")),
+  g = citation("survminer")
+)
+x   # kopier frå konsoll til latex, rediger og lagre .bib-fil
+    # importer til Mendeley via "File > Import... > Bibtex(*.bib)"
+# class(x[[1]])
+# save(x, file = "citations.txt")
+
+
+
+

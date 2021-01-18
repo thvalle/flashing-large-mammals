@@ -7,7 +7,7 @@ library(fields) # colour ramps (e.g. tim.colors)
 library(rgbif)  # global biodiversity data (GBIF) tools
 
 # True setup -------------------------------
-stations <- read.csv("geo/kameraliste.csv", header = T)
+stations <- read.csv("kam_geo/kameraliste.csv", header = T)
 names(stations)
 stations <- stations[c(3,9,10,2,7)] #subset variables I want
 names(stations) <- c("loc","x", "y", "abc","cam_mod")
@@ -23,13 +23,14 @@ nrow(stations) #it worked
 
 #Rename camera types to include only Browning and Reconyx
 unique(stations$cam_mod)
-stations[stations$cam_mod=="Browning (+reconyx)",5] <- "Browning"
+stations[stations$cam_mod=="Browning (+reconyx)",5] <- "Browning" # 5 marks the cam_mod colon
 stations[stations$cam_mod=="RECONYXINFRA",5] <- "Reconyx"
+stations[stations$loc == 15,5] <- "Reconyx" 
 stations$cam_mod <- factor(stations$cam_mod, levels= c("Reconyx","Browning"))
 levels(stations$cam_mod)
 
-# write.csv(stations,'stations.csv')
-# stations <- read.csv('stations.csv')
+# write.csv(stations,'stations.csv', row.names = FALSE)
+stations <- read.csv('stations.csv')
 
 
 
@@ -39,9 +40,6 @@ loc_UTM33 <- spTransform(loc_points,CRS("+proj=utm +zone=33 +ellps=GRS80 +towgs8
 stations$x <- loc_UTM33$x
 stations$y <- loc_UTM33$y
 
-
-# write.csv(stations,'stations.csv', row.names = FALSE)
-stations <- read.csv('stations.csv')
 
 # plotting
 plot(stations$x, stations$y, type="n", xlab="cam_mod",ylab="")
@@ -58,22 +56,30 @@ legend("bottomleft",legend=c("Reconyx","Browning"),
 
 
 # Kommune-kart ------------------------------------------------------
-Viken <- readOGR(here("geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
-Oslo <- readOGR(here("geo","Nedlastingspakke","Basisdata_03_Oslo_25833_Kommuner_GML.gml"))
-ogrListLayers(here("geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
+Viken <- readOGR(here("kam_geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
+Oslo <- readOGR(here("kam_geo","Nedlastingspakke","Basisdata_03_Oslo_25833_Kommuner_GML.gml"))
+ogrListLayers(here("kam_geo","Nedlastingspakke","Basisdata_30_Viken_25833_Kommuner_GML.gml"))
 
 # Connect Oslo & Viken
 OsloViken<-rbind(Viken,Oslo)
 stopifnot(proj4string(OsloViken) == proj4string(loc_UTM33))  # Check in same projection before combining!
 plot(Viken)
 plot(Oslo, col = "blue", add = T) #Lagt til Oslo
+points(stations[stations$cam_mod=="Reconyx",2],
+       stations[stations$cam_mod=="Reconyx",3],pch=19,col="black")
+points(stations[stations$cam_mod=="Browning",2],
+       stations[stations$cam_mod=="Browning",3],pch=19,col="brown")
+points(stations[stations$abc=="B",2],
+       stations[stations$abc=="B",3],pch="--",col="white", cex=0.8)
+points(stations[stations$abc=="C",2],
+       stations[stations$abc=="C",3],pch="|",col="white", cex=0.8)
+legend("bottomleft",legend=c("Reconyx","Browning"),
+       pch = 19, col = c("black", "brown"))
+
 coordinates(stations) <- ~ x + y
 raster::spplot(Viken, "navn", scales = list(draw = TRUE), xlab = "easting", ylab = "northing", #col.regions = rainbow(99, start=.1),
                sp.layout=list("sp.points", stations[,2:3], cex = 2, pch = 20, col="green"), 
-               main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey", maxpixels = 10000) #sp.points må nok vere i eit glm-format
-
-cam.layer <- list("sp.points", stations, col="green")
-spplot(Viken,"navn", sp.layout=cam.layer, main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey") #sp.points må nok vere i eit glm-format
+               main = "Oslo & Viken", sub = "Kommunegrenser", col = "grey", maxpixels = 1000) #sp.points må nok vere i eit glm-format
 
 
 #Studieområde - base R------------------------------------
@@ -87,8 +93,8 @@ points(stations[stations$cam_mod=="Browning",2],
        stations[stations$cam_mod=="Browning",3],pch=19,col="brown")
 # points(stations[stations$abc=="B",2], stations[stations$abc=="B",3],pch="B",col="black", cex=0.8)
 # points(stations[stations$abc=="C",2], stations[stations$abc=="C",3],pch="C",col="black", cex=0.8)
-legend("bottomleft",legend=c("Reconyx","Browning"),
-       pch = 19, col = c("black", "brown"))
+legend("bottomleft",legend=c("Browning","Reconyx"),
+       pch = 19, col = c("brown", "black"))
 
 
 # R-pakke: sp
@@ -162,5 +168,15 @@ head(df)
 plot(r[[1]])
 plot(points,add=T)
 
+
+# spatial data operations ---------------------------
+
+library(sf)
+library(raster)
+library(dplyr)
+library(spData)
+
+plot(st_geometry(cycle_hire), col = "blue")
+plot(st_geometry(cycle_hire_osm), add = TRUE, pch = 3, col = "red")
 
 

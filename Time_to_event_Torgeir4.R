@@ -4,7 +4,7 @@
 # Here we also assume that all the cameras have been active for all the year
 
 # Some online resources for cox ph models:
-# https://en.wikipedia.org/wiki/Proportional_hazards_model 
+# https://en.wikipedia.org/wiki/Proportional_hazards_model
 # https://www.statsdirect.com/help/survival_analysis/cox_regression.htm
 # http://www.sthda.com/english/wiki/cox-proportional-hazards-model
 # http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_Survival/BS704_Survival6.html
@@ -79,10 +79,10 @@ for(i in row.n){
 
 obs[is.na(obs$event),"event"]<-TRUE
 
-saveRDS(obs, here("obs_tte.rds")) 
+# saveRDS(obs, here("obs_tte.rds")) 
 
 # Inspecting the data -----------------------------------------------------------------------------------
-
+obs <- readRDS("obs_tte.rds")
 # Inspecting the number of observations during the different treatments
 sp="rev"
 table(obs[obs$validated_species%in%sp,]$flash)
@@ -183,12 +183,140 @@ my.glm<-glm(round(t.diff)~flashed+house_d2_ln + forestroad_d2_ln,
             data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",], family="poisson")
 summary(my.glm)
 
+# Experimenting ----------------------------------------------------------------
+
 library(tidyverse)
-
-
 
 covs2<-readRDS("CTloc_covs.rds")
 class(covs)
 
-plot(covs)
+library(raster)
+spplot(covs)
 
+
+
+# vignette example:
+ggsurvplot(
+  fit,                     # survfit object with calculated statistics.
+  data = BRCAOV.survInfo,  # data used to fit survival curves. 
+  risk.table = TRUE,       # show risk table.
+  pval = TRUE,             # show p-value of log-rank test.
+  conf.int = TRUE,         # show confidence intervals for 
+                           # point estimaes of survival curves.
+  xlim = c(0,2000),        # present narrower X axis, but not affect
+                           # survival estimates.
+  break.time.by = 500,     # break X axis in time intervals by 500.
+  ggtheme = theme_minimal(), # customize plot and risk table with a theme.
+  risk.table.y.text.col = T, # colour risk table text annotations.
+  risk.table.y.text = FALSE # show bars instead of names in text annotations
+                           # in legend of risk table
+)
+
+# Survival probabilty against time. 
+sp = "rev"
+
+
+fit <- survfit(Surv(t.diff, event, type = "right")~flashed + validated_species, data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
+# ggsurvplot(fit, data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
+ggsurvplot(fit, 
+           data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",],
+           risk.table = T,
+           pval = T,
+           conf.int = T,
+           xlim = c(0,100),
+           break.time.by = 10,
+           ggtheme = theme_minimal()
+) # fit has already filtered the data, no need to refilter it in the plot
+# You see the same pattern here. The blue (flashed) line is generally lower than the red (not flashed)
+
+# A nicer way to visualize the coffecient estimate and the confidence interval. Since the interval overlap 1 (hazard ratio of 1) the coeffecient estimate is not significant. 
+ggforest(mod0, data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",]) # here the filtering seems necessary to keep "N=xxx" to be correct
+
+# rådyr
+sp = "raadyr"
+fit <- obs %>% 
+  filter(validated_species %in% sp_focus) %>% 
+  surv_group_by("validated_species") %>% 
+  surv_fit(Surv(t.diff, event) ~ flashed, data = .)
+surv_pvalue(fit)
+ggsurv.list <- ggsurvplot_group_by(fit, 
+           data = obs[obs$validated_species%in%sp_focus & !obs$period%in%"Control",],
+           risk.table = T,
+           pval = T,
+           conf.int = T,
+          # xlim = c(0,100),
+           #break.time.by = 10,
+           ggtheme = theme_minimal(),
+)
+
+# Visualize: grouped by sp_focus
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+sp_focus <- c("ekorn", "elg", "grevling", "hare", "raadyr", "rev")
+fit <- obs %>% 
+  filter(validated_species %in% sp_focus) %>% 
+  surv_group_by("validated_species") %>% 
+  surv_fit(Surv(t.diff, event) ~ flashed, data = .)
+surv_pvalue(fit)
+ggsurv.list <- ggsurvplot(fit, 
+                         data = obs[obs$validated_species%in%sp_focus & !obs$period%in%"Control",],
+                         risk.table = T,
+                         pval = T,
+                         conf.int = T,
+                         xlim = c(0,100),
+                         break.time.by = 10,
+                         ggtheme = theme_minimal(),
+)
+names(ggsurv.list)
+arrange_ggsurvplots( ggsurv.list, print = TRUE,
+  ncol = 2, nrow = 1, risk.table.height = 0.4)
+
+
+library(survival)
+?survival
+??survival
+vignette("Playing_with_fonts_and_texts", package = "survminer")
+
+
+# intro models -----------------------------------------
+library(modelr)
+library(gapminder)
+
+freq %>% ggplot(aes(n.obs, period, group = validated_species)) +
+  geom_line(alpha = 1/3)
+rev <- filter(freq, validated_species == "rev")
+rev %>% 
+  ggplot(aes(loc, n.obs)) +
+  geom_line() +
+  ggtitle("Full data =")
+
+
+freq 
+by_sp <- freq %>% left_join(stations, by = "loc") %>% 
+  drop_na(validated_species) %>%  # remove the NA in species
+  group_by(validated_species, loc) %>% 
+  nest()
+any(is.na(by_sp[3])) # FALSE
+any(is.na(by_sp))    # FALSE
+by_sp
+by_sp$data[[1]]
+sp_model <- function(df) {
+  lm(n.obs ~ flash, data = df)
+}
+models <- map(by_sp$data, sp_model)
+by_sp <- by_sp %>% 
+  mutate(model = map(by_sp$data, sp_model))
+by_sp
+
+
+
+# gapminder example
+by_country <- gapminder %>% 
+  group_by(country, continent) %>% 
+  nest()
+country_model <- function(df) {
+  lm(lifeExp ~ year, data = df)
+}
+models <- map(by_country$data, country_model)
+by_country <- by_country %>% 
+  mutate(model = map(data, country_model))
+by_country
