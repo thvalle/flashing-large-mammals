@@ -1,0 +1,44 @@
+\documentclass[11pt,UKenglish,a4paper,twoside]{report}
+\usepackage{graphicx}
+\input{tex/mystyle.sty}
+\graphicspath{ {img/} }
+
+\include{tex/title}
+
+%Det finnes diverse gode interaktive tegneprogrammer, for eksempel
+%AdobeIllustrator, Inkscape, GIMP og paint.net, samt et meget godt deklarativt tegne-program:MetaPost.
+
+\includeonly{tex/method, tex/results}
+\begin{document}
+%\maketitle
+
+\include{tex/abstract}
+\include{tex/dedication}
+\include{tex/acknowledge}
+
+\tableofcontents
+
+% -- intro --
+\include{tex/intro}
+
+% -- method --
+\include{tex/method}
+
+% -- results --
+\include{tex/results}
+
+% -- discussion --
+\include{tex/discussion}
+
+% -- conclusion --
+\include{tex/conclusion}
+
+% -- appendix --
+\appendix
+\include{tex/appendix}
+
+
+\printbibliography
+
+\end{document}
+

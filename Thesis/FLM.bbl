@@ -1,0 +1,170 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.6 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{none/global}
+    \entry{Moen1999}{book}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=6db06355d80c01d10d2a8c7c40954ad4}{%
+           family={Moen},
+           family_i={M\bibinitperiod},
+           given={Asbj{ø}rn},
+           given_i={A\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=18bbc28df8395fe7885c9bcb367fcf56}{%
+           family={Lillethun},
+           family_i={L\bibinitperiod},
+           given={Arvid},
+           given_i={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {H{ø}nefoss}%
+      }
+      \list{publisher}{1}{%
+        {Norwegian Mapping Authority}%
+      }
+      \strng{namehash}{6db06355d80c01d10d2a8c7c40954ad4}
+      \strng{fullhash}{6db06355d80c01d10d2a8c7c40954ad4}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{1999}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{82-7945-000-9 Vegetation}
+      \field{title}{{National Atlas of Norway: Vegetation}}
+      \field{year}{1999}
+      \field{pages}{209}
+      \range{pages}{1}
+      \verb{url}
+      \verb https://www.nb.no/items/URN:NBN:no-nb_digibok_2010011503011
+      \endverb
+      \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
+    \endentry
+    \entry{Odden2015}{report}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+           family={Odden},
+           family_i={O\bibinitperiod},
+           given={John},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Oslo, Norway}%
+      }
+      \list{publisher}{1}{%
+        {NINA}%
+      }
+      \strng{namehash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \strng{fullhash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The lynx population in Scandinavia has been monitored since the 1990's using snow-tracking to detect the presence of family groups. Parts of Norway have experienced winters with limited snow cover in recent years, creating a need to find alternatives to our current monitoring meth- ods. This report summarize experiences from a pilot project testing camera traps for monitoring lynx in 3 study areas in southeastern Norway. The goal has been to test if camera traps increase the number of observations of family groups, and if we can use individual recognition from im- ages to calculate the density of lynx using spatial capture-recapture methods. Although camera traps are a standard method for lynx monitoring in many countries, there is a need to evaluate their suitability in Norway where we need to monitor very large areas with very low density lynx populations. Camera traps were deployed at 297 localities in the 3 study areas, in parts of Oslo, Akershus and {Ø}stfold Counties (Region 4, 2010-2015), Vestfold County with adjoining areas of Buskerud and Telemark (Region 2, 2012-2015) and Oppland County (Region 3, 2014-2015). All fieldwork was conducted in collaboration with the Norwegian Hunters and Anglers Association in Oppland and Akershus, with assistance from students and volunteers. We photographed lynx 573 times in 112 locations during 120 453 camera-days. During the same period, we observed other species 42 435 times. In all three areas cameras increased the num- ber of observations of family groups. Fourteen of 18 family groups detected by the public and reported to the National Large Predator Monitoring Program (Rovdata) within the study areas during all study winters had at least one observation from camera-traps. We compared estimates of the number of family groups made by the traditional methods (lynx tracks in snow and grouping by distance criteria, AK) within the study areas with estimates based on data from camera traps. Estimates based on AK were 23 family groups for all years and all areas combined, and corre- sponding estimates solely based on data from camera traps were for 20 family groups. We estimated densities of lynx in Regions 4 and 2 using spatial capture-recapture methods, and in both areas lynx densities decreased during the study period. In Region 2 densities decreased from 2.1 (±0.7) lynx/1000 km2 in 2012/13 to 1.2 (±0.4) in 2014/15. In Region 4 lynx densities decreased from 2.0 (±0.5) and 2.9 (±1.5) lynx/1000 km2 the first 2 years to 1.3 (±0.4), 0.6 (±0.1) and 0.4 (±0.2) lynx/1000 km2 the last 3 winters. We followed nine lynx with GPS collars within these study areas, and all marked lynx were cap- tured by camera traps. Female lynx were photographed on average 10 times per year, while male lynx on average were photographed 27 times per year. We demonstrate that camera traps can be a useful supplement to the current snow-based mon- itoring of lynx family groups in Scandinavia. A more intensive system of camera traps may also provide estimates of lynx densities with a measure of the precision in the estimates. Our experi- ence here is also that the involvement of local people in the operation of the camera traps may reduce conflicts. We need to further develop camera traps as a method to be used in long-term studies of demographic parameters of lynx, behavioral studies, habitat selection, effects of hu- man disturbance and interactions with other species. It is also important to evaluate the potential of camera traps as a tool to monitor multiple species in forest ecosystems. John}
+      \field{isbn}{9788242628466}
+      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på{Ø}stlandet - NINA Rapport 1216}}
+      \field{type}{techreport}
+      \field{year}{2015}
+      \field{pages}{54}
+      \range{pages}{1}
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/Odden2015.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
+      \endverb
+      \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
+    \endentry
+    \entry{Burton2015}{article}{}
+      \name{author}{8}{}{%
+        {{uniquename=0,hash=743098108bcb18b6d0d14da821904683}{%
+           family={Burton},
+           family_i={B\bibinitperiod},
+           given={A.\bibnamedelimi Cole},
+           given_i={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{uniquename=0,hash=8903ab3fcf541d375b3c41ae22e54c6c}{%
+           family={Neilson},
+           family_i={N\bibinitperiod},
+           given={Eric},
+           given_i={E\bibinitperiod}}}%
+        {{uniquename=0,hash=634b999de89b50af2052747b305f2e81}{%
+           family={Moreira},
+           family_i={M\bibinitperiod},
+           given={Dario},
+           given_i={D\bibinitperiod}}}%
+        {{uniquename=0,hash=344b217010007feccc5e512af6205f65}{%
+           family={Ladle},
+           family_i={L\bibinitperiod},
+           given={Andrew},
+           given_i={A\bibinitperiod}}}%
+        {{uniquename=0,hash=9a52ad6c0a5efa49c7f45efcb1fdc249}{%
+           family={Steenweg},
+           family_i={S\bibinitperiod},
+           given={Robin},
+           given_i={R\bibinitperiod}}}%
+        {{uniquename=0,hash=8e9014d5ea1aadb025168c2a9964b247}{%
+           family={Fisher},
+           family_i={F\bibinitperiod},
+           given={Jason\bibnamedelima T.},
+           given_i={J\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{uniquename=0,hash=ef44c3ffaabce70ebb9a93eda0454ceb}{%
+           family={Bayne},
+           family_i={B\bibinitperiod},
+           given={Erin},
+           given_i={E\bibinitperiod}}}%
+        {{uniquename=0,hash=5613ea8be8ffb2b1008d9eed9e8f0f24}{%
+           family={Boutin},
+           family_i={B\bibinitperiod},
+           given={Stan},
+           given_i={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{5986c73af847edb619d182764368136f}
+      \strng{fullhash}{91ef19b0eb8f2fe53257f6cedd00baf3}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Reliable assessment of animal populations is a long-standing challenge in wildlife ecology. Technological advances have led to widespread adoption of camera traps (CTs) to survey wildlife distribution, abundance and behaviour. As for any wildlife survey method, camera trapping must contend with sources of sampling error such as imperfect detection. Early applications focused on density estimation of naturally marked species, but there is growing interest in broad-scale CT surveys of unmarked populations and communities. Nevertheless, inferences based on detection indices are controversial, and the suitability of alternatives such as occupancy estimation is debatable. We reviewed 266 CT studies published between 2008 and 2013. We recorded study objectives and methodologies, evaluating the consistency of CT protocols and sampling designs, the extent to which CT surveys considered sampling error, and the linkages between analytical assumptions and species ecology. Nearly two-thirds of studies surveyed more than one species, and a majority used response variables that ignored imperfect detection (e.g. presence-absence, relative abundance). Many studies used opportunistic sampling and did not explicitly report details of sampling design and camera deployment that could affect conclusions. Most studies estimating density used capture-recapture methods on marked species, with spatially explicit methods becoming more prominent. Few studies estimated density for unmarked species, focusing instead on occupancy modelling or measures of relative abundance. While occupancy studies estimated detectability, most did not explicitly define key components of the modelling framework (e.g. a site) or discuss potential violations of model assumptions (e.g. site closure). Studies using relative abundance relied on assumptions of equal detectability, and most did not explicitly define expected relationships between measured responses and underlying ecological processes (e.g. animal abundance and movement). Synthesis and applications. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring.}
+      \field{issn}{13652664}
+      \field{journaltitle}{Journal of Applied Ecology}
+      \field{number}{3}
+      \field{title}{{Wildlife camera trapping: A review and recommendations for linking surveys to ecological processes}}
+      \field{volume}{52}
+      \field{year}{2015}
+      \field{pages}{675\bibrangedash 685}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1111/1365-2664.12432
+      \endverb
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/CTReviewBurton2015.pdf:pdf
+      \endverb
+      \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
+    \endentry
+  \endsortlist
+  \missing{R}
+\endrefsection
+\endinput
+

@@ -1,0 +1,164 @@
+\chapter{Method and materials}
+
+
+\section{Study species} %Usikker på om eg skal ha med
+%\subsubsection{Rev}  ?
+
+%We also collated information on average body and home range sizes for a subset of species surveyed in the reviewed studies in order to better quantify the functional diversity of wildlife being sampled by CTs and to evaluate the degree to which CT methodologies were tailored to focal species. Burton 2015
+
+The species I'll focus on in this thesis are the species that most frequently was observed, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
+In addition I've excluded the smaller species given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind.
+
+\section{Study area} %TODO 
+%mogleg å kjøre ein fin overgang fra intro til study area? Study area valt pga dårlige snøforhold -> vanskelig å gjere spor-tellinger (\cite{Odden2015})
+
+
+%https://klimaservicesenter.no/faces/desktop/article.xhtml?uri=klimaservicesenteret/klimaprofiler/klimaprofil-oslo-og-akershus
+%https://klimaservicesenter.no/faces/desktop/article.xhtml?uri=klimaservicesenteret%2Fklimaprofiler%2Fklimaprofil-buskerud  
+The study area (59.36-60.47° N, 9.43-10.91° E) %berre eit grovt overslag
+extends over much of the southeastern parts of Norway in counties Flå, Krødsherad, Sigdal, Ringerike, Modum, Hole, Lier, Øvre Eiker, Asker, Oslo, Enebakk, Indre Østfold, Våler, Råde, Moss, Frogn and Vestby.
+The climate has a continental character due to rain shadows of the mountain ridges from the west. 
+
+The mean annual temperatures ranges from 2-6\celsius  and precipitation lies between 700-1500mm (\cite{Moen1999}). 
+Topography is predominantly flat towards the south, and more rugged and elevated towards the north. The landscape is a mosaic of forest and agricultural areas, divided with a wide network of gravel roads.
+The area is situated in the southern boreal and the boreonemoral zones. %Må finne oppdaterte data (frå Norges vassdrags- og energidirektorat, 2019?)
+
+Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) make up the dominating boreal coniferous forests, with frequent presence of silver birch (\textit{Betula pendula}) and downy birch (\textit{Betula pubescens}), then aspen (\textit{Populous tremula}), alder (\textit{Alnus incana}) and black alder (\textit{Alnus glutinosa}).
+
+Growing season length 170 - 190 days (Moen, 1999, map 6, s.21) %må finne oppdaterte data
+Snow cover length												%må finne oppdaterte data
+
+Most cameras were set in forest areas, usually by a tractor path or human trail, sometimes by animal paths. Their distance from houses or roads varied to a large extent, and some areas were logged (ved Vansjø) and even greatly changed under development of new infrastructure (toglinje på nordligste kamera ~1255)
+
+
+\section{Study design} %TODO
+For the study I chose 60 already established camera sites with infrared light(Reconyx and Browning models), in order to have a reference of capture frequencies. The cameras had been installed on trees 1-3 meters from human or tractor paths, 40-120 cm above ground level, with the original aim to photo capture lynx (\cite{Odden2015}). 
+I divided the sites randomly into three groups of 20 cameras. Cameras in group A remained unchanged, whilst group B and C were equipped with an additional white LED camera (Reconyx PC850) in alternating 3 month-periods, as shown in figure\vref{fig:exp_set} .
+\begin{figure}
+    \begin{center}
+    	\includegraphics[scale=0.3]{experiment_setup} %insert figure of groups     
+    \end{center}
+    	\caption{Experiment setup}
+    \label{fig:exp_set}
+\end{figure}
+
+
+The preinstalled cameras were set up and handled by people from the Norwegian Institute of Nature Research (NINA) and --- at the sites further from Oslo  --- by members of the Norwegian Hunters and Fishers Society (NJFF). 
+%as a conflict mitigating strategy. %%Kan kuttes. Evt må det forklares
+Thus, the installation of the cameras did not follow a strict protocol, nor were their locations chosen randomly. The overall placement was systematic as decided by NINA, then there was a deliberately-biased placement of the CTs put up in areas where the individual handler deemed it most likely to photograph lynx,
+and hence, based on a combination of site accessibility and expectations of animal occurence (\cite{Burton2015}). %TODO vask språket 
+
+%\emph{presence of natural or artificial attractants may draw animals in to a CT} \cite{Burton2015}.
+
+As shown in figure\vref{fig:exp_set}, I set up all white LED cameras above the cameras already in place. 
+However, at the particular site shown in figure\vref{fig:cam_ex_c} the infrared camera had been installed so far above ground level that I chose to position the white LED camera below the camera already in place. %endra på av Atle, men kan vaskas ytterligere 
+For the periods without white flash treatment, I moved the cameras to their next site. However, the boxes installed on the trees remained (see figure \ref{fig:cam_ex_d}).
+First, I equipped Group B with white LED in a 3 week period from January - February 2019. The boxes remained untill the end of the experiment. Group C, on the other hand, had no extra boxes before the start of the second period in May 2019 (i.e. remained identical to the control group A untill May).
+
+
+I visited sites of group B and C at least once every three months in order to move the LED cameras. For convenience I visited sites of group A less often. %Her trengs ein språkleg endring
+However, as the cameras were part of other, ongoing projects, they were occasionally visited by other workers from NINA to retreive the Secure Digital memory cards (hereby SD Cards) for data. %write in full on first mention (-Atle)
+This was mostly the case for sites close to, and south of, Oslo, or rather, the cameras not normally operated by members of the NJFF.
+
+
+
+\begin{figure}
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190212_161615169}
+		  \caption{Browning infrared,\\ installed on a fallen tree}
+		  	\label{fig:cam_ex_a}
+	\end{subfigure}
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190515_170952923}
+		  \caption{Reconyx infrared,\\ installed with a snow cap}
+		  	\label{fig:cam_ex_b}
+	\end{subfigure}
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190521_181329313}
+		  \caption{Reconyx infrared above,\\ installed 160 cm above ground level}
+		  	\label{fig:cam_ex_c}
+	\end{subfigure}
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190529_181049340}
+		  \caption{Browning infrared,\\ white LED flash has just been removed}
+		  	\label{fig:cam_ex_d}
+	\end{subfigure}
+		\caption{The preinstalled cameras varied in the way they were set up. Lower cameras with infrared, upper cameras with white LED (except in example c)}
+	\label{fig:cam_ex_main}
+\end{figure}
+
+%We quantified the degree of consistency in implementing and reporting features of CT protocols and study design that might affect detectability and sampling error (e.g. camera type and settings, spatial and temporal sampling effort, use of attractants; Table S1). These details are fundamental to interpreting results of CT studies and assessing their reliability, repeatability and suitability for broader comparison or synthesis (Meek et al. 2014a)
+
+%TODO Details of camera trap orientation, use of lures, and performance settings are also critical elements of camera trapping methodology. The height in relation to the target, the direction the camera is facing in relation to expected animal travel and path of the sun as well as horizontal and vertical alignment may all influence the results of camera trap studies. Providing clear descriptions of exactly how cameras were placed is fundamental to understanding and interpreting the results of research. (Meek etal 2014)
+
+
+\section{Data Collection} %TODO  Trenger kilde på AI! Trenger modellnr på Browning.
+Five different models of RECONYX™ (address: 3828 Creekside Ln, Ste 2, Holmen, WI 54636, USA, www.reconyx.com) cameras were used: HC500 HyperFire Semi-Covert IR (with infrared light), HC600 HyperFire High Output Covert IR (with invisible flash), PC800 HyperFire Professional Semi-Covert IR (with infrared light), PC900 HyperFire Professional Covert IR (with invisible flash), and PC850 HyperFire Professional White Flash LED (with white LED flash). %Copied from Brøste 2018
+And one model of BROWNING™ (address: One Browning Place, Morgan, UT 84050, USA, www.browningtrailcameras.com) cameras was used: Spec Ops Extreme.
+
+
+Reconyx-cameras have been reported of having an average trigger speed of 0.2 seconds, whereas the Browning model was reported an average of 0.7 seconds (Trigger speed shootout, https://www.trailcampro.com/pages/trigger-speed-shootout-archive, accessed 15/01/2021).
+
+% [Detection shootout 2017](https://cdn.shopify.com/s/files/1/1065/8354/files/2017_Detection_Shootout_8de2600d-eb3a-42a8-9420-728aae5056e5.pdf?12422955367088316008)
+
+%Reconyx-kameraene har vært programmert til å ha høyest mulig sensitivitet, ta en serie på 3 bilder og ta bildene i raskest mulig rekkefølge («rapidfire»). Neste bildeserie kan startes umid- delbart etter en bildeserie har blitt tatt («no delay»). Vi har i tillegg programmert kameraene til å ta ett bilde hver dag («Time laps»). Dette er viktig for å få tall på nøyaktig hvilke dager kameraene har fungert, eksempelvis når batteri går tomt eller kamera snør ned. Vi har i tillegg valgt høyest mulige bildekvalitet, både med hensyn på antall piksler, lukkertid og rekkevidde på blitsen. Brøste
+
+Cameras were operating 24 hours per day. The RECONYX™ cameras were set to take one time lapse photo per day in order to verify that the cameras had been operational.
+The cameras were programmed to have highest possible sensitivity, as described in \cite{Odden2015}. %TODO FINN EIN MÅTE Å SETTE KUN ÅRSTALL I PARANTES
+ They were set to take 3 pictures per series, as fast as possible using \emph{rapidfire}, and retrigger immediately using \emph{no delay}.
+At the start of the study, I adjusted the BROWNING™ camera settings from 3 to 8 photos per trigger, in order to gather more data on behavioural responses to the white LED flash stimuli. 
+However, behavioural responses are beyond the scope of this study. %TODO  Atle: Then why did you do it?
+
+
+Unfortunately, with such data heavy settings, memory cards are more vulnerable to filling up before being collected, in areas with sheep and cattle, or when cameras get triggered by grass or branches blowing in the wind. Therefore, the BROWNING™ cameras, which also happen to be the northernmost cameras, tended to have more gaps of inoperable days. %Må reinskrivast/skrivast betre
+
+Whenever I noticed vegetation blocking the view of the camera, or excessively triggering it, I removed the vegetation, but kept no record of it.
+
+%difference between the two camera types*** 
+% Assumptions: chance of detection & sp validation BROWNING > RECONYX, operational days BROWNING < RECONYX
+
+
+
+
+
+
+
+
+\section{Data processing} %TODO
+All SD cards were delivered to NINA for data collection. Firstly, a facial recognition algorithm (FRA)  is used to sort all the pictures. %artificial intelligence software (AI)
+Afterwards, a human sorter checks the softwares' output, confirming all the correct decisions (i.e. species detections) and correcting all the wrong ones.
+The goal is to fully automate this process, which is a request from The Norwegian Data Protection Authority (DPA) in relation to usage of cameras in densely crowded areas (e.g. parks).
+As per the four eyes principle, the detection rate of photographed species has gone up as a result of the FRA (pers.comm. John Odden). 
+
+%Nei, vi har ikke publisert artikkel på gjenkjenningsalgoritmen. Du har jo vært med på prosessen sjøl, så jeg veit ikke om du egentlig trenger referanse her, men du kan sette inn John O som pers med og merke det, så kan han eller jeg endre det slik vi mener det bør være når vi leser gjennom oppgava di..
+
+
+The output I got as a result, was a data frame containing a time stamp for every shutter activity, %kvar gong eit bilde blei tatt
+including all meta data from the camera, coupled with predicted species (FRA output, with a confidence number), verified species (as per human sorters), number of animals and distance from camera. The time stamps from the white flash cameras were used to verify whether an animal was in fact flashed or not. 
+%Describing in brief how coding is undertaken is useful for readers to understand the methods used in relation to the results.(Meek etal 2014)
+
+
+I defined one event as any 1 species passing with a buffer time of 5 min before or after %TODO  Må bestemme lengde på intervall, og formulere betre
+
+
+
+The true number of active camera days are confounded by the inconvenient lack of time lapse photos from the Browning cameras. To approach the true number of active days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo, although this is uncertain.
+
+
+
+\section{Statistical analysis} %TODO Kan utdypast mykje!
+To perform the statistical analysis I used the R programming language (\cite{R}), relying on the packages tidyverse, overlap, survtest (etc.)
+
+
+
+
+
+%Attention devoted to model assumptions! Viktig i Burton 2015
+%Survival-test, (unmarked)?, overlap, tidyverse,
+
+
+

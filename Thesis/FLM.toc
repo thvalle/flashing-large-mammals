@@ -1,0 +1,31 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {UKenglish}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Ledestjerne}{4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {2}Method and materials}{5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.1}Study species}{5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.2}Study area}{5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.3}Study design}{5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.4}Data Collection}{6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.5}Data processing}{8}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.6}Statistical analysis}{8}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {3}Results}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.0.1}Number of pictures taken or whatnot}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.1}Overlap analysis}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.2}analasis b}{10}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.3}analasis c}{10}
