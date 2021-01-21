@@ -172,7 +172,7 @@ passes %>%
 fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "ukjent", "sau", "ku", "fugl") # uninteresting or too general groups
 p_sp_focus <- passes %>% 
   filter(count > 200, !(validated_species %in% fjern), !is.na(validated_species)) %>%  # removing low counts and sp in 'fjern'
-  ggplot() + scale_fill_brewer() + theme_dark() + geom_hline(yintercept = 200) + coord_flip()
+  ggplot() + scale_fill_brewer() + geom_hline(yintercept = 200) + coord_flip()
 p_sp_focus + geom_bar(aes(reorder(validated_species, count, FUN = mean)), position = "dodge") + geom_hline(yintercept = 200) # same as first plot, more filtered
 p_sp_focus + geom_bar(aes(abc, fill = validated_species), position = "dodge")  # same as first plot, more filtered
 p_sp_focus + geom_bar(aes(period, fill = validated_species), position = "dodge")
