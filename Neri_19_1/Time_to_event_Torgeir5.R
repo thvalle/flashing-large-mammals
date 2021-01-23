@@ -10,19 +10,14 @@
 # http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_Survival/BS704_Survival6.html
 # 
 
-rm(list=ls()) # Clear workspace
-
 library(survival)
 library(survminer)
 
 # link to the manual for the survival package
 # https://cran.r-project.org/web/packages/survival/survival.pdf
 
-getwd()
 
-#########################################################################################################################
-# Import data and data manipulation
-#########################################################################################################################
+# Import data and data manipulation ###############################################################################
 
 obs<-readRDS("Observations_prepared1.rds")
 
@@ -109,7 +104,10 @@ hist(obs[obs$flashed==TRUE & obs$validated_species%in%sp & !obs$period%in%"Contr
 # Histogram of time to new detection when animal was not flashed
 hist(obs[obs$flashed==FALSE & obs$validated_species%in%sp & !obs$period%in%"Control"  & obs$event==TRUE,]$t.diff)
 
+saveRDS(obs, "obs_surv_prepared.rds")
 # Analysis - Survival ##########################################################################################
+obs <- readRDS("obs_surv_prepared.rds")
+
 unique(obs$validated_species)
 obs<-obs[obs$t.diff>=0,]
 obs$flashed<-as.factor(obs$flashed)
