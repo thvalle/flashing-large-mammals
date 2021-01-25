@@ -248,3 +248,7 @@ my.glm <- glm(round(t.diff) ~ flashed + house_d2_ln + forestroad_d2_ln,
     "Control", ], family = "poisson")
 summary(my.glm)
 
+
+
+
+

@@ -3,10 +3,8 @@ title: "Survival modelling"
 author: "Torgeir"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    df_print: paged
-  github_document: default
   html_notebook: default
+  github_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -61,50 +59,40 @@ p_sp_focus + geom_bar(aes(fill = flash),position = "dodge") + geom_hline(yinterc
 Having filtered out most sightings, we are left with the most common, large mammals. There are very few sightings of lynx when divided by times it was and wasn't flashed by a white LED. 
 For the rest of the species in this plot, we can rest assured that we have a lot of datapoints, and that the species are large enough to be photo captured every time they pass the camera by the expected route.
 
-
-```{r}
+## filtering out species
+I don't know if this is specially useful for survival modelling, selecting variables and all that.
+My models should only include one species per time anyway.
+```{r obs_focus}
 sp_focus = c("raadyr","rev","grevling","elg","hjort", "gaupe")
 obs_focus <- obs %>% 
-  filter(validated_species == sp_focus) %>% # filtering for our species
+  filter(validated_species  %in%  sp_focus) %>% # filtering for our species
 #  mutate() # mutating date col
   select(loc, date, validated_species, period, flash, flashed, t.diff, event, # selecting our variables
-         datetime, ID, timeserie_id) %>% #and including some ID variables for later
+         datetime, ID, timeserie_id) #%>% #and including some ID variables for later
 #  na.omit() %>%     # Exclude missing data
   # For creating models, it is better to have qualitative columns
   # encoded as factors (instead of character strings)
-  mutate_if(is.character, as.factor)
-obs_focus %>% 
-  count(flash) %>% 
-  mutate(prop = n/sum(n)) %>% 
-  pander()
+ # mutate_if(is.character, as.factor)
 obs %>% 
   count(flash) %>% 
   mutate(prop = n/sum(n)) %>% 
   pander()
-
+obs_focus %>% 
+  count(flash, flashed) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
 ```
+Anyway, it's nice to see that the proportions of flash 1/0 stays the same after filtering out the focal species. This is probably mostly due to the control cameras.
 
-Total n in ob_focus is way off! Somethings wrong in the script, or this computer needs to be rebooted.
+Somewhat strange to consider the count of flashed during a flash-period, though.
+I need to get a new grasp of what the flashed-column means, ie. how it's actually made.
 
 
 
 
 # Build the model
 
-```{r}
-sp = "rev"
-
-mod0 <- coxph(Surv(t.diff, event, type = "right") ~ flashed, 
-  data = obs[obs$validated_species %in% sp & !obs$period %in% 
-    "Control", ])
-
-pander(summary(mod0)) 
-
-```
-
-
-
-# Baseline hazard function
+### Baseline hazard function
 
 The baseline hazard function $H_0(t)$ is the hazard at time $t$ when all predictors equals to zero.
 You can think about the $H_0(t)$ being the intercept, although this is not strictly true. 
@@ -117,11 +105,70 @@ cameras in my study. Nor can I find it out, as this truly is an ever changing va
 in frequencies between the groups equipped with a white LED flash, and the groups only equipped with IR flash.
 
 Ratios must stay constant over time, ie. if group B has twice the hazard of group A at time $t$, the assumption is that this relationship will stay that way at time $t + 1$. 
-In other words, as I assume different species will have different reactions to the white LED, I cannot estimate the Hazard ratio between them.  Or can I?
-Actually, I think I can't, because if a badger is indifferent to the white LED, his ratio to any reacting species will be constantly changing.
+In other words, as I assume different species will have different reactions to the white LED, I cannot estimate the Hazard ratio between them.  _Or can I?_
+Actually, I think I can't, because if a badger is indifferent to the white LED, his ratio to any other _reacting_ species will be constantly changing.
 
+```{r mod0_raadyr}
+sp = "raadyr"
+obs_sp <- obs %>% filter(validated_species %in% sp & !period == "Control") # filtering out control + keeping only sp
+mod0 <- coxph(Surv(t.diff, event, type = "right") ~ flashed, 
+  data = obs_sp)                                            #  cleaner code with a temporary obs_sp
+summary(mod0) 
+```
 So what am I really testing when I'm doing a survival analysis?
 I'm testing whether or not the survival curves are significantly different from each other.
+If it is, the summary-output of a model will show a p-value ( Pr(>|z|) ) lower than 0.05, and the lower and upper .95 interval should not contain the value _**1**_.
+
+The mod0 for roe deer has a $Pr(>|z|) = 0.0444$ and the .95 confidence interval is $1.003$ to $1.309$.
+In other words the model is right on the edge of being significant.
+This seems to hint at an actual effect of the flash, but the p-score should keep us critical.
+
+
+```{r}
+# Survival probabilty against time.
+fit <- survfit(Surv(t.diff, event, type = "right") ~ flashed, 
+  data = obs_sp)
+ggsurvplot(fit, data = obs_sp, title = "roe deer", 
+          risk.table = T, break.time.by = 20, ggtheme = theme_minimal(),
+          censor.shape = "|", censor.size = 3,
+          tables.height = 0.2, tables.theme = theme_cleantable())
+ggsurvplot(fit, data = obs_sp, title = "roe deer",
+          risk.table = T, break.time.by = 10, ggtheme = theme_minimal(),
+          conf.int = T, xlim = c(0,50), censor.shape = "|", censor.size = 3,
+          tables.height = 0.2, tables.theme = theme_cleantable()
+          #cumcensor = T
+)
+ggsurvplot(fit, data = obs_sp, title = "roe deer",
+         coord_trans(x="log2"))
+
+# A nicer way to visualize the coffecient estimate and the
+# confidence interval. Since the interval doesn't overlap 
+# 1 (hazard ratio of 1) the coeffecient estimate is significant.
+ggforest(mod0, data = obs_sp)
+
+# Diagnostics - Are we violating the proportional hazard
+# assumption?
+
+# Test the proportional hazards assumption
+d.mod0 <- cox.zph(mod0)  
+d.mod0 # Non-significant --> we can assume proportional hazards.
+summary(fit)$table
+
+# Can also look at Schoenfeld residuals, there should be no
+# pattern with time
+ggcoxzph(d.mod0)
+
+```
+When the confidence intervals are included in the plot, the white LED CI overlaps the IR curve almost constantly.
+Therefore it doesn't seem to be a large effect of our flash.
+Additionally, it is interesting to see that the effect is of the blits is luring, rather than scaring.
+The survival time is shorter for white LED, which means that roe deer either gets drawn to the camera, or at least that their detection rate goes up.
+
+The curves seem to cross eachother at a couple of points, but the Schoenfeld Individual test is non-significant,
+so we can assume proportional hazards
+
+
+
 
 -----------------------------------------------
 

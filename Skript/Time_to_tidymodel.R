@@ -11,6 +11,25 @@ obs$flashed<-as.factor(obs$flashed)
 obs$flash<-as.factor(obs$flash)
 sp="rev"
 
+
+fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "sykkel", "ukjent", 
+           "sau", "ku", "fugl", "skogshons", "smagnagere", "andre_maardyr", "andre_pattedyr") # uninteresting or too general groups
+passes <- obs %>% group_by(validated_species) %>% 
+  summarise(count = n(),   # flashed = mean(flash, na.rm = T), # don't know if i can find a relevant use of this
+            period = period, flash = flash) %>% 
+  filter(!is.na(validated_species), !(validated_species %in% fjern))
+ggplot(passes) +
+  geom_bar(aes(reorder(validated_species, count, FUN = mean)), position = "dodge") +  # reorders by mean count
+  geom_hline(yintercept = 50) + coord_flip() # flip the axes
+# removing small mammals
+small <- c("maar", "ekorn", "hare")
+p_sp_focus <- passes %>% 
+  filter(count > 50, !validated_species  %in% small) %>%  
+  ggplot(aes(reorder(validated_species, count, FUN = mean))) + coord_flip()
+p_sp_focus + geom_bar(aes(fill = flash),position = "dodge") + geom_hline(yintercept = 50)
+
+
+
 # mod0 from Neri
 mod0<-coxph(Surv(t.diff, event, type="right")~flashed, data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 summary(mod0)
@@ -59,3 +78,53 @@ extract_eq(model,
 extract_eq(model,
            use_coefs = TRUE,
            wrap = TRUE)
+
+
+
+# Fit (complexe) survival curves
+
+fit3 <- survfit( Surv(time, status) ~ sex + rx + adhere,
+                 data = colon )
+
+# Visualize
+#++++++++++++++++++++++++++++++++++++
+ggsurv <- ggsurvplot(fit3, data = colon,
+                     fun = "cumhaz", conf.int = TRUE,
+                     risk.table = TRUE, risk.table.col="strata",
+                     ggtheme = theme_bw())
+
+# Faceting survival curves
+curv_facet <- ggsurv$plot + facet_grid(rx ~ adhere)
+curv_facet
+
+# Faceting risk tables:
+# Generate risk table for each facet plot item
+ggsurv$table + facet_grid(rx ~ adhere, scales = "free")+
+  theme(legend.position = "none")
+
+# Generate risk table for each facet columns
+tbl_facet <- ggsurv$table + facet_grid(.~ adhere, scales = "free")
+tbl_facet + theme(legend.position = "none")
+
+# Arrange faceted survival curves and risk tables
+g2 <- ggplotGrob(curv_facet)
+g3 <- ggplotGrob(tbl_facet)
+min_ncol <- min(ncol(g2), ncol(g3))
+g <- rbind(g2[, 1:min_ncol], g3[, 1:min_ncol], size="last")
+g$widths <- grid::unit.pmax(g2$widths, g3$widths)
+grid::grid.newpage()
+grid::grid.draw(g)
+
+
+## End(Not run)
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# Example 3: CUSTOMIZED PVALUE
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# Customized p-value
+fit1<- survfit(Surv(time, status) ~ sex, data = lung)
+
+ggsurvplot(fit1, data = lung, pval = TRUE, title = "Roe deer", ylab= "Capture probability")
+ggsurvplot(fit1, data = lung, pval = 0.03)
+ggsurvplot(fit1, data = lung, pval = "The hot p-value is: 0.031",surv.median.line = "hv")
+
