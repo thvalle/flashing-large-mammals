@@ -1,0 +1,189 @@
+---
+title: "Survival modelling"
+author: "Torgeir"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  github_document: default
+  html_notebook: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(tibble.print_min = 5)
+library(pander)     # for prettier outputs of summaries and tables etc.
+# library(report)     # for reporting test-statistics             not available for this version of R
+library(tidyverse)  # entering the tidyverse
+library(tidymodels) # and bringing the model-toolbox
+library(lubridate)  # lubricating the handling of dates
+library(survival)   # the original survival-package
+library(survminer)  # a plot-package for ggplot integration
+library(vip)        # for variable importance plots
+library(equatiomatic) # Model formula displayer in RMarkdown
+
+
+obs <- readRDS("obs_surv_prepared.rds") # obs prepared for survival analysis (Time_to_Event_Torgeir5.R, line 133)
+covs <- readRDS("CTloc_covs.rds")
+```
+
+Implementing the survival analysis into the tidymodels framework, as I like their approach of connecting different modelling-packages into one identical syntax.
+<!-- Comments look like this, instead of the LaTeX % -->
+------------------------------------------
+
+# Setting up the data
+
+```{r}
+obs %>% 
+  skimr::skim(validated_species, period) 
+```
+
+
+First, I'll filter out the species I will focus on. As the cameras were set up to detect lynx, I will filter out species that are significantly smaller. Squirrel and hare are examples of species that can't be expected to get detected every time they pass close to the expected travelling route, due to the average height of the cameras, and that they are not angled towards the ground.
+
+In addition I filter out non specific groups (e.g. birds), infrequent sightings (i.e. < 50), and irrelevant groups (cattle, vehicles, humans). However, the "irrelevant" groups could be interesting to come back to later, to see if their presence have predictive power in my models.
+```{r sp_focus, echo=TRUE}
+fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "sykkel", "ukjent", 
+           "sau", "ku", "fugl", "skogshons", "smagnagere", "andre_maardyr", "andre_pattedyr") # uninteresting or too general groups
+passes <- obs %>% group_by(validated_species) %>% 
+  summarise(count = n(),   # flashed = mean(flash, na.rm = T), # don't know if i can find a relevant use of this
+            period = period, flash = flash) %>% 
+  filter(!is.na(validated_species), !(validated_species %in% fjern))
+  ggplot(passes) +
+  geom_bar(aes(reorder(validated_species, count, FUN = mean)), position = "dodge") +  # reorders by mean count
+  geom_hline(yintercept = 50) + coord_flip() # flip the axes
+# removing small mammals
+small <- c("maar", "ekorn", "hare")
+p_sp_focus <- passes %>% 
+  filter(count > 50, !validated_species  %in% small) %>%  
+  ggplot(aes(reorder(validated_species, count, FUN = mean))) + coord_flip()
+p_sp_focus + geom_bar(aes(fill = flash),position = "dodge") + geom_hline(yintercept = 50)
+```
+Having filtered out most sightings, we are left with the most common, large mammals. There are very few sightings of lynx when divided by times it was and wasn't flashed by a white LED. 
+For the rest of the species in this plot, we can rest assured that we have a lot of datapoints, and that the species are large enough to be photo captured every time they pass the camera by the expected route.
+
+
+```{r}
+sp_focus = c("raadyr","rev","grevling","elg","hjort", "gaupe")
+obs_focus <- obs %>% 
+  filter(validated_species == sp_focus) %>% # filtering for our species
+#  mutate() # mutating date col
+  select(loc, date, validated_species, period, flash, flashed, t.diff, event, # selecting our variables
+         datetime, ID, timeserie_id) %>% #and including some ID variables for later
+#  na.omit() %>%     # Exclude missing data
+  # For creating models, it is better to have qualitative columns
+  # encoded as factors (instead of character strings)
+  mutate_if(is.character, as.factor)
+obs_focus %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+obs %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+
+```
+
+Total n in ob_focus is way off! Somethings wrong in the script, or this computer needs to be rebooted.
+
+
+
+
+# Build the model
+
+```{r}
+sp = "rev"
+
+mod0 <- coxph(Surv(t.diff, event, type = "right") ~ flashed, 
+  data = obs[obs$validated_species %in% sp & !obs$period %in% 
+    "Control", ])
+
+pander(summary(mod0)) 
+
+```
+
+
+
+# Baseline hazard function
+
+The baseline hazard function $H_0(t)$ is the hazard at time $t$ when all predictors equals to zero.
+You can think about the $H_0(t)$ being the intercept, although this is not strictly true. 
+That is because in reality, $H_0(t)$ varies over time, and we can never know its true value.
+However, we can calculate the hazard ratio between groups. We will never know a true hazard for any given group at a given time,
+because we lack the knowledge of the shifting baseline, but we can know the relative hazard between groups.
+
+In other words, for my case, I do not know the true probability (hazard) for any given species to get photo-captured by any of the
+cameras in my study. Nor can I find it out, as this truly is an ever changing value. Still, I can measure the relative difference
+in frequencies between the groups equipped with a white LED flash, and the groups only equipped with IR flash.
+
+Ratios must stay constant over time, ie. if group B has twice the hazard of group A at time $t$, the assumption is that this relationship will stay that way at time $t + 1$. 
+In other words, as I assume different species will have different reactions to the white LED, I cannot estimate the Hazard ratio between them.  Or can I?
+Actually, I think I can't, because if a badger is indifferent to the white LED, his ratio to any reacting species will be constantly changing.
+
+So what am I really testing when I'm doing a survival analysis?
+I'm testing whether or not the survival curves are significantly different from each other.
+
+-----------------------------------------------
+
+After having compared the two hazards, ie. extracted a hazard ratio, I should check for confounding factors.
+To do that, I add variables to the model formula, and check whether the intercept and the standard error of my group changes.
+If they are approximately identical, the new factors don't seem to have any explanatory power.
+
+Then, enter the _likelihood ratio test_. I'll use it to test if the full model is significantly better than the reduced model
+$H_0$: no difference between models
+$H_1$: the full model explains more (larger predictive power)
+$^Gstat$ follows a $x^2$-distribution where df = k
+P>|chi|:  if significant (<0.05), then $H_1$ is our model
+
+
+
+
+
+
+------------------------------------------------------------
+
+
+# In case I want to make a machine-learned model later
+```{r training_split}
+set.seed(121)
+splits      <- obs %>% filter(!period == "Control") %>% # filter out control data
+  initial_split(strata = flash)
+
+obs_other <- training(splits)
+obs_test  <- testing(splits)
+
+# training set proportions by flash
+obs_other %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+
+# test set proportions by flash
+obs_test  %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+```
+Inital split successfull
+```{r}
+set.seed(254)
+val_set <- validation_split(obs_other, 
+                            strata = flash, 
+                            prop = 0.80)
+val_set
+```
+
+
+-------------------------------------------------------------
+
+
+# Session Info
+```{r sessionInfo}
+sessionInfo()
+# packrat
+# checkpoint
+```
+
+If you want your code to be reproducible in the long-run (i.e. so you can come back to run it next month or next year), you’ll need to track the versions of the packages that your code uses.
+A rigorous approach is to use _packrat_, [link](http://rstudio.github.io/packrat/), which stores packages in your project directory,
+or _checkpoint_, [link](https://github.com/RevolutionAnalytics/checkpoint), which will reinstall packages available on a specified date. A quick and dirty hack is to include a chunk that runs sessionInfo() — that won’t let you easily recreate your packages as they are today, but at least you’ll know what they were.

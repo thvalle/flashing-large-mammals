@@ -37,3 +37,25 @@ ggsurvplot(fit, data = obs[!obs$period%in%"Control",])
 sp = c("rev", "raadyr")
 fit<-survfit(Surv(t.diff, event, type="right")~flashed + strata(validated_species), data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 ggsurvplot(fit, data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
+
+
+library(ViewPipeSteps)
+
+# Model formula displayer in RMarkdown!
+library(equatiomatic)
+
+# fit a basic multiple linear regression model
+model <- lm(price ~ carat + depth,
+            data = diamonds)
+
+extract_eq(model,
+           use_coefs = TRUE)
+
+#If the equation is long, you can display it on multiple lines by adding the argument wrap = TRUE:
+  
+  model <- lm(price ~ carat + x + y + z + depth,
+              data = diamonds)
+
+extract_eq(model,
+           use_coefs = TRUE,
+           wrap = TRUE)
