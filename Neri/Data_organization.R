@@ -292,7 +292,7 @@ table(b$validated_species)
 write.csv(unique(flash$loc), "LokaliteterMedBlits.csv")
 
 
-
+library(lubridate)
 # # Kjapp feilsøking etter tidspunkter på 831 (blits var riktig) og 833 (blit var feil)
 # 
 # # 831
@@ -303,23 +303,41 @@ write.csv(unique(flash$loc), "LokaliteterMedBlits.csv")
 # # t.difference
 # difftime(riktig, feil, units = "secs")
 # # Time difference of -43262 secs
-# 
+
 # # 833
 # # elg passerer 8:55:55 og 9:08:40 den 7.3.2019
 # feil <- ymd_hms("2019-03-07 08:55:55");feil
 # 
 # 
-# x <- obs$datetime[obs$loc == 833 & obs$validated_species == "elg"] ; x 
+# x <- obs$datetime[obs$loc == 833 & obs$validated_species == "elg"] ; x
 # riktig <- x[1]; riktig
 # difftime(riktig, feil, units = "secs")
 # # Time difference of 86213 secs
+# 
+# obs <- readRDS("Observations_prepared1.rds")
+# 
+# # 513
+# # rådyr passerer 09:03:03 og 20:18:37 den 2019-08-13
+# feil <- ymd_hms("2019-08-13 09:03:03");feil
+# 
+# 
+# x <- obs$datetime[obs$loc == 513 & obs$validated_species == "raadyr"] ; x
+# #[48] "2019-08-13 07:52:03 UTC" [49] "2019-08-13 19:07:27 UTC"
+# riktig <- x[48]; riktig
+# difftime(riktig, feil, units = "secs")
+# # Time difference of -4260 secs
+
+
+
+
+
 
 #328  954  494  662  664  943  830  
 #535 1166  864  823  821  818  638  
 #863  841  861  460  860  258  855 1255
 
-k <- c(328,  954,  494,  662,  664,  943,  830,  535, 1166,  864,  823,  
-       821,  818,  638,  863,  841,  861,  460,  860,  258,  855, 1255)
-stations <- read_csv("stations.csv")
-feil_kontroll <- k[!k  %in% stations$loc[stations$abc == "A"]]
-feil_kontroll
+# k <- c(328,  954,  494,  662,  664,  943,  830,  535, 1166,  864,  823,  
+#        821,  818,  638,  863,  841,  861,  460,  860,  258,  855, 1255)
+# stations <- read_csv("stations.csv")
+# feil_kontroll <- k[!k  %in% stations$loc[stations$abc == "A"]]
+# feil_kontroll
