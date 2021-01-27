@@ -1,0 +1,359 @@
+---
+title: "Survival modelling"
+author: "Torgeir"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(tibble.print_min = 5)
+library(pander)     # for prettier outputs of summaries and tables etc.
+# library(report)     # for reporting test-statistics             not available for this version of R
+library(tidyverse)  # entering the tidyverse
+library(tidymodels) # and bringing the model-toolbox
+library(lubridate)  # lubricating the handling of dates
+library(survival)   # the original survival-package
+library(survminer)  # a plot-package for ggplot integration
+library(vip)        # for variable importance plots
+library(equatiomatic) # Model formula displayer in RMarkdown
+
+
+obs <- readRDS("obs_tte5.rds") # obs prepared for survival analysis (Time_to_Event_Torgeir5.R, line 133)
+covs <- readRDS("CTloc_covs.rds")
+```
+
+### Purpose of this notebook
+Transporting Neri's survival analysis skript into a Rmd-notebook, as for me to be able to write down thoughts and ideas along the way while learning more about R and analysing _my_ data.
+
+This is not written as a lab-notebook from day to day, but rather as a gross layout to what my results-section could end up looking like, or at least a "behind the scenes"-approximation.
+
+I'm also considering to implement the survival analysis into the tidymodels framework, as I like their approach of connecting different modelling-packages into one identical syntax.
+It seems I can make general models for all my species in conjunction that way, following the roadmap layed out by Hadley Wickham in [R for Data Science - Chapter 25: Many Models](https://r4ds.had.co.nz/many-models.html).
+
+<!-- Comments look like this, instead of the LaTeX % -->
+
+------------------------------------------
+
+# Setting up the data
+
+```{r}
+obs %>% 
+  skimr::skim(validated_species, period) 
+```
+
+
+First, I'll filter out the species I will focus on. As the cameras were set up to detect lynx, I will filter out species that are significantly smaller. Squirrel and hare are examples of species that can't be expected to get detected every time they pass close to the expected travelling route, due to the average height of the cameras, and that they are not angled towards the ground.
+
+In addition I filter out non specific groups (e.g. birds), infrequent sightings (i.e. < 50), and irrelevant groups (cattle, vehicles, humans). However, the "irrelevant" groups could be interesting to come back to later, to see if their presence have predictive power in my models.
+```{r sp_focus, echo=TRUE}
+fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "sykkel", "ukjent", 
+           "sau", "ku", "fugl", "skogshons", "smagnagere", "andre_maardyr", "andre_pattedyr") # uninteresting or too general groups
+passes <- obs %>% group_by(validated_species) %>% 
+  summarise(count = n(),   # flashed = mean(flash, na.rm = T), # don't know if i can find a relevant use of this
+            period = period, flash = flash) %>% 
+  filter(!is.na(validated_species), !(validated_species %in% fjern))
+  ggplot(passes) +
+  geom_bar(aes(reorder(validated_species, count, FUN = mean)), position = "dodge") +  # reorders by mean count
+  geom_hline(yintercept = 50) + coord_flip() # flip the axes
+# removing small mammals
+small <- c("maar", "ekorn", "hare")
+p_sp_focus <- passes %>% 
+  filter(count > 50, !validated_species  %in% small) %>%  
+  ggplot(aes(reorder(validated_species, count, FUN = mean))) + coord_flip()
+p_sp_focus + geom_bar(aes(fill = flash),position = "dodge") + geom_hline(yintercept = 50)
+```
+Having filtered out most sightings, we are left with the most common, large mammals. There are very few sightings of lynx when divided by times it was and wasn't flashed by a white LED. 
+For the rest of the species in this plot, we can rest assured that we have a lot of datapoints, and that the species are large enough to be photo captured every time they pass the camera by the expected route.
+
+
+
+
+# Build the model
+
+### Baseline hazard function
+
+The baseline hazard function $H_0(t)$ is the hazard at time $t$ when all predictors equals to zero.
+You can think about the $H_0(t)$ being the intercept, although this is not strictly true. 
+That is because in reality, $H_0(t)$ varies over time, and we can never know its true value.
+However, we can calculate the hazard ratio between groups. We will never know a true hazard for any given group at a given time,
+because we lack the knowledge of the shifting baseline, but we can know the relative hazard between groups.
+
+In other words, for my case, I do not know the true probability (hazard) for any given species to get photo-captured by any of the
+cameras in my study. Nor can I find it out, as this truly is an ever changing value. Still, I can measure the relative difference
+in frequencies between the groups equipped with a white LED flash, and the groups only equipped with IR flash.
+
+Ratios must stay constant over time, ie. if group B has twice the hazard of group A at time $t$, the assumption is that this relationship will stay that way at time $t + 1$. 
+In other words, as I assume different species will have different reactions to the white LED, I cannot estimate the Hazard ratio between them.  _Or can I?_
+Actually, I think I can't, because if a badger is indifferent to the white LED, his ratio to any other _reacting_ species will be constantly changing.
+
+```{r mod0}
+sp = "raadyr"
+obs_sp <- obs %>% filter(validated_species %in% sp & !period == "Control") # filtering out control + keeping only sp
+mod0 <- coxph(Surv(t.diff, event, type = "right") ~ flashed, 
+  data = obs_sp)                                            #  cleaner code with a temporary obs_sp
+summary(mod0) 
+```
+So what am I really testing when I'm doing a survival analysis?
+I'm testing whether or not the survival curves are significantly different from each other.
+If it is, the summary-output of a model will show a p-value ( Pr(>|z|) ) lower than 0.05, and the lower and upper .95 interval should not contain the value _**1**_.
+
+The mod0 for roe deer has a $Pr(>|z|) = 0.0444$ and the .95 confidence interval is $1.003$ to $1.309$.
+In other words the model is right on the edge of being significant.
+This seems to hint at an actual effect of the flash, but the p-score should keep us critical.
+
+
+```{r survplot0}
+# Survival probabilty against time.
+fit <- survfit(Surv(t.diff, event, type = "right") ~ flashed, 
+  data = obs_sp)
+ggsurvplot(fit, data = obs_sp, title = "roe deer", 
+          risk.table = T, break.time.by = 20, ggtheme = theme_minimal(),
+          censor.shape = "|", censor.size = 3,
+          tables.height = 0.2, tables.theme = theme_cleantable())
+ggsurvplot(fit, data = obs_sp, title = "roe deer",
+          risk.table = T, break.time.by = 10, ggtheme = theme_minimal(),
+          conf.int = T, xlim = c(0,50), censor.shape = "|", censor.size = 3,
+          tables.height = 0.2, tables.theme = theme_cleantable()
+          #cumcensor = T
+)
+#ggsurvplot(fit, data = obs_sp, title = "roe deer", coord_trans(x="log2")) #want to find a way to log transform x-axis
+
+ggsurvplot(fit, data = obs_sp, title = "roe deer", 
+          break.time.by = 20, ggtheme = theme_minimal(),
+          censor.shape = "|", censor.size = 3, fun = "cumhaz" )
+# fun = "event" plots cumulative events (f(y) = 1-y), 
+# "cumhaz" plots the cumulative hazard function (f(y) = -log(y)), and 
+# "pct" for survival probability in percentage
+```
+## Diagnosing the model
+
+```{r diagnostics0}
+# A nicer way to visualize the coffecient estimate and the
+# confidence interval. Since the interval doesn't overlap 
+# 1 (hazard ratio of 1) the coeffecient estimate is significant.
+ggforest(mod0, data = obs_sp)
+
+# Diagnostics - Are we violating the proportional hazard
+# assumption?
+
+# Test the proportional hazards assumption
+d.mod0 <- cox.zph(mod0)  
+d.mod0 # Non-significant --> we can assume proportional hazards.
+summary(fit)$table
+
+# Can also look at Schoenfeld residuals, there should be no
+# pattern with time
+ggcoxzph(d.mod0)
+
+```
+When the confidence intervals are included in the plot, the white LED CI overlaps the IR curve almost constantly.
+Therefore it doesn't seem to be a large effect of our flash.
+Additionally, it is interesting to see that the effect is of the blits is luring, rather than scaring.
+The survival time is shorter for white LED, which means that roe deer either gets drawn to the camera, or at least that their detection rate goes up.
+
+The curves seem to cross eachother at a couple of points. However, the Schoenfeld Individual test is non-significant,
+so we can assume proportional hazards
+
+-----------------------------------------------
+
+After having compared the two hazards, ie. extracted a hazard ratio, I should check for confounding factors.
+To do that, I add variables to the model formula, and check whether the intercept and the standard error of my group changes.
+If they are approximately identical, the new factors don't seem to have any explanatory power.
+
+
+# Models with spatial covariates
+
+```{r covs_setup, include=FALSE}
+# Analysis - Survival. Including spatial covariates 
+covs<-readRDS("CTloc_covs.rds")
+class(covs)
+covs<-as.data.frame(covs) # Chaning class to data.fram and not a sf data.frame
+# names(covs)
+obs<-merge(obs, covs, by.x="loc", by.y="LokalitetID", all.x=TRUE, all.y=FALSE)
+names(obs)
+
+# Checking if there is any NAs in the covariates
+lapply(1:ncol(obs), function(x){any(is.na(obs[,x]))})
+colnames(obs)[8:10] # Not any in the covariates, but in some species... (valid_sp, distance, num_animals)
+```
+
+
+```{r mod1}
+# Fitting model with spatial covariates
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(validated_species %in% sp & !period == "Control")
+
+# Example with distance to forestroads and houses
+mod1<-coxph(Surv(t.diff, event, type="right") ~ flashed +
+              house_d2 + forestroad_d2, data=obs_sp)
+summary(mod1)
+
+ggforest(mod1, data = obs_sp)
+```
+Just adding the house_d2, and forestroad_d2 covariates completely changed the verdict on the effect of flashing.
+Closeness to house has a slightly, but significant, _negative_ predictive power,
+and closeness to forest roads has a ever slightly, but significant, _positive_ predictive power
+However, I mistrust their confidence intervals. They are weirdly narrow.
+
+Also, Neri started a sentence commenting on what the negative value of house_d2 signifies, but didn't complete it.
+
+Anyways, just thinking about my spatial covariates, and what they represent, the way they are used in the model right now, is probably not what I intend.
+I don't expect an animal's reaction to be linear with the distance to a road or a house.
+Rather, I expect it to be exponentially larger, the closer the animal gets, ie. the closer the camera's position is to a road or a house, as that is where I observe them.
+Worded differently, I don't think the difference of 1km and 3km to the nearest house will affect a roe deer, 
+as much as the difference of 50m and 500m will.
+Therefore I need to log transform the spatial covariates, and in doing so I have to be careful with 0-values.
+Many cameras are positioned on or directly next to a forest road, and log transforming these values would create infinite-values. 
+
+```{r d2_ln}
+obs$forestroad_d2_ln<-ifelse(obs$forestroad_d2>0,log(obs$forestroad_d2), 0)
+obs$house_d2_ln<-ifelse(obs$house_d2>0,log(obs$house_d2), 0)
+# plotting distances
+library(reshape2) # for melt function
+p_theme <- theme(
+  panel.grid.major.x = element_blank(),panel.grid.minor.x = element_blank(),
+  panel.grid.minor.y = element_blank(),axis.text.x = element_blank())   
+  #theme(panel.background = element_rect(fill = "white", colour = "grey50"))
+
+obs %>% melt(id = "loc", measure = c("forestroad_d2", "house_d2")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  labs(title = "Distance") + p_theme 
+obs %>% melt(id = "loc", measure = c("forestroad_d2_ln", "house_d2_ln")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  geom_smooth(span = 0.7) + labs(title = "Log-transformed distance") +
+  p_theme #+ theme(legend.position = "top")
+ggplot(obs, aes(forestroad_d2, house_d2)) + geom_point() + 
+  geom_smooth(method = "glm", formula = y ~ x, se = T) +
+  labs(title = "Distance correlation")
+  #geom_smooth(span =.5)
+```
+There are definitively correlation between the two variables, although the relationship is not completely linear, and they can have some complimentary power in prediction.
+
+Remembering my own question as stated in the intro:
+
+*In this study, I will attempt to quantify how the usage of white LED flash affects the detection rate of the most common large mammal species in the area and whether this effect correlates with other factors [such] as urbanisation.*
+
+Forestroads are absolutely a factor of human interference or something like that, but is not exactly what I'm getting at with urbanisation. Also, forestroads are known to attract many species [citation?] and are therefore used actively in camera trapping studies, my own included. So, including closeness to forestroads can probably account for some "attraction" to camera sites, or rather, higher detection frequencies. Maybe a TRUE/FALSE factor for camera being on forestroad or not would be better.
+
+On the other hand, distance to house is closer to my urbanisation statement, and is somewhat more of what I had in mind when articulating it.
+Specifically, I was thinking about sources to Artificial Light At Night (ALAN), as a possible predictor for how animals react to white LED flash.
+Proximity to houses is a somewhat good proxy for that, but still, I'll be missing the ALAN from other types of infrastructure, such as illuminated public roads, and heavily trafficked roads in general.
+
+In any case, if I do get a hold of an actual proximity to ALAN-covariate (or similar), I need to be mindful of whether it is the ALAN or something correlating with the ALAN that can be causal to this relationship.
+
+
+```{r mod2}
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(validated_species %in% sp & !period == "Control")
+
+mod2<-coxph(Surv(t.diff, event, type="right")~flashed+ house_d2_ln + forestroad_d2_ln, data=obs_sp)
+summary(mod2)
+ggforest(mod2, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod2<-cox.zph(mod2) # Non-significant --> we can assume proportional hazards.
+d.mod2
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod2)
+
+```
+
+
+
+
+# Testing the models
+
+
+
+
+## AIC-test
+
+
+
+## Likelihood ratio test
+Then, enter the _likelihood ratio test_. I'll use it to test if the full model is significantly better than the reduced model
+$H_0$: no difference between models
+$H_1$: the full model explains more (larger predictive power)
+$^Gstat$ follows a $x^2$-distribution where df = k
+P>|chi|:  if significant (<0.05), then $H_1$ is our model
+
+
+
+
+
+------------------------------------------------------------
+## filtering out species
+I don't know if this is specially useful for survival modelling, selecting variables and all that.
+My models should only include one species per time anyway.
+```{r obs_focus}
+sp_focus = c("raadyr","rev","grevling","elg","hjort", "gaupe")
+obs_focus <- obs %>% 
+  filter(validated_species  %in%  sp_focus) %>% # filtering for our species
+#  mutate() # mutating date col
+  select(loc, date, validated_species, period, flash, flashed, t.diff, event, # selecting our variables
+         datetime, ID, timeserie_id) #%>% #and including some ID variables for later
+#  na.omit() %>%     # Exclude missing data
+  # For creating models, it is better to have qualitative columns
+  # encoded as factors (instead of character strings)
+ # mutate_if(is.character, as.factor)
+obs %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+obs_focus %>% 
+  count(flash, flashed) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+```
+Anyway, it's nice to see that the proportions of flash 1/0 stays the same after filtering out the focal species. This is probably mostly due to the control cameras.
+
+Somewhat strange to consider the count of flashed during a flash-period, though.
+I need to get a new grasp of what the flashed-column means, ie. how it's actually made.
+
+
+
+# In case I want to make a machine-learned model later
+```{r training_split}
+set.seed(121)
+splits      <- obs %>% filter(!period == "Control") %>% # filter out control data
+  initial_split(strata = flash)
+
+obs_other <- training(splits)
+obs_test  <- testing(splits)
+
+# training set proportions by flash
+obs_other %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+
+# test set proportions by flash
+obs_test  %>% 
+  count(flash) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+```
+Inital split successfull
+```{r}
+set.seed(254)
+val_set <- validation_split(obs_other, 
+                            strata = flash, 
+                            prop = 0.80)
+val_set
+```
+
+
+-------------------------------------------------------------
+
+
+# Session Info
+```{r sessionInfo}
+sessionInfo()
+# packrat
+# checkpoint
+```
+
+If you want your code to be reproducible in the long-run (i.e. so you can come back to run it next month or next year), you’ll need to track the versions of the packages that your code uses.
+A rigorous approach is to use _packrat_, [link](http://rstudio.github.io/packrat/), which stores packages in your project directory,
+or _checkpoint_, [link](https://github.com/RevolutionAnalytics/checkpoint), which will reinstall packages available on a specified date. A quick and dirty hack is to include a chunk that runs sessionInfo() — that won’t let you easily recreate your packages as they are today, but at least you’ll know what they were.
