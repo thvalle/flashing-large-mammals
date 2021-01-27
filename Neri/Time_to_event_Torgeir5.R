@@ -10,7 +10,6 @@
 # http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_Survival/BS704_Survival6.html
 # 
 
-rm(list=ls()) # Clear workspace
 
 library(survival)
 library(survminer)
@@ -18,16 +17,12 @@ library(survminer)
 # link to the manual for the survival package
 # https://cran.r-project.org/web/packages/survival/survival.pdf
 
-getwd()
 
-#########################################################################################################################
-# Import data and data manipulation
-#########################################################################################################################
-
-obs<-readRDS("Torgeir/Observations_prepared1.rds")
+# Import data and data manipulation #################################################################
+obs<-readRDS("Observations_prepared1.rds")
 
 # Including the flashes
-flash<-readRDS("Torgeir/Flash_prepared.RDS")
+flash<-readRDS("Flash_prepared.RDS")
 
 # Giving them a loc ID
 flash<-flash[,c("loc", "DateTimeOriginal", "InfraredIlluminator", "Flash", "Model", "TriggerMode", "date", "Kam.nr. til blitskamera")]
@@ -68,7 +63,7 @@ for(i in unique(obs$ID)){
 
 # Setting a correct end diff time for those without any second observation. 
 row.n<-row.names(obs[is.na(obs$t.diff),])
-effort<-readRDS("Torgeir/Effort_prepared.rds")
+effort<-readRDS("Effort_prepared.rds")
 
 for(i in row.n){
   period<-obs[i,"period"]
@@ -84,9 +79,7 @@ table(obs[obs$validated_species%in%"rev",]$event)
 
 
 
-#########################################################################################################################
-# Inspecting the data
-#########################################################################################################################
+# Inspecting the data -----------------------------------------------------------------------------------
 
 # Inspecting the number of observations during the different treatments
 sp="rev"
@@ -105,15 +98,16 @@ hist(obs[obs$flashed==TRUE & obs$validated_species%in%sp & !obs$period%in%"Contr
 # Histogram of time to new detection when animal was not flashed
 hist(obs[obs$flashed==FALSE & obs$validated_species%in%sp & !obs$period%in%"Control"  & obs$event==TRUE,]$t.diff)
 
-#########################################################################################################################
-# Analysis - Survival
-#########################################################################################################################
+# Analysis - Survival #################################################################################
 unique(obs$validated_species)
 obs<-obs[obs$t.diff>=0,]
 obs$flashed<-as.factor(obs$flashed)
 obs$flash<-as.factor(obs$flash)
-sp="rev"
+saveRDS(obs, "obs_tte5.rds") 
+obs <- readRDS("obs_tte5.rds")
+names(obs)
 
+sp="rev"
 mod0<-coxph(Surv(t.diff, event, type="right")~flashed, data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 summary(mod0)
 
@@ -138,31 +132,31 @@ d.mod0
 # Can also look at Schoenfeld residuals, there should be no pattern with time
 ggcoxzph(d.mod0)
 
-#########################################################################################################################
-# Analysis - Survival. Including spatial covariates
-#########################################################################################################################
-covs<-readRDS("Torgeir/CTloc_covs.rds")
+# Analysis - Survival. Including spatial covariates ###################################################################
+# obs <- readRDS("obs_tte5.rds"); library(survival);library(survminer)
+covs<-readRDS("CTloc_covs.rds")
 class(covs)
-
+names(obs)
 covs<-as.data.frame(covs) # Chaning class to data.fram and not a sf data.frame
-
+names(covs)
 obs<-merge(obs, covs, by.x="loc", by.y="LokalitetID", all.x=TRUE, all.y=FALSE)
-
+names(obs)
 # Checking if there is any NAs in the covariates
 lapply(1:ncol(obs), function(x){any(is.na(obs[,x]))})
-colnames(obs)[8:10] # Not any in the covariates, but in some species... 
+colnames(obs)[8:10] # Not any in the covariates, but in some species... (valid_sp, distance, num_animals)
 
 # Fitting model with spatial covariates
 sp="rev"
 
 # Example with distance to forestroads and houses
-mod1<-coxph(Surv(t.diff, event, type="right")~flashed+house_d2 + forestroad_d2, data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
+mod1<-coxph(Surv(t.diff, event, type="right") ~ flashed +
+              house_d2 + forestroad_d2, data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 summary(mod1) # Be careful when interpreting distance to features, a negative sign in this case means that 
 
 ggforest(mod1, data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 
 # Trying with a log transformation on the covariates, this makes the effect deviate with the distance from the feature. 
-# Try to plot the log of distance to feature agains the distance and you see why. e.g. plot(1:1000,log(1:1000))
+# Try to plot the log of distance to feature against the distance and you see why. e.g. plot(1:1000,log(1:1000))
 
 any(is.infinite(log(obs$forestroad_d2))) # This means that the log transformation will create some infinite values
 log(seq(0,1,0.1)) # Here you see why, log(0)=-Inf
@@ -196,9 +190,7 @@ mod.sel[order(mod.sel$d.AIC),]
 
 # What is your conclusion? 
 
-#########################################################################################################################
-# Analysis - Generalized linear models (if it is hard to wrap your head around the survival analysis) 
-#########################################################################################################################
+# Analysis - Generalized linear models (if it is hard to wrap your head around the survival analysis)  #############
 
 sp="rev"
 

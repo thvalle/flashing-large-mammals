@@ -81,7 +81,7 @@ for(i in row.n){
 
 obs[is.na(obs$event),"event"]<-TRUE
 
-# saveRDS(obs, here("obs_tte.rds")) 
+saveRDS(obs, here("obs_tte.rds")) 
 
 # Inspecting the data -----------------------------------------------------------------------------------
 obs <- readRDS("obs_tte.rds")
@@ -278,47 +278,3 @@ library(survival)
 ??survival
 vignette("Playing_with_fonts_and_texts", package = "survminer")
 
-
-# intro models -----------------------------------------
-library(modelr)
-library(gapminder)
-
-freq %>% ggplot(aes(n.obs, period, group = validated_species)) +
-  geom_line(alpha = 1/3)
-rev <- filter(freq, validated_species == "rev")
-rev %>% 
-  ggplot(aes(loc, n.obs)) +
-  geom_line() +
-  ggtitle("Full data =")
-
-
-freq 
-by_sp <- freq %>% left_join(stations, by = "loc") %>% 
-  drop_na(validated_species) %>%  # remove the NA in species
-  group_by(validated_species, loc) %>% 
-  nest()
-any(is.na(by_sp[3])) # FALSE
-any(is.na(by_sp))    # FALSE
-by_sp
-by_sp$data[[1]]
-sp_model <- function(df) {
-  lm(n.obs ~ flash, data = df)
-}
-models <- map(by_sp$data, sp_model)
-by_sp <- by_sp %>% 
-  mutate(model = map(by_sp$data, sp_model))
-by_sp
-
-
-
-# gapminder example
-by_country <- gapminder %>% 
-  group_by(country, continent) %>% 
-  nest()
-country_model <- function(df) {
-  lm(lifeExp ~ year, data = df)
-}
-models <- map(by_country$data, country_model)
-by_country <- by_country %>% 
-  mutate(model = map(data, country_model))
-by_country
