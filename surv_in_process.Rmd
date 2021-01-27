@@ -2,9 +2,7 @@
 title: "Survival modelling"
 author: "Torgeir"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  html_notebook: default
-  github_document: default
+output: github_document
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
