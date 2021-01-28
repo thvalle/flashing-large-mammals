@@ -222,7 +222,7 @@ freq <- read_csv("freq_datexpl.csv", col_types = cols(
   flash = col_logical()
 ))
 # frequency on periods, single or plural species
-sp <- c("ekorn", "elg", "grevling", "hare", "hjort", "maar", "raadyr", "rev") # Species with the most datapoints
+sp <- c("elg", "grevling","hjort", "maar", "raadyr", "rev") # Species with the most datapoints
 p_freq_per <- freq %>% # plot of frequency grouped by period
   filter(validated_species %in% sp) %>%
   left_join(stations, by = "loc") %>%
