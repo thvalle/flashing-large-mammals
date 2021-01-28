@@ -1,33 +1,30 @@
 # tidymodels example of survival
-
+library(tidyverse)
+library(tidymodels)
 library(survival)
 library(survminer)
 # read data from Time_to_event_Torgeir5.R
-obs <- readRDS("obs_surv_prepared.rds")
-#some final touches
-unique(obs$validated_species)
-obs<-obs[obs$t.diff>=0,]
-obs$flashed<-as.factor(obs$flashed)
-obs$flash<-as.factor(obs$flash)
-sp="rev"
+sp = c("rev", "raadyr", "gaupe", "hjort", "grevling", "elg")
+covs<-readRDS("CTloc_covs.rds") %>% as.data.frame() 
+library(corrplot)
+covs %>% select(!c(1,3,4)) %>% cor() %>% 
+  corrplot(type = "upper", method = "number")
+names(covs)
+obs <- readRDS("obs_tte5.rds") %>% filter(validated_species %in% sp) %>% 
+  merge(covs, by.x="loc", by.y="LokalitetID", all.x=TRUE, all.y=FALSE) %>% 
+  # removing various IDs, lat lon which correlates with slope, build dens,
+  # field_d2, as well as geometry which I don't understand what is
+  select(-c(distance, num_animals, 4:7, 14, 19:21) ) %>%  
+  # Exclude missing data
+  na.omit() %>% 
+  # For creating models, it is better to have qualitative columns
+  # encoded as factors (instead of character strings)
+  mutate_if(is.character, as.factor)
 
 
-fjern <- c("nothing","hund", "menneske", "kjoeretoey", "motorsykkel", "sykkel", "ukjent", 
-           "sau", "ku", "fugl", "skogshons", "smagnagere", "andre_maardyr", "andre_pattedyr") # uninteresting or too general groups
-passes <- obs %>% group_by(validated_species) %>% 
-  summarise(count = n(),   # flashed = mean(flash, na.rm = T), # don't know if i can find a relevant use of this
-            period = period, flash = flash) %>% 
-  filter(!is.na(validated_species), !(validated_species %in% fjern))
-ggplot(passes) +
-  geom_bar(aes(reorder(validated_species, count, FUN = mean)), position = "dodge") +  # reorders by mean count
-  geom_hline(yintercept = 50) + coord_flip() # flip the axes
-# removing small mammals
-small <- c("maar", "ekorn", "hare")
-p_sp_focus <- passes %>% 
-  filter(count > 50, !validated_species  %in% small) %>%  
-  ggplot(aes(reorder(validated_species, count, FUN = mean))) + coord_flip()
-p_sp_focus + geom_bar(aes(fill = flash),position = "dodge") + geom_hline(yintercept = 50)
 
+obs %>% 
+  skimr::skim(validated_species, flashed) 
 
 
 # mod0 from Neri
@@ -52,8 +49,8 @@ fit <- survfit(Surv(t.diff, event, type="right") ~ flashed + strata(validated_sp
 ggsurvplot(fit, data = obs[!obs$period%in%"Control",])
 # crazy amounts of species! Filter out the ones I wanted to focus on
 
-# sp = c("rev", "raadyr", "gaupe", "hjort", "grevling", "elg")
-sp = c("rev", "raadyr")
+sp = c("rev", "raadyr", "gaupe", "hjort", "grevling", "elg")
+# sp = c("rev", "raadyr")
 fit<-survfit(Surv(t.diff, event, type="right")~flashed + strata(validated_species), data=obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 ggsurvplot(fit, data = obs[obs$validated_species%in%sp & !obs$period%in%"Control",])
 
@@ -127,4 +124,19 @@ fit1<- survfit(Surv(time, status) ~ sex, data = lung)
 ggsurvplot(fit1, data = lung, pval = TRUE, title = "Roe deer", ylab= "Capture probability")
 ggsurvplot(fit1, data = lung, pval = 0.03)
 ggsurvplot(fit1, data = lung, pval = "The hot p-value is: 0.031",surv.median.line = "hv")
+
+library(Rtool)
+
+# remotes::install_github("easystats/report") # finally worked after several days
+#  had to accept all updates (ie. type 1 at every prompt)
+library(report)
+library(tidyverse)
+dat <- mtcars %>%
+  select(-vs, -am)
+test <- cor.test(dat$drat, dat$qsec)
+test
+report(test)
+
+remotes::install_github("easystats/easystats")
+
 
