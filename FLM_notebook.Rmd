@@ -1,9 +1,8 @@
 ---
 title: "Flashing Large Mammals - exploring the data"
-output:
-  html_document:
-    df_print: paged
-date: '2021-01-06'
+author: "Torgeir"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
 ---
 
 ```{r setup}

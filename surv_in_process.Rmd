@@ -3,6 +3,7 @@ title: "Survival modelling"
 author: "Torgeir"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: github_document
+  
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
