@@ -97,3 +97,18 @@ test <- cor.test(dat$drat, dat$qsec)
 test
 report(test)
 
+library(Rtool)
+
+# remotes::install_github("easystats/report") # finally worked after several days
+#  had to accept all updates (ie. type 1 at every prompt)
+library(report)
+library(tidyverse)
+dat <- mtcars %>%
+  select(-vs, -am)
+test <- cor.test(dat$drat, dat$qsec)
+test
+report(test)
+
+remotes::install_github("easystats/easystats")
+
+
