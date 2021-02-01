@@ -188,20 +188,14 @@ null_distribution_simulated %>%
 p_value_independence <- null_distribution_simulated %>%
   get_p_value(obs_stat = observed_indep_statistic,
               direction = "greater")
-```
 
-    ## Warning: Please be cautious in reporting a p-value of 0. This result is an
-    ## approximation based on the number of `reps` chosen in the `generate()` step. See
-    ## `?get_p_value()` for more information.
-
-``` r
 p_value_independence
 ```
 
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1       0
+    ## 1  0.0002
 
 ``` r
 #Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step. See `?get_p_value()` for more information.
@@ -1082,37 +1076,6 @@ d.mod0_rev
     ## GLOBAL  0.679  1 0.41
 
 ``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
-
-``` r
 ggcoxzph(d.mod0_rev, font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -1173,37 +1136,6 @@ d.mod5_rev
     ## GLOBAL                   3.880  4 0.42
 
 ``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
-
-``` r
 ggcoxzph(d.mod5_rev, font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -1259,37 +1191,6 @@ d.mod0_grevling
     ##         chisq df    p
     ## flashed 0.769  1 0.38
     ## GLOBAL  0.769  1 0.38
-
-``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
 
 ``` r
 ggcoxzph(d.mod0_grevling,font.main = 12, ggtheme = theme_classic2())
@@ -1352,37 +1253,6 @@ d.mod5_grevling
     ## GLOBAL                   1.33e+01  4 0.0099
 
 ``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
-
-``` r
 ggcoxzph(d.mod5_grevling,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -1439,37 +1309,6 @@ d.mod0_elg
     ##          chisq df    p
     ## flashed 0.0274  1 0.87
     ## GLOBAL  0.0274  1 0.87
-
-``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
 
 ``` r
 ggcoxzph(d.mod0_elg,font.main = 12, ggtheme = theme_classic2())
@@ -1530,37 +1369,6 @@ d.mod5_elg
     ## GLOBAL                   6.2909  4 0.178
 
 ``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
-
-``` r
 ggcoxzph(d.mod5_elg,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -1617,37 +1425,6 @@ d.mod0_hjort
     ##          chisq df    p
     ## flashed 0.0774  1 0.78
     ## GLOBAL  0.0774  1 0.78
-
-``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
 
 ``` r
 ggcoxzph(d.mod0_hjort,font.main = 12, ggtheme = theme_classic2())
@@ -1708,37 +1485,6 @@ d.mod5_hjort
     ## GLOBAL                   5.711035  4 0.22
 
 ``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
-
-``` r
 ggcoxzph(d.mod5_hjort,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -1793,37 +1539,6 @@ d.mod0_gaupe
     ##         chisq df    p
     ## flashed  2.14  1 0.14
     ## GLOBAL   2.14  1 0.14
-
-``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
 
 ``` r
 ggcoxzph(d.mod0_gaupe,font.main = 12, ggtheme = theme_classic2())
@@ -1881,37 +1596,6 @@ d.mod5_gaupe
     ## house_d2_ln              24.1284  1 9.0e-07
     ## flashed:forestroad_d2_ln  3.4607  1   0.063
     ## GLOBAL                   27.7276  4 1.4e-05
-
-``` r
-summary(fit)$table
-```
-
-    ##                                 records n.max n.start events    *rmean
-    ## flashed=FALSE, species=elg          175   175     175    126 32.539508
-    ## flashed=FALSE, species=gaupe         32    32      32     19 38.894583
-    ## flashed=FALSE, species=grevling     557   557     557    483 13.403604
-    ## flashed=FALSE, species=hjort         78    78      78     54 36.064867
-    ## flashed=FALSE, species=rev          487   487     487    401 19.535975
-    ## flashed=FALSE, species=raadyr       930   930     930    863  6.986115
-    ## flashed=TRUE, species=elg           105   105     105     83 22.854855
-    ## flashed=TRUE, species=gaupe          20    20      20     13 48.748679
-    ## flashed=TRUE, species=grevling       93    93      93     88  8.305752
-    ## flashed=TRUE, species=hjort          64    64      64     51 18.840612
-    ## flashed=TRUE, species=rev            80    80      80     70 13.461687
-    ## flashed=TRUE, species=raadyr        313   313     313    295  6.895456
-    ##                                 *se(rmean)    median    0.95LCL   0.95UCL
-    ## flashed=FALSE, species=elg       4.2065633 10.345162  7.3583449 16.194248
-    ## flashed=FALSE, species=gaupe     6.6539782 29.291632 14.8252431        NA
-    ## flashed=FALSE, species=grevling  1.5734832  2.477361  2.0121296  2.978877
-    ## flashed=FALSE, species=hjort     6.8551428  9.409271  6.9323264 20.762407
-    ## flashed=FALSE, species=rev       1.9568937  5.759352  4.9085301  7.087569
-    ## flashed=FALSE, species=raadyr    0.7027277  1.561887  1.3264005  1.808727
-    ## flashed=TRUE, species=elg        4.5809133  5.894803  3.8539583 10.620475
-    ## flashed=TRUE, species=gaupe     13.2212148 24.989439  3.3590046        NA
-    ## flashed=TRUE, species=grevling   1.8807610  2.875405  1.7909491  4.223947
-    ## flashed=TRUE, species=hjort      5.9187605  2.288808  1.5689699  7.456713
-    ## flashed=TRUE, species=rev        2.2677592  6.770023  3.9475463  8.977454
-    ## flashed=TRUE, species=raadyr     1.2896542  1.158935  0.9164468  1.519896
 
 ``` r
 ggcoxzph(d.mod5_gaupe,font.main = 12, ggtheme = theme_classic2())

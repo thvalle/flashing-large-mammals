@@ -529,7 +529,6 @@ ggforest(mod0_rev, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod0_rev <- cox.zph(mod0_rev)  
 d.mod0_rev 
-summary(fit)$table
 ggcoxzph(d.mod0_rev, font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -545,7 +544,6 @@ ggforest(mod5_rev, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod5_rev <- cox.zph(mod5_rev)  
 d.mod5_rev 
-summary(fit)$table
 ggcoxzph(d.mod5_rev, font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -567,7 +565,6 @@ ggforest(mod0_grevling, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod0_grevling <- cox.zph(mod0_grevling)  
 d.mod0_grevling 
-summary(fit)$table
 ggcoxzph(d.mod0_grevling,font.main = 12, ggtheme = theme_classic2())
 ```
 ```{r mod5-grevling}
@@ -580,7 +577,6 @@ ggforest(mod5_grevling, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod5_grevling <- cox.zph(mod5_grevling)  
 d.mod5_grevling 
-summary(fit)$table
 ggcoxzph(d.mod5_grevling,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -600,7 +596,6 @@ ggforest(mod0_elg, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod0_elg <- cox.zph(mod0_elg)  
 d.mod0_elg 
-summary(fit)$table
 ggcoxzph(d.mod0_elg,font.main = 12, ggtheme = theme_classic2())
 ```
 ```{r mod5_elg}
@@ -613,7 +608,6 @@ ggforest(mod5_elg, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod5_elg <- cox.zph(mod5_elg)  
 d.mod5_elg 
-summary(fit)$table
 ggcoxzph(d.mod5_elg,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -635,7 +629,6 @@ ggforest(mod0_hjort, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod0_hjort <- cox.zph(mod0_hjort)  
 d.mod0_hjort 
-summary(fit)$table
 ggcoxzph(d.mod0_hjort,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -649,7 +642,6 @@ ggforest(mod5_hjort, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod5_hjort <- cox.zph(mod5_hjort)  
 d.mod5_hjort 
-summary(fit)$table
 ggcoxzph(d.mod5_hjort,font.main = 12, ggtheme = theme_classic2())
 ```
 
@@ -670,7 +662,6 @@ ggforest(mod0_gaupe, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod0_gaupe <- cox.zph(mod0_gaupe)  
 d.mod0_gaupe 
-summary(fit)$table
 ggcoxzph(d.mod0_gaupe,font.main = 12, ggtheme = theme_classic2())
 ```
 ```{r mod5_gaupe}
@@ -683,7 +674,6 @@ ggforest(mod5_gaupe, data = obs_sp)
 # Test the proportional hazards assumption
 d.mod5_gaupe <- cox.zph(mod5_gaupe)  
 d.mod5_gaupe 
-summary(fit)$table
 ggcoxzph(d.mod5_gaupe,font.main = 12, ggtheme = theme_classic2())
 ```
 
