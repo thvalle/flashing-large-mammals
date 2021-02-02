@@ -251,4 +251,9 @@ summary(my.glm)
 
 
 
-
+# rendering odt-document
+# 
+# <!-- `r rmarkdown::render("surv_in_process.Rmd", output_format = "odt_document")` 
+# for odt. word-document -->
+# 
+# Seems I couldn't knit with that line in comment section

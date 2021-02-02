@@ -392,3 +392,163 @@ last_rf_fit %>%
 ```
 
 Not bad!
+
+
+
+
+
+
+
+
+
+
+
+#My model
+
+## Based on the tidymodels article 5 - case study
+
+
+
+```{r training_split}
+set.seed(121)
+splits      <- obs_sp %>%
+  initial_split(strata = flash)
+
+obs_other <- training(splits)
+obs_test  <- testing(splits)
+
+# training set proportions by flash
+obs_other %>% 
+  count(event) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+
+# test set proportions by flash
+obs_test  %>% 
+  count(event) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  pander()
+```
+Splitting with white LED present/not present resulted in a reasonably identical proportion of events in both groups.
+
+
+```{r}
+set.seed(254)
+val_set <- validation_split(obs_other, 
+                            strata = flash, 
+                            prop = 0.80)
+val_set
+```
+
+
+
+### Build the model
+
+Let's specify a penalized logistic regression model using the lasso method.
+Note that we define `penalty = tune()` so we can tune it in the next steps, and since we are using lasso method, we set `mixture = 1`.
+
+```{r}
+lr_mod <- 
+  logistic_reg(penalty = tune(), mixture = 1) %>% 
+  set_engine("glmnet")
+```
+
+For more details try typing `?logistic_reg` on the console.
+
+### Create the recipe 
+
+Remember the second article [Preprocess your data with recipes](https://www.tidymodels.org/start/recipes)?
+
+Let's preprocess the data by creating a recipe:
+
+```{r}
+lr_recipe <- 
+  recipe(event ~ ., data = obs_other) %>% 
+  step_rm(date, datetime, timeserie_id, ) %>% 
+  step_dummy(all_nominal(), -all_outcomes()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_predictors())
+```
+"timeserie_id"  "datetime"   
+      "ID"            
+
+### Create the workflow
+
+Let's bundle the model and recipe into a single `workflow()`:
+
+```{r}
+lr_workflow <- 
+  workflow() %>% 
+  add_model(lr_mod) %>% 
+  add_recipe(lr_recipe)
+```
+
+### Create the grid for tuning
+
+We can now tune our model, similar to what is shown in the previous article [Tune model parameters](https://www.tidymodels.org/start/tuning).
+Let's create a grid with 30 values for the hyperparameter we would like to tune:
+
+```{r}
+lr_reg_grid <- tibble(penalty = 10^seq(-4, -1, length.out = 30))
+
+lr_reg_grid %>% top_n(-5) # lowest penalty values
+lr_reg_grid %>% top_n(5)  # highest penalty values
+```
+
+### Train and tune the model
+
+Let's train all these logistic regression models with 30 different hyperparameter values.
+We provide the validation set `val_set`, so model diagnostics computed on `val_set` will be available after the fit.
+
+```{r}
+lr_res <- 
+  lr_workflow %>% 
+  tune_grid(val_set,
+            grid = lr_reg_grid,
+            control = control_grid(save_pred = TRUE, verbose = TRUE),
+            metrics = metric_set(roc_auc))
+
+lr_res
+```
+
+Now visualize the validation set metrics by plotting the area under the ROC curve against the range of penalty values: 
+
+```{r}
+lr_plot <- 
+  lr_res %>% 
+  collect_metrics() %>% 
+  ggplot(aes(x = penalty, y = mean)) + 
+  geom_point() + 
+  geom_line() + 
+  ylab("Area under the ROC Curve") +
+  scale_x_log10(labels = scales::label_number())
+
+lr_plot 
+```
+
+Get the best values for this hyperparameter:
+
+```{r}
+top_models <-
+  lr_res %>% 
+  show_best("roc_auc", n = 15) %>% 
+  arrange(penalty) 
+top_models
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
