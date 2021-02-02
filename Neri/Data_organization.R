@@ -291,9 +291,35 @@ table(b$validated_species)
 
 write.csv(unique(flash$loc), "LokaliteterMedBlits.csv")
 
+#Mikrohabitat frå John ---------------------------------------------------------
+
+habitat <- readxl::read_excel("camerahabitat20210110.xlsx") %>% 
+  select(LOKID, TYPE) %>% 
+  rename(loc = LOKID, habitat = TYPE) %>% 
+  add_row(loc = c(840, 841, 850, 925, 1254, 1255),
+          habitat = c("cliff","foot_path","foot_path",
+                      "forest_road","wildlife_trail","canyon")) %>% 
+  arrange(loc)
+# number of loc - matching locs in habitat
+length(unique(obs$loc)) - length(habitat$loc[habitat$loc %in% obs$loc]) # 6
+unique(obs$loc[!obs$loc %in% habitat$loc]) # 6 cam not in habitat file:
+# 840 - cliff         Toppen av ein klippe, kameraet med best utsikt av alle loc
+# 841 - foot_path     bak skihoppbakken, gjengrodd traktorvei ved bekken, 7 menneske i obs
+# 850 - foot_path     Tyristrand, ved vannet der Olav sov på isen, ørten menneske
+# 925 - forest_road   Stengt skogsvei med bauta og bom, ved Tyrifjorden. 10 kjøretøy, 21 menneske
+# 1254- wildlife_trail  Nær fotsti ved toglinja mot Bergen, men peiker mot lite brukte dyretråkk
+# 1255- canyon        Før flå, mellom felte trær i ein skarp dalformasjon
+saveRDS(habitat, "habitat.rds")
+
+# Checking species passed by each loc
+obs %>% 
+  filter(loc %in% 1255) %>% # enter location
+  group_by(species) %>% summarise(n = n()) # sums up observations per species
+
 
 library(lubridate)
-# # Kjapp feilsøking etter tidspunkter på 831 (blits var riktig) og 833 (blit var feil)
+# # Kjapp feilsøking etter tidspunkter -----------------------------------------
+#  på 831 (blits var riktig) og 833 (blit var feil) 
 # 
 # # 831
 # # Gaupe passerer 29.5.19 22:22:02 på blits
