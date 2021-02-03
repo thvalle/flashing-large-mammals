@@ -435,6 +435,37 @@ There is something strange going on with the distance to forestroad-variable, so
 One way to extract a better forest road-variable could be to generate it from the species variable  (eg. __species %in% c("kjoeretoy", "motorsykkel", etc)__). 
 
 
+## Micro habitat covariate!
+
+```{r micro-habitat}
+habitat <- readRDS("habitat.rds")
+# table of habitat types on locations in obs
+habitat %>% 
+filter(loc %in% obs$loc) %>% 
+group_by(habitat) %>% summarise(n = n()) %>% arrange(desc(n))
+
+# join habitat-col with obs-object
+obs <- obs %>%
+  left_join(habitat, by = "loc")
+# filtering out species
+sp = "raadyr"
+obs_sp <- obs %>%
+  filter(species %in% sp)
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod7 <- coxph(Surv(t.diff, event, type="right") ~ flashed + habitat +
+                 house_d2_ln, data=obs_sp)
+summary(mod7)
+ggforest(mod7, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod6<-cox.zph(mod7) # Non-significant --> we can assume proportional hazards.
+d.mod6
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod6,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+
+
 # Testing the models
 ## AIC-test
 The best-fit model according to AIC is the one that explains the greatest amount of variation using the fewest possible independent variables.
@@ -443,7 +474,7 @@ The best-fit model according to AIC is the one that explains the greatest amount
 ```{r AIC_roe}
 
 # Which of the four different models have the lowest AIC?
-mod.sel<-AIC(mod0,mod1,mod2,mod3,mod4,mod5,mod6)
+mod.sel<-AIC(mod0,mod1,mod2,mod3,mod4,mod5,mod6,mod7)
 mod.sel$d.AIC<-mod.sel$AIC-min(mod.sel$AIC)
 mod.sel[order(mod.sel$d.AIC),]
 
@@ -546,6 +577,26 @@ d.mod5_rev <- cox.zph(mod5_rev)
 d.mod5_rev 
 ggcoxzph(d.mod5_rev, font.main = 12, ggtheme = theme_classic2())
 ```
+
+```{r mod7-rev}
+sp="rev"
+obs_sp <- obs %>%
+  filter(species %in% sp)
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod7 <- coxph(Surv(t.diff, event, type="right") ~ flashed + habitat +
+                 house_d2_ln, data=obs_sp)
+summary(mod7)
+ggforest(mod7, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod6<-cox.zph(mod7) # Non-significant --> we can assume proportional hazards.
+d.mod6
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod6,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+
+```
+
 
 
 ### Badger
