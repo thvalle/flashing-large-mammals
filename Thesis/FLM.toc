@@ -12,20 +12,20 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.2}Study area}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Study design}{5}
+\contentsline {section}{\numberline {2.3}Study design}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data Collection}{6}
+\contentsline {section}{\numberline {2.4}Data Collection}{8}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.5}Data processing}{8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.6}Statistical analysis}{8}
+\contentsline {section}{\numberline {2.6}Statistical analysis}{9}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Results}{9}
+\contentsline {chapter}{\numberline {3}Results}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.0.1}Number of pictures taken or whatnot}{9}
+\contentsline {subsection}{\numberline {3.0.1}Number of pictures taken or whatnot}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Overlap analysis}{9}
+\contentsline {section}{\numberline {3.1}Overlap analysis}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}analasis b}{10}
+\contentsline {section}{\numberline {3.2}Box plots}{11}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}analasis c}{10}
+\contentsline {section}{\numberline {3.3}Time to event analysis}{11}

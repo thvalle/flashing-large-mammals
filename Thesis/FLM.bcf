@@ -2031,7 +2031,8 @@
     <bcf:citekey order="2">Odden2015</bcf:citekey>
     <bcf:citekey order="3">Burton2015</bcf:citekey>
     <bcf:citekey order="4">Odden2015</bcf:citekey>
-    <bcf:citekey order="5">R</bcf:citekey>
+    <bcf:citekey order="5">RCoreTeam2020</bcf:citekey>
+    <bcf:citekey order="6">survival-package</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global" type="entry" sortscheme="none" sortnamekeyscheme="global">
   <bcf:sorting>

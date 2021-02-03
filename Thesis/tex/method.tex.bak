@@ -6,8 +6,13 @@
 
 %We also collated information on average body and home range sizes for a subset of species surveyed in the reviewed studies in order to better quantify the functional diversity of wildlife being sampled by CTs and to evaluate the degree to which CT methodologies were tailored to focal species. Burton 2015
 
-The species I'll focus on in this thesis are the species that most frequently was observed, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
-In addition I've excluded the smaller species given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind.
+The species I'll focus on in this thesis are the species that most frequently was observed \emph{(>50 events)}, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
+Given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind, I have also excluded smaller species from the analysis.
+This includes three species, squirrel(), hare() and European pine marten\textit{(Martes martes)}. 
+Though they showed up frequently on many locations, there are inevitably some cameras that are too biased towards larger animals, resulting in an inconsistency of their detection rates. 
+In turn, it is difficult to distinguish whether the species was affected by the white LED or not, as they could have triggered the camera, but already escaped the frame. %TODO må tygge litt på det argumentet.
+
+In the end, the species I have used in my analyses are roe deer\textit{()}, red fox\textit{()}, badger\textit{(Meles meles)}, moose\textit{()}, red deer\textit{(Cervus elaphus)} and lynx. 
 
 \section{Study area} %TODO 
 %mogleg å kjøre ein fin overgang fra intro til study area? Study area valt pga dårlige snøforhold -> vanskelig å gjere spor-tellinger (\cite{Odden2015})
@@ -138,7 +143,7 @@ As per the four eyes principle, the detection rate of photographed species has g
 
 
 The output I got as a result, was a data frame containing a time stamp for every shutter activity, %kvar gong eit bilde blei tatt
-including all meta data from the camera, coupled with predicted species (FRA output, with a confidence number), verified species (as per human sorters), number of animals and distance from camera. The time stamps from the white flash cameras were used to verify whether an animal was in fact flashed or not. 
+including all meta data from the camera, coupled with predicted species (FRA output, with a confidence number), verified species (by human sorters), number of animals and distance from camera. The time stamps from the white flash cameras were used to verify whether an animal was in fact flashed or not, which I then used as my main predictor in the modelling. 
 %Describing in brief how coding is undertaken is useful for readers to understand the methods used in relation to the results.(Meek etal 2014)
 
 
@@ -146,12 +151,17 @@ I defined one event as any 1 species passing with a buffer time of 5 min before 
 
 
 
-The true number of active camera days are confounded by the inconvenient lack of time lapse photos from the Browning cameras. To approach the true number of active days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo, although this is uncertain.
+The true number of active camera days are confounded by the inconvenient lack of time lapse photos from the Browning cameras. To approach the true number of active days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo, although the battery life could have lasted longer.
 
 
 
 \section{Statistical analysis} %TODO Kan utdypast mykje!
-To perform the statistical analysis I used the R programming language (\cite{R}), relying on the packages tidyverse, overlap, survtest (etc.)
+To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}),% relying on the packages tidyverse, overlap, surv (etc.)
+to perform a time to event-analysis (coxph of R package Survival, \cite{survival-package}) and a GLMM analysis (glmer of R package lme4, \cite{•}) %TODO
+per species.
+
+
+Time to event was modelled using flashed, micro habitat (i.e. trail type) and distance to house as predictors. The same predictors were used in the GLMM to assess the mean photos per day.
 
 
 
@@ -160,5 +170,10 @@ To perform the statistical analysis I used the R programming language (\cite{R})
 %Attention devoted to model assumptions! Viktig i Burton 2015
 %Survival-test, (unmarked)?, overlap, tidyverse,
 
+%If you are using AIC model selection in your research, you can state this in your methods section. Report that you used AIC model selection, briefly explain the best-fit model you found, and state the AIC weight of the model.
+%Example methods:
+We used AIC model selection to distinguish among a set of possible models describing the relationship between age, sex, sweetened beverage consumption, and body mass index. The best-fit model, carrying 97\%
+ of the cumulative model weight, included every parameter with no interaction effects.
 
+After finding the best-fit model you can go ahead and run the model and evaluate the results. The output of your model evaluation can be reported in the results section of your paper.
 

@@ -163,8 +163,56 @@
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
     \endentry
+    \entry{RCoreTeam2020}{manual}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=a902f7a1275f47f57554b7ea75ccd0bc}{%
+           family={{R\bibnamedelimb Core\bibnamedelimb Team}},
+           family_i={R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Vienna, Austria}%
+      }
+      \list{organization}{1}{%
+        {R Foundation for Statistical Computing}%
+      }
+      \strng{namehash}{a902f7a1275f47f57554b7ea75ccd0bc}
+      \strng{fullhash}{a902f7a1275f47f57554b7ea75ccd0bc}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{R: A Language and Environment for Statistical Computing}}
+      \field{year}{2020}
+      \verb{url}
+      \verb https://www.r-project.org/
+      \endverb
+    \endentry
+    \entry{survival-package}{manual}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
+           family={Therneau},
+           family_i={T\bibinitperiod},
+           given={Terry\bibnamedelima M},
+           given_i={T\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{74cea5e05bac64f6e1784e2a50d0f063}
+      \strng{fullhash}{74cea5e05bac64f6e1784e2a50d0f063}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 3.2-7}
+      \field{title}{{A Package for Survival Analysis in R}}
+      \field{year}{2020}
+      \verb{url}
+      \verb https://cran.r-project.org/package=survival
+      \endverb
+    \endentry
   \endsortlist
-  \missing{R}
 \endrefsection
 \endinput
 

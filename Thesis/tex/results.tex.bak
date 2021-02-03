@@ -15,13 +15,9 @@ Of all the detected species, the most common were roe deer(), red fox(), hare(),
 \hline
   & A Control & B\ IR & B\ LED & C\ IR & C\ LED\\
 \hline
-ekorn & 112 & 109 & 191 & 94 & 25\\
-\hline
 elg & 128 & 78 & 90 & 75 & 57\\
 \hline
 grevling & 217 & 123 & 254 & 254 & 125\\
-\hline
-hare & 265 & 107 & 178 & 380 & 160\\
 \hline
 raadyr & 608 & 271 & 249 & 396 & 395\\
 \hline
@@ -49,13 +45,7 @@ There is a resembling phenomenon happening in the evening twilight as well, righ
 
 The Dhat4 calculation reveals a larger difference in overlap for foxes, than for roe deer, but this seems to mainly stem from the twilight hours.
 
-\begin{figure}
-\centering
-\includegraphics[scale=.7]{Rplot/overlap_rev_raa.png}
-	\label{fig:overlap_rev_raa}
-\end{figure}
-
-(Table of Dhat4 scores for the most frequent species)
+% Table of Dhat4 scores for the most frequent species?
 
 \section{Box plots}
 

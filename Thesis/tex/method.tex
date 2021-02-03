@@ -6,8 +6,13 @@
 
 %We also collated information on average body and home range sizes for a subset of species surveyed in the reviewed studies in order to better quantify the functional diversity of wildlife being sampled by CTs and to evaluate the degree to which CT methodologies were tailored to focal species. Burton 2015
 
-The species I'll focus on in this thesis are the species that most frequently was observed, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
-In addition I've excluded the smaller species given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind.
+The species I'll focus on in this thesis are the species that most frequently was observed \emph{(>50 events)}, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
+Given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind, I have also excluded smaller species from the analysis.
+This includes three species, squirrel(), hare() and European pine marten\textit{(Martes martes)}. 
+Though they showed up frequently on many locations, there are inevitably some cameras that are too biased towards larger animals, resulting in an inconsistency of their detection rates. 
+In turn, it is difficult to distinguish whether the species was affected by the white LED or not, as they could have triggered the camera, but already escaped the frame. %TODO må tygge litt på det argumentet.
+
+In the end, the species I have used in my analyses are roe deer\textit{()}, red fox\textit{()}, badger\textit{(Meles meles)}, moose\textit{()}, red deer\textit{(Cervus elaphus)} and lynx. 
 
 \section{Study area} %TODO 
 %mogleg å kjøre ein fin overgang fra intro til study area? Study area valt pga dårlige snøforhold -> vanskelig å gjere spor-tellinger (\cite{Odden2015})
@@ -151,7 +156,10 @@ The true number of active camera days are confounded by the inconvenient lack of
 
 
 \section{Statistical analysis} %TODO Kan utdypast mykje!
-To perform the statistical analysis I used the R programming language (\cite{R}), relying on the packages tidyverse, overlap, survtest (etc.)
+To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}),% relying on the packages tidyverse, overlap, surv (etc.)
+to perform a time to event-analysis \cite{survival-package} and a GLMM analysis (lme4)? %TODO
+per species.
+
 
 
 
