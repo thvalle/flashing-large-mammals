@@ -180,3 +180,21 @@ plot(st_geometry(cycle_hire), col = "blue")
 plot(st_geometry(cycle_hire_osm), add = TRUE, pch = 3, col = "red")
 
 
+# TIFF_GRAIN from DistLab -------------------------------------
+
+# 1. All of Norway
+r.list <- list.files("TIFF_GRAIN/NORWAY/10km", pattern="10km.tif$", full.names=TRUE)
+predictors_Norway <- stack(r.list)
+
+# 1. All of Norway
+r.list <- list.files("TIFF_GRAIN/NORWAY/10km", pattern="10km.tif$", full.names=TRUE)
+predictors_Oslo <- stack(r.list)
+
+
+
+
+
+
+
+
+
