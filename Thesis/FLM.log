@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  3 FEB 2021 09:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  3 FEB 2021 13:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -983,7 +983,15 @@ Package biblatex Info: Automatic encoding selection.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'FLM.bbl' found.
-(./FLM.bbl)
+(./FLM.bbl
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                \IeC {\textbullet }
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
 Package biblatex Info: Reference section=0 on input line 12.
 Package biblatex Info: Reference segment=0 on input line 12.
 \symgns@font=\mathgroup4
@@ -1099,11 +1107,7 @@ Overfull \hbox (5.72769pt too wide) in paragraph at lines 109--110
 ive, ac-cessed 15/01/2021). 
  []
 
-
-Underfull \vbox (badness 1122) has occurred while \output is active []
-
- [8])
-[9]
+[8]) [9]
 \openout2 = `tex/results.aux'.
 
  (./tex/results.tex
@@ -1148,10 +1152,10 @@ Package logreq Info: Writing requests to 'FLM.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10920 strings out of 494910
- 179166 string characters out of 6179837
- 588488 words of memory out of 5000000
- 14015 multiletter control sequences out of 15000+600000
+ 10921 strings out of 494910
+ 179176 string characters out of 6179837
+ 588508 words of memory out of 5000000
+ 14016 multiletter control sequences out of 15000+600000
  18029 words of font info for 40 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  46i,7n,45p,3661b,1467s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1165,9 +1169,9 @@ ec/ecbx1440.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx20
 74.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk>
  </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/t
 orgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk>
-Output written on FLM.pdf (9 pages, 12510628 bytes).
+Output written on FLM.pdf (9 pages, 12512854 bytes).
 PDF statistics:
- 410 PDF objects out of 1000 (max. 8388607)
+ 415 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
