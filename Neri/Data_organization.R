@@ -309,6 +309,8 @@ unique(obs$loc[!obs$loc %in% habitat$loc]) # 6 cam not in habitat file:
 # 925 - forest_road   Stengt skogsvei med bauta og bom, ved Tyrifjorden. 10 kjøretøy, 21 menneske
 # 1254- wildlife_trail  Nær fotsti ved toglinja mot Bergen, men peiker mot lite brukte dyretråkk
 # 1255- canyon        Før flå, mellom felte trær i ein skarp dalformasjon
+stations <- read_csv("stations.csv") %>% select(loc, cam_mod)
+habitat <- left_join(habitat, stations, by = "loc") # include cam_mod in the habitat-object
 saveRDS(habitat, "habitat.rds")
 
 # Checking species passed by each loc

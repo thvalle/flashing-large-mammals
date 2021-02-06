@@ -1,0 +1,269 @@
+---
+title: "Copy earlier mod1-7 of roe deer"
+output: html_notebook
+---
+
+# Models with spatial covariates
+
+```{r covs, include=FALSE}
+# Analysis - Survival. Including spatial covariates 
+covs<-readRDS("CTloc_covs.rds")
+class(covs)
+covs<-as.data.frame(covs) # Chaning class to data.fram and not a sf data.frame
+# names(covs)
+obs<-merge(obs, covs, by.x="loc", by.y="LokalitetID", all.x=TRUE, all.y=FALSE)
+names(obs)
+
+# Checking if there is any NAs in the covariates
+lapply(1:ncol(obs), function(x){any(is.na(obs[,x]))})
+colnames(obs)[8:10] # Not any in the covariates, but in some species... (valid_sp, distance, num_animals)
+```
+
+
+```{r mod1}
+# Fitting model with spatial covariates
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(species %in% sp & !period == "Control")
+
+# Example with distance to forest roads and houses
+mod1<-coxph(Surv(t.diff, event, type="right") ~ flashed +
+              house_d2 + forestroad_d2, data=obs_sp)
+summary(mod1)
+ggforest(mod1, data = obs_sp)
+```
+
+Just adding the house_d2, and forestroad_d2 covariates completely changed the verdict on the effect of flashing.
+Closeness to house has a slightly, but significant, _negative_ predictive power,
+and closeness to forest roads has a ever slightly, but significant, _positive_ predictive power
+However, I mistrust their confidence intervals. They are weirdly narrow.
+
+<!--Also, Neri started a sentence commenting on what the negative value of house_d2 signifies, but didn't complete it.
+-->
+Anyways, just thinking about my spatial covariates, and what they represent, the way they are used in the model right now, is probably not what I intend.
+I don't expect an animal's reaction to be linear with the distance to a road or a house.
+Rather, I expect it to be exponentially larger, the closer the animal gets, ie. the closer the camera's position is to a road or a house, as that is where I observe them.
+Worded differently, I don't think the difference of 1km and 3km to the nearest house will affect a roe deer, 
+as much as the difference of 50m and 500m will.
+Therefore I need to log transform the spatial covariates, and in doing so I have to be careful with 0-values.
+Many cameras are positioned on or directly next to a forest road, and log transforming these values would create infinite-values. 
+
+
+## Transforming the variables, and looking at correlations
+
+
+```{r transform}
+obs$forestroad_d2_ln<-ifelse(obs$forestroad_d2>0,log(obs$forestroad_d2), 0)
+obs$forestroad_d2_io <- ifelse(obs$forestroad_d2>10, 0, 1)
+obs$house_d2_ln<-ifelse(obs$house_d2>0,log(obs$house_d2), 0)
+# plotting distances
+qplot(forestroad_d2_io, loc, data =obs)
+
+library(reshape2) # for melt function
+p_theme <- theme(
+  panel.grid.major.x = element_blank(),panel.grid.minor.x = element_blank(),
+  panel.grid.minor.y = element_blank(),axis.text.x = element_blank())   
+  #theme(panel.background = element_rect(fill = "white", colour = "grey50"))
+
+obs %>% melt(id = "loc", measure = c("forestroad_d2", "house_d2")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  labs(title = "Distance") + p_theme 
+obs %>% melt(id = "loc", measure = c("forestroad_d2_ln", "house_d2_ln")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  geom_smooth(span = 0.7) + labs(title = "Log-transformed distance") +
+  p_theme #+ theme(legend.position = "top")
+ggplot(obs, aes(forestroad_d2, house_d2)) + geom_point() + 
+  geom_smooth(method = "glm", formula = y ~ x, se = T) +
+  labs(title = "Distance correlation")
+  #geom_smooth(span =.5)
+library(corrplot)
+covs %>% select(!c(1,3,4)) %>% cor() %>% 
+corrplot(type = "upper", method = "number")
+
+names(covs)
+```
+The two variables are almost independent of eachother, although the correlation increases somewhat when both are log-transformed. They will likely be able to predict variation complimentary to each other
+Also, they are both independent to my flashed-variable.
+
+Remembering my own question as stated in the intro:
+
+*In this study, I will attempt to quantify how the usage of white LED flash affects the detection rate of the most common large mammal species in the area and whether this effect correlates with other factors [such] as urbanisation.*
+
+Fores troads are absolutely a factor of human interference or something like that, but is not exactly what I'm getting at with urbanisation. Also, forest roads are known to attract many species [citation?] and are therefore used actively in camera trapping studies, my own included. So, including closeness to forest roads can probably account for some "attraction" to camera sites, or rather, higher detection frequencies. Maybe a TRUE/FALSE factor for camera being on forest road or not would be better.
+
+On the other hand, distance to house is closer to my urbanisation statement, and is somewhat more of what I had in mind when articulating it.
+Specifically, I was thinking about sources to Artificial Light At Night (ALAN), as a possible predictor for how animals react to white LED flash.
+Proximity to houses is a somewhat good proxy for that, but still, I'll be missing the ALAN from other types of infrastructure, such as illuminated public roads, and heavily trafficked roads in general.
+
+In any case, if I do get a hold of an actual proximity to ALAN-covariate (or similar), I need to be mindful of whether it is the ALAN or something correlating with the ALAN that can be causal to this relationship.
+
+
+```{r mod2}
+sp = "raadyr"
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(species %in% sp & !period == "Control")
+
+mod2<-coxph(Surv(t.diff, event, type="right")~flashed+ house_d2_ln + forestroad_d2_io, data=obs_sp)
+summary(mod2)
+ggforest(mod2, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod2<-cox.zph(mod2) # Non-significant --> we can assume proportional hazards.
+d.mod2
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod2)
+
+```
+
+Closeness to house, when log-transformed, was in fact highly significant as a negative predictor.
+Forest roads are just barely positive, and unsignificant. 
+This could be because most cameras weren't situated on forest roads, and therefore it would predictively have no effect.
+The roads aren't a good predictor of where there are many animals, but rather, the route many animals would choose to travel.
+In addition, they are less obstructed by vegetation, and therefore it is easier to trigger the camera, and easier to spot the animal.
+Yes/no transforming the variable would also have the added benefit of removing most correlation with the house distance-variable.
+
+The CI of the flashed variable has shifted ever so slightly, now including a Hazard ratio of 1. This model also leaves flash accounting for a positive trend in survival, ie. more frequent redetection of roe deer, but the effect doesn't explain a significant amount of the variation left after considering the other variables.
+
+
+```{r mod3}
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod3<-coxph(Surv(t.diff, event, type="right")~flashed*house_d2_ln + forestroad_d2_ln, data=obs_sp)
+summary(mod3)
+ggforest(mod3, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod3<-cox.zph(mod3) # Non-significant --> we can assume proportional hazards.
+d.mod3
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod3,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+The Global Schoenfeld test has a dangerously low p-value ($p = 0.06$), but it is still insignificant, and we may assume - carefully - proportional hazards.
+Looking at the plots for flashed and flashed:house_d2_ln there are some outliers surpassing the dashed line. However, the Schoenfeld Individual Tests are all insignificant.
+
+<<<<<<< HEAD
+Interesting to note, is that the flashed effect increases wildly in it's confidence interval, leaving the house_d2_ln variable seeming diminished in it's variation / CI.
+Importantly, though, there is no significance in the interaction between flash and distance to house.
+
+```{r mod4}
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod4 <- coxph(Surv(t.diff, event, type="right") ~ flashed * house_d2 +
+                forestroad_d2_ln, data=obs_sp)
+summary(mod4)
+ggforest(mod4, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod4<-cox.zph(mod4) # Non-significant --> we can assume proportional hazards.
+d.mod4
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod4,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+Reverting the house_d2 variable to it's natural form ends up violating the global Schoenfield test (p:0.0067 !)
+
+```{r mod5}
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod5 <- coxph(Surv(t.diff, event, type="right") ~ flashed * forestroad_d2_ln +
+                 house_d2_ln, data=obs_sp)
+summary(mod5)
+ggforest(mod5, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod5<-cox.zph(mod5) # Non-significant --> we can assume proportional hazards.
+d.mod5
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod5,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+The same thing happens when checking for an interaction between the log-transformed distance to forestroad-variable. The interaction seems to violate the individual test, but the model all together completely fails the global test.
+Interesting to note how the predicted effect of the flash suddenly shifts to being negative!
+
+Let's see what happens using the normal distance to forestroad covariate:
+
+
+```{r mod6}
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod6 <- coxph(Surv(t.diff, event, type="right") ~ flashed * forestroad_d2 +
+                 house_d2_ln, data=obs_sp)
+summary(mod6)
+ggforest(mod6, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod6<-cox.zph(mod6) # Non-significant --> we can assume proportional hazards.
+d.mod6
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod6,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+Now, the individual test for the forestroad_d2 variable fails. The interaction does not fail, although the global test fails again, just not that strongly.
+
+Something does seem to happen when flash is considered in conjunction with a _"luring"_ or attractive variable. 
+There is something strange going on with the distance to forestroad-variable, so maybe a variable for trail type at the camera station would be a better fit. Strangely, only 3 locations are considered to be on a forestroad, which surprises me. I remember there to be more. At least there are more of tractor roads, and none of the "claimed" forest roads are in any way highly trafficked.
+
+One way to extract a better forest road-variable could be to generate it from the species variable  (eg. __species %in% c("kjoeretoy", "motorsykkel", etc)__). 
+
+
+## Micro habitat covariate!
+
+```{r micro-habitat}
+habitat <- readRDS("habitat.rds")
+# table of habitat types on locations in obs
+habitat %>% 
+filter(loc %in% obs$loc) %>% 
+group_by(habitat) %>% summarise(n = n()) %>% arrange(desc(n))
+
+# join habitat-col with obs-object
+obs <- obs %>%
+  left_join(habitat, by = "loc")
+# filtering out species
+sp = "raadyr"
+obs_sp <- obs %>%
+  filter(species %in% sp)
+# Setting up model to test if the effect of flash is dependent on distance to house
+mod7 <- coxph(Surv(t.diff, event, type="right") ~ flashed + habitat +
+                 house_d2_ln, data=obs_sp)
+summary(mod7)
+ggforest(mod7, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod6<-cox.zph(mod7) # Non-significant --> we can assume proportional hazards.
+d.mod6
+
+# Can also look at Schoenfeld residuals, there should be no pattern with time
+ggcoxzph(d.mod6,font.main = 12, ggtheme = theme_classic2()) #caption = "Caption goes here"
+```
+
+
+# Testing the models
+## AIC-test
+The best-fit model according to AIC is the one that explains the greatest amount of variation using the fewest possible independent variables.
+
+[some tips on aic-referring in method section](https://www.scribbr.com/statistics/akaike-information-criterion/)
+```{r AIC_roe}
+
+# Which of the four different models have the lowest AIC?
+mod.sel<-AIC(mod0,mod1,mod2,mod3,mod4,mod5,mod6,mod7)
+mod.sel$d.AIC<-mod.sel$AIC-min(mod.sel$AIC)
+mod.sel[order(mod.sel$d.AIC),]
+
+# mod1$formula
+# What is your conclusion? 
+```
+The AIC score determines model 1 as the best model, excluding the two last models violating the assumption of proportional hazards.
+Model 1 was the model with the raw distance to feature-covariates. However, the other models are close on the score level, and should not be dismissed completely.
+Maybe different transformations could fit the data better? At least, it is interesting to note that mod3, that had interaction with house_d2 scored on level with mod2 without an interaction.
+The score signifies that the model has a better fit, and that the better fit is strong enough to be worth the penalty for a more complicated model!
+
+And, maybe the forest road covariate isn't the best predictor as only three cameras seem to be classified as on a forest road.
+
+`r mod1$formula ;mod1$coefficients`
+
+
+
+## Likelihood ratio test
+Then, enter the _likelihood ratio test_. I'll use it to test if the full model is significantly better than the reduced model
+$H_0$: no difference between models
+$H_1$: the full model explains more (larger predictive power)
+$^Gstat$ follows a $x^2$-distribution where df = k
+P>|chi|:  if significant (<0.05), then $H_1$ is our model
+
