@@ -267,3 +267,206 @@ $H_1$: the full model explains more (larger predictive power)
 $^Gstat$ follows a $x^2$-distribution where df = k
 P>|chi|:  if significant (<0.05), then $H_1$ is our model
 
+------------------------------------------------------------------------------------------
+# Model with spatial covariates
+Which I've gone away from, because I learned about the random effect! (1|variable)
+
+
+
+```{r transformations}
+obs %>% mutate(flash = ifelse(period=="Control","Control group","Had periods with white LED")) %>% 
+  group_by(habitat, loc, flash, house_d2_ln, cam_mod) %>% nest() %>% 
+  ggplot(aes(habitat, house_d2_ln)) +
+  geom_point(aes(col = cam_mod), position = position_dodge(width=0.2)) +
+  theme(legend.position = "right", legend.title = element_blank()) +
+  facet_wrap(~ flash, ncol = 1) + coord_flip()
+# names(covs)
+library(corrplot)
+obs %>% select(Latitude:cam_mod) %>% select(!c(Longitude, habitat)) %>% 
+  mutate(cam_mod=ifelse(cam_mod=="Browning", 1, 0)) %>%
+  cor() %>% corrplot(type = "upper", method = "number")
+names(obs)
+obs %>% group_by(species) %>% 
+  summarise(count = n(), period = period, flash = flash, cam_mod=cam_mod) %>% 
+  filter(species %in% c("hund", "menneske", "kjoeretoey", "motorsykkel", "sykkel", "sau", "ku")) %>% 
+  ggplot() + geom_bar(aes(reorder(species, count, FUN = mean),
+                          fill = cam_mod), position = "dodge") +  # reorders by mean count
+  coord_flip() + theme(legend.position = "top") # flip the axes
+
+```
+
+There are no clear correlation between house distance and type of microhabitat.
+Comparing the control-group with the cameras that had periods with white LED, there are some factors with imbalances between the group. The control group has of yet not been included in the models.
+Comparing browning-cameras with reconyx-cameras, there are appearant differences in habitat choice.
+
+Browning cameras are mostly set up by the Hunter&Fisher-society of Viken (or similar), and seems to have been put up on more convenient places in general.
+This is important to note, as this variable seems to be a predictor for easily accessible sites.
+Therefore, it could be a predictor for regular human presence as well!
+
+The last barplot confirms just that. Fair enough, there are more sheep and cattle at Reconyx-sites, but for all other categorioes here, there is a sound bias of more human presence at the browning sites.
+Nearly twice as many human passings (correlated with dogs), and many times more vehicles.
+
+Slope and Forestroad_d2 doesn't correlate with anything, publicroad_d2 correlates with house_d2 which I consider a better fit to my question.
+Elevation correlates with Latitude, which is worth considering.
+Camera model is also correlated with Latitude (ie. more Browning models towards north), but luckily elevation and cam_mod seem to be independent.
+
+
+
+
+```{r multi-univariate}
+covariates <- c("flashed", "cam_mod", "forestroad_d2","house_d2", "house_d2_ln",
+                "field_d2", "field_d2_ln","elev", "elev_ln", "slope")
+univ_formulas <- sapply(covariates,
+                        function(x) as.formula(paste('Surv(t.diff, event)~', x)))
+                        
+univ_models <- lapply( univ_formulas, function(x){coxph(x, data = obs_sp)})
+
+# Extract data 
+univ_results <- lapply(univ_models,
+                       function(x){ 
+                          x <- summary(x)
+                          p.value<-signif(x$wald["pvalue"], digits=2)
+                          wald.test<-signif(x$wald["test"], digits=2)
+                          beta<-signif(x$coef[1], digits=2);#coeficient beta
+                          HR <-signif(x$coef[2], digits=2);#exp(beta)
+                          HR.confint.lower <- signif(x$conf.int[,"lower .95"], 2)
+                          HR.confint.upper <- signif(x$conf.int[,"upper .95"],2)
+                          HR <- paste0(HR, " (", 
+                                       HR.confint.lower, "-", HR.confint.upper, ")")
+                          res<-c(beta, HR, wald.test, p.value)
+                          names(res)<-c("beta", "HR (95% CI for HR)", "wald.test", 
+                                        "p.value")
+                          return(res)
+                          #return(exp(cbind(coef(x),confint(x))))
+                         })
+res <- t(as.data.frame(univ_results, check.names = FALSE))
+as.data.frame(res)
+```
+
+Multiple univariate analyses of some coefficients reveal that house, forestroad and elevation has a significant impact on time to event.
+House_d2 has negative impact, and elevation has a barely negative one.
+Forestroad has a barely positive one, but I've decided on a better replacement for this covariate, which is a categorisation of the micro habitat at each site.
+
+I'll include all the significant variables except forestroad in the multivariate model, and add habitat. Also, I will only use the log-transformed counterparts in the house and elevation variables, as the normal scale predicts 1(1-1) as influence.
+
+
+
+
+### Model 1 |  ~habitat + cam_mod + elev_ln + house_d2
+
+```{r mod1}
+sp="raadyr"
+# Fitting model with spatial covariates
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(species %in% sp & !period == "Control")
+
+# Example with distance to forest roads and houses
+mod1<-coxph(Surv(t.diff, event, type="right") ~ habitat + cam_mod + elev_ln +
+              house_d2_ln + flashed, data=obs_sp)
+summary(mod1)
+ggforest(mod1, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod1 <- cox.zph(mod1)  
+d.mod1 # Non-significant --> we can assume proportional hazards.
+
+# Can also look at Schoenfeld residuals, there should be no
+# pattern with time
+ggcoxzph(d.mod1, font.main = 12, ggtheme = theme_classic2())
+```
+
+Elevation is deemed non-significant, as have the sub-variate cliff. Although it could have been interesting to try out an interaction there, that seems overly complex to me.
+Canyon is leaning towards having a postive effect on time to event, but is also considered non-significant.
+Foot path, forest road, and wildlife trail are all highly significant, and positive predictors, maybe even more so after considering the variation accounted for in camera models (ie. browning cameras were biased towards foot paths and forest roads, as well as being passed by more humans and vehicles).
+
+Camera model and distance to nearest house are both significant as well.
+The negative contribution of distance to house is counter intuitive. The model tells us what higher values of a variable predicts for time to event. 
+In this case, higher values for distance to house means lower probability of an event happening (ie. detection of species). 
+>A positive sign means that the hazard (risk of death) is higher, and thus the prognosis worse, for subjects with higher values of that variable.
+
+In other words, the farther away a site is from a house, the less likely it is to detect a roe deer. Which also means, the closer a site is to a house, the more likely the camera is of detecting a deer!
+This is not the effect I was expecting when creating the model, and it isn't necessarily because of the houses themselves, but rather something correlating with these houses. _Namely, fields_.
+
+
+Strangely, field_d2_ln has a low correlation with house_d2_ln, although they correlate with the normal variant of themselves and each other.
+The transformation slightly alters both of them, resulting in a muddling of the correlation when both of them are transformed.
+Still, as both covariates correlates in their natural form, that is their true relationship, and they should not be included simultaneously.
+
+In the next models I will therefore remove non-significant whole covariates (e.g. elevation), and then make one variant with house_d2_ln and one with field_d2_ln.
+
+I will not exclude any sub-variables of the habitat although they are considered non-significant. This is because removing some of them could ultimately alter differing sub-variates relation to the intercept-variate (boulder) and the different statistics are calculated out from all variates together, as mentioned in [this article](https://towardsdatascience.com/stopping-stepwise-why-stepwise-selection-is-bad-and-what-you-should-use-instead-90818b3f52df).
+
+
+
+
+### Model 2 |  ~habitat + cam_mod + ( house_d2_ln ||  field_d2_ln )
+
+```{r mod2-house}
+library(coxme)
+sp="raadyr"
+# Fitting model with spatial covariates
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(species %in% sp & !period == "Control")
+
+# Example with distance to forest roads and houses
+mod2a<-coxme(Surv(t.diff, event, type="right") ~  flashed + #house_d2_ln + # + cam_mod + house_d2_ln +
+               (1|loc) + (1|habitat), data=obs_sp)
+summary(mod2a)
+#ggforest(mod2a, data = obs_sp)
+
+ranef(mod2a)
+
+exp(7.640597e-01)
+
+# Test the proportional hazards assumption
+d.mod2a <- cox.zph(mod2a)  
+d.mod2a # Non-significant --> we can assume proportional hazards.
+
+# Can also look at Schoenfeld residuals, there should be no
+# pattern with time
+ggcoxzph(d.mod2a, font.main = 12, ggtheme = theme_classic2())
+```
+
+
+```{r mod2-field}
+sp="raadyr"
+# Fitting model with spatial covariates
+obs_sp <- obs %>%  # remaking obs_sp, to include the new covariates
+  filter(species %in% sp & !period == "Control")
+
+# Example with distance to forest roads and houses
+mod2b<-coxph(Surv(t.diff, event, type="right") ~ habitat + cam_mod +
+              field_d2_ln + (1|loc), data=obs_sp)
+summary(mod2b)
+ggforest(mod2b, data = obs_sp)
+
+# Test the proportional hazards assumption
+d.mod2b <- cox.zph(mod2b)  
+d.mod2b # Non-significant --> we can assume proportional hazards.
+
+# Can also look at Schoenfeld residuals, there should be no
+# pattern with time
+ggcoxzph(d.mod2b, font.main = 12, ggtheme = theme_classic2())
+```
+
+ever so slightly, lower AIC score for the field-model.
+
+
+```{r survplot-for-complete-model}
+# Plot the baseline survival function
+ggsurvplot(survfit(mod1), color = "#2E9FDF",
+           ggtheme = theme_minimal(), data = obs_sp)
+```
+
+```{r comparative-survplot}
+# Create the new data  
+flash_df <-
+  with(obs_sp,
+     data.frame(flashed = c(0, 1), 
+                age = rep(mean(age, na.rm = TRUE), 2), #continuous - mean as mean
+                ph.ecog = c(1, 1) # discrete - lowest value as mean
+                )     )
+flash_df
+```
+
+

@@ -207,7 +207,48 @@ lines(fit ~ time.deploy, new.dat[new.dat$flash %in% 1, ], ylim = c(0,
   0.2), col = "red")
 
 
-# easystats  - attempt to install the damn thing. 
+
+by_sp <- time.dep %>% filter(validated_species %in% c("raadyr", "rev", "hjort", "grevling")) %>% 
+  group_by(validated_species) %>% nest()
+
+
+sp_model <- function(df) {
+  glmer(n.obs ~ time.deploy + as.factor(flash) + (1 | loc) + (1 | month), 
+        data=df, family = poisson)
+}
+
+models <- map(by_sp$data, sp_model)
+
+by_sp <- by_sp %>% 
+  mutate(model = map(data, sp_model))
+by_sp
+
+
+# Model with random effect of loc and month on the intercept.
+sp = "rev"
+
+summary(my.glmer)
+
+# Plotting the fixed effects of the model. I need to look up a way to do this correctly...
+new.dat <- expand.grid(flash = c(0, 1), time.deploy = 0:6)
+new.dat$fit <- exp(-3.490394 + 0.006966 * new.dat$time.deploy + 
+                     0.089652 * new.dat$flash)
+new.dat$time.deploy <- new.dat$time.deploy * 10  # Rescaling back to the original scale
+
+plot(fit ~ time.deploy, new.dat[new.dat$flash %in% 0, ], ylim = c(0, 
+                                                                  0.2), type = "l")
+lines(fit ~ time.deploy, new.dat[new.dat$flash %in% 1, ], ylim = c(0, 
+                                                                   0.2), col = "red")
+
+
+
+
+
+
+
+
+
+# easystats  - attempt to install the damn thing.  ------------------
 
 # remotes::install_github("easystats/easystats")
 # Im here
