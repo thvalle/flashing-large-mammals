@@ -60,4 +60,56 @@ install_github("packageauthor/hmsc")
 install_bitbucket("packageauthor/hmsc")
 install_gitorious("packageauthor/hmsc")
 
-# easystats-installasjon på windows 10 frå data_exploration2.R, line 251
+# easystats-installasjon på windows 10 frå data_exploration2.R, line 251 ------------------
+
+
+# easystats  - attempt to install the damn thing. 
+
+# remotes::install_github("easystats/easystats")
+# Im here
+
+# easystats::install_easystats_latest()
+# remotes::install_github("easystats/report")  # You only need to do that once
+
+# install.packages("easystats")
+# install.packages("report")
+# library(report)     # for reporting test-statistics             not available for this version of R
+
+# Warning in install.packages :
+#   package ‘easystats’ is not available for this version of R
+# 
+# A version of this package for your version of R might be available elsewhere,
+# see the ideas at
+# https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+
+
+#possible solution
+
+# Need to authenticate myself to github in order to retry installations.
+
+# usethis::create_github_token() #sends me to a github-page. this is the third time I've recreated the token,
+#  need to update on the linux
+# usethis::edit_r_environ() # Så må eg altså skrive GITHUB_PAT="my-pat"
+
+# install.packages("gitcreds")
+# gitcreds::gitcreds_set()  #prompt to insert the token
+# gitcreds::gitcreds_get()  #successfull
+
+#This process was successfull, but in the end I needed something different.
+# Enter Global options -> Git/SVN -> create RSA key -> write som lines in a git Bash
+# 
+#From Happy git with R:
+# 11.4.3.2 Windows
+# In a Git Bash shell, make sure ssh-agent is running:
+
+#  $ eval $(ssh-agent -s)
+# > Agent pid 59566
+
+#Add your key.
+#$ ssh-add ~/.ssh/id_rsa
+
+# worth checking out R version
+# #install.packages("installr")
+# library(installr)
+# updateR()
+# FALSE  - already newest version
