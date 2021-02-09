@@ -1,4 +1,4 @@
-Manus  masterforsvar
+Manus råmateriale  masterforsvar
 
 
 \section{Intro til presentasjonen} 
@@ -92,7 +92,13 @@ For å sjå om dei blei påvirka av blitsen skal eg sjå om dei dukker opp like 
 
 For å gjere det må eg kunne sei at det var signifikant. Trillar eg ein terning monge nok gongar får eg kanskje seks monge gonger på rad, og det same kan man sei om kor ofte eg får ein art på eit kamera.
 
-Skal eg kunne motstride nullhypotesen om at ein art ikkje bryr seg om det kvite lyset, må eg kunne vise at de
+Skal eg kunne motstride nullhypotesen om at ein art ikkje bryr seg om det kvite lyset, må eg kunne vise at det er mykje nok data som tilseier at det er sannsynlig.
+
+
+Eg brukte GLMM osvosv
+
+
+
 
 
 

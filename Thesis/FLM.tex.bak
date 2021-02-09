@@ -1,6 +1,6 @@
 \documentclass[11pt,UKenglish,a4paper,twoside]{report}
 \usepackage{graphicx}
-\input{tex/mystyle.sty}
+\usepackage{mystyle}
 \graphicspath{ {img/} }
 
 \include{tex/title}

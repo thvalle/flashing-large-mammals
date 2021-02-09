@@ -163,6 +163,30 @@
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
     \endentry
+    \entry{Trailcampro2014}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=18593226fa3a96788e7ec778b3ae1567}{%
+           family={Trailcampro},
+           family_i={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{18593226fa3a96788e7ec778b3ae1567}
+      \strng{fullhash}{18593226fa3a96788e7ec778b3ae1567}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2014}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Trailcampro.com}
+      \field{title}{{Trigger speed shootout}}
+      \field{urlday}{15}
+      \field{urlmonth}{01}
+      \field{urlyear}{2021}
+      \field{year}{2014}
+      \verb{url}
+      \verb https://www.trailcampro.com/pages/trigger-speed-shootout-archive
+      \endverb
+    \endentry
     \entry{RCoreTeam2020}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=a902f7a1275f47f57554b7ea75ccd0bc}{%
@@ -189,6 +213,32 @@
       \verb https://www.r-project.org/
       \endverb
     \endentry
+    \entry{RStudioTeam2020a}{manual}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=90fbfa7dc07c6cc64d243966cd050af3}{%
+           family={{RStudio\bibnamedelimb Team}},
+           family_i={R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Boston, MA}%
+      }
+      \list{organization}{1}{%
+        {RStudio, PBC}%
+      }
+      \strng{namehash}{90fbfa7dc07c6cc64d243966cd050af3}
+      \strng{fullhash}{90fbfa7dc07c6cc64d243966cd050af3}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{RStudio: Integrated Development Environment for R}}
+      \field{year}{2020}
+      \verb{url}
+      \verb http://www.rstudio.com/
+      \endverb
+    \endentry
     \entry{survival-package}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
@@ -213,6 +263,7 @@
       \endverb
     \endentry
   \endsortlist
+  \missing{coxme-package)}
   \missing{\IeC {\textbullet }}
 \endrefsection
 \endinput
