@@ -1,0 +1,14 @@
+This is a reference to the session info appendix \ref{appendix:sessinfo}
+\appendix
+%\begin{appendices} %Seems I don't need this because of the \appendix command 
+
+\section{\\Title of Appendix A}
+\label{appendix:sessinfo}
+This is the session info appendix...
+\input{../sessinfo.tex}
+
+
+\section{\\Another Appendix}
+
+%\end{appendices}
+

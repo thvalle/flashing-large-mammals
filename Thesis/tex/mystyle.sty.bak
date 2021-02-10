@@ -10,12 +10,28 @@
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{subcaption}
 
-\usepackage[style=authoryear, sorting=none, backend=biber]{biblatex} 
+\usepackage[style=authoryear, sorting=none, backend=biber]{biblatex} % biblio-package
+% Attempt to fix problem occuring when compiling pdf
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldset=abstract, null]
+    }
+  }
+}
+
 \usepackage[style=english]{csquotes}
-\addbibresource{/home/torgeir/Documents/Papers/library.bib}
+\addbibresource{tex/library.bib}
 
-\usepackage{gensymb} %Pro­vides generic com­mands \de­gree, \cel­sius, \pert­hou­sand, \mi­cro and \ohm which work both in text and maths mode
+%\usepackage[toc,page]{appendix} %Appendix package
 
+\usepackage{amsmath} % math mode -attempt to remove problem with \dfrac{1}{20}
+\usepackage{gensymb} % Pro­vides generic com­mands \de­gree, \cel­sius, \pert­hou­sand, \mi­cro and \ohm which work both in text and maths mode
+\usepackage{mathtools, amsfonts} %attempt to fix \text problem in math mode
+\usepackage[margin=1in]{geometry} %added also to ease the math problems
+
+\usepackage{booktabs} % for table sessioninfo
+\usepackage{siunitx}  % for the \toprule, \midrule etc in sessioninfo
 
 %\fancyhdr{} 
 %https://no.overleaf.com/learn/latex/How_to_Write_a_Thesis_in_LaTeX_(Part_2):_Page_Layout
