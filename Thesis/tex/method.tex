@@ -31,7 +31,7 @@ The area is situated in the southern boreal and the boreonemoral zones. %Må fin
 Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) make up the dominating boreal coniferous forests, with frequent presence of silver birch (\textit{Betula pendula}) and downy birch (\textit{Betula pubescens}), then aspen (\textit{Populous tremula}), alder (\textit{Alnus incana}) and black alder (\textit{Alnus glutinosa}).
 
 Growing season length 170 - 190 days (Moen, 1999, map 6, s.21) %må finne oppdaterte data
-Snow cover length												%må finne oppdaterte data
+Snow cover length												%må finne oppdaterte data %TODO
 
 Most cameras were set in forest areas, usually by a tractor path or human trail, sometimes by animal paths. Their distance from houses or roads varied to a large extent, and some areas were logged (ved Vansjø) and even greatly changed under development of new infrastructure (toglinje på nordligste kamera ~1255)
 
@@ -51,8 +51,7 @@ I divided the sites randomly into three groups of 20 cameras. Cameras in group A
 
 The preinstalled cameras were set up and handled by people from the Norwegian Institute of Nature Research (NINA) and --- at the sites further from Oslo  --- by members of the Norwegian Hunters and Fishers Society (NJFF). 
 %as a conflict mitigating strategy. %%Kan kuttes. Evt må det forklares
-Thus, the installation of the cameras did not follow a strict protocol, nor were their locations chosen randomly. The overall placement was systematic as decided by NINA, then there was a deliberately-biased placement of the CTs put up in areas where the individual handler deemed it most likely to photograph lynx,
-and hence, based on a combination of site accessibility and expectations of animal occurence (\cite{Burton2015}). %TODO vask språket 
+The installation of the cameras did not follow a strict protocol, nor were their locations chosen randomly. The overall placement was systematic as decided by NINA, then there was a deliberately-biased placement of the CTs put up in areas where the individual handler deemed it most likely to photograph lynx, and hence, based on a combination of site accessibility and expectations of animal occurence %(\cite{Burton2015} ). %TODO vask språket
 
 %\emph{presence of natural or artificial attractants may draw animals in to a CT} \cite{Burton2015}.
 
@@ -180,35 +179,62 @@ The true number of active camera days are confounded by the inconvenient lack of
 
 
 
-*************************************************************
-
-Hypothesis 1: Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species. The effect will likely vary in extent between species.
-
-*************************************************************
-
-Hypothesis 2: The effect of the white LED will correlate with urbanisation-factors, as individuals that live closer to urban areas are habituated to Artificial Light At Night (ALAN), and thus will have a weaker response to the white LED
-
-
-
-
-\section{Statistical analysis} %
-To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}), in the RStudio IDE (\cite{RStudioTeam2020a}). Session info in appendix \ref{appendix:sessinfo}.
-If my significance tests gave a $p = 0.05$, I would consider it significant, although there is nothing magical about an  $\alpha = 0.05$ as has been noted by many before me \cite{•} .
+%*************************************************************
+%
+%Hypothesis 1: Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species. The effect will likely vary in extent between species.
+%
+%*************************************************************
+%
+%Hypothesis 2: The effect of the white LED will correlate with urbanisation-factors, as individuals that live closer to urban areas are habituated to Artificial Light At Night (ALAN), and thus will have a weaker response to the white LED
+%
+%
 
 
-To test $H_{1}$ I looked for differences in mean detection rate per day, using Generalised Linear Mixed Models (GLMM) with the R package lme4 ((\cite{•}). White LED present/absent was the predictor, while location ID and month was used as random factors, to control for underlying differences between sites, and seasonal changes.
+\section{Statistical analysis} %This is a reference to the session info appendix \ref{app:sessinfo}
+
+To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}), in the RStudio IDE (\cite{RStudioTeam2020a}), adopting large parts of the tidyverse framework along the way (\cite{tidyverse}). Session info in appendix \ref{app:sessinfo}.
+
+\subsection*{Multiple hypothesis testing}
+%Alpha defined in holm and in shaffer
+When testing multiple groups for significance, the false positive rate will inevitably go up. 
+By chance, if I tested 20 groups where the $H_{0}$ were true, an $\alpha = 0.05$ 
+($ =  \frac{1}{20} $) 
+would deem at least one of the groups to be significantly different, thus rejecting the $H_{0}$ on false terms (ie. commiting a type 1 error).
+Therefore, when testing six species, I should demand stronger evidence to reject the null hypothesis.
+The Bonferroni correction (\cite{Holm1979}) is straight forward, multiplying each p-value by the number of comparisons, or in other words dividing the $\alpha$ by the number of comparisons. This highly diminishes the chance of commiting type 1 errors, but unfortunately increases the chance of type 2 errors (failing to reject a false null hypothesis) \cite{Shaffer1995}. 
+In my case, using the Bonferroni correction would result in:
+
+ $$ \alpha = \frac{0.05}{ 6 \mbox{\ species} } = 0.0083 \mbox{\ per species} $$ 
+
+
+A less conservative method is the sequentially rejective Bonferroni test (\cite{Holm1979}), often called Holm method, which is a modification of the Bonferroni correction. Here, the most significant test is given the Bonferroni correction ($\alpha /n$ tests).
+Then, the second most significant test gets an $\alpha / n - 1$, or, a slightly larger alpha.
+Continuing untill the least significant test gets an $\alpha / 1$ (i.e. retains the original $\alpha = .05$). In my case, using the Holm method results in:
+
+ $$ \frac{\alpha}{6},\ \frac{\alpha}{6-1},\ ...,\ \frac{\alpha}{1} $$
+
+
+	\subsection*{Hypothesis 1}
+
+To test $H_{1}$ I looked for differences in mean detection rate per day, using Generalised Linear Mixed Models (GLMM) with the R package lme4 (\cite{lme4}). White LED present/absent was the predictor, while location ID and month was used as random factors, to control for underlying differences between sites, and seasonal changes.
 
 
 
 In addition, I used a Cox proportional hazards regression model (CPH model) (Cox, 1972), as a time to event analysis. 
 Also called Survival analysis, the model compares groups' risk of experiencing an event (the \emph{hazard ratio} between the groups) , and was first developed for use in medicinal studies (e.g. cancer risk studies).
 
-I used the CPH model to elaborate on the effect of the white LED by checking whether \emph{confirmed} events of a flashed species affected the time untill said species' \emph{re}detection. The coxme() function from the coxme package (\cite{coxme-package)}) was used to include random effect arguments.
-
-Then, to test for  $H_{2}$, I performed a new Cox PH, without the random effects, and looked for a interaction between the flashed-variable, and a spatial covariate for distance to nearest ALAN. 
-For this, I used the coxph() function from R package Survival (\cite{survival-package}).
+I used the CPH model to elaborate on the effect of the white LED by checking whether \emph{confirmed} events of a flashed species affected the time untill said species' \emph{re}detection. The coxme function from the coxme package (\cite{coxme-package}) was used to include random effect arguments.
 
 
+	\subsection*{Hypothesis 2}
+
+If the $H_{0}$ was rejected for a species, I tested the $H_{2}$.
+To do that, I performed a new Cox PH, without the random effects, and looked for an interaction between the flashed-variable, and a spatial covariate for distance to nearest ALAN 
+(data from FKB). %TODO 
+This time, I used the coxph function from R package Survival (\cite{survival-package}).
+
+
+	\subsection*{P-tests and assumptions}
 
 For the GLMM, I used a XX as p-test 
 For the Cox model, I used the Wald test as the significance test, with xyz distribution over df degrees of freedom. osvosv. 
@@ -218,7 +244,6 @@ For the Cox model, I used the Wald test as the significance test, with xyz distr
 The XX was used to check assumptions for GLMM  %TODO assumptions of glmm
 
 The Schoenfeld test was used to check for the survival model's assumption of proportional hazards. 
-
 
 
 

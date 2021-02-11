@@ -8,8 +8,9 @@
 %Det finnes diverse gode interaktive tegneprogrammer, for eksempel
 %AdobeIllustrator, Inkscape, GIMP og paint.net, samt et meget godt deklarativt tegne-program:MetaPost.
 
-\includeonly{tex/method, tex/results}
+\includeonly{tex/intro, tex/method} 
 \begin{document}
+
 %\maketitle
 
 \include{tex/abstract}
@@ -34,10 +35,23 @@
 \include{tex/conclusion}
 
 % -- appendix --
-\appendix
-\include{tex/appendix}
+%\appendix
+%\section*{Appendices}
+%\addcontentsline{toc}{section}{Appendices}
+%\renewcommand{\thesubsection}{\Alph{subsection}}
+%
+%\subsection{R Session Info}
+%\label{app:sessinfo}
+
+%\input{tex/sessinfo.tex}
+
+%\subsection{\\Another Appendix}
 
 
+
+%\include{tex/appendix} %maybe forget about this one
+
+\clearpage
 \printbibliography
 
 \end{document}

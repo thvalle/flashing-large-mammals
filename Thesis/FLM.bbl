@@ -19,82 +19,6 @@
 
 \refsection{0}
   \sortlist[entry]{none/global}
-    \entry{Moen1999}{book}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=6db06355d80c01d10d2a8c7c40954ad4}{%
-           family={Moen},
-           family_i={M\bibinitperiod},
-           given={Asbj{ø}rn},
-           given_i={A\bibinitperiod}}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=18bbc28df8395fe7885c9bcb367fcf56}{%
-           family={Lillethun},
-           family_i={L\bibinitperiod},
-           given={Arvid},
-           given_i={A\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {H{ø}nefoss}%
-      }
-      \list{publisher}{1}{%
-        {Norwegian Mapping Authority}%
-      }
-      \strng{namehash}{6db06355d80c01d10d2a8c7c40954ad4}
-      \strng{fullhash}{6db06355d80c01d10d2a8c7c40954ad4}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{1999}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{82-7945-000-9 Vegetation}
-      \field{title}{{National Atlas of Norway: Vegetation}}
-      \field{year}{1999}
-      \field{pages}{209}
-      \range{pages}{1}
-      \verb{url}
-      \verb https://www.nb.no/items/URN:NBN:no-nb_digibok_2010011503011
-      \endverb
-      \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
-    \endentry
-    \entry{Odden2015}{report}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
-           family={Odden},
-           family_i={O\bibinitperiod},
-           given={John},
-           given_i={J\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {Oslo, Norway}%
-      }
-      \list{publisher}{1}{%
-        {NINA}%
-      }
-      \strng{namehash}{264aa2e2a54350f344718a34cfcdb4dd}
-      \strng{fullhash}{264aa2e2a54350f344718a34cfcdb4dd}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2015}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{The lynx population in Scandinavia has been monitored since the 1990's using snow-tracking to detect the presence of family groups. Parts of Norway have experienced winters with limited snow cover in recent years, creating a need to find alternatives to our current monitoring meth- ods. This report summarize experiences from a pilot project testing camera traps for monitoring lynx in 3 study areas in southeastern Norway. The goal has been to test if camera traps increase the number of observations of family groups, and if we can use individual recognition from im- ages to calculate the density of lynx using spatial capture-recapture methods. Although camera traps are a standard method for lynx monitoring in many countries, there is a need to evaluate their suitability in Norway where we need to monitor very large areas with very low density lynx populations. Camera traps were deployed at 297 localities in the 3 study areas, in parts of Oslo, Akershus and {Ø}stfold Counties (Region 4, 2010-2015), Vestfold County with adjoining areas of Buskerud and Telemark (Region 2, 2012-2015) and Oppland County (Region 3, 2014-2015). All fieldwork was conducted in collaboration with the Norwegian Hunters and Anglers Association in Oppland and Akershus, with assistance from students and volunteers. We photographed lynx 573 times in 112 locations during 120 453 camera-days. During the same period, we observed other species 42 435 times. In all three areas cameras increased the num- ber of observations of family groups. Fourteen of 18 family groups detected by the public and reported to the National Large Predator Monitoring Program (Rovdata) within the study areas during all study winters had at least one observation from camera-traps. We compared estimates of the number of family groups made by the traditional methods (lynx tracks in snow and grouping by distance criteria, AK) within the study areas with estimates based on data from camera traps. Estimates based on AK were 23 family groups for all years and all areas combined, and corre- sponding estimates solely based on data from camera traps were for 20 family groups. We estimated densities of lynx in Regions 4 and 2 using spatial capture-recapture methods, and in both areas lynx densities decreased during the study period. In Region 2 densities decreased from 2.1 (±0.7) lynx/1000 km2 in 2012/13 to 1.2 (±0.4) in 2014/15. In Region 4 lynx densities decreased from 2.0 (±0.5) and 2.9 (±1.5) lynx/1000 km2 the first 2 years to 1.3 (±0.4), 0.6 (±0.1) and 0.4 (±0.2) lynx/1000 km2 the last 3 winters. We followed nine lynx with GPS collars within these study areas, and all marked lynx were cap- tured by camera traps. Female lynx were photographed on average 10 times per year, while male lynx on average were photographed 27 times per year. We demonstrate that camera traps can be a useful supplement to the current snow-based mon- itoring of lynx family groups in Scandinavia. A more intensive system of camera traps may also provide estimates of lynx densities with a measure of the precision in the estimates. Our experi- ence here is also that the involvement of local people in the operation of the camera traps may reduce conflicts. We need to further develop camera traps as a method to be used in long-term studies of demographic parameters of lynx, behavioral studies, habitat selection, effects of hu- man disturbance and interactions with other species. It is also important to evaluate the potential of camera traps as a tool to monitor multiple species in forest ecosystems. John}
-      \field{isbn}{9788242628466}
-      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på{Ø}stlandet - NINA Rapport 1216}}
-      \field{type}{techreport}
-      \field{year}{2015}
-      \field{pages}{54}
-      \range{pages}{1}
-      \verb{file}
-      \verb :home/torgeir/Documents/Papers/Odden2015.pdf:pdf
-      \endverb
-      \verb{url}
-      \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
-      \endverb
-      \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
-    \endentry
     \entry{Burton2015}{article}{}
       \name{author}{8}{}{%
         {{uniquename=0,hash=743098108bcb18b6d0d14da821904683}{%
@@ -162,6 +86,111 @@
       \verb :home/torgeir/Documents/Papers/CTReviewBurton2015.pdf:pdf
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
+    \endentry
+    \entry{Beddari2019}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=49c5d3f04746c4e707798fee11f091ef}{%
+           family={Beddari},
+           family_i={B\bibinitperiod},
+           given={Benedicte\bibnamedelima Lissner},
+           given_i={B\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{49c5d3f04746c4e707798fee11f091ef}
+      \strng{fullhash}{49c5d3f04746c4e707798fee11f091ef}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2019}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In ecology, camera trapping is commonly used as a non-invasive technique to collect ecological observation data and to monitor populations. The technique is used to address a variety of research questions worldwide. Despite being widely used, few studies have evaluated the potential effects of camera traps on animals, and to my knowledge no studies have quantified to what extent and under which conditions such effects occur. In this thesis, I have assessed the behavior of two large carnivores in Norway, Eurasian lynx (Lynx lynx) and wolf (Canis lupus), using still images captured by camera traps. The aim of the study was to investigate whether the presence of camera traps can cause behavioral changes in wildlife. I recorded behaviors that indicated apparent detection of cameras by visual and/or acoustic contact. Furthermore, other distinct behaviors towards camera was assessed, in addition to the orientation of the animal in a given visit, to detect distinct changes in direction caused by the trap. Finally, I compared behavioral scores between species and camera-specific factors like flash type. Lynx and wolves both apparently detected cameras (eyes and/or ears pointed directly at the camera) in approximately 11$\backslash${\%} of the visits, and altered their behavior in response to them. Two different categories of responses were discovered: Responses directly related to an apparent detection (approach, flight, observe and startle) and responses related to the presence camera traps (physical contact, olfactory sensing and squinting). I detected species-specific and camera-specific differences in behavioral impacts. Lynx were more likely to approach the camera, compare to wolves who expressed flight and startle response more pronounced. Flash and different flash types influenced the species differently in how they responded to the presence of camera traps. Both species were found to have pronounced change in orientation when expressing apparent detection responses to camera. My study revealed clear evidence of camera traps being low-invasive, but not non-invasive wildlife monitoring tools. This suggests that camera trap studies should quantify their impact on study species and its effect on inferences.}
+      \field{journaltitle}{Master of Sciences in Natural resource Management}
+      \field{title}{{Behavioral responses to camera traps : a study on two large carnivores in Norway}}
+      \field{year}{2019}
+      \field{pages}{52}
+      \range{pages}{1}
+      \verb{file}
+      \verb :home/torgeir/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Beddari - 2019 - Behavioral responses to camera traps a study on two large carnivores in Norway.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb https://nmbu.brage.unit.no/nmbu-xmlui/handle/11250/2608534
+      \endverb
+    \endentry
+    \entry{Moen1999}{book}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=6db06355d80c01d10d2a8c7c40954ad4}{%
+           family={Moen},
+           family_i={M\bibinitperiod},
+           given={Asbj{ø}rn},
+           given_i={A\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=18bbc28df8395fe7885c9bcb367fcf56}{%
+           family={Lillethun},
+           family_i={L\bibinitperiod},
+           given={Arvid},
+           given_i={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {H{ø}nefoss}%
+      }
+      \list{publisher}{1}{%
+        {Norwegian Mapping Authority}%
+      }
+      \strng{namehash}{6db06355d80c01d10d2a8c7c40954ad4}
+      \strng{fullhash}{6db06355d80c01d10d2a8c7c40954ad4}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{1999}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{82-7945-000-9 Vegetation}
+      \field{title}{{National Atlas of Norway: Vegetation}}
+      \field{year}{1999}
+      \field{pages}{209}
+      \range{pages}{1}
+      \verb{url}
+      \verb https://www.nb.no/items/URN:NBN:no-nb%7B%5C_%7Ddigibok%7B%5C_%7D2010011503011
+      \endverb
+      \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
+    \endentry
+    \entry{Odden2015}{report}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+           family={Odden},
+           family_i={O\bibinitperiod},
+           given={John},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Oslo, Norway}%
+      }
+      \list{publisher}{1}{%
+        {NINA}%
+      }
+      \strng{namehash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \strng{fullhash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The lynx population in Scandinavia has been monitored since the 1990's using snow-tracking to detect the presence of family groups. Parts of Norway have experienced winters with limited snow cover in recent years, creating a need to find alternatives to our current monitoring meth- ods. This report summarize experiences from a pilot project testing camera traps for monitoring lynx in 3 study areas in southeastern Norway. The goal has been to test if camera traps increase the number of observations of family groups, and if we can use individual recognition from im- ages to calculate the density of lynx using spatial capture-recapture methods. Although camera traps are a standard method for lynx monitoring in many countries, there is a need to evaluate their suitability in Norway where we need to monitor very large areas with very low density lynx populations. Camera traps were deployed at 297 localities in the 3 study areas, in parts of Oslo, Akershus and {Ø}stfold Counties (Region 4, 2010-2015), Vestfold County with adjoining areas of Buskerud and Telemark (Region 2, 2012-2015) and Oppland County (Region 3, 2014-2015). All fieldwork was conducted in collaboration with the Norwegian Hunters and Anglers Association in Oppland and Akershus, with assistance from students and volunteers. We photographed lynx 573 times in 112 locations during 120 453 camera-days. During the same period, we observed other species 42 435 times. In all three areas cameras increased the num- ber of observations of family groups. Fourteen of 18 family groups detected by the public and reported to the National Large Predator Monitoring Program (Rovdata) within the study areas during all study winters had at least one observation from camera-traps. We compared estimates of the number of family groups made by the traditional methods (lynx tracks in snow and grouping by distance criteria, AK) within the study areas with estimates based on data from camera traps. Estimates based on AK were 23 family groups for all years and all areas combined, and corre- sponding estimates solely based on data from camera traps were for 20 family groups. We estimated densities of lynx in Regions 4 and 2 using spatial capture-recapture methods, and in both areas lynx densities decreased during the study period. In Region 2 densities decreased from 2.1 (±0.7) lynx/1000 km2 in 2012/13 to 1.2 (±0.4) in 2014/15. In Region 4 lynx densities decreased from 2.0 (±0.5) and 2.9 (±1.5) lynx/1000 km2 the first 2 years to 1.3 (±0.4), 0.6 (±0.1) and 0.4 (±0.2) lynx/1000 km2 the last 3 winters. We followed nine lynx with GPS collars within these study areas, and all marked lynx were cap- tured by camera traps. Female lynx were photographed on average 10 times per year, while male lynx on average were photographed 27 times per year. We demonstrate that camera traps can be a useful supplement to the current snow-based mon- itoring of lynx family groups in Scandinavia. A more intensive system of camera traps may also provide estimates of lynx densities with a measure of the precision in the estimates. Our experi- ence here is also that the involvement of local people in the operation of the camera traps may reduce conflicts. We need to further develop camera traps as a method to be used in long-term studies of demographic parameters of lynx, behavioral studies, habitat selection, effects of hu- man disturbance and interactions with other species. It is also important to evaluate the potential of camera traps as a tool to monitor multiple species in forest ecosystems. John}
+      \field{isbn}{9788242628466}
+      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på {Ø}stlandet - NINA Rapport 1216}}
+      \field{type}{techreport}
+      \field{year}{2015}
+      \field{pages}{54}
+      \range{pages}{1}
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/Odden2015.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
+      \endverb
+      \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
     \endentry
     \entry{Trailcampro2014}{misc}{}
       \name{author}{1}{}{%
@@ -239,6 +268,272 @@
       \verb http://www.rstudio.com/
       \endverb
     \endentry
+    \entry{tidyverse}{article}{}
+      \name{author}{24}{}{%
+        {{uniquename=0,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           family_i={W\bibinitperiod},
+           given={Hadley},
+           given_i={H\bibinitperiod}}}%
+        {{uniquename=0,hash=0c11220b22f907dc3709ff23c6b023e5}{%
+           family={Averick},
+           family_i={A\bibinitperiod},
+           given={Mara},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=0f88b724c9f070dbceda00a5027d25bb}{%
+           family={Bryan},
+           family_i={B\bibinitperiod},
+           given={Jennifer},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=3ad4f9244dbfff3b38eeeec6d91fbd7d}{%
+           family={Chang},
+           family_i={C\bibinitperiod},
+           given={Winston},
+           given_i={W\bibinitperiod}}}%
+        {{uniquename=0,hash=4ecd44ecbb04d17f2451ea24f4113e2f}{%
+           family={McGowan},
+           family_i={M\bibinitperiod},
+           given={Lucy\bibnamedelima D'Agostino},
+           given_i={L\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{uniquename=0,hash=3bd2c624a8715b2aeffcecaa24f3d017}{%
+           family={François},
+           family_i={F\bibinitperiod},
+           given={Romain},
+           given_i={R\bibinitperiod}}}%
+        {{uniquename=0,hash=de759ef99fad34b8426e26035eb4a20b}{%
+           family={Grolemund},
+           family_i={G\bibinitperiod},
+           given={Garrett},
+           given_i={G\bibinitperiod}}}%
+        {{uniquename=0,hash=83154656fbd4fc02a9e468c493204cf9}{%
+           family={Hayes},
+           family_i={H\bibinitperiod},
+           given={Alex},
+           given_i={A\bibinitperiod}}}%
+        {{uniquename=0,hash=4caae9be043b32573c94b11203a4a2fe}{%
+           family={Henry},
+           family_i={H\bibinitperiod},
+           given={Lionel},
+           given_i={L\bibinitperiod}}}%
+        {{uniquename=0,hash=5d26572f4d1de0fce70db1a8cfb6b0d1}{%
+           family={Hester},
+           family_i={H\bibinitperiod},
+           given={Jim},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=3305789acf03200ed22f154007d4fab9}{%
+           family={Kuhn},
+           family_i={K\bibinitperiod},
+           given={Max},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=3219fca86efad07be2c3bdcce2ff6169}{%
+           family={Pedersen},
+           family_i={P\bibinitperiod},
+           given={Thomas\bibnamedelima Lin},
+           given_i={T\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{uniquename=0,hash=ac004a72f317bb04dcf539660a0feee0}{%
+           family={Miller},
+           family_i={M\bibinitperiod},
+           given={Evan},
+           given_i={E\bibinitperiod}}}%
+        {{uniquename=0,hash=7ab1c185cbf2b8444dae944ea4bf9f3f}{%
+           family={Bache},
+           family_i={B\bibinitperiod},
+           given={Stephan\bibnamedelima Milton},
+           given_i={S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{uniquename=0,hash=1435ca4f08e53208e1c34297357afa80}{%
+           family={Müller},
+           family_i={M\bibinitperiod},
+           given={Kirill},
+           given_i={K\bibinitperiod}}}%
+        {{uniquename=0,hash=0f4f7df4d18c1270721b575fc1288184}{%
+           family={Ooms},
+           family_i={O\bibinitperiod},
+           given={Jeroen},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=42a6c387e6c733bd0db8180d2bbacd30}{%
+           family={Robinson},
+           family_i={R\bibinitperiod},
+           given={David},
+           given_i={D\bibinitperiod}}}%
+        {{uniquename=0,hash=13c79784f4bd9ce9ca016c501f0d0d43}{%
+           family={Seidel},
+           family_i={S\bibinitperiod},
+           given={Dana\bibnamedelima Paige},
+           given_i={D\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{uniquename=0,hash=ac149bcd683a561a218e8dc1c1529489}{%
+           family={Spinu},
+           family_i={S\bibinitperiod},
+           given={Vitalie},
+           given_i={V\bibinitperiod}}}%
+        {{uniquename=0,hash=cc134fc26d52494111fa09f0a1546069}{%
+           family={Takahashi},
+           family_i={T\bibinitperiod},
+           given={Kohske},
+           given_i={K\bibinitperiod}}}%
+        {{uniquename=0,hash=858f3a61393526cfc73cb860925a277a}{%
+           family={Vaughan},
+           family_i={V\bibinitperiod},
+           given={Davis},
+           given_i={D\bibinitperiod}}}%
+        {{uniquename=0,hash=acc6b5a79d7cad33c02e41491584028f}{%
+           family={Wilke},
+           family_i={W\bibinitperiod},
+           given={Claus},
+           given_i={C\bibinitperiod}}}%
+        {{uniquename=0,hash=ff79890fd7a7f58816ee7360c25d812e}{%
+           family={Woo},
+           family_i={W\bibinitperiod},
+           given={Kara},
+           given_i={K\bibinitperiod}}}%
+        {{uniquename=0,hash=f2f301536c9cd620e39deb5fad8712ff}{%
+           family={Yutani},
+           family_i={Y\bibinitperiod},
+           given={Hiroaki},
+           given_i={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{e0731a35ef88164c57848ecb7ca5f8ca}
+      \strng{fullhash}{fa5412b21fba19cdd2a59e8e526b29a1}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2019}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Open Source Software}
+      \field{number}{43}
+      \field{title}{{Welcome to the {\{}tidyverse{\}}}}
+      \field{volume}{4}
+      \field{year}{2019}
+      \field{pages}{1686}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.21105/joss.01686
+      \endverb
+    \endentry
+    \entry{Holm1979}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=23b6a8c4d3d9710bb3b84d15d65dc86e}{%
+           family={Holm},
+           family_i={H\bibinitperiod},
+           given={Sture},
+           given_i={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{23b6a8c4d3d9710bb3b84d15d65dc86e}
+      \strng{fullhash}{23b6a8c4d3d9710bb3b84d15d65dc86e}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{1979}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scandinavian Journal of Statistics}
+      \field{number}{2}
+      \field{title}{{A Simple Sequentially Rejective Multiple Test Procedure}}
+      \field{volume}{6}
+      \field{year}{1979}
+      \field{pages}{65\bibrangedash 70}
+      \range{pages}{6}
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/Holm{\_}correct.pdf:pdf
+      \endverb
+      \keyw{Sture Holm}
+    \endentry
+    \entry{Shaffer1995}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=51209134026323e94219be3effebe133}{%
+           family={Shaffer},
+           family_i={S\bibinitperiod},
+           given={Juliet\bibnamedelima Popper},
+           given_i={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{51209134026323e94219be3effebe133}
+      \strng{fullhash}{51209134026323e94219be3effebe133}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{1995}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annual Review of Psychology}
+      \field{title}{{Multiple hypothesis testing}}
+      \field{volume}{46}
+      \field{year}{1995}
+      \field{pages}{561\bibrangedash 584}
+      \range{pages}{24}
+      \verb{doi}
+      \verb 10.1146/annurev.ps.46.020195.003021
+      \endverb
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/multi{\_}H{\_}testing{\_}Schaffer.pdf:pdf
+      \endverb
+      \keyw{closed test procedures,multiple comparisons,p-values,pairwise comparisons,simultaneous testing}
+    \endentry
+    \entry{lme4}{article}{}
+      \name{author}{4}{}{%
+        {{uniquename=0,hash=291c4bc67cf41a2019405a2328a9b75e}{%
+           family={Bates},
+           family_i={B\bibinitperiod},
+           given={Douglas},
+           given_i={D\bibinitperiod}}}%
+        {{uniquename=0,hash=9cd1e56848b277b4f48a6e0b817ba5ab}{%
+           family={Mächler},
+           family_i={M\bibinitperiod},
+           given={Martin},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=d6b13be971f13ee03cc83cded41b6d7e}{%
+           family={Bolker},
+           family_i={B\bibinitperiod},
+           given={Ben},
+           given_i={B\bibinitperiod}}}%
+        {{uniquename=0,hash=3face7d9e1128ebfefc56b5f54f28451}{%
+           family={Walker},
+           family_i={W\bibinitperiod},
+           given={Steve},
+           given_i={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{d09b320744f09c093eb8b0d7f6bbdda0}
+      \strng{fullhash}{e1419b3c7f22b8a469bd183c172e98b4}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2015}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{number}{1}
+      \field{title}{{Fitting Linear Mixed-Effects Models Using {\{}lme4{\}}}}
+      \field{volume}{67}
+      \field{year}{2015}
+      \field{pages}{1\bibrangedash 48}
+      \range{pages}{48}
+      \verb{doi}
+      \verb 10.18637/jss.v067.i01
+      \endverb
+    \endentry
+    \entry{coxme-package}{manual}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
+           family={Therneau},
+           family_i={T\bibinitperiod},
+           given={Terry\bibnamedelima M},
+           given_i={T\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{74cea5e05bac64f6e1784e2a50d0f063}
+      \strng{fullhash}{74cea5e05bac64f6e1784e2a50d0f063}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{extrayear}{1}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 2.2-16}
+      \field{title}{{coxme: Mixed Effects Cox Models}}
+      \field{year}{2020}
+      \verb{url}
+      \verb https://cran.r-project.org/package=coxme
+      \endverb
+    \endentry
     \entry{survival-package}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
@@ -251,6 +546,7 @@
       \strng{fullhash}{74cea5e05bac64f6e1784e2a50d0f063}
       \field{sortinit}{0}
       \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{extrayear}{2}
       \field{labelyear}{2020}
       \field{datelabelsource}{}
       \field{labelnamesource}{author}
@@ -263,8 +559,6 @@
       \endverb
     \endentry
   \endsortlist
-  \missing{coxme-package)}
-  \missing{\IeC {\textbullet }}
 \endrefsection
 \endinput
 
