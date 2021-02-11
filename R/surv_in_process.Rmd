@@ -11,7 +11,7 @@ output: github_document
 # options(tibble.print_min = 5)
 
 library(pander)     # for prettier outputs of summaries and tables etc.
-library(report)     # for reporting test-statistics 
+#library(report)     # for reporting test-statistics 
 library(tidyverse)  # entering the tidyverse
 library(tidymodels) # and bringing the model-toolbox
 library(lubridate)  # lubricating the handling of dates
@@ -760,11 +760,62 @@ ggcoxzph(d.mod5_gaupe,font.main = 12, ggtheme = theme_classic2())
 
 
 -------------------------------------------------------------
-
-
 # Session Info
+
+```{r toLatex-sessinfo}
+#writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
+library(magrittr)
+library(devtools)
+library(kableExtra)
+
+# kable(session_info(), "latex", booktabs = T) %>%
+#   kable_styling(latex_options = c("striped", "scale_down")) %>%
+#   row_spec(1, color = "red") %>%
+#  as_image(width = 8, file = "Thesis/img/sessinfo.png")
+ # write_lines("Thesis/tex/sessinfo.tex")
+
+SI <- sessionInfo() %>% as.list()
+SI[[]]  
+mutate() %>% 
+  as_data_frame()
+toLatex() %>% 
+write_lines("Thesis/tex/sessinfo.tex")
+```
+
+
+
+Another solution making use of devtools::session_info() which can be copied straight into an R markdown file (Rmd):
+R environment
+
+
+```{r Reproducibility-SessionInfo-R-packages}
+df_session_packages <- devtools::session_info()$packages %>% 
+  as.data.frame(.) %>% 
+  filter(attached == TRUE) %>% 
+  dplyr::select(loadedversion, date) %>% 
+  rownames_to_column
+
+colnames(df_session_packages) <- c("Package", "Loaded version", "Date")
+
+kable(
+  df_session_packages, 
+  booktabs = T, 
+  align = "l",
+  caption = "(ref:Reproducibility-SessionInfo-R-packages-title)", # complete caption for main document
+  caption.short = " ", # "(ref:Reproducibility-SessionInfo-R-packages-caption)" # short caption for LoT
+  "latex") %>% 
+write_lines("Thesis/tex/sessinfo.tex")
+
+```
+
+
 ```{r sessionInfo}
 sessionInfo()
+fileConn<-file("sessinfo.tex")
+output <- capture.output(sessionInfo())
+cat(output, file=fileConn)
+close(fileConn)
+
 # packrat
 # checkpoint
 ```
