@@ -1,0 +1,337 @@
+---
+title: "glmm in process"
+author: "Torgeir"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+    code_folding: hide 
+---
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(lme4)
+library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regression Models
+# more at: https://strengejacke.github.io/ggeffects/
+library(performance) # diagnostic-plots to check assumptions
+# Data drom Data_exploration2_nesting.R
+time.dep <- readRDS("time.dep")
+```
+
+## Purpose
+
+This notebook is for the glmm-modelling of my six most common large mammals.
+First, I filter out my species of interest.
+
+```{r time_sp}
+sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe")
+time.dep$time.deploy <- time.dep$time.deploy/10 # shortening / zooming out on deploy
+time.dep2c <- time.dep %>% 
+  rename(species = validated_species) %>%  #shortening name
+  filter(species %in% sp) %>% #filtering out species
+  # including Control as part of the flash-column, since it differs from flash=0
+  mutate(flash = ifelse(period == "Control", "Control", flash)) 
+time.dep2 <- time.dep2c %>% 
+  filter(!period == "Control") # but removing it for now, because it is set up in a longer timeframe
+```
+
+# Modelling
+
+## Making glmm for roe deer only
+
+```{r raadyr}
+# filter species
+sp = "raadyr"
+time_sp <- filter(time.dep2, species %in% sp) # .dep2 = without control
+m  <- glmer(n.obs ~ time.deploy + as.factor(flash) + # fixed effects
+              (1 | loc) + (1 | month), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+summary(m)
+# ggpredict similar to expand.grid
+p <- ggeffects::ggpredict(m, terms = c("time.deploy", "flash"))
+plot(p)
+plot(p, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p, residuals = TRUE) + labs(caption = "residuals")
+# performance check and report
+performance::check_model(m) # check assumptions
+report::report(m) # text-summary of my model, to include in a report
+```
+
+The dataset now consist of events summarised per day since deployment. Most days had no roe deer.
+In the performance-test for model assumptions it is clear that some assumptions aren't met. In the non-normality of resiudals-plot, the residuals skew off from the line. There is not a homogeneity of variance.
+There appeares to be three influential observations in the Cook's distance-plot, maybe more, as the warning from ggrepel refers to 108 inlabeled data points due to overlaps.
+
+At least the normality of my random effects holds up, which signifies a good study design.
+
+Not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
+
+The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera.
+> I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. Chances are I've scared animals other times as well, but haven't noticed it.
+
+Time since deployment is considered a positive, but non-significant predictor.
+White LED flash is considered as a non-significant positive predictor, and the effect is very small.
+
+### checking the effect of filtering time.deploy < 6.1
+
+```{r raadyr-61}
+m61  <- glmer(n.obs ~ time.deploy + as.factor(flash) + # fixed effects
+              (1 | loc) + (1 | month), # random effects
+            data   = time_sp[time_sp$time.deploy < 6.1,], # = all tim.dep less than 61 days
+            family = poisson) # poisson family of distributions
+summary(m61)
+check_model(m61)
+```
+
+Fewer removed rows containing missing values (highly correlating with number of obs), but a doubling in unlabelled data. A red band on the Cook's D plot.
+
+The estimates for time.deploy and flash=1 has doubled, significance of the former has diminished.
+Variance of loc seems unchanged, whilst for month it has doubled.
+
+**I don't really understand the point of doing the filtering.**
+
+
+
+
+
+## Make a fit of the whole dataset
+
+```{r all-species, cache=TRUE}
+# species as a faceting factor
+fit <- glmer(
+  n.obs ~ time.deploy + as.factor(flash) + species + # fixed effects. Species included
+    (1 | loc) + (1 | month),  # random effects
+  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
+  family = poisson) # data and distribution
+
+mydf <- ggpredict(fit, terms = c("time.deploy", "flash", "species"))
+#mydf
+```
+
+
+```{r all-species-plots}
+ggplot(mydf, aes(x, predicted, colour = group)) + 
+  geom_line() + facet_wrap(~facet)
+
+plot(mydf, facet = TRUE)
+plot(mydf, rawdata = TRUE) + labs(caption = "rawdata")
+plot(mydf, residuals = TRUE) + labs(caption = "residuals")
+
+performance::check_model(fit) # check assumptions
+summary(fit)
+report::report(fit) # text-summary of my model, to include in a report
+```
+
+##### Assumptions
+Firstly, on the assumptions, nothing seems to have changed when including all species. I'm not certain about how I should tackle those problems right now, but I'll leave it for later.
+
+##### Random effects
+The random effects account for a lot of variance. <!-- Don't know this -->
+There are 33 locs, ie. 33 cameras included in the model, and 12 months.
+
+##### Fixed effects
+All species are significantly different from each other. Moose is used as the intercept, showing that lynx and red deer are less common in my study area, whilst badger, fox and roe deer are more common.
+
+-----------------------------------------------------
+
+There is quite a large difference in the significance-levels when I _don't filter away_ time since deployment $> 61 \ days$, compared to when I do. Because of computational time I haven't included both models in this notebook.
+>Flash is non-significant when I filter, significant when I don't.
+
+
+##### Differences between IR and white LED
+Apart for the lynx which has the least datapoints, my model deems the presence of a white LED flash (flash = 1) as a positive predictor for all the species, with a $p = 0.034$. That is surprising. Not the significance-part, but the part about white LED flash being an attractant is peculiar.
+
+If I was to assume that the effect was significant, ie. pattern was not detected by chance, what could be the explanation?
+
+_Is it because the animals return to inspect the area?_ I could inspect this by looking at clustering of events when white LED is present.
+Maybe a white LED that is constantly triggered by vegetation during the night could attract animals to inspect what the flashing light is?
+
+Or is it plainly an increase in _detection accuracy_, ie. that the presence of an additional camera that flashes the animal facilitates the accuracy of the IR camera?
+Maybe startling an animal could increase the chance that the IR-camera is triggered?
+Or maybe the reflection of white light could itself increase the sensitivity of the IR-sensor?
+In that case, the sensor from the additional camera could in part increase the detection zone of the IR camera.
+However, cause and effect-relationship seems rather far fetched.
+
+If the increase in detection rate was not due to an attractant effect, it had to be from an increase in detection accuracy.
+The overlap plot of fox activity during periods with and without flash, seemed to suggest that cameras without flash detected less foxes in the early twilight hours, and more in the late twilight hours, compared to a more linear trend in the cameras with a flash. However, that difference was also small, and non-significant, and I'm likely clinging onto it, because I want there to be an effect matching my expectations.
+
+Could be interesting to inspect the concordance between predicted_species and validated_species in relation to presence and absence of a white LED. Will the AI be more or less confident in it's prediction, and will the human sorter agree or disagree more often?
+
+
+The plot with confidence intervals shows that there is a high degree of overlap in the two groups. The CI almost completely overlaps, _which I think is a more telling result than the differences between the lines_.
+
+
+## Interaction between species and flash
+
+The previous model gave a significant score on the effect of flash, although it was stated as small. The score suggests I can reject the null hypothesis which stated that white LED flash will have no effect on the detection rate of any species.
+
+Time to test Hypthesis 1!
+>  Hypothesis 1: Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species.
+The effect will likely vary in extent between species.
+
+As stated here, this is a one-sided test. However, I already have a result indicating that the detection rate will go up if anything.
+This is still an interesting result in any case, but I should maybe consider adding a hypothesis for increasing detection rate, as what was my original aim was to look for _any_ change in the detection rate, although my suspision was towards a decrease.
+
+To test if the effect will vary between the species I need to include an interaction argument.
+
+```{r all-interaction, cache=TRUE}
+# species as a faceting factor
+fit_int <- glmer(
+  n.obs ~ time.deploy + as.factor(flash) * species + # fixed effects. Species included
+    (1 | loc) + (1 | month),  # random effects
+  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
+  family = poisson) # data and distribution
+
+mydf_int <- ggpredict(fit_int, terms = c("time.deploy", "flash", "species"))
+#mydf
+```
+
+
+```{r all-interaction-plots, cache=TRUE}
+ggplot(mydf_int, aes(x, predicted, colour = group)) + 
+  geom_line() + facet_wrap(~facet)
+
+plot(mydf_int, facet = TRUE)
+plot(mydf_int, rawdata = TRUE) + labs(caption = "rawdata")
+plot(mydf_int, residuals = TRUE) + labs(caption = "residuals")
+
+performance::check_model(fit_int) # check assumptions
+summary(fit_int)
+report::report(fit_int) # text-summary of my model, to include in a report
+```
+
+Most assumption-diagnostics stay similar, but there is a high correlation between flash, flash:species and time.deploy. The two former are unsurprisingly correlated, but it seems to be by a unusual degree. The latter is also high, and this does seem to be a problem. Could the correlation with time since deployment be due to an interaction between flash and time?
+
+The regular effect of flash=1 is now considered non-significant, whilst the interaction with lynx and red deer is positively significant. However, if we adjust our p-value for multiple comparisons even by the smallest degree, none of the p's would be significant ($\alpha / 2 = 0.025$).
+
+All interactions with flash was considered positive, except barely negative, non-significant value for roe deer.
+
+Comparing the two models by an anova, we get that the more complicated model is the better one.
+```{r anova}
+anova(fit, fit_int)
+```
+
+Still, as the performance::check_model() was worse for the more complex model, I'm not sure I can accept it just yet.
+
+## Further diagnostic plots
+
+```{r performance-collin}
+clin1 <- check_collinearity(fit)
+clin2 <- check_collinearity(fit_int)
+plot(clin1)
+plot(clin2)
+```
+
+Multicollinearity is only due to the interaction. In this stand-alone plot it is easy to see that the time.deploy stays unaffected.
+
+As stated by Paul Allison in [When Can You Safely Ignore Multicollinearity](https://statisticalhorizons.com/multicollinearity), ( _accessed 15.02.2021_ ):
+>2. The high VIFs are caused by the inclusion of powers or products of other variables. If you specify a regression model with both x and x2, there’s a good chance that those two variables will be highly correlated. Similarly, if your model has x, z, and xz, both x and z are likely to be highly correlated with their product. This is not something to be concerned about, however, because the p-value for xz is not affected by the multicollinearity.  This is easily demonstrated: you can greatly reduce the correlations by “centering” the variables (i.e., subtracting their means) before creating the powers or the products. But the p-value for x2 or for xz will be exactly the same, regardless of whether or not you center. And all the results for the other variables (including the R2 but not including the lower-order terms) will be the same in either case. So the multicollinearity has no adverse consequences.
+
+```{r performance-resid}
+binned_residuals(fit)
+binned_residuals(fit_int)
+```
+
+The first model has about 80% of residuals inside error bounds, and gets an error. Model with interaction is worse with about 75%.
+
+```{r performance-dist}
+#check_outliers(fit) # does not make sense for glmm
+#check_normality(fit) # does not make sense for glmm
+check_normality(fit, effects = "random") %>% plot()
+check_distribution(fit) # experimental function
+check_distribution(fit_int) #%>% plot()
+check_distribution(fit)     %>% plot()
+```
+
+The check_distribution is noted as somewhat experimental. It predicts a normal distribution for the residuals, and a zero-inflated poisson for my response, although with merely 47% probability of being true.
+The interaction-model is identical in the predicted distribution.
+
+```{r performance-hetero}
+check_heteroscedasticity(fit) %>% plot()
+check_heteroscedasticity(fit_int) %>% plot()
+
+```
+
+The heteroscedasticity is off the charts. [Heteroscedasticity in Regression Analysis](https://statisticsbyjim.com/regression/heteroscedasticity-regression/) talks about causes and fixes.
+
+> While heteroscedasticity does not cause bias in the coefficient estimates, *it does make them less precise*. Lower precision increases the likelihood that the coefficient estimates are further from the correct population value.
+> *Heteroscedasticity tends to produce p-values that are smaller than they should be* . This effect occurs because heteroscedasticity increases the variance of the coefficient estimates but the OLS procedure does not detect this increase. Consequently, OLS calculates the t-values and F-values using an underestimated amount of variance. *This problem can lead you to conclude that a model term is statistically significant when it is actually not significant.*
+
+It was too late when I first read the article to understand most of what it was saying. The primary tip was to transform variables in order to deal with the problem.
+
+I'm not sure which variables to tackle first, although the pattern seems to stem from the count data. Comparing this heteroscedasticity-plot to the rawdata-plot (in _Interaction between species and flash_), suggests that what I'm seeing is the 0s at the bottom, then the 1s, 2s, 3s and some odd 4s and 5s.
+`r table(time.dep2$n.obs)`.
+
+Would a cumulative sum solve this problem? I tried at the bottom of this document, but was unsuccessful.
+
+
+```{r performance-compare}
+compare_performance(fit, fit_int)
+```
+
+
+## Make a fit including Control group
+
+The Control group is now stretched out for a whole year, while the other cameras are divided in quarters of a year. This affects how the datapoints from the control-group are weighted. If i simply cut the control-group off after 61 days, I would only get the data from the first winter/spring off my study, which again would make the groups differ in an unrealistic way. 
+If I want to include the control-group, I have to split it up in quarters way upstream my scripts in order for the time.deployment to be calculated correctly. Therefore, I will leave exclude the control-group data for now, so I can focus on getting some result output.
+
+```{r with-control, cache=TRUE}
+# species as a faceting factor
+fitc <- glmer(
+  n.obs ~ time.deploy + as.factor(flash) + species + # fixed effects. Species included
+    (1 | loc) + (1 | month),  # random effects
+  data=time.dep2c, # Control included, but ([time.dep2c$time.deploy < 6.1,])
+  #time since deployment more than 61 days excluded
+  family = poisson) # data and distribution
+
+mydfc <- ggpredict(fitc, terms = c("time.deploy", "flash", "species"))
+#mydfc
+```
+
+```{r with-control-plots, cache=TRUE}
+ggplot(mydfc, aes(x, predicted, colour = group)) + 
+  geom_line() + facet_wrap(~facet)
+
+plot(mydfc, facet = TRUE)
+plot(mydfc, rawdata = TRUE) + labs(caption = "rawdata")
+plot(mydfc, residuals = TRUE) + labs(caption = "residuals")
+
+performance::check_model(fitc) # check assumptions
+summary(fitc)
+report::report(fitc) # text-summary of my model, to include in a report
+```
+
+The effect of white LED flash was still considered significantly positive, although a little less than when control was excluded.
+The control-group had a non-significant negative difference from the intercept-group (flash = 0).
+
+Not really any large changes here, and I don't think there is much to say about any of it, as the control group needs to be recoded first.
+
+## Would summing counts of species per loc per period fix things?
+
+Or maybe cumulative counts?
+```{r summing}
+csum <- time.dep2 %>% group_by(loc, species, period, time.deploy) %>% 
+  summarise(count = cumsum(n.obs)) #%>%
+time.csum <- time.dep2 %>% left_join(csum)
+time.csum$count %>% table()
+
+# filter species
+# sp = "raadyr"
+# time_sp <- filter(time.cumsum, species %in% sp) # .dep2 = without control
+# m  <- glmer(cumsum ~ time.deploy + as.factor(flash) + # fixed effects
+#               (1 | loc) + (1 | month), # random effects
+#             data   = time_sp,
+#             family = poisson) # poisson family of distributions
+# summary(m)
+# # ggpredict similar to expand.grid
+# p <- ggeffects::ggpredict(m, terms = c("time.deploy", "flash"))
+# plot(p)
+# plot(p, add.data = TRUE) + labs(caption = "add.data = TRUE")
+# plot(p, residuals = TRUE) + labs(caption = "residuals")
+# # performance check and report
+# performance::check_model(m) # check assumptions
+# report::report(m) # text-summary of my model, to include in a report
+```
+
+Unable to solve this problem now.
+

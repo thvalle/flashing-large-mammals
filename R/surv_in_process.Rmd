@@ -10,14 +10,14 @@ output: github_document
 # knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 # options(tibble.print_min = 5)
 
-library(pander)     # for prettier outputs of summaries and tables etc.
-#library(report)     # for reporting test-statistics 
 library(tidyverse)  # entering the tidyverse
 library(tidymodels) # and bringing the model-toolbox
 library(lubridate)  # lubricating the handling of dates
 library(survival)   # the original survival-package
 library(survminer)  # a plot-package for ggplot integration
 library(vip)        # for variable importance plots
+library(pander)     # for prettier outputs of summaries and tables etc.
+library(report)     # for reporting test-statistics 
 library(equatiomatic) # Model formula displayer in RMarkdown
 
 # Analysis - Survival. Including spatial covariates 
@@ -762,7 +762,13 @@ ggcoxzph(d.mod5_gaupe,font.main = 12, ggtheme = theme_classic2())
 -------------------------------------------------------------
 # Session Info
 
-```{r toLatex-sessinfo}
+
+
+Another solution making use of devtools::session_info() which can be copied straight into an R markdown file (Rmd):
+R environment
+
+
+```{r Reproducibility-SessionInfo-R-packages}
 #writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
 library(magrittr)
 library(devtools)
@@ -772,23 +778,15 @@ library(kableExtra)
 #   kable_styling(latex_options = c("striped", "scale_down")) %>%
 #   row_spec(1, color = "red") %>%
 #  as_image(width = 8, file = "Thesis/img/sessinfo.png")
- # write_lines("Thesis/tex/sessinfo.tex")
-
-SI <- sessionInfo() %>% as.list()
-SI[[]]  
-mutate() %>% 
-  as_data_frame()
-toLatex() %>% 
-write_lines("Thesis/tex/sessinfo.tex")
-```
+# write_lines("Thesis/tex/sessinfo.tex")
+# 
+# SI <- sessionInfo() %>% as.list() 
+# #SI[[]]
+#   as_tibble()
+# toLatex() %>% 
+# write_lines("Thesis/tex/sessinfo.tex")
 
 
-
-Another solution making use of devtools::session_info() which can be copied straight into an R markdown file (Rmd):
-R environment
-
-
-```{r Reproducibility-SessionInfo-R-packages}
 df_session_packages <- devtools::session_info()$packages %>% 
   as.data.frame(.) %>% 
   filter(attached == TRUE) %>% 
@@ -804,18 +802,17 @@ kable(
   caption = "(ref:Reproducibility-SessionInfo-R-packages-title)", # complete caption for main document
   caption.short = " ", # "(ref:Reproducibility-SessionInfo-R-packages-caption)" # short caption for LoT
   "latex") %>% 
-write_lines("Thesis/tex/sessinfo.tex")
+write_lines("../Thesis/tex/sessinfo.tex")
 
+# fileConn<-file("sessinfo.tex")
+# output <- capture.output(sessionInfo())
+# cat(output, file=fileConn)
+# close(fileConn)
 ```
 
 
 ```{r sessionInfo}
 sessionInfo()
-fileConn<-file("sessinfo.tex")
-output <- capture.output(sessionInfo())
-cat(output, file=fileConn)
-close(fileConn)
-
 # packrat
 # checkpoint
 ```
