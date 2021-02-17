@@ -4,36 +4,101 @@ author: "Torgeir"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
-    df_print: paged
     code_folding: hide 
+    toc: true
 ---
 
-```{r setup, echo=FALSE}
+```{r setup}
 library(tidyverse)
 library(lme4)
 library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regression Models
 # more at: https://strengejacke.github.io/ggeffects/
 library(performance) # diagnostic-plots to check assumptions
 # Data drom Data_exploration2_nesting.R
-time.dep <- readRDS("time.dep")
+time.dep <- readRDS("time.dep") %>% 
+  mutate(time.deploy = time.deploy/10) # shortening / zooming out on deploy
+                    # to avoid warnings during model fitting
 ```
 
 ## Purpose
 
 This notebook is for the glmm-modelling of my six most common large mammals.
-First, I filter out my species of interest.
+First, I filter out my species of interest. I also make an object with and one without the control group, as this group isn't actually formated correctly for my analysis as of now.
 
-```{r time_sp}
+```{r timedep2}
 sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe")
-time.dep$time.deploy <- time.dep$time.deploy/10 # shortening / zooming out on deploy
 time.dep2c <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
   filter(species %in% sp) %>% #filtering out species
   # including Control as part of the flash-column, since it differs from flash=0
-  mutate(flash = ifelse(period == "Control", "Control", flash)) 
+  mutate(flash = factor(
+        ifelse(period == "Control", "Control", flash)),
+         week = lubridate::isoweek(date))
 time.dep2 <- time.dep2c %>% 
-  filter(!period == "Control") # but removing it for now, because it is set up in a longer timeframe
+  filter(!period == "Control") %>%  # but removing it for now, because it is set up in a longer timeframe
+  mutate(flash = factor(flash, levels = c(0,1)) )
+class(time.dep2$flash)
 ```
+
+Not all periods have identical length. Hence, I need to set a length where at least 95% of all periods are included, to help my model avoiding mistakes.
+
+Update: Couldn't think of a good way to do that, so I'm using the median length instead, as I understood by Neri was done in Heinrich et.al. 2020.
+
+
+```{r period-length}
+# filter out shortest periods, and find median period length
+# first find lengths
+time.period <- time.dep2 %>% group_by(loc, period, flash) %>% 
+  summarise(period_length = max(time.deploy))
+# then merge lengths and filter based on that
+time.dep2 <- time.dep2 %>% left_join(time.period) %>%
+  filter(period_length > 2)
+# find median length after filtering short lengths out
+time.period %>% filter(period_length>2) %>% 
+  summary() # median period length 84 days, mean 88
+h <- time.dep2 %>% group_by(loc, period, period_length)%>% nest() %>% 
+  select(!data) #both methods found the same result. Reassuring!
+
+#extracting median and multiplying by 10, to use in the correctly scaled plot
+h <- h$period_length %>% median() * 10
+
+# checking which periods were removed
+time.period %>%
+  filter(period_length < 2) %>%
+  arrange(period_length)
+
+# plot periods with median as intercept
+p_td <- ggplot(time.dep2, aes(loc, 10*time.deploy, colour = period, ))  +
+  geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
+  coord_flip() + 
+  labs(title = "Period lengths per camera",
+       x = "Location", y = "Time since deployment",
+       caption = "An overweight of IR days (flash = 0) after the dotted median line") +
+  ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
+p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
+  #annotate(geom = "text",x=4, y=h+8.6, label = "- median", size = 3, alpha =.7) +
+  scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150)))
+  
+# failed attempts that could inspire a better plot later
+# p_td + geom_hline(aes(yintercept = h))+ # using median days as intercept 
+#        scale_y_continuous(breaks = sort(c(ggplot_build(p_td)$layout$panel_ranges[[1]]$y.major_source, h)))
+# geom_text(aes(25, h, label = "median", vjust = -1), nudge_y = 10, show.legend = F)
+
+# filtering out periods longer than median* length.
+time.dep3 <- time.dep2 %>% filter(time.deploy < h/10)
+```
+
+84 days is the median period length. I will use that to filter out data beyond that point. Periods below 20 days has now been removed, which as of 17.02.2021 (before updated data from Neri) were 4 periods, 3 of whom were flash:
+
+|loc|	period|flash |period_length| 
+|---|-------|------|:-----------:|
+|829|	1_1   |	1	   |      0.0    |
+|925|	1_1   |	1	   |      0.8    |
+|850|	1_2   |	1	   |      0.9    |
+|829|	0_2   |	0	   |      1.2    |
+
+
+
 
 # Modelling
 
@@ -42,8 +107,8 @@ time.dep2 <- time.dep2c %>%
 ```{r raadyr}
 # filter species
 sp = "raadyr"
-time_sp <- filter(time.dep2, species %in% sp) # .dep2 = without control
-m  <- glmer(n.obs ~ time.deploy + as.factor(flash) + # fixed effects
+time_sp <- filter(time.dep3, species %in% sp) # .dep3 = without control
+m  <- glmer(n.obs ~ time.deploy + flash + # fixed effects
               (1 | loc) + (1 | month), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
@@ -75,7 +140,7 @@ White LED flash is considered as a non-significant positive predictor, and the e
 ### checking the effect of filtering time.deploy < 6.1
 
 ```{r raadyr-61}
-m61  <- glmer(n.obs ~ time.deploy + as.factor(flash) + # fixed effects
+m61  <- glmer(n.obs ~ time.deploy + flash + # fixed effects
               (1 | loc) + (1 | month), # random effects
             data   = time_sp[time_sp$time.deploy < 6.1,], # = all tim.dep less than 61 days
             family = poisson) # poisson family of distributions
@@ -99,9 +164,9 @@ Variance of loc seems unchanged, whilst for month it has doubled.
 ```{r all-species, cache=TRUE}
 # species as a faceting factor
 fit <- glmer(
-  n.obs ~ time.deploy + as.factor(flash) + species + # fixed effects. Species included
+  n.obs ~ time.deploy + flash + species + # fixed effects. Species included
     (1 | loc) + (1 | month),  # random effects
-  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
+  data=time.dep3, # Control excluded ([time.dep3$time.deploy < 6.1,])
   family = poisson) # data and distribution
 
 mydf <- ggpredict(fit, terms = c("time.deploy", "flash", "species"))
@@ -177,9 +242,9 @@ To test if the effect will vary between the species I need to include an interac
 ```{r all-interaction, cache=TRUE}
 # species as a faceting factor
 fit_int <- glmer(
-  n.obs ~ time.deploy + as.factor(flash) * species + # fixed effects. Species included
+  n.obs ~ time.deploy + flash * species + # fixed effects. Species included
     (1 | loc) + (1 | month),  # random effects
-  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
+  data=time.dep3, # Control excluded ([time.dep3$time.deploy < 6.1,])
   family = poisson) # data and distribution
 
 mydf_int <- ggpredict(fit_int, terms = c("time.deploy", "flash", "species"))
@@ -225,6 +290,7 @@ plot(clin2)
 Multicollinearity is only due to the interaction. In this stand-alone plot it is easy to see that the time.deploy stays unaffected.
 
 As stated by Paul Allison in [When Can You Safely Ignore Multicollinearity](https://statisticalhorizons.com/multicollinearity), ( _accessed 15.02.2021_ ):
+
 >2. The high VIFs are caused by the inclusion of powers or products of other variables. If you specify a regression model with both x and x2, there’s a good chance that those two variables will be highly correlated. Similarly, if your model has x, z, and xz, both x and z are likely to be highly correlated with their product. This is not something to be concerned about, however, because the p-value for xz is not affected by the multicollinearity.  This is easily demonstrated: you can greatly reduce the correlations by “centering” the variables (i.e., subtracting their means) before creating the powers or the products. But the p-value for x2 or for xz will be exactly the same, regardless of whether or not you center. And all the results for the other variables (including the R2 but not including the lower-order terms) will be the same in either case. So the multicollinearity has no adverse consequences.
 
 ```{r performance-resid}
@@ -260,7 +326,7 @@ The heteroscedasticity is off the charts. [Heteroscedasticity in Regression Anal
 It was too late when I first read the article to understand most of what it was saying. The primary tip was to transform variables in order to deal with the problem.
 
 I'm not sure which variables to tackle first, although the pattern seems to stem from the count data. Comparing this heteroscedasticity-plot to the rawdata-plot (in _Interaction between species and flash_), suggests that what I'm seeing is the 0s at the bottom, then the 1s, 2s, 3s and some odd 4s and 5s.
-`r table(time.dep2$n.obs)`.
+`r table(time.dep3$n.obs)`.
 
 Would a cumulative sum solve this problem? I tried at the bottom of this document, but was unsuccessful.
 
@@ -278,7 +344,7 @@ If I want to include the control-group, I have to split it up in quarters way up
 ```{r with-control, cache=TRUE}
 # species as a faceting factor
 fitc <- glmer(
-  n.obs ~ time.deploy + as.factor(flash) + species + # fixed effects. Species included
+  n.obs ~ time.deploy + flash + species + # fixed effects. Species included
     (1 | loc) + (1 | month),  # random effects
   data=time.dep2c, # Control included, but ([time.dep2c$time.deploy < 6.1,])
   #time since deployment more than 61 days excluded
@@ -308,30 +374,37 @@ Not really any large changes here, and I don't think there is much to say about 
 
 ## Would summing counts of species per loc per period fix things?
 
-Or maybe cumulative counts?
-```{r summing}
-csum <- time.dep2 %>% group_by(loc, species, period, time.deploy) %>% 
-  summarise(count = cumsum(n.obs)) #%>%
-time.csum <- time.dep2 %>% left_join(csum)
-time.csum$count %>% table()
-
-# filter species
-# sp = "raadyr"
-# time_sp <- filter(time.cumsum, species %in% sp) # .dep2 = without control
-# m  <- glmer(cumsum ~ time.deploy + as.factor(flash) + # fixed effects
-#               (1 | loc) + (1 | month), # random effects
-#             data   = time_sp,
-#             family = poisson) # poisson family of distributions
-# summary(m)
-# # ggpredict similar to expand.grid
-# p <- ggeffects::ggpredict(m, terms = c("time.deploy", "flash"))
-# plot(p)
-# plot(p, add.data = TRUE) + labs(caption = "add.data = TRUE")
-# plot(p, residuals = TRUE) + labs(caption = "residuals")
-# # performance check and report
-# performance::check_model(m) # check assumptions
-# report::report(m) # text-summary of my model, to include in a report
-```
-
+Or maybe cumulative counts? _Neri disapproves_
 Unable to solve this problem now.
 
+----------------------------------------------------------
+
+# After mailing with Neri
+
+
+```{r all-species2}
+
+# species as a faceting factor
+fit_int2 <- glmer(
+  n.obs ~ time.deploy * flash * species +# fixed effects. Species included
+    (1 | loc) + (1 | week),  # random effects
+  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
+  family = poisson) # data and distribution
+
+mydf_int2 <- ggpredict(fit_int2, terms = c("time.deploy", "flash"))
+#mydf
+```
+
+
+```{r all-species2-plot}
+ggplot(mydf, aes(x, predicted, colour = group)) + 
+  geom_line() + facet_wrap(~facet)
+
+plot(mydf, facet = TRUE)
+plot(mydf, rawdata = TRUE) + labs(caption = "rawdata")
+plot(mydf, residuals = TRUE) + labs(caption = "residuals")
+
+performance::check_model(fit) # check assumptions
+summary(fit)
+report::report(fit) # text-summary of my model, to include in a report
+```
