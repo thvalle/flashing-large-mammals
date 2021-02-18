@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-geo/kameraliste.csv
-camerahabitat20210110.xlsx
-TIFF_GRAIN
+R/geo/kameraliste.csv
+R/camerahabitat20210110.xlsx
+R/TIFF_GRAIN
+R/glmm_in_process_cache
