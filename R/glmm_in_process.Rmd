@@ -86,6 +86,9 @@ p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
 
 # filtering out periods longer than median* length.
 time.dep3 <- time.dep2 %>% filter(time.deploy < h/10)
+
+
+# beregn median for blits og utan blits, og ta minste median
 ```
 
 84 days is the median period length. I will use that to filter out data beyond that point. Periods below 20 days has now been removed, which as of 17.02.2021 (before updated data from Neri) were 4 periods, 3 of whom were flash:
@@ -132,6 +135,7 @@ At least the normality of my random effects holds up, which signifies a good stu
 Not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
 
 The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera.
+
 > I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. Chances are I've scared animals other times as well, but haven't noticed it.
 
 Time since deployment is considered a positive, but non-significant predictor.
@@ -388,23 +392,24 @@ Unable to solve this problem now.
 fit_int2 <- glmer(
   n.obs ~ time.deploy * flash * species +# fixed effects. Species included
     (1 | loc) + (1 | week),  # random effects
-  data=time.dep2, # Control excluded ([time.dep2$time.deploy < 6.1,])
-  family = poisson) # data and distribution
+  data=time.dep3, #filter(time.dep3, species %in% c("rev","raadyr","grevling")), 
+  family = poisson, # data and distribution
+  control = glmerControl(calc.derivs = FALSE))
 
-mydf_int2 <- ggpredict(fit_int2, terms = c("time.deploy", "flash"))
+mydf_int2 <- ggpredict(fit_int2, terms = c("time.deploy", "flash", "species"))
 #mydf
 ```
 
 
 ```{r all-species2-plot}
-ggplot(mydf, aes(x, predicted, colour = group)) + 
+ggplot(mydf_int2, aes(x, predicted, colour = group)) +
   geom_line() + facet_wrap(~facet)
 
-plot(mydf, facet = TRUE)
-plot(mydf, rawdata = TRUE) + labs(caption = "rawdata")
-plot(mydf, residuals = TRUE) + labs(caption = "residuals")
+plot(mydf_int2, facet = TRUE)
+plot(mydf_int2, rawdata = TRUE) + labs(caption = "rawdata")
+plot(mydf_int2, residuals = TRUE) + labs(caption = "residuals")
 
-performance::check_model(fit) # check assumptions
-summary(fit)
-report::report(fit) # text-summary of my model, to include in a report
+performance::check_model(fit_int2) # check assumptions
+summary(fit_int2)
+report(fit_int2) # text-summary of my model, to include in a report
 ```

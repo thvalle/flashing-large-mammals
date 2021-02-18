@@ -1,0 +1,403 @@
+---
+title: "GLMM per art"
+author: "Torgeir"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    code_folding: hide 
+    toc: true
+---
+
+```{r setup}
+library(tidyverse)
+library(lme4)
+library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regression Models
+# more at: https://strengejacke.github.io/ggeffects/
+library(performance) # diagnostic-plots to check assumptions
+library(report) # Result-summaries in text-format
+# Data drom Data_exploration2_nesting.R
+time.dep <- readRDS("time.dep") %>% 
+  mutate(time.deploy = time.deploy/10) # shortening / zooming out on deploy
+                    # to avoid warnings during model fitting
+```
+
+## Purpose
+
+This notebook is meant to set up the final GLMModels going into my thesis. Upset is identical to the "glmm_in_process"-file, but structure is different as I'm going to make one model for each species.
+
+### Formula
+The model formula I will use is $n \sim \ time.deploy\ * flash $ for each species, and my $\alpha = 0.05$.
+
+```{r timedep2}
+sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe")
+time.dep2c <- time.dep %>% 
+  rename(species = validated_species) %>%  #shortening name
+  filter(species %in% sp) %>% #filtering out species
+  # including Control as part of the flash-column, since it differs from flash=0
+  mutate(flash = factor(
+        ifelse(period == "Control", "Control", flash)),
+         week = lubridate::isoweek(date))
+time.dep2 <- time.dep2c %>% 
+  filter(!period == "Control") %>%  # but removing it for now, because it is set up in a longer timeframe
+  mutate(flash = factor(flash, levels = c(0,1)) )
+class(time.dep2$flash)
+```
+
+Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
+
+First I'll filter out any periods shorter than 4 days ( _as of 18.02.2021, only 1 period_ ). 
+Then I'll cut the duration of all periods overextending the smallest median.
+
+
+```{r period-median, message=FALSE}
+# filter out shortest periods, and find median period length
+cut <- 0.4 # setting 4 days as the minimum length of a period
+# find lengths
+time.period <- time.dep2 %>% group_by(loc, period, flash) %>% 
+  summarise(period_length = max(time.deploy))
+# checking which periods will be removed
+time.period %>% filter(period_length < cut) %>%
+  arrange(period_length) #%>% kableExtra::kable("html")
+# then merge lengths and filter based on that
+time.dep3 <- time.dep2 %>% left_join(time.period) %>%
+  filter(period_length > cut)
+# find median length after filtering short lengths out
+time.period %>% filter(period_length > cut) %>% filter(flash == 1) %>%  
+  summary() # median period length 85 days, mean: 84
+time.period %>% filter(period_length > cut) %>% filter(flash == 0) %>%  
+  summary() # median period length 79 days, mean: 89
+
+# extract lengths of each unique period
+h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
+  select(!data) 
+#extracting median and multiplying by 10, to use in the correctly scaled plot
+hh <-       h$period_length[h$flash == 1] %>%  median()       # median white LED
+hh <- c(hh, h$period_length[h$flash == 0] %>%  median()) * 10 # + median IR
+# smallest median 
+h <- min(hh)
+```
+
+79 days is the median period length of IR-periods, and it is shorter than the median of white LED flash. The summary also tells us that
+
+Periods below 4 days has now been removed, which as of 18.02.2021 (before updated data from Neri) were 1 period, which was a flash period of 0 days:
+|loc|	period|flash |period_length| 
+|---|-------|------|:-----------:|
+|829|	1_1   |	1	   |      0.0    |
+
+
+```{r period-length, message=FALSE}
+# plot periods with median as intercept
+p_td <- time.dep3 %>% 
+  ggplot(aes(loc, 10*time.deploy, colour = period, ))  +
+  geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
+  coord_flip() + 
+  labs(title = "Period lengths per camera",
+       x = "Location", y = "Time since deployment",
+       caption = "Dotted lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.") +
+  ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
+p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
+  geom_hline(aes(yintercept = max(hh)), linetype = "dashed",  alpha =.5) +
+  #annotate(geom = "text",x=4, y=h+8.6, label = "- median", size = 3, alpha =.7) +
+  scale_y_continuous(breaks = sort(c(0, 50, hh, 100, 150)))
+  
+# failed attempts that could inspire a better plot later
+# p_td + geom_hline(aes(yintercept = h))+ # using median days as intercept 
+#        scale_y_continuous(breaks = sort(c(ggplot_build(p_td)$layout$panel_ranges[[1]]$y.major_source, h)))
+# geom_text(aes(25, h, label = "median", vjust = -1), nudge_y = 10, show.legend = F)
+```
+
+There was an overweight of IR-periods extending past the median line.
+
+
+_Lastly, performing the filter:_
+```{r time.dep4-filtr}
+# filtering out periods longer than (shortest) median length.
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10)
+```
+
+
+# Modelling
+
+## Roe deer
+
+### Diagnostics
+
+```{r raadyr}
+# filter species
+sp = "raadyr"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+The response variable is a summary of number of events per day. Most days had no roe deer.
+In the performance-test for model assumptions _it is clear that some assumptions aren't met._
+
+#### Negative
+In the non-normality of resiudals-plot, the residuals skew off from the line when moving towards positive quantiles.
+There is _not_ a homogeneity of variance. _Maybe this could be fixed by centering the n.obs-column?_
+
+There appeares to be five influential observations in the Cook's distance-plot, maybe more, as the warning from ggrepel refers to 93 unlabeled data points due to overlaps.
+
+#### Positive
+Although the model has an interaction term between flash and time since deployment, the multicollinearity between them is low!
+My random effects follows a normal distribution.
+
+#### Concluding
+I am not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
+
+```{r raadyr-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+### Model interpretation
+The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera.
+
+> I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. Chances are I've scared animals other times as well, but haven't noticed it.
+
+The effect of _Time since deployment_ is non-significant, and $\beta = 0.008$.
+That means there is no difference on the baseline detection rate for an IR camera over time (after controlling for seasonal changes). 
+
+For white LED flash  $\beta = 0.170$, meaning that the intercept is slightly higher than for IR, but the difference is non-significant ($p = 0.18$).
+However, the detection rate is slightly decreasing the longer the white LED stays, which differs from the IR, _
+but the effect is non-significant_ ($p = 0.23$).
+
+#### Hypothesising
+If there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods often start after a flash period.
+
+Remembering my study design, 20 cameras start with white LED, 20 with IR. _Intercept should be equal_ (1st period).
+2nd period; white LED moved, new LED CTs (same intercept), new IR CTs (hypothetical lower intercept due to flash effect).
+3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept).
+4th period;  - -  ||  - -  , new LED CTs (- - | | - - ), new IR CTs (   -  -  |  |  -  -  ).
+
+Which sums up to 3 IR periods where detection rates could start lower than that of white LED. And over time the lack of white LED flash in the new IR sites would account for an _increase_ in detection rates.
+
+The effect would of course vary because some locations experienced _gaps_ due to full SD cards or empty batteries.
+<!--_Maybe, after my thesis, I could try to pry out these differences-->
+
+
+
+
+# f
+
+## Red Fox
+
+```{r rev}
+# filter species
+sp = "rev"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r rev-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+
+
+
+
+## Badger
+
+```{r grevling}
+# filter species
+sp = "grevling"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r grevling-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+
+
+
+
+## Moose
+
+```{r elg}
+# filter species
+sp = "elg"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r elg-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+
+
+
+
+## Red deer
+
+```{r hjort}
+# filter species
+sp = "hjort"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r hjort-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+
+
+
+
+## Lynx
+
+```{r gaupe}
+# filter species
+sp = "gaupe"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r gaupe-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+
+
+
+
+----------------------------------------------
+
+
+
+# Hare, deer and squirrelywhere (and pine marten) 
+
+Blueprint for other species in chunk below:
+
+### Diagnostics
+
+```{r xx, eval=FALSE}
+# filter species
+sp = "xx"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+
+### Interpret
+
+```{r xx-report, eval=FALSE}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
