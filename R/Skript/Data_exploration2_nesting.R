@@ -189,10 +189,12 @@ library(lme4)
 # Testing with generalized linear mixed models
 time.dep$month <- as.factor(format(time.dep$date, "%m")) # month-variable
 time.dep$loc <- as.factor(time.dep$loc) # loc as factor
-   saveRDS(time.dep, "time.dep") #for å ta med meg datasett til glmm_in_process
 time.dep$time.deploy <- time.dep$time.deploy/10 # shortening / zooming out on deploy
 
-# Model with random effect of loc and month on the intercept.
+                                 saveRDS(time.dep, "time.dep") #for å ta med meg datasett til glmm_in_process
+# After saving --------------------------------------------------------------------
+
+# Model with random effect of loc and month on the intercept
 sp = "rev"
 my.glmer <- glmer(n.obs ~ time.deploy + as.factor(flash) + (1 | loc) + (1 | month), 
   time.dep[time.dep$validated_species %in% sp & 

@@ -8,11 +8,11 @@ library(dplyr)
 # Import data and divide into treatments ########################################################################################
 
 # Import data
-obs<-readRDS("Data_20210125.rds")
+obs<-readRDS("Data_20210218.rds") # older data:readRDS("Data_20210125.rds")
 colnames(obs)[2]<-"loc"
 
-    obs <- obs[!obs$loc %in% c(943,328,823, 972),] # Remove 972 as this turned out to be a PC850 white LED camera
-    any(obs$loc  %in%  c(943,328,823, 972))
+     obs <- obs[!obs$loc %in% c(943,328,823, 972),] # Remove 972 as this turned out to be a PC850 white LED camera
+     any(obs$loc  %in%  c(943,328,823, 972))
 
 # Including the flashes
 flash1<-readRDS("exifdatablits.RDS")
@@ -178,8 +178,23 @@ ggplot(data=treatment[!is.na(treatment$period),])+
 ggplot(data=treatment[!is.na(treatment$period),])+
   geom_point(aes(y=as.factor(loc), x=date, col=factor(flash)))
   
+      # By Torgeir - To divide control into four periods
+      # The two middle-periods are shorter than the two outer, so I've replicated
+      # that pattern in the breaks I've set. Breaks are set with somewhat close
+      # to my field-work days, but with a focus on getting more days in each period
+      # than the median I use in GLMM to trim long periods.
+ 
+TK <- treatment %>% mutate(period = if_else(period == "Control" & date <  "2019-04-08", "Control_1", period)) #83d
+TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-07-28", "Control_2", period)) #111d
+TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-10-15", "Control_3", period)) #79d
+treatment <- TK %>% mutate(period = if_else(period == "Control" & date >= "2019-10-15", "Control_4", period)) #134d
 
-
+      # some calculations and helpers during the process
+              # length(TK) == length(treatment);  max(treatment$date)
+              # unique(treatment$period);         unique(TK$period)
+              # mn <- min(TK$date); mx <- max(TK$date);  mx - mn
+              # library(lubridate)
+              # mx - ymd("2019-10-15") #- ymd("2019-07-15")
 
 # Creating the effort file and observation file ####################################################################
 
@@ -261,7 +276,7 @@ ggplot(data=effort)+
   facet_wrap(~period, ncol=2) +
   geom_point(aes(y=as.factor(loc), x=date, col=factor(flash)))
 
-ggplot(data=effort)+
+ggplot(effort)+
   # facet_wrap(~period, ncol=3) +
   geom_point(aes(y=as.factor(loc), x=date, col=factor(flash)))
 
@@ -291,32 +306,33 @@ table(b$validated_species)
 
 write.csv(unique(flash$loc), "LokaliteterMedBlits.csv")
 
+
 #Mikrohabitat frå John ---------------------------------------------------------
-
-habitat <- readxl::read_excel("camerahabitat20210110.xlsx") %>% 
-  select(LOKID, TYPE) %>% 
-  rename(loc = LOKID, habitat = TYPE) %>% 
-  add_row(loc = c(840, 841, 850, 925, 1254, 1255),
-          habitat = c("cliff","foot_path","foot_path",
-                      "forest_road","wildlife_trail","canyon")) %>% 
-  arrange(loc)
-# number of loc - matching locs in habitat
-length(unique(obs$loc)) - length(habitat$loc[habitat$loc %in% obs$loc]) # 6
-unique(obs$loc[!obs$loc %in% habitat$loc]) # 6 cam not in habitat file:
-# 840 - cliff         Toppen av ein klippe, kameraet med best utsikt av alle loc
-# 841 - foot_path     bak skihoppbakken, gjengrodd traktorvei ved bekken, 7 menneske i obs
-# 850 - foot_path     Tyristrand, ved vannet der Olav sov på isen, ørten menneske
-# 925 - forest_road   Stengt skogsvei med bauta og bom, ved Tyrifjorden. 10 kjøretøy, 21 menneske
-# 1254- wildlife_trail  Nær fotsti ved toglinja mot Bergen, men peiker mot lite brukte dyretråkk
-# 1255- canyon        Før flå, mellom felte trær i ein skarp dalformasjon
-stations <- read_csv("stations.csv") %>% select(loc, cam_mod)
-habitat <- left_join(habitat, stations, by = "loc") # include cam_mod in the habitat-object
-saveRDS(habitat, "habitat.rds")
-
-# Checking species passed by each loc
-obs %>% 
-  filter(loc %in% 1255) %>% # enter location
-  group_by(species) %>% summarise(n = n()) # sums up observations per species
+# 
+# habitat <- readxl::read_excel("camerahabitat20210110.xlsx") %>% 
+#   select(LOKID, TYPE) %>% 
+#   rename(loc = LOKID, habitat = TYPE) %>% 
+#   add_row(loc = c(840, 841, 850, 925, 1254, 1255),
+#           habitat = c("cliff","foot_path","foot_path",
+#                       "forest_road","wildlife_trail","canyon")) %>% 
+#   arrange(loc)
+# # number of loc - matching locs in habitat
+# length(unique(obs$loc)) - length(habitat$loc[habitat$loc %in% obs$loc]) # 6
+# unique(obs$loc[!obs$loc %in% habitat$loc]) # 6 cam not in habitat file:
+# # 840 - cliff         Toppen av ein klippe, kameraet med best utsikt av alle loc
+# # 841 - foot_path     bak skihoppbakken, gjengrodd traktorvei ved bekken, 7 menneske i obs
+# # 850 - foot_path     Tyristrand, ved vannet der Olav sov på isen, ørten menneske
+# # 925 - forest_road   Stengt skogsvei med bauta og bom, ved Tyrifjorden. 10 kjøretøy, 21 menneske
+# # 1254- wildlife_trail  Nær fotsti ved toglinja mot Bergen, men peiker mot lite brukte dyretråkk
+# # 1255- canyon        Før flå, mellom felte trær i ein skarp dalformasjon
+# stations <- read_csv("stations.csv") %>% select(loc, cam_mod)
+# habitat <- left_join(habitat, stations, by = "loc") # include cam_mod in the habitat-object
+# saveRDS(habitat, "habitat.rds")
+# 
+# # Checking species passed by each loc
+# obs %>% 
+#   filter(loc %in% 1255) %>% # enter location
+#   group_by(species) %>% summarise(n = n()) # sums up observations per species
 
 
 library(lubridate)
