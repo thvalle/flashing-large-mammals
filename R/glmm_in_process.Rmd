@@ -15,7 +15,7 @@ library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regressi
 # more at: https://strengejacke.github.io/ggeffects/
 library(performance) # diagnostic-plots to check assumptions
 # Data drom Data_exploration2_nesting.R
-time.dep <- readRDS("time.dep") 
+time.dep <- readRDS("timedep.rds") 
 ```
 
 ## Purpose

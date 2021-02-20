@@ -19,8 +19,30 @@ colnames(obs)
 # Then, we aggregate the observations of the different
 # species based on the obs object
 obs.stat <- ddply(obs, .(loc, period, validated_species), summarise, 
-  n.obs = length(unique(datetime)))  # Change to to datetime here since we might have several 
+  n.obs = length(unique(datetime)))  # Change to datetime here since we might have several 
 # observation during a single day
+
+
+torg <- obs %>% group_by(loc,period,validated_species) %>%
+  summarise( diff = round(difftime(datetime, lag(datetime), units="mins"), 0) )
+torg$diff[is.na(torg$diff)] <- 60 # all "first"-observations gets an arbitrary t.diff of 1 hour
+
+torg2 <- torg %>% group_by(loc,period,validated_species) %>%
+  summarise( n.obs2 = sum( diff > 10) ) # count all observations that were
+                              # more than 10 mins later than the previous event
+
+diff.stat <- obs.stat %>% left_join(torg2) %>% 
+  mutate( eq = n.obs != n.obs2)
+sum(diff.stat$eq > 0) # 585 instances of 
+# diff.stat %>%  filter(eq > 0)
+
+diff.stat %>% group_by(validated_species) %>% 
+  summarise(n = sum(eq > 0)) %>% filter(n > 0) %>% 
+  ggplot(aes(n,reorder(validated_species, n, FUN = mean))) +
+  geom_col() +
+  labs(y = element_blank(), x = element_blank(),
+       title = "number of times obs.stat differs from torg2",
+       subtitle = "filtered timediff > 10min" )
 
 # Not all possible combinations of camera traps, camera traps
 # and species will be in the obs.stat, since not all species
@@ -140,8 +162,18 @@ for (i in unique(obs$loc)) {
   }
 }
 
-obs.agg <- ddply(obs, .(loc, date, validated_species), summarise, 
-  n.obs = length(validated_species))
+
+torg <- obs %>% group_by(loc,date,validated_species) %>%
+  summarise( diff = round(difftime(datetime, lag(datetime), units="mins"), 0) )
+torg$diff[is.na(torg$diff)] <- 60
+# obs.agg <- ddply(obs, .(loc, date, validated_species), summarise, 
+#   n.obs = length(validated_species))
+
+obs.agg <- torg %>% group_by(loc,date,validated_species) %>%
+  summarise( n.obs = sum( diff > 15) ) # count all observations that were
+# more than 15 mins later than the previous event
+
+
 
 time.dep <- effort
 temp <- time.dep
@@ -152,7 +184,7 @@ for (i in 2:length(unique(obs$validated_species))) {
   time.dep <- rbind(time.dep, temp)
 }
 
-time.dep <- merge(time.dep, obs.agg, by = c("loc", "date", "validated_species"), 
+time.dep <- merge(time.dep, obs.agg, by = c("loc", "date", "validated_species"),
   all.x = TRUE)
 
 time.dep[is.na(time.dep$n.obs), "n.obs"] <- 0
@@ -173,8 +205,7 @@ time.dep$loc <- as.factor(time.dep$loc)
 my.glm <- glm(n.obs ~ time.deploy + as.factor(flash), time.dep[time.dep$validated_species %in% 
   sp & !time.dep$period %in% "Control", ], family = poisson)
 summary(my.glm)  # Ignores the fact that there might be seasonal effects or potential effect of camera site. 
-plot(n.obs ~ time.deploy, data=time.dep)
-
+plot(n.obs ~ time.deploy, ylim=c(0,15), data=filter(time.dep, validated_species!="nothing"))
                                         
 new.dat <- expand.grid(flash = c(0, 1), time.deploy = 0:100)
 new.dat$fit <- predict(my.glm, newdata = new.dat, type = "response")
@@ -191,7 +222,9 @@ time.dep$month <- as.factor(format(time.dep$date, "%m")) # month-variable
 time.dep$loc <- as.factor(time.dep$loc) # loc as factor
 time.dep$time.deploy <- time.dep$time.deploy/10 # shortening / zooming out on deploy
 
-                                 saveRDS(time.dep, "time.dep") #for å ta med meg datasett til glmm_in_process
+                                 saveRDS(time.dep, "timedep.rds") #for å ta med meg datasett til glmm_in_process
+
+                                 
 # After saving --------------------------------------------------------------------
 
 # Model with random effect of loc and month on the intercept

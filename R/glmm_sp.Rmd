@@ -16,31 +16,42 @@ library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regressi
 library(performance) # diagnostic-plots to check assumptions
 library(report) # Result-summaries in text-format
 # Data drom Data_exploration2_nesting.R
-time.dep <- readRDS("time.dep") %>% 
-  mutate(time.deploy = time.deploy/10) # shortening / zooming out on deploy
-                    # to avoid warnings during model fitting
+time.dep <- readRDS("timedep.rds")
 ```
 
 ## Purpose
 
-This notebook is meant to set up the final GLMModels going into my thesis. Upset is identical to the "glmm_in_process"-file, but structure is different as I'm going to make one model for each species.
+This notebook is meant to set up the final GLMModels going into my thesis. Upset is identical to the "glmm_in_process"-file, but structure is different as I'm going to make one model for each species. I will write my thoughts about each model as I go along, which will guide me in the writing of method, result and discussion.
+
+# Modelling
+
+### Why GLMM?
+
+Response from a [stackexchange question](https://stats.stackexchange.com/questions/226946/r-lmer-vs-glmer)
+about the differences of `lmer` and `glmer`-functions:
+
+>lmer is used to fit linear mixed-effect models, so it assumes that the residual error has a Gaussian distribution. If your dependent variable A is a binary outcome (e.g. a yes/no response), then the error distribution is binomial and not Gaussian. In this case you have to use glmer, which allow to fit a generalized linear mixed-effects model: these models include a link function that allows to predict response variables with non-Gaussian distributions. One example of link function that could work in your case is the logistic function, which takes an input with any value from negative to positive infinity and return an output that always takes values between zero and one, which is interpretable as the probability of the binary outcome (e.g. the probability of the subject responding 'yes').
+
+
+
 
 ### Formula
 The model formula I will use is $n \sim \ time.deploy\ * flash $ for each species, and my $\alpha = 0.05$.
 
 ```{r timedep2}
 sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe")
-time.dep2c <- time.dep %>% 
+ctrl <- c("Control_1", "Control_2", "Control_3","Control_4")
+time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
   filter(species %in% sp) %>% #filtering out species
   # including Control as part of the flash-column, since it differs from flash=0
   mutate(flash = factor(
-        ifelse(period == "Control", "Control", flash)),
+        ifelse(period %in% ctrl, "Control", flash)),
          week = lubridate::isoweek(date))
-time.dep2 <- time.dep2c %>% 
-  filter(!period == "Control") %>%  # but removing it for now, because it is set up in a longer timeframe
-  mutate(flash = factor(flash, levels = c(0,1)) )
-class(time.dep2$flash)
+# time.dep2 <- time.dep2c %>% 
+#   filter(!period %in% ctrl) %>%  # but removing it for now, because it is set up in a longer timeframe
+#   mutate(flash = factor(flash, levels = c(0,1)) )
+# class(time.dep2$flash)
 ```
 
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
@@ -51,22 +62,21 @@ Then I'll cut the duration of all periods overextending the smallest median.
 
 ```{r period-median, message=FALSE}
 # filter out shortest periods, and find median period length
-cut <- 0.4 # setting 4 days as the minimum length of a period
+cut <- .5 # setting the minimum length of a period
 # find lengths
 time.period <- time.dep2 %>% group_by(loc, period, flash) %>% 
   summarise(period_length = max(time.deploy))
 # checking which periods will be removed
-time.period %>% filter(period_length < cut) %>%
+time.period %>% filter(period_length <= cut) %>%
   arrange(period_length) #%>% kableExtra::kable("html")
 # then merge lengths and filter based on that
 time.dep3 <- time.dep2 %>% left_join(time.period) %>%
-  filter(period_length > cut)
+  filter(period_length >= cut)
 # find median length after filtering short lengths out
-time.period %>% filter(period_length > cut) %>% filter(flash == 1) %>%  
+time.period %>% filter(period_length >= cut) %>% filter(flash == 1) %>%  
   summary() # median period length 85 days, mean: 84
-time.period %>% filter(period_length > cut) %>% filter(flash == 0) %>%  
+time.period %>% filter(period_length >= cut) %>% filter(flash == 0) %>%  
   summary() # median period length 79 days, mean: 89
-
 # extract lengths of each unique period
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
@@ -79,15 +89,22 @@ h <- min(hh)
 
 79 days is the median period length of IR-periods, and it is shorter than the median of white LED flash. The summary also tells us that
 
-Periods below 4 days has now been removed, which as of 18.02.2021 (before updated data from Neri) were 1 period, which was a flash period of 0 days:
+__Update:__ With the updated dataset, the IR median has shifted to 84 days, white LED to 85. 84 is the new trimming value.
+
+Periods below 5 days has now been removed, which as of 18.02.2021 (before updated data from Neri) were 1 period.
+With new data and Control group, there are 3 periods filtered out, two of which were Control-periods: 
+
 |loc|	period|flash |period_length| 
 |---|-------|------|:-----------:|
-|829|	1_1   |	1	   |      0.0    |
+|829|	1_1   |	1	   | 0.0 = 0 days|
+|258|	Ctrl1 |	Ctrl | 0.4 = 4 days|
+|460|	Ctrl1 |	Ctrl | 0.5 = 5 days|
+
 
 
 ```{r period-length, message=FALSE}
 # plot periods with median as intercept
-p_td <- time.dep3 %>% 
+p_td <- time.dep3 %>% filter(!period %in% ctrl) %>% 
   ggplot(aes(loc, 10*time.deploy, colour = period, ))  +
   geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
   coord_flip() + 
@@ -98,8 +115,8 @@ p_td <- time.dep3 %>%
 p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   geom_hline(aes(yintercept = max(hh)), linetype = "dashed",  alpha =.5) +
   #annotate(geom = "text",x=4, y=h+8.6, label = "- median", size = 3, alpha =.7) +
-  scale_y_continuous(breaks = sort(c(0, 50, hh, 100, 150)))
-  
+  scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150))) +
+  scale_color_brewer(palette = "Spectral")
 # failed attempts that could inspire a better plot later
 # p_td + geom_hline(aes(yintercept = h))+ # using median days as intercept 
 #        scale_y_continuous(breaks = sort(c(ggplot_build(p_td)$layout$panel_ranges[[1]]$y.major_source, h)))
@@ -107,6 +124,25 @@ p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
 ```
 
 There was an overweight of IR-periods extending past the median line.
+
+
+```{r period-length-wControl, message=FALSE, warning=FALSE}
+# remake plot with Control-group data, faceted
+p_td2 <- time.dep3 %>% 
+  ggplot(aes(loc, 10*time.deploy, colour = period))  +
+  geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
+  coord_flip() +  
+  geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
+  scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150))) + facet_grid(rows = "flash") +
+  labs(title = "Period lengths per camera", x = "Location", y = "Time since deployment",
+       caption = "Dotted lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.")
+  
+
+p_td2 + ggpubr::theme_classic2() +
+  theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+        scale_colour_brewer(palette="Spectral")
+```
+
 
 
 _Lastly, performing the filter:_
@@ -123,20 +159,23 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10)
 ### Diagnostics
 
 ```{r raadyr}
+time.dep4$loc %>% unique() %>% is.na() %>% any()
+summary(time.dep4)
+
 # filter species
 sp = "raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+time_sp <- filter(time.dep4, species %in% sp, !period %in% ctrl) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -189,6 +228,55 @@ Which sums up to 3 IR periods where detection rates could start lower than that 
 The effect would of course vary because some locations experienced _gaps_ due to full SD cards or empty batteries.
 <!--_Maybe, after my thesis, I could try to pry out these differences-->
 
+-------------------------------------
+
+#### Update!
+
+After uptaded data from Neri; the effect of flash is now deemed significant!
+Still the same pattern with higher intercept and a negative slope along the time axis, which further supports my hypothesising above.
+The interaction with time since deployment is, however, still non-significant.
+_Now I want to look at a model including the Control-group._
+
+
+```{r raadyr-C}
+# filter species
+sp = "raadyr"
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+
+# Model
+m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+              (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson) # poisson family of distributions
+# --------------------------------------------------------------------
+# ggpredict is similar to expand.grid
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+# Diagnostics
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "Raw data")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+performance::check_model(m_sp) # check assumptions
+```
+
+There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
+
+The homogeneity of variance is still off. It deems on me more and more that this is due to these extreme count-values that is close to time.deploy = 0.
+
+The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
+
+
+
+```{r raadyr-C-report}
+# Summary, report, model
+summary(m_sp)
+report::report(m_sp) # text-summary of my model, to include in a report
+plot(p_sp)
+```
+
+The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
+Looking at the plot, the confidence interval tells us all we need to know, as they almost completely overlap.
+The groups are almost identical. The slope of the control group is actually steeper than that of white LED (although only minisculy).
+Further, the trend over time with the control-group __should__ be due to chance, _as time.deploy = 0 is seldom the actual day I visited the cameras_. They were visited less often in general, and the breaks leading to time.deploy = 0 are set manually by me, to make period lengths that are similar to those of the IR and white LED group.
+
 
 
 
@@ -209,8 +297,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -243,8 +331,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -277,8 +365,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -311,8 +399,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -345,8 +433,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -387,8 +475,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(caption = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(caption = "residuals")
+plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
