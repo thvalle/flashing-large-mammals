@@ -23,7 +23,7 @@ time.dep <- readRDS("timedep.rds")
 
 This notebook is meant to set up the final GLMModels going into my thesis. Upset is identical to the "glmm_in_process"-file, but structure is different as I'm going to make one model for each species. I will write my thoughts about each model as I go along, which will guide me in the writing of method, result and discussion.
 
-# Modelling
+# About the model
 
 ### Why GLMM?
 
@@ -259,7 +259,7 @@ performance::check_model(m_sp) # check assumptions
 
 There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
 
-The homogeneity of variance is still off. It deems on me more and more that this is due to these extreme count-values that is close to time.deploy = 0.
+The homogeneity of variance is still off. It deems on me more and more that this is due to these extreme count-values that is close to time.deploy = 0. _Will it disappear if I divide by the standard deviation?_
 
 The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
 

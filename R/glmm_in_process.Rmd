@@ -282,6 +282,8 @@ Still, as the performance::check_model() was worse for the more complex model, I
 
 ## Further diagnostic plots
 
+### Multicollinearity
+
 ```{r performance-collin}
 clin1 <- check_collinearity(fit)
 clin2 <- check_collinearity(fit_int)
@@ -295,12 +297,16 @@ As stated by Paul Allison in [When Can You Safely Ignore Multicollinearity](http
 
 >2. The high VIFs are caused by the inclusion of powers or products of other variables. If you specify a regression model with both x and x2, there’s a good chance that those two variables will be highly correlated. Similarly, if your model has x, z, and xz, both x and z are likely to be highly correlated with their product. This is not something to be concerned about, however, because the p-value for xz is not affected by the multicollinearity.  This is easily demonstrated: you can greatly reduce the correlations by “centering” the variables (i.e., subtracting their means) before creating the powers or the products. But the p-value for x2 or for xz will be exactly the same, regardless of whether or not you center. And all the results for the other variables (including the R2 but not including the lower-order terms) will be the same in either case. So the multicollinearity has no adverse consequences.
 
+### Residuals
+
 ```{r performance-resid}
 binned_residuals(fit)
 binned_residuals(fit_int)
 ```
 
 The first model has about 80% of residuals inside error bounds, and gets an error. Model with interaction is worse with about 75%.
+
+### Distribution
 
 ```{r performance-dist}
 #check_outliers(fit) # does not make sense for glmm
@@ -313,6 +319,8 @@ check_distribution(fit)     %>% plot()
 
 The check_distribution is noted as somewhat experimental. It predicts a normal distribution for the residuals, and a zero-inflated poisson for my response, although with merely 47% probability of being true.
 The interaction-model is identical in the predicted distribution.
+
+### Heteroscedasticity
 
 ```{r performance-hetero}
 check_heteroscedasticity(fit) %>% plot()
@@ -332,6 +340,7 @@ I'm not sure which variables to tackle first, although the pattern seems to stem
 
 Would a cumulative sum solve this problem? I tried at the bottom of this document, but was unsuccessful.
 
+### Model comparison
 
 ```{r performance-compare}
 compare_performance(fit, fit_int)
