@@ -199,7 +199,7 @@ I am not sure about how to make up for breaking these assumptions. For now, I wi
 ```{r raadyr-report}
 # Summary, report, model
 summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+# report::report(m_sp) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -244,17 +244,17 @@ sp = "raadyr"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_raa  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 # --------------------------------------------------------------------
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_raa, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle  = "Raw data")
 plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_raa) # check assumptions
 ```
 
 There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
@@ -267,8 +267,8 @@ The multicollinearity is moderate for the interaction term of time.deploy and fl
 
 ```{r raadyr-C-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_raa)
+# report::report(m_raa) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -276,6 +276,33 @@ The control intercept is almost on top of the IR-intercept, but it has a more ne
 Looking at the plot, the confidence interval tells us all we need to know, as they almost completely overlap.
 The groups are almost identical. The slope of the control group is actually steeper than that of white LED (although only minisculy).
 Further, the trend over time with the control-group __should__ be due to chance, _as time.deploy = 0 is seldom the actual day I visited the cameras_. They were visited less often in general, and the breaks leading to time.deploy = 0 are set manually by me, to make period lengths that are similar to those of the IR and white LED group.
+
+### Some parameter-plots from see and effectsize
+
+The CI-plots of effectsize will be included in some form in my thesis. For the equivalence-plot I'm not to sure if I'll use it, but the interpretation is neat with that method. From the bayesian statistics, if a predictor is completely covered by the ROPE-area you can accept the null hypothesis. This is not possible in a frequentist perspective (as my models are), but one could claim _practical equivalence_ if the effect is non-significant AND completely inside the ROPE-interval. Explanations from [Equivalence vignette](https://easystats.github.io/parameters/reference/equivalence_test.lm.html):
+
+>"classic" - The TOST rule (Lakens 2017)
+This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lakens 2017). Following this rule, practical equivalence of an effect (i.e. H0) is rejected, when the coefficient is statistically significant and the narrow confidence intervals (i.e. 1-2*alpha) include or exceed the ROPE boundaries. Practical equivalence is assumed (i.e. H0 accepted) when the narrow confidence intervals are completely inside the ROPE, no matter if the effect is statistically significant or not. Else, the decision whether to accept or reject H0 is undecided.
+>"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
+The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
+
+```{r parameters}
+library(parameters)
+library(effectsize)
+library(see)
+result <- model_parameters(m_raa, standardize = "refit")
+plot(result, show_intercept = TRUE)
+plot(result, size_text = 3)
+
+# default rules, like in bayestestR::equivalence_test()
+result <- equivalence_test(m_raa)
+plot(result, size_text = 3)
+result
+
+result_sim <- simulate_parameters(m_raa)
+plot(result_sim, stack = FALSE,
+     normalize_height = TRUE)
+```
 
 
 
@@ -289,17 +316,17 @@ Further, the trend over time with the control-group __should__ be due to chance,
 sp = "rev"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_rev  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_rev, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_rev) # check assumptions
 ```
 
 
@@ -307,8 +334,8 @@ performance::check_model(m_sp) # check assumptions
 
 ```{r rev-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_rev)
+# report::report(m_rev) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -323,17 +350,17 @@ plot(p_sp)
 sp = "grevling"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_grvl  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_grvl) # check assumptions
 ```
 
 
@@ -341,8 +368,8 @@ performance::check_model(m_sp) # check assumptions
 
 ```{r grevling-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_grvl)
+# report::report(m_grvl) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -357,17 +384,17 @@ plot(p_sp)
 sp = "elg"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_elg, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_elg) # check assumptions
 ```
 
 
@@ -375,8 +402,8 @@ performance::check_model(m_sp) # check assumptions
 
 ```{r elg-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_elg)
+# report::report(m_elg) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -391,17 +418,17 @@ plot(p_sp)
 sp = "hjort"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_hjort) # check assumptions
 ```
 
 
@@ -409,8 +436,8 @@ performance::check_model(m_sp) # check assumptions
 
 ```{r hjort-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_hjort)
+# report::report(m_hjort) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -425,17 +452,17 @@ plot(p_sp)
 sp = "gaupe"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
+m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
-performance::check_model(m_sp) # check assumptions
+performance::check_model(m_gaup) # check assumptions
 ```
 
 
@@ -443,8 +470,8 @@ performance::check_model(m_sp) # check assumptions
 
 ```{r gaupe-report}
 # Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
+summary(m_gaup)
+# report::report(m_gaup) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -453,6 +480,17 @@ plot(p_sp)
 
 
 ----------------------------------------------
+
+```{r model-comparison, eval=FALSE}
+# library(rstanarm)
+# #result <- #compare_parameters(m_raa, m_rev, m_grvl, m_elg, m_hjort, m_gaup) #can't find function :-/
+# plot(result)
+# 
+# rmarkdown::render("glmm_sp.Rmd", output_format = "github_document")
+```
+
+
+
 
 
 
