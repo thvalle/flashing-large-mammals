@@ -7,7 +7,8 @@
 %We also collated information on average body and home range sizes for a subset of species surveyed in the reviewed studies in order to better quantify the functional diversity of wildlife being sampled by CTs and to evaluate the degree to which CT methodologies were tailored to focal species. Burton 2015
 
 The species I'll focus on in this thesis are the species that most frequently was observed \emph{(>50 events)}, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
-Given that the decisions on cameras placement (height and angle) were made with photo capturing lynx() in mind, I have also excluded smaller species from the analysis.
+Given that the decisions on camera placement (height and angle) were made with the aim on photo capturing lynx(), I have also excluded smaller species from the analysis.
+% Idea sprung from reading Meek 2014 guiding principles; Height of camera and, distance to centre of detection zone or lure. Growing skeptical to the validity of my argument now that I know about the random effect in models. As I argued in my own notes when reading the Meek article I don't think I need to "take these biases into consideration" because I'm trying to detect differences between the same cameras.
 This includes three species, squirrel(), hare() and European pine marten\textit{(Martes martes)}. 
 Though they showed up frequently on many locations, there are inevitably some cameras that are too biased towards larger animals, resulting in an inconsistency of their detection rates. 
 In turn, it is difficult to distinguish whether the species was affected by the white LED or not, as they could have triggered the camera, but already escaped the frame. %TODO må tygge litt på det argumentet.
@@ -246,7 +247,21 @@ The XX was used to check assumptions for GLMM  %TODO assumptions of glmm
 The Schoenfeld test was used to check for the survival model's assumption of proportional hazards. 
 
 
+	\subsection*{GLMM}
+GLMM model was fitted to identify if flash had an effect on detection rates of different species. A mixed effect model was required to include both fixed and random effects.
+*Generalised model was needed because of the usage of both continuous and categorical predictors. (ACTUALLY DON'T KNOW!)
 
+
+--------
+
+"Note that the random estimate means are closer to the overall mean, reflecting that the model assumes each subject's mean is closer to the overall average than it actually is --- a fundamental "assumption" of a multilevel model."  - Pierce Edmiston 2014 (Visualizing lmer model random effects, November 1 2014, accessed 16.02.2021) 
+
+--------
+
+
+	\subsection*{Cox Proportional Hazards}
+What I am in truth testing is each camera's chance of contracting a roe deer disease, or fox disease, and how that chance changes when "treated" with a white LED flash.
+	\subsection*{P-tests and assumptions}
 
 %\subsection{AIC old}
 

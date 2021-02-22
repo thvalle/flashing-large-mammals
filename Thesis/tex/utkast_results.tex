@@ -1,0 +1,72 @@
+\section{Results}
+\subsection{General results}
+
+After excluding faulty cameras we had TK cameras in total, 19 in the Control-group and 33 in the experiment group.
+A total of TK photos were taken, of whom TK contained photos of the species I've focused on in my study. Check table for more details.
+
+The species I've focused on was mainly night-active as displayed in the density plots \ref{fig:overlap}, (with the exception of squirrel). In other words, all of them experienced a white LED flash during night hours.
+(Caption: Figure is split up in periods with and without white LED flash. Night activity in the dashed curve highlights the times the species would have experienced the flash. "Carpet"-below the curves signifies datapoints of each "group".
+
+%should possibly be sent to method
+There are differences between the cameras in height, angles, type of trail/microhabitat and distance to houses. Some cameras were placed in areas that had a stronger presence of humans and vehicles. In fact, there is a correlation between latitude and human presence in my dataset, as the more northerly cameras were frequently placed in trails and forest roads more heavily used by humans, than the southern cameras.
+These areas had more browning-cameras as well, which were all set to 8-shot rapidfire, and therefore had a higher chance of filling SD-cards, thus creating GAPs in the data.
+The usage of random effects in my models removes most of this variance between the cameras, allowing me to look for the differences manifested \emph{within} each location, as a result of the usage of white LED flash.
+Summed up:
+There were large differences in height, angle and microhabitats/ trail type, between the cameras, exemplified in the plots below. Hence, the usage of Mixed effect models.
+
+
+
+\subsection{H0 test}
+Results of the first GLMM model.
+Model formula: n.obs ~ time.deploy + flash + species + (1|loc) + (1|week)
+Insert report::report()-output?
+
+
+
+
+
+
+\subsection{H1 test}
+n.obs ~ time.deploy + flash*species + random.eff
+report::report()?
+
+
+\subsection{H2 test}
+house_d2 eller ALAN_d2
+report::report()
+
+
+
+
+\subsection{Cox PH}
+Cumulative hazards
+
+
+
+
+\section{Discussion}
+\subsection{H0 test}
+
+The first model shows that there are signs of effects from the white LED flash, i.e. that there is a difference in the intercepts of the two curves for each species.
+This signifies that the mean detection rate of species where there was a white LED flash \emph{does} differ from the mean detection rate where there was \emph{not} a white LED flash.
+%comment for method: What I'm really testing is if there is an effect of having an additional camera with a white LED flash at a location. This was the most sober way to get a good proxy for what I am interested in: to see if the usage of white LED itself affects the detection rate of animals.
+
+However, the model doesn't show me whether the different species showed any different reactions over time, as the slope for each species are identical. Only the intercepts are different between the species, and they are mostly determined by the baseline detection rate of each species (i.e. there are way more roe deer than lynx, so their slopes intercept the y-axis at different levels).
+This also means that the slope for each species is based on the best fit for all of them pooled together.
+Seeing as the roe deer has the most datapoints, it affects the slope the most, and thus the slope of lynx has more to do with foxes and roe deer, than lynx itself.  
+In other words, if roe deer were attracted to the white LED it would confound an opposite reaction for the other species and vice versa.
+
+\subsection{H1 test}
+%comment to method: to test H1 I used an interaction sign between species, flash and time.deploy. Thus the model would be able to fit different slope for each species, and to make look for changes to the slope along the time-axis.
+
+
+
+
+
+
+
+
+
+\subsection{H2 test}
+\subsection{Cox PH}
+
