@@ -1,7 +1,7 @@
 GLMM per art
 ================
 Torgeir
-21 februar, 2021
+22 februar, 2021
 
 ``` r
 library(tidyverse)
@@ -510,7 +510,6 @@ summary(m_raa)
     ## tm.dply:flC  0.190 -0.667 -0.418 -0.220  0.502
 
 ``` r
-# report::report(m_raa) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -610,6 +609,20 @@ plot(result_sim, stack = FALSE,
 
 ![](glmm_sp_files/figure-gfm/parameters-4.png)<!-- -->
 
+``` r
+report::report(m_raa) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.95e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -3.38 (95% CI [-3.97, -2.78], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.08, 0.02], p = 0.234; Std. beta = -0.07, 95% CI [-0.18, 0.04])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.11, 95% CI [-0.14, 0.36], p = 0.390; Std. beta = 0.04, 95% CI [-0.09, 0.18])
+    ##   - The effect of flash [Control] is non-significantly positive (beta = 2.28e-03, 95% CI [-0.97, 0.97], p = 0.996; Std. beta = -0.08, 95% CI [-1.02, 0.87])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.04], p = 0.571; Std. beta = -0.04, 95% CI [-0.17, 0.10])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.08, 0.04], p = 0.487; Std. beta = -0.05, 95% CI [-0.19, 0.09])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
+
 # Skrivestopp
 
 ## Red Fox
@@ -701,11 +714,24 @@ summary(m_rev)
     ## tm.dply:flC  0.378 -0.675 -0.411 -0.496  0.485
 
 ``` r
-# report::report(m_rev) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
 ![](glmm_sp_files/figure-gfm/rev-report-1.png)<!-- -->
+
+``` r
+report::report(m_rev) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 1.52e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -3.42 (95% CI [-3.80, -3.03], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.05, 0.06], p = 0.965; Std. beta = 2.97e-03, 95% CI [-0.13, 0.13])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.15, 95% CI [-0.17, 0.48], p = 0.356; Std. beta = 0.12, 95% CI [-0.05, 0.29])
+    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.09, 95% CI [-0.70, 0.51], p = 0.764; Std. beta = -0.07, 95% CI [-0.60, 0.45])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -8.95e-03, 95% CI [-0.08, 0.06], p = 0.810; Std. beta = -0.02, 95% CI [-0.19, 0.15])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly positive (beta = 5.02e-03, 95% CI [-0.07, 0.08], p = 0.899; Std. beta = 0.01, 95% CI [-0.17, 0.19])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
 ## Badger
 
@@ -796,11 +822,24 @@ summary(m_grvl)
     ## tm.dply:flC  0.291 -0.668 -0.402 -0.445  0.454
 
 ``` r
-# report::report(m_grvl) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
 ![](glmm_sp_files/figure-gfm/grevling-report-1.png)<!-- -->
+
+``` r
+report::report(m_grvl) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.41) and the part related to the fixed effects alone (marginal R2) is of 5.85e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -4.50 (95% CI [-5.11, -3.88], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is significantly positive (beta = 0.06, 95% CI [1.87e-03, 0.13], p < .05; Std. beta = 0.15, 95% CI [4.41e-03, 0.30])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.06, 95% CI [-0.31, 0.43], p = 0.749; Std. beta = 0.05, 95% CI [-0.13, 0.23])
+    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.16, 95% CI [-0.97, 0.65], p = 0.706; Std. beta = -0.33, 95% CI [-1.05, 0.40])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -1.91e-03, 95% CI [-0.08, 0.08], p = 0.961; Std. beta = -4.48e-03, 95% CI [-0.19, 0.18])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.04, 95% CI [-0.13, 0.04], p = 0.323; Std. beta = -0.10, 95% CI [-0.31, 0.10])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
 ## Moose
 
@@ -903,11 +942,24 @@ summary(m_elg)
     ##  - Rescale variables?
 
 ``` r
-# report::report(m_elg) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
 ![](glmm_sp_files/figure-gfm/elg-report-1.png)<!-- -->
+
+``` r
+report::report(m_elg) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.32) and the part related to the fixed effects alone (marginal R2) is of 6.23e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -4.84 (95% CI [-4.84, -4.84], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is significantly positive (beta = 0.05, 95% CI [0.05, 0.06], p < .001; Std. beta = 0.13, 95% CI [0.13, 0.13])
+    ##   - The effect of flash [1] is significantly positive (beta = 0.39, 95% CI [0.39, 0.39], p < .001; Std. beta = 0.15, 95% CI [0.15, 0.15])
+    ##   - The effect of flash [Control] is significantly positive (beta = 0.03, 95% CI [0.03, 0.03], p < .001; Std. beta = -0.27, 95% CI [-0.27, -0.27])
+    ##   - The interaction effect of flash [1] on time.deploy is significantly negative (beta = -0.06, 95% CI [-0.06, -0.06], p < .001; Std. beta = -0.15, 95% CI [-0.15, -0.14])
+    ##   - The interaction effect of flash [Control] on time.deploy is significantly negative (beta = -0.09, 95% CI [-0.09, -0.08], p < .001; Std. beta = -0.20, 95% CI [-0.20, -0.20])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
 ## Red deer
 
@@ -1004,6 +1056,20 @@ plot(p_sp)
 
 ![](glmm_sp_files/figure-gfm/hjort-report-1.png)<!-- -->
 
+``` r
+report::report(m_hjort) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.44) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -5.97 (95% CI [-7.06, -4.89], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.14, 0.09], p = 0.663; Std. beta = -0.06, 95% CI [-0.33, 0.21])
+    ##   - The effect of flash [1] is non-significantly negative (beta = -0.66, 95% CI [-1.38, 0.07], p = 0.075; Std. beta = -0.02, 95% CI [-0.38, 0.34])
+    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.13, 95% CI [-1.72, 1.46], p = 0.875; Std. beta = -0.50, 95% CI [-1.98, 0.98])
+    ##   - The interaction effect of flash [1] on time.deploy is significantly positive (beta = 0.16, 95% CI [9.48e-03, 0.32], p < .05; Std. beta = 0.39, 95% CI [0.02, 0.75])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.10, 95% CI [-0.26, 0.07], p = 0.250; Std. beta = -0.23, 95% CI [-0.62, 0.16])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
+
 ## Lynx
 
 ``` r
@@ -1093,11 +1159,24 @@ summary(m_gaup)
     ## tm.dply:flC  0.328 -0.535 -0.324 -0.662  0.380
 
 ``` r
-# report::report(m_gaup) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
 ![](glmm_sp_files/figure-gfm/gaupe-report-1.png)<!-- -->
+
+``` r
+report::report(m_gaup) # text-summary of my model, to include in a report
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.29) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -6.88 (95% CI [-8.05, -5.71], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.14, 0.21], p = 0.722; Std. beta = 0.08, 95% CI [-0.34, 0.49])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.35, 95% CI [-0.74, 1.45], p = 0.526; Std. beta = 0.39, 95% CI [-0.19, 0.96])
+    ##   - The effect of flash [Control] is non-significantly positive (beta = 0.11, 95% CI [-1.57, 1.79], p = 0.895; Std. beta = -0.38, 95% CI [-1.65, 0.88])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly positive (beta = 8.39e-03, 95% CI [-0.23, 0.25], p = 0.945; Std. beta = 0.02, 95% CI [-0.54, 0.58])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.13, 95% CI [-0.44, 0.18], p = 0.417; Std. beta = -0.30, 95% CI [-1.04, 0.43])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
 ------------------------------------------------------------------------
 

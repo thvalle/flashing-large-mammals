@@ -268,7 +268,6 @@ The multicollinearity is moderate for the interaction term of time.deploy and fl
 ```{r raadyr-C-report}
 # Summary, report, model
 summary(m_raa)
-# report::report(m_raa) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
@@ -305,6 +304,11 @@ plot(result_sim, stack = FALSE,
 ```
 
 
+```{r raadyr-report2}
+report::report(m_raa) # text-summary of my model, to include in a report
+```
+
+
 
 
 # Skrivestopp
@@ -335,10 +339,13 @@ performance::check_model(m_rev) # check assumptions
 ```{r rev-report}
 # Summary, report, model
 summary(m_rev)
-# report::report(m_rev) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
+
+```{r rev-report2}
+report::report(m_rev) # text-summary of my model, to include in a report
+```
 
 
 
@@ -369,10 +376,13 @@ performance::check_model(m_grvl) # check assumptions
 ```{r grevling-report}
 # Summary, report, model
 summary(m_grvl)
-# report::report(m_grvl) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
+
+```{r grevling-report2}
+report::report(m_grvl) # text-summary of my model, to include in a report
+```
 
 
 
@@ -403,10 +413,13 @@ performance::check_model(m_elg) # check assumptions
 ```{r elg-report}
 # Summary, report, model
 summary(m_elg)
-# report::report(m_elg) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
+
+```{r elg-report2}
+report::report(m_elg) # text-summary of my model, to include in a report
+```
 
 
 
@@ -441,7 +454,9 @@ summary(m_hjort)
 plot(p_sp)
 ```
 
-
+```{r hjort-report2}
+report::report(m_hjort) # text-summary of my model, to include in a report
+```
 
 
 
@@ -471,10 +486,12 @@ performance::check_model(m_gaup) # check assumptions
 ```{r gaupe-report}
 # Summary, report, model
 summary(m_gaup)
-# report::report(m_gaup) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
 
+```{r gaupe-report2}
+report::report(m_gaup) # text-summary of my model, to include in a report
+```
 
 
 
