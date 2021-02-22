@@ -62,7 +62,7 @@ Then I'll cut the duration of all periods overextending the smallest median.
 
 ```{r period-median, message=FALSE}
 # filter out shortest periods, and find median period length
-cut <- .5 # setting the minimum length of a period
+cut <- .3 # setting the minimum length of a period
 # find lengths
 time.period <- time.dep2 %>% group_by(loc, period, flash) %>% 
   summarise(period_length = max(time.deploy))
@@ -110,7 +110,7 @@ p_td <- time.dep3 %>% filter(!period %in% ctrl) %>%
   coord_flip() + 
   labs(title = "Period lengths per camera",
        x = "Location", y = "Time since deployment",
-       caption = "Dotted lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.") +
+       caption = "Vertical lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.") +
   ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
 p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   geom_hline(aes(yintercept = max(hh)), linetype = "dashed",  alpha =.5) +
@@ -134,8 +134,9 @@ p_td2 <- time.dep3 %>%
   coord_flip() +  
   geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150))) + facet_grid(rows = "flash") +
-  labs(title = "Period lengths per camera", x = "Location", y = "Time since deployment",
-       caption = "Dotted lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.")
+  labs(#title = "Period lengths per camera",
+       x = "Location", y = "Time since deployment",
+       caption = "Vertical line reprecents median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.")
   
 
 p_td2 + ggpubr::theme_classic2() +
@@ -289,9 +290,12 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 library(parameters)
 library(effectsize)
 library(see)
-result <- model_parameters(m_raa, standardize = "refit")
-plot(result, show_intercept = TRUE)
+result <- model_parameters(m_raa)
 plot(result, size_text = 3)
+
+result_stnd <- model_parameters(m_raa, standardize = "refit")
+plot(result_stnd, show_intercept = TRUE) + labs(subtitle = ' standardize = "refit" ',
+                                           caption = "Values are less centered on zero")
 
 # default rules, like in bayestestR::equivalence_test()
 result <- equivalence_test(m_raa)

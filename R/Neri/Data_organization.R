@@ -272,7 +272,7 @@ obs<-merge(obs, treatment, by=c("loc", "date"), all.x=TRUE, all.y=FALSE)
 effort<-merge(effort, treatment, by=c("loc", "date"), all.x=TRUE, all.y=FALSE)
 
 # Plotting to visualize the effort based on periods. Spend some time to double check that this looks fine. 
-ggplot(data=effort)+
+ggplot(effort)+
   facet_wrap(~period, ncol=2) +
   geom_point(aes(y=as.factor(loc), x=date, col=factor(flash)))
 
