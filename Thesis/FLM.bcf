@@ -2032,16 +2032,13 @@
     <bcf:citekey order="3">Moen1999</bcf:citekey>
     <bcf:citekey order="4">Odden2015</bcf:citekey>
     <bcf:citekey order="5">Trailcampro2014</bcf:citekey>
-    <bcf:citekey order="6">Odden2015</bcf:citekey>
-    <bcf:citekey order="7">RCoreTeam2020</bcf:citekey>
-    <bcf:citekey order="8">RStudioTeam2020a</bcf:citekey>
-    <bcf:citekey order="9">tidyverse</bcf:citekey>
-    <bcf:citekey order="10">Holm1979</bcf:citekey>
-    <bcf:citekey order="11">Shaffer1995</bcf:citekey>
-    <bcf:citekey order="12">Holm1979</bcf:citekey>
-    <bcf:citekey order="13">lme4</bcf:citekey>
-    <bcf:citekey order="14">coxme-package</bcf:citekey>
-    <bcf:citekey order="15">survival-package</bcf:citekey>
+    <bcf:citekey order="6">RCoreTeam2020</bcf:citekey>
+    <bcf:citekey order="7">RStudioTeam2020a</bcf:citekey>
+    <bcf:citekey order="8">tidyverse</bcf:citekey>
+    <bcf:citekey order="9">lme4</bcf:citekey>
+    <bcf:citekey order="10">lme4</bcf:citekey>
+    <bcf:citekey order="11">survival-package</bcf:citekey>
+    <bcf:citekey order="12">coxme-package</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global" type="entry" sortscheme="none" sortnamekeyscheme="global">
   <bcf:sorting>

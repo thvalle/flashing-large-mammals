@@ -1,22 +1,46 @@
 \chapter{Discussion}
 
+\section{GLMM}
+
+The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera (see figure \ref{fig:para_raa1}). 
+
+This makes intuitive sence, as most large mammals would be scared away temporarily by a nearby human, especially the times i set up the additional camera boxes, which I did with an electrical drill.
+
+Anecdotally, once I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. I've also startled two badgers close by a CT. However, they didn't run far away, and went on to repopulate the area quickly.
+Chances are I’ve scared animals other times as well, but haven’t noticed it.
+
+The effect of time since deployment is non-significant, and $\beta = 0.007$.
+That means there is no difference on the baseline detection rate for an IR camera over time (after controlling for seasonal changes).
+
+For white LED flash $\beta = 0.04$, meaning that the intercept is slightly higher than for IR, but the difference is non-significant.
+
+The control-group has practically the same intercept as the IR-groups, and all of the groups is showing a negative trend, non-significant trend over time. The negative trends for the control- and IR-groups are strange, as they should represent a baseline detection probability, and any fluctuations in detection rates over the year should be controlled for by the weekly random effect-argument.
+
+Seeing as all the parameters related to time since deployment are well within the ROPE area in figure \vref{fig:para_raa3} (/ all have a non-significant p-value), it is safe to say that these "trends" are only due to chance. 
+
+The raw count-plots in Appendix A also shows that there are more outliers with extreme values (counts of up to 5 events per day) when time since deployment is close to 0, than towards the maximum lengths of periods. The largest counts stem from the control-group which in mainly has arbitrary days set as their day 0 in each period. Only a few cameras has a true visitation date as their day 0, which can be seen as their first point after a gap in figure \ref{fig:timeseries_control}.
 
 
+Hypothesising:
+
+\textbf{If} $H_1$ is true, and there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods usually starts after a flash period (with the exception of the first IR-period, i.e. first red periods in figure \vref{fig:timeseries_flash}).
+
+Remembering my study design, 20 cameras start with white LED, 20 with IR.
+Intercept should theoretically be identical in the 1st period.
+2nd period; white LEDs are moved. New LED CTs should have same intercept (unchanged detection rate), and new IR CTs should have a hypothetical lower intercept due to the effect of white LED.
+3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept), and so on.
+
+Which sums up to 3 IR periods where detection rates could start lower than that of white LED.
+
+If that was true, and the white LED interacting with time had a significantly negative slope, then the slope of IR should be positive, as the roe deer detection rate returned to normal.
+The slope for the control-group(time.deploy:flashControl) should represent a normal detection rate, and be close to flat ($ \beta \approx 0$), intercept possibly closer to that of white LED, than IR.
 
 
+\section*{Kommentar}
 
+Om "Hypothesising"-delen skal med på noko vis må den heilt klart skrivast om, men eg inkluderte den foreløpig for å høyre om du synst den har ein plass i diskusjons-delen ein eller annan plass.
 
-\section{Overlap analysis}
-
-Proportion of foxes at sites were markedly lower before sunrise, and then higher afterwards. 
-Could this simply be because of a lower detection rate when lacking the additional white flash? 
-
-The Dhat4 calculation reveals a larger difference in overlap for foxes, than for roe deer, but this seems to mainly stem from the twilight hours. Thus, the scores could result from the different size and detection rates of the two species, rather than an actual reaction to the white LED.
-
-
-
-\vref{fig:overlap_rev_raa}
-
+I tillegg er mesteparten av skrift her truleg overflødig, men eg skreiv den simultant med modelleringa for at eg skulle forstå meg sjølv igjen etter at det hadde gått nokon dager. Kor utdypande er det verdt å gå i detaljnivået her?  Burde eg droppe å utdype ting som likevel ikkje er signifikant?
 
 
 %POST-IT
@@ -24,6 +48,8 @@ The Dhat4 calculation reveals a larger difference in overlap for foxes, than for
 %%Species interaction with human: high conflict animals wary of flash as it signals humans nearby
 %%Camera site proximity to urban area/ roads (Artificial Light At Night) : +correlation with proximity and effect on species
 %%smaller animals less likely to be detected by camera. Dark numbers?
+
+
 
 
 

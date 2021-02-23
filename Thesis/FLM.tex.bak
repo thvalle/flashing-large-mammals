@@ -8,14 +8,14 @@
 %Det finnes diverse gode interaktive tegneprogrammer, for eksempel
 %AdobeIllustrator, Inkscape, GIMP og paint.net, samt et meget godt deklarativt tegne-program:MetaPost.
 
-\includeonly{tex/intro, tex/method} 
+%\includeonly{tex/intro, tex/method, tex/results, tex/discussion} 
 \begin{document}
 
 %\maketitle
 
-\include{tex/abstract}
-\include{tex/dedication}
-\include{tex/acknowledge}
+%\include{tex/abstract}
+%\include{tex/dedication}
+%\include{tex/acknowledge}
 
 \tableofcontents
 
@@ -32,7 +32,7 @@
 \include{tex/discussion}
 
 % -- conclusion --
-\include{tex/conclusion}
+%\include{tex/conclusion}
 
 % -- appendix --
 %\appendix

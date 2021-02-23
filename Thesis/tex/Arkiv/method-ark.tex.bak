@@ -1,0 +1,40 @@
+\subsection*{Multiple hypothesis testing}
+%Alpha defined in holm and in shaffer
+When testing multiple groups for significance, the false positive rate will inevitably go up. 
+By chance, if I tested 20 groups where the $H_{0}$ were true, an $\alpha = 0.05$ 
+($ =  \frac{1}{20} $) 
+would deem at least one of the groups to be significantly different, thus rejecting the $H_{0}$ on false terms (ie. commiting a type 1 error).
+Therefore, when testing six species, I should demand stronger evidence to reject the null hypothesis.
+The Bonferroni correction (\cite{Holm1979}) is straight forward, multiplying each p-value by the number of comparisons, or in other words dividing the $\alpha$ by the number of comparisons. This highly diminishes the chance of commiting type 1 errors, but unfortunately increases the chance of type 2 errors (failing to reject a false null hypothesis) \cite{Shaffer1995}. 
+In my case, using the Bonferroni correction would result in:
+
+ $$ \alpha = \frac{0.05}{ 6 \mbox{\ species} } = 0.0083 \mbox{\ per species} $$ 
+
+
+A less conservative method is the sequentially rejective Bonferroni test (\cite{Holm1979}), often called Holm method, which is a modification of the Bonferroni correction. Here, the most significant test is given the Bonferroni correction ($\alpha /n$ tests).
+Then, the second most significant test gets an $\alpha / n - 1$, or, a slightly larger alpha.
+Continuing untill the least significant test gets an $\alpha / 1$ (i.e. retains the original $\alpha = .05$). In my case, using the Holm method results in:
+
+ $$ \frac{\alpha}{6},\ \frac{\alpha}{6-1},\ ...,\ \frac{\alpha}{1} $$
+ 
+ 
+ 
+ 
+%%%%
+%%%%%
+%%%%%! Assumptions and validity !
+%%%%%
+%%%%%The Poisson distribution is an appropriate model if the following assumptions are true:[4]
+%%%%%
+%%%%%*    k is the number of times an event occurs in an interval and k can take values 0, 1, 2, ....
+%%%%%    The occurrence of one event does not affect the probability that a second event will occur. That is, events occur independently.
+%%%%%*    The average rate at which events occur is independent of any occurrences. For simplicity, this is usually assumed to be constant, but may in practice vary with time.
+%%%%%*    Two events cannot occur at exactly the same instant; instead, at each very small sub-interval exactly one event either occurs or does not occur.
+%%%%%
+%%%%%If these conditions are true, then k is a Poisson random variable, and the distribution of k is a Poisson distribution.
+%%%%
+%%%%%
+%%%%%"Note that the random estimate means are closer to the overall mean, reflecting that the model assumes each subject's mean is closer to the overall average than it actually is --- a fundamental "assumption" of a multilevel model."  - Pierce Edmiston 2014 (Visualizing lmer model random effects, November 1 2014, accessed 16.02.2021) 
+%%%%
+%%%%
+%%%%

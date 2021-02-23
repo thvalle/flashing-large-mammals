@@ -103,7 +103,7 @@
       \field{datelabelsource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{In ecology, camera trapping is commonly used as a non-invasive technique to collect ecological observation data and to monitor populations. The technique is used to address a variety of research questions worldwide. Despite being widely used, few studies have evaluated the potential effects of camera traps on animals, and to my knowledge no studies have quantified to what extent and under which conditions such effects occur. In this thesis, I have assessed the behavior of two large carnivores in Norway, Eurasian lynx (Lynx lynx) and wolf (Canis lupus), using still images captured by camera traps. The aim of the study was to investigate whether the presence of camera traps can cause behavioral changes in wildlife. I recorded behaviors that indicated apparent detection of cameras by visual and/or acoustic contact. Furthermore, other distinct behaviors towards camera was assessed, in addition to the orientation of the animal in a given visit, to detect distinct changes in direction caused by the trap. Finally, I compared behavioral scores between species and camera-specific factors like flash type. Lynx and wolves both apparently detected cameras (eyes and/or ears pointed directly at the camera) in approximately 11$\backslash${\%} of the visits, and altered their behavior in response to them. Two different categories of responses were discovered: Responses directly related to an apparent detection (approach, flight, observe and startle) and responses related to the presence camera traps (physical contact, olfactory sensing and squinting). I detected species-specific and camera-specific differences in behavioral impacts. Lynx were more likely to approach the camera, compare to wolves who expressed flight and startle response more pronounced. Flash and different flash types influenced the species differently in how they responded to the presence of camera traps. Both species were found to have pronounced change in orientation when expressing apparent detection responses to camera. My study revealed clear evidence of camera traps being low-invasive, but not non-invasive wildlife monitoring tools. This suggests that camera trap studies should quantify their impact on study species and its effect on inferences.}
+      \field{abstract}{In ecology, camera trapping is commonly used as a non-invasive technique to collect ecological observation data and to monitor populations. The technique is used to address a variety of research questions worldwide. Despite being widely used, few studies have evaluated the potential effects of camera traps on animals, and to my knowledge no studies have quantified to what extent and under which conditions such effects occur. In this thesis, I have assessed the behavior of two large carnivores in Norway, Eurasian lynx (Lynx lynx) and wolf (Canis lupus), using still images captured by camera traps. The aim of the study was to investigate whether the presence of camera traps can cause behavioral changes in wildlife. I recorded behaviors that indicated apparent detection of cameras by visual and/or acoustic contact. Furthermore, other distinct behaviors towards camera was assessed, in addition to the orientation of the animal in a given visit, to detect distinct changes in direction caused by the trap. Finally, I compared behavioral scores between species and camera-specific factors like flash type. Lynx and wolves both apparently detected cameras (eyes and/or ears pointed directly at the camera) in approximately 11\% of the visits, and altered their behavior in response to them. Two different categories of responses were discovered: Responses directly related to an apparent detection (approach, flight, observe and startle) and responses related to the presence camera traps (physical contact, olfactory sensing and squinting). I detected species-specific and camera-specific differences in behavioral impacts. Lynx were more likely to approach the camera, compare to wolves who expressed flight and startle response more pronounced. Flash and different flash types influenced the species differently in how they responded to the presence of camera traps. Both species were found to have pronounced change in orientation when expressing apparent detection responses to camera. My study revealed clear evidence of camera traps being low-invasive, but not non-invasive wildlife monitoring tools. This suggests that camera trap studies should quantify their impact on study species and its effect on inferences.}
       \field{journaltitle}{Master of Sciences in Natural resource Management}
       \field{title}{{Behavioral responses to camera traps : a study on two large carnivores in Norway}}
       \field{year}{2019}
@@ -151,7 +151,7 @@
       \field{pages}{209}
       \range{pages}{1}
       \verb{url}
-      \verb https://www.nb.no/items/URN:NBN:no-nb%7B%5C_%7Ddigibok%7B%5C_%7D2010011503011
+      \verb https://www.nb.no/items/URN:NBN:no-nb_digibok_2010011503011
       \endverb
       \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
     \endentry
@@ -401,7 +401,7 @@
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Open Source Software}
       \field{number}{43}
-      \field{title}{{Welcome to the {\{}tidyverse{\}}}}
+      \field{title}{{Welcome to the {tidyverse}}}
       \field{volume}{4}
       \field{year}{2019}
       \field{pages}{1686}
@@ -409,64 +409,6 @@
       \verb{doi}
       \verb 10.21105/joss.01686
       \endverb
-    \endentry
-    \entry{Holm1979}{article}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=23b6a8c4d3d9710bb3b84d15d65dc86e}{%
-           family={Holm},
-           family_i={H\bibinitperiod},
-           given={Sture},
-           given_i={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{23b6a8c4d3d9710bb3b84d15d65dc86e}
-      \strng{fullhash}{23b6a8c4d3d9710bb3b84d15d65dc86e}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{1979}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Scandinavian Journal of Statistics}
-      \field{number}{2}
-      \field{title}{{A Simple Sequentially Rejective Multiple Test Procedure}}
-      \field{volume}{6}
-      \field{year}{1979}
-      \field{pages}{65\bibrangedash 70}
-      \range{pages}{6}
-      \verb{file}
-      \verb :home/torgeir/Documents/Papers/Holm{\_}correct.pdf:pdf
-      \endverb
-      \keyw{Sture Holm}
-    \endentry
-    \entry{Shaffer1995}{article}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=51209134026323e94219be3effebe133}{%
-           family={Shaffer},
-           family_i={S\bibinitperiod},
-           given={Juliet\bibnamedelima Popper},
-           given_i={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
-      }
-      \strng{namehash}{51209134026323e94219be3effebe133}
-      \strng{fullhash}{51209134026323e94219be3effebe133}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{1995}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Annual Review of Psychology}
-      \field{title}{{Multiple hypothesis testing}}
-      \field{volume}{46}
-      \field{year}{1995}
-      \field{pages}{561\bibrangedash 584}
-      \range{pages}{24}
-      \verb{doi}
-      \verb 10.1146/annurev.ps.46.020195.003021
-      \endverb
-      \verb{file}
-      \verb :home/torgeir/Documents/Papers/multi{\_}H{\_}testing{\_}Schaffer.pdf:pdf
-      \endverb
-      \keyw{closed test procedures,multiple comparisons,p-values,pairwise comparisons,simultaneous testing}
     \endentry
     \entry{lme4}{article}{}
       \name{author}{4}{}{%
@@ -501,7 +443,7 @@
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Statistical Software}
       \field{number}{1}
-      \field{title}{{Fitting Linear Mixed-Effects Models Using {\{}lme4{\}}}}
+      \field{title}{{Fitting Linear Mixed-Effects Models Using {lme4}}}
       \field{volume}{67}
       \field{year}{2015}
       \field{pages}{1\bibrangedash 48}
@@ -510,7 +452,7 @@
       \verb 10.18637/jss.v067.i01
       \endverb
     \endentry
-    \entry{coxme-package}{manual}{}
+    \entry{survival-package}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
            family={Therneau},
@@ -527,14 +469,14 @@
       \field{datelabelsource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{annotation}{R package version 2.2-16}
-      \field{title}{{coxme: Mixed Effects Cox Models}}
+      \field{annotation}{R package version 3.2-7}
+      \field{title}{{A Package for Survival Analysis in R}}
       \field{year}{2020}
       \verb{url}
-      \verb https://cran.r-project.org/package=coxme
+      \verb https://cran.r-project.org/package=survival
       \endverb
     \endentry
-    \entry{survival-package}{manual}{}
+    \entry{coxme-package}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
            family={Therneau},
@@ -551,11 +493,11 @@
       \field{datelabelsource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{annotation}{R package version 3.2-7}
-      \field{title}{{A Package for Survival Analysis in R}}
+      \field{annotation}{R package version 2.2-16}
+      \field{title}{{coxme: Mixed Effects Cox Models}}
       \field{year}{2020}
       \verb{url}
-      \verb https://cran.r-project.org/package=survival
+      \verb https://cran.r-project.org/package=coxme
       \endverb
     \endentry
   \endsortlist
