@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  23 FEB 2021 15:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  23 FEB 2021 15:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -871,10 +871,8 @@ Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
-))) (./FLM.aux (./tex/abstract.aux) (./tex/dedication.aux) (./tex/acknowledge.a
-ux)
-(./tex/intro.aux) (./tex/method.aux) (./tex/results.aux) (./tex/discussion.aux)
-(./tex/conclusion.aux))
+))) (./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux) (./tex/
+discussion.aux))
 \openout1 = `FLM.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
@@ -895,7 +893,8 @@ LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 12.
- (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count287
 \scratchdimen=\dimen122
@@ -991,52 +990,58 @@ erthousand on input line 12.
 LaTeX Info: Redefining \ohm on input line 12.
 Package gensymb Info: Using \textohm for \ohm on input line 12.
 Package gensymb Info: Using \textmu for \micro on input line 12.
- (./FLM.toc
+ <./img/MN_IMBV_A_ENG.png, id=1, 619.8357pt x 73.4745pt>
+File: ./img/MN_IMBV_A_ENG.png Graphic file (type png)
+
+<use ./img/MN_IMBV_A_ENG.png>
+Package pdftex.def Info: ./img/MN_IMBV_A_ENG.png used on input line 14.
+(pdftex.def)             Requested size: 309.91708pt x 36.73715pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 14.
+(Font)              <12> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 14.
+ [1
+
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/MN_IMBV_A_ENG.png>] 
+(./FLM.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 11.
 )
 \tf@toc=\write4
 \openout4 = `FLM.toc'.
 
- [4
+ [2
 
-
-
-
-
-
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+]
 \openout2 = `tex/intro.aux'.
 
-
-(./tex/intro.tex
-Chapter 4.
-) [5
+ (./tex/intro.tex
+Chapter 1.
+) [3
 
 
 ]
 \openout2 = `tex/method.aux'.
 
  (./tex/method.tex
-Chapter 5.
+Chapter 2.
 
 Underfull \vbox (badness 1622) has occurred while \output is active []
 
- [6
+ [4
 
 
 
 ]
-<img/experiment_setup.jpg, id=20, 963.6pt x 542.025pt>
-File: img/experiment_setup.jpg Graphic file (type jpg)
+<./img/experiment_setup.jpg, id=27, 963.6pt x 542.025pt>
+File: ./img/experiment_setup.jpg Graphic file (type jpg)
 
-<use img/experiment_setup.jpg>
-Package pdftex.def Info: img/experiment_setup.jpg used on input line 46.
+<use ./img/experiment_setup.jpg>
+Package pdftex.def Info: ./img/experiment_setup.jpg used on input line 46.
 (pdftex.def)             Requested size: 289.08223pt x 162.60875pt.
 
 
@@ -1044,44 +1049,44 @@ Package caption Warning: \label without proper reference on input line 67.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:period_timeseries' on page 7 undefined on input l
+LaTeX Warning: Reference `fig:period_timeseries' on page 5 undefined on input l
 ine 63.
 
 
-<img//cam_install_example/IMG_20190212_161615169.jpg, id=21, 3131.7pt x 4175.6p
-t>
-File: img//cam_install_example/IMG_20190212_161615169.jpg Graphic file (type jp
-g)
- <use img//cam_install_example/IMG_20190212_161615169.jpg>
-Package pdftex.def Info: img//cam_install_example/IMG_20190212_161615169.jpg us
-ed on input line 79.
+<./img/cam_install_example/IMG_20190212_161615169.jpg, id=28, 3131.7pt x 4175.6
+pt>
+File: ./img/cam_install_example/IMG_20190212_161615169.jpg Graphic file (type j
+pg)
+ <use ./img/cam_install_example/IMG_20190212_161615169.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190212_161615169.jpg u
+sed on input line 79.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<img//cam_install_example/IMG_20190515_170952923.jpg, id=22, 3131.7pt x 4175.6p
-t>
-File: img//cam_install_example/IMG_20190515_170952923.jpg Graphic file (type jp
-g)
- <use img//cam_install_example/IMG_20190515_170952923.jpg>
-Package pdftex.def Info: img//cam_install_example/IMG_20190515_170952923.jpg us
-ed on input line 85.
+<./img/cam_install_example/IMG_20190515_170952923.jpg, id=29, 3131.7pt x 4175.6
+pt>
+File: ./img/cam_install_example/IMG_20190515_170952923.jpg Graphic file (type j
+pg)
+ <use ./img/cam_install_example/IMG_20190515_170952923.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190515_170952923.jpg u
+sed on input line 85.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<img//cam_install_example/IMG_20190521_181329313.jpg, id=23, 3131.7pt x 4175.6p
-t>
-File: img//cam_install_example/IMG_20190521_181329313.jpg Graphic file (type jp
-g)
- <use img//cam_install_example/IMG_20190521_181329313.jpg>
-Package pdftex.def Info: img//cam_install_example/IMG_20190521_181329313.jpg us
-ed on input line 91.
+<./img/cam_install_example/IMG_20190521_181329313.jpg, id=30, 3131.7pt x 4175.6
+pt>
+File: ./img/cam_install_example/IMG_20190521_181329313.jpg Graphic file (type j
+pg)
+ <use ./img/cam_install_example/IMG_20190521_181329313.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190521_181329313.jpg u
+sed on input line 91.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<img//cam_install_example/IMG_20190529_181049340.jpg, id=24, 3131.7pt x 4175.6p
-t>
-File: img//cam_install_example/IMG_20190529_181049340.jpg Graphic file (type jp
-g)
- <use img//cam_install_example/IMG_20190529_181049340.jpg>
-Package pdftex.def Info: img//cam_install_example/IMG_20190529_181049340.jpg us
-ed on input line 97.
+<./img/cam_install_example/IMG_20190529_181049340.jpg, id=31, 3131.7pt x 4175.6
+pt>
+File: ./img/cam_install_example/IMG_20190529_181049340.jpg Graphic file (type j
+pg)
+ <use ./img/cam_install_example/IMG_20190529_181049340.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190529_181049340.jpg u
+sed on input line 97.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
 Overfull \hbox (2.4216pt too wide) in paragraph at lines 77--101
@@ -1096,10 +1101,10 @@ Overfull \hbox (2.4216pt too wide) in paragraph at lines 77--101
 
 Underfull \vbox (badness 3449) has occurred while \output is active []
 
- [7 <./img/experiment_setup.jpg>] [8 <./img//cam_install_example/IMG_20190212_1
-61615169.jpg> <./img//cam_install_example/IMG_20190515_170952923.jpg> <./img//c
-am_install_example/IMG_20190521_181329313.jpg> <./img//cam_install_example/IMG_
-20190529_181049340.jpg>]
+ [5 <./img/experiment_setup.jpg>] [6 <./img/cam_install_example/IMG_20190212_16
+1615169.jpg> <./img/cam_install_example/IMG_20190515_170952923.jpg> <./img/cam_
+install_example/IMG_20190521_181329313.jpg> <./img/cam_install_example/IMG_2019
+0529_181049340.jpg>]
 Overfull \hbox (3.83342pt too wide) in paragraph at lines 119--120
 \T1/cmr/m/n/10.95 whereas the Brown-ing model was re-por-ted an av-er-age of 0.
 7 seconds (Trig-ger speed shootout,
@@ -1115,23 +1120,22 @@ Package caption Warning: \label without proper reference on input line 170.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:map' on page 9 undefined on input line 155.
+LaTeX Warning: Reference `fig:map' on page 7 undefined on input line 155.
 
-[9]
+[7]
 
-LaTeX Warning: Reference `app:sessinfo' on page 10 undefined on input line 210.
-
+LaTeX Warning: Reference `app:sessinfo' on page 8 undefined on input line 210.
 
 
 Package caption Warning: \label without proper reference on input line 67.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:period_timeseries' on page 10 undefined on input 
-line 223.
+LaTeX Warning: Reference `fig:period_timeseries' on page 8 undefined on input l
+ine 223.
 
 
-<../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png, id=35, 505.89pt x 
+<../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png, id=43, 505.89pt x 
 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png Graphic file (
 type png)
@@ -1140,7 +1144,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/period-length-wControl-1
 .png used on input line 231.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
-<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=36, 505.89pt x 361.3
+<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=44, 505.89pt x 361.3
 5pt>
 File: ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png Graphic file (type 
 png)
@@ -1149,7 +1153,7 @@ Package pdftex.def Info: ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png
 used on input line 238.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
-<../R/FLM_notebook_files/figure-gfm/effort-facet-2.png, id=37, 505.89pt x 361.3
+<../R/FLM_notebook_files/figure-gfm/effort-facet-2.png, id=45, 505.89pt x 361.3
 5pt>
 File: ../R/FLM_notebook_files/figure-gfm/effort-facet-2.png Graphic file (type 
 png)
@@ -1157,16 +1161,16 @@ png)
 Package pdftex.def Info: ../R/FLM_notebook_files/figure-gfm/effort-facet-2.png 
 used on input line 243.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
- [10]
+ [8]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11 <../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png>] [12 <../R/FL
-M_notebook_files/figure-gfm/effort-facet-1.png> <../R/FLM_notebook_files/figure
--gfm/effort-facet-2.png>]) [13]
+ [9 <../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png>] [10 <../R/FLM
+_notebook_files/figure-gfm/effort-facet-1.png> <../R/FLM_notebook_files/figure-
+gfm/effort-facet-2.png>]) [11]
 \openout2 = `tex/results.aux'.
 
  (./tex/results.tex
-<../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png, id=60, 505.89pt x 361.35p
+<../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png, id=67, 505.89pt x 361.35p
 t>
 File: ../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png Graphic file (type pn
 g)
@@ -1175,7 +1179,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png us
 ed on input line 30.
 (pdftex.def)             Requested size: 170.71718pt x 121.9421pt.
 
-<../R/glmm_sp_files/figure-gfm/rev-report-1.png, id=61, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/rev-report-1.png, id=68, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/rev-report-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/rev-report-1.png>
@@ -1183,7 +1187,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/rev-report-1.png used on
  input line 36.
 (pdftex.def)             Requested size: 170.71718pt x 121.9421pt.
 
-<../R/glmm_sp_files/figure-gfm/grevling-report-1.png, id=62, 505.89pt x 361.35p
+<../R/glmm_sp_files/figure-gfm/grevling-report-1.png, id=69, 505.89pt x 361.35p
 t>
 File: ../R/glmm_sp_files/figure-gfm/grevling-report-1.png Graphic file (type pn
 g)
@@ -1192,7 +1196,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/grevling-report-1.png us
 ed on input line 42.
 (pdftex.def)             Requested size: 170.71718pt x 121.9421pt.
 
-<../R/glmm_sp_files/figure-gfm/elg-report-1.png, id=63, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/elg-report-1.png, id=70, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/elg-report-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/elg-report-1.png>
@@ -1200,7 +1204,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/elg-report-1.png used on
  input line 48.
 (pdftex.def)             Requested size: 170.71718pt x 121.9421pt.
 
-<../R/glmm_sp_files/figure-gfm/hjort-report-1.png, id=64, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/hjort-report-1.png, id=71, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/hjort-report-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/hjort-report-1.png>
@@ -1208,7 +1212,7 @@ Package pdftex.def Info: ../R/glmm_sp_files/figure-gfm/hjort-report-1.png used
 on input line 54.
 (pdftex.def)             Requested size: 170.71718pt x 121.9421pt.
 
-<../R/glmm_sp_files/figure-gfm/gaupe-report-1.png, id=65, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/gaupe-report-1.png, id=72, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/gaupe-report-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/gaupe-report-1.png>
@@ -1230,7 +1234,7 @@ Overfull \hbox (2.4216pt too wide) in paragraph at lines 28--64
 []$ $[]$ 
  []
 
-<../R/glmm_sp_files/figure-gfm/parameters-1.png, id=66, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/parameters-1.png, id=73, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/parameters-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/parameters-1.png>
@@ -1242,7 +1246,7 @@ Overfull \hbox (31.63847pt too wide) in paragraph at lines 74--75
  [][] 
  []
 
-<../R/glmm_sp_files/figure-gfm/parameters-2.png, id=67, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/parameters-2.png, id=74, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/parameters-2.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/parameters-2.png>
@@ -1254,7 +1258,7 @@ Overfull \hbox (31.63847pt too wide) in paragraph at lines 80--81
  [][] 
  []
 
-<../R/glmm_sp_files/figure-gfm/parameters-3.png, id=68, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-gfm/parameters-3.png, id=75, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-gfm/parameters-3.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-gfm/parameters-3.png>
@@ -1274,25 +1278,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 72--90
 
 Underfull \vbox (badness 4341) has occurred while \output is active []
 
- [14
+ [12
 
 
  <../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png> <../R/glmm_sp_files/figu
 re-gfm/rev-report-1.png> <../R/glmm_sp_files/figure-gfm/grevling-report-1.png> 
 <../R/glmm_sp_files/figure-gfm/elg-report-1.png> <../R/glmm_sp_files/figure-gfm
-/hjort-report-1.png> <../R/glmm_sp_files/figure-gfm/gaupe-report-1.png>] [15 <.
+/hjort-report-1.png> <../R/glmm_sp_files/figure-gfm/gaupe-report-1.png>] [13 <.
 ./R/glmm_sp_files/figure-gfm/parameters-1.png> <../R/glmm_sp_files/figure-gfm/p
-arameters-2.png> <../R/glmm_sp_files/figure-gfm/parameters-3.png>]) [16]
+arameters-2.png> <../R/glmm_sp_files/figure-gfm/parameters-3.png>]) [14]
 \openout2 = `tex/discussion.aux'.
 
 
 (./tex/discussion.tex
-Chapter 6.
-[17
+Chapter 3.
+[15
 
 
 
-]) [18]
+]) [16]
 LaTeX Font Info:    Try loading font information for T1+cmss on input line 55.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
@@ -1300,11 +1304,9 @@ File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 
 
 
-
 ]
-(./FLM.aux (./tex/abstract.aux) (./tex/dedication.aux) (./tex/acknowledge.aux)
-(./tex/intro.aux) (./tex/method.aux) (./tex/results.aux) (./tex/discussion.aux)
-(./tex/conclusion.aux))
+(./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux)
+(./tex/discussion.aux))
 
 LaTeX Warning: There were undefined references.
 
@@ -1313,13 +1315,13 @@ Package logreq Info: Writing requests to 'FLM.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 11058 strings out of 494910
- 183385 string characters out of 6179837
- 598223 words of memory out of 5000000
- 14117 multiletter control sequences out of 15000+600000
- 18855 words of font info for 41 fonts, out of 8000000 for 9000
+ 11060 strings out of 494910
+ 183358 string characters out of 6179837
+ 589220 words of memory out of 5000000
+ 14134 multiletter control sequences out of 15000+600000
+ 20873 words of font info for 46 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 51i,9n,45p,3661b,1467s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 51i,9n,45p,3661b,1459s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1095.600pk> </home
 /torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/torgeir/
 .texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/torgeir/.texmf-va
@@ -1330,15 +1332,16 @@ ec/ecsl1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti10
 95.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk>
  </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/t
 orgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/torgeir/.t
-exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb>
-Output written on FLM.pdf (16 pages, 12588561 bytes).
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/torgeir/.texmf-var/
+fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy10.pfb>
+Output written on FLM.pdf (17 pages, 12629102 bytes).
 PDF statistics:
- 537 PDF objects out of 1000 (max. 8388607)
- 97 compressed objects within 1 object stream
+ 563 PDF objects out of 1000 (max. 8388607)
+ 104 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 86 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 

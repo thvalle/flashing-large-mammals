@@ -1,7 +1,7 @@
 \documentclass[11pt,UKenglish,a4paper,twoside]{report}
 \usepackage{graphicx}
 \usepackage{mystyle}
-\graphicspath{ {img/} }
+%\graphicspath{ {img/} } %bruker heile paths sidan pandoc ikkje støtter \graphicspath{}
 
 \include{tex/title}
 
@@ -11,7 +11,7 @@
 %\includeonly{tex/intro, tex/method, tex/results, tex/discussion} 
 \begin{document}
 
-%\maketitle
+\maketitle
 
 %\include{tex/abstract}
 %\include{tex/dedication}

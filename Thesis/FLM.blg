@@ -1,19 +1,19 @@
-[1] Config.pm:340> INFO - This is Biber 2.4
+[2] Config.pm:340> INFO - This is Biber 2.4
 [2] Config.pm:343> INFO - Logfile is 'FLM.blg'
-[178] biber:287> INFO - === Tue Feb 23, 2021, 15:10:56
-[494] Biber.pm:348> INFO - Reading 'FLM.bcf'
-[1019] Biber.pm:742> INFO - Found 11 citekeys in bib section 0
-[1040] Biber.pm:3151> INFO - Processing section 0
-[1165] Biber.pm:3308> INFO - Looking for bibtex format file '/home/torgeir/Documents/Papers/library.bib' for section 0
-[3019] bibtex.pm:1113> INFO - Decoding LaTeX character macros into UTF-8
-[4481] bibtex.pm:974> INFO - Found BibTeX data source '/home/torgeir/Documents/Papers/library.bib'
-[4496] Utils.pm:147> WARN - Duplicate entry key: 'Odden2018a' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
-[4500] Utils.pm:147> WARN - Duplicate entry key: 'Odden2015' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
-[5038] Utils.pm:147> WARN - BibTeX subsystem: /tmp/155rgBH5k7/library.bib_22047.utf8, line 6, warning: 172 characters of junk seen at toplevel
-[5604] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[5605] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
-[5605] Biber.pm:3028> INFO - Sorting list 'none/global' of type 'entry' with scheme 'none' and locale 'en-UK'
-[5605] Biber.pm:3032> INFO - No sort tailoring available for locale 'en-UK'
-[5653] bbl.pm:519> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
-[5972] bbl.pm:615> INFO - Output to FLM.bbl
-[5973] Biber.pm:109> INFO - WARNINGS: 3
+[169] biber:287> INFO - === Tue Feb 23, 2021, 15:44:53
+[454] Biber.pm:348> INFO - Reading 'FLM.bcf'
+[943] Biber.pm:742> INFO - Found 11 citekeys in bib section 0
+[962] Biber.pm:3151> INFO - Processing section 0
+[1071] Biber.pm:3308> INFO - Looking for bibtex format file '/home/torgeir/Documents/Papers/library.bib' for section 0
+[2642] bibtex.pm:1113> INFO - Decoding LaTeX character macros into UTF-8
+[4011] bibtex.pm:974> INFO - Found BibTeX data source '/home/torgeir/Documents/Papers/library.bib'
+[4027] Utils.pm:147> WARN - Duplicate entry key: 'Odden2018a' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
+[4031] Utils.pm:147> WARN - Duplicate entry key: 'Odden2015' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
+[4563] Utils.pm:147> WARN - BibTeX subsystem: /tmp/mPImHxnV47/library.bib_3575.utf8, line 6, warning: 172 characters of junk seen at toplevel
+[5126] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[5126] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[5126] Biber.pm:3028> INFO - Sorting list 'none/global' of type 'entry' with scheme 'none' and locale 'en-UK'
+[5126] Biber.pm:3032> INFO - No sort tailoring available for locale 'en-UK'
+[5174] bbl.pm:519> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
+[5490] bbl.pm:615> INFO - Output to FLM.bbl
+[5490] Biber.pm:109> INFO - WARNINGS: 3

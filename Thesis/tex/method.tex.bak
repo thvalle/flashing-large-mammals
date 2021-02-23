@@ -43,7 +43,7 @@ I divided the sites randomly into three groups of 20 cameras. Cameras in group A
 
 \begin{figure}
     \begin{center}
-    	\includegraphics[scale=0.3]{experiment_setup} %insert figure of groups     
+    	\includegraphics[scale=0.3]{img/experiment_setup} %insert figure of groups     
     \end{center}
     	\caption{Experiment setup}
     \label{fig:exp_set}
@@ -76,25 +76,25 @@ This was mostly the case for sites close to, and south of, Oslo, or rather, the 
 \begin{figure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190212_161615169}
+		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190212_161615169}
 		  \caption{Browning infrared,\\ installed on a fallen tree}
 		  	\label{fig:cam_ex_a}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190515_170952923}
+		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190515_170952923}
 		  \caption{Reconyx infrared,\\ installed with a snow cap}
 		  	\label{fig:cam_ex_b}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190521_181329313}
+		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190521_181329313}
 		  \caption{Reconyx infrared above,\\ installed 160 cm above ground level}
 		  	\label{fig:cam_ex_c}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{/cam_install_example/IMG_20190529_181049340}
+		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190529_181049340}
 		  \caption{Browning infrared,\\ white LED flash has just been removed}
 		  	\label{fig:cam_ex_d}
 	\end{subfigure}
