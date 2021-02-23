@@ -6,7 +6,6 @@ output: html_notebook
 # Models with spatial covariates
 
 ```{r covs, include=FALSE}
-# Analysis - Survival. Including spatial covariates 
 covs<-readRDS("CTloc_covs.rds")
 class(covs)
 covs<-as.data.frame(covs) # Chaning class to data.fram and not a sf data.frame

@@ -75,7 +75,7 @@ freq$flash <- ifelse(freq$period %in% c("1_1", "1_2"), TRUE, FALSE)
 # period
 hist(freq$n.days, breaks = 100)  # Some have very few, those could be removed
 range(freq$n.days)
-
+write_rds(freq, "freq.rds")
 # Setting 20 days as an arbitrary limit
 freq <- freq[freq$n.days > 19, ]
 

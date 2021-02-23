@@ -18,15 +18,16 @@
         # unique(stations$cam_mod)
         # stations[stations$cam_mod=="Browning (+reconyx)",5] <- "Browning" # 5 marks the cam_mod colon
         # stations[stations$cam_mod=="RECONYXINFRA",5] <- "Reconyx"
-        # stations[stations$loc == 15,5] <- "Reconyx" 
+        # stations[stations$loc == 15,5] <- "Reconyx"
         # stations$cam_mod <- factor(stations$cam_mod, levels= c("Reconyx","Browning"))
         # levels(stations$cam_mod)
-        # 
+
         # loc_points <- data.frame(x=stations$x,y=stations$y)
         # loc_points <- SpatialPoints(loc_points,proj4string=CRS("+proj=utm +zone=32 +datum=WGS84"))
         # loc_UTM33 <- spTransform(loc_points,CRS("+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"))
         # stations$x <- loc_UTM33$x
         # stations$y <- loc_UTM33$y
+         stations$loc <- as.integer(stations$loc)
 #write_rds(stations, "stations.rds") 
 
 library(tidyverse)
@@ -81,9 +82,9 @@ ogrListLayers("Basisdata_30_Viken_25833_Kommuner_GML.gml")
 # 
 # 
 # Studieområde - base R------------------------------------
-#plot differing factors in differing colours
 plot(Viken,xlim=c(190000,290000),ylim=c(6580000,6720000))
-invisible(text(coordinates(OsloViken), labels=OsloViken$navn, cex=0.5)) #Kommunenamn
+invisible(text(coordinates(OsloViken),
+               labels = as.character(OsloViken$navn), cex=0.5)) #Kommunenamn
 
 points(stations[stations$cam_mod=="Reconyx",2],
        stations[stations$cam_mod=="Reconyx",3],pch=19,col="black")
@@ -94,103 +95,95 @@ legend("bottomleft",legend=c("Browning","Reconyx"),
        pch = 19, col = c("brown", "black"))
 
 
-# R-pakke: sp
 
-library(sp)
+#_____________________________________________________
 
-data(meuse)
-coordinates(meuse) <- c("x", "y")
+covs<-readRDS("CTloc_covs.rds") %>% mutate(loc = LokalitetID)
+class(covs)
+str(covs)
+statcov <- stations %>%
+        left_join(covs, by = "loc")
+class(statcov)
 
-plot(meuse)
-plot(meuse, pch = 19, cex = sqrt(meuse$zinc)/20, 
-     col = gray.colors(20)[cut(meuse$zinc, 20)])
-
-# R-pakke: rgdal
-
-library(rgdal)
-
-UTM33.WGS84 <- CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
-GEO.WGS84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# covs<-as.data.frame(covs) # Chaning class to data.fram and not a sf data.frame
+#_____________________________________________________
 
 
-k <- which(complete.cases(stations[,c(2,3)]))
-# N1K.sp <- spTransform(stations[,2:3], GEO.WGS84)
-
-library(maps) # Crude world map, needs to installed first
-
-par(mar = c(0,0,0,0)) # Maximize plot area
-map("world","norway", xlim = c(5,31), ylim = c(58,72))
-points(N1K.sp, pch = 19, col = topo.colors(20))
-
-library(mapdata) # Higher resolution maps, needs maps package
-par(mar = c(0,0,0,0)) # Maximize plot area
-map("worldHires","norway", xlim = c(5,31), ylim = c(58,72))
-
-
-
-
-# ESRI shape-filformat
-
-library(rgdal)
-shore <- readOGR("Riskedalsvatnet.shp","Riskedalsvatnet")
-plot(shore, col = "lightblue", lwd = 3)
-
-
-# R-pakke: raster
-
-library(raster)
-alt <- getData('alt', country='NOR', mask=TRUE)
-plot(alt)
-??Worldclim
-
-# worldclim, gir globale klimatiske data, scalert med 10 (alt ganget med 10)
-library(raster)
-w = ?getData('worldclim', var='tmin', res=0.5, lon=5, lat=45)
-plot(w)
-
-b = getData('worldclim', var='bio', res=0.5, lon=5, lat=45)
-plot(b)
-
-getData('ISO3') #169! 'NOR' Norway
-c = getData('GADM',country='NOR',level=2)
-plot(c)
-
-r <- getData("worldclim",var="bio",res=10)
-r1 <- r[[c(1,12)]]
-names(r1) <- c("Temp","Prec")
-points <- spsample(as(r@extent, 'SpatialPolygons'),n=100, type="random")    
-values <- extract(r,points)
-df <- cbind.data.frame(coordinates(points),values)
-head(df)
-plot(r[[1]])
-plot(points,add=T)
-
-
-# spatial data operations ---------------------------
-
+## ------------------------------------------------------------------------
 library(sf)
-library(raster)
-library(dplyr)
-library(spData)
+library(tidyverse)
 
-plot(st_geometry(cycle_hire), col = "blue")
-plot(st_geometry(cycle_hire_osm), add = TRUE, pch = 3, col = "red")
-
-
-# TIFF_GRAIN from DistLab -------------------------------------
-
-# 1. All of Norway
-r.list <- list.files("TIFF_GRAIN/NORWAY/10km", pattern="10km.tif$", full.names=TRUE)
-predictors_Norway <- stack(r.list)
-
-# 1. All of Norway
-r.list <- list.files("TIFF_GRAIN/NORWAY/10km", pattern="10km.tif$", full.names=TRUE)
-predictors_Oslo <- stack(r.list)
+ju_sfg <- st_point(c(-134.4333, 58.3059)) #Juneau
+an_sfg <- st_point(c(-149.8631, 61.2174)) #Anchorage
+fa_sfg <- st_point(c(-147.7767, 64.8354)) #Fairbanks
+nm_sfg <- st_point(c(-165.4064, 64.5011)) #Nome
 
 
 
 
 
+## ------------------------------------------------------------------------
+## Create MULTIPOINT object
+# loc_points <- data.frame(x=stations$x,y=stations$y)
+# loc_points <- SpatialPoints(loc_points,proj4string=CRS("+proj=utm +zone=32 +datum=WGS84"))
+# loc_UTM33 <- spTransform(loc_points,CRS("+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"))
+# stations$x <- loc_UTM33$x
+# stations$y <- loc_UTM33$y
+
+loc_sfg <- st_multipoint(cbind(stations$x,stations$y))
+plot(loc_sfg)
+
+loc_sfc <- st_sfc(st_sfg, crs = 23032) #23032 for utm zone 32 (23033 for utm33)
+st_crs(loc_sfc)
+plot(loc_sfc)
+
+# Create data.frame with attributes
+loc_df <- data.frame(loc = stations$loc,
+                        cam_mod = stations$cam_mod,
+                        abc = stations$abc)
+
+# Combine data.frame and spatial data
+loc_sf <- st_sf(loc_df, geometry = loc_sfc)
+
+loc_sf
+
+class(loc_sf)
+
+str(loc_sf)
+
+
+## ------------------------------------------------------------------------
+Viken <- rgdal::readOGR("Basisdata_30_Viken_25833_Kommuner_GML.gml")
+Oslo <- rgdal::readOGR("Basisdata_03_Oslo_25833_Kommuner_GML.gml")
+Viken_<-rbind(Viken,Oslo)
+
+class(Viken_)
+### Covert from SpatialPolygonsDataframe to sf
+Viken_sf <- st_as_sf(Viken_)
+### Set CRS to utm zone 33 (23033 for utm33)
+Viken_sf <- st_transform(Viken_sf, crs = 23032)
+
+### View object
+Viken_sf
+
+
+
+## For å hente ut koordinater til å plotte tekst, til dømes
+loc_sf <- mutate(loc_sf, 
+                   x = purrr::map_dbl(geometry, 1), 
+                   y = purrr::map_dbl(geometry, 2))
+
+
+library(ggplot2)
+ggplot(data = Viken_sf) +
+        geom_sf() +     # Viken
+        geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
+        geom_sf(data = loc_sf, color = "red", size = 3,   # Cities
+        show.legend = "point") +
+        theme_minimal() +
+        theme(axis.title = element_blank()) 
+
+## ------------------------------------------------------------------------
 
 
 
