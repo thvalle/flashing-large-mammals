@@ -133,7 +133,7 @@ nm_sfg <- st_point(c(-165.4064, 64.5011)) #Nome
 loc_sfg <- st_multipoint(cbind(stations$x,stations$y))
 plot(loc_sfg)
 
-loc_sfc <- st_sfc(st_sfg, crs = 23032) #23032 for utm zone 32 (23033 for utm33)
+loc_sfc <- st_sfc(loc_sfg, crs = 23032) #23032 for utm zone 32 (23033 for utm33)
 st_crs(loc_sfc)
 plot(loc_sfc)
 
@@ -174,7 +174,6 @@ loc_sf <- mutate(loc_sf,
                    y = purrr::map_dbl(geometry, 2))
 
 
-library(ggplot2)
 ggplot(data = Viken_sf) +
         geom_sf() +     # Viken
         geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
@@ -185,6 +184,16 @@ ggplot(data = Viken_sf) +
 
 ## ------------------------------------------------------------------------
 
+# plotting all norway-maps
+library(maps)
+x <- map('world', 'Norway', names = TRUE, plot = FALSE)
+for (i in x) { map("world",i) }
 
 
 
+#tmap has interactive leaflet maps:
+library(tmap)
+qtm(nc)
+tmap_mode("view")
+## tmap mode set to interactive viewing
+tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))

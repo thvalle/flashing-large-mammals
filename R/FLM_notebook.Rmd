@@ -13,45 +13,7 @@ library(overlap)
   effort   <- readRDS("Effort_prepared.rds")
   obs      <- readRDS("Observations_prepared1.rds")
   stations <- readRDS("stations.rds")
-
-# functions building on overlap package
-overlap_flash <- function(x, colour = c("black", "blue"), rug = FALSE) {
-  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad
-  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad
-  overlapPlot(x1, x0, main = str_to_title(x), linecol = rep(colour, 2), rug = rug, linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey")
-  x.est <- round(overlapEst(x1, x0, type = "Dhat4"), 3)
-  n0 <- length(x0)
-  n1 <- length(x1)
-  legend("top", legend = str_c("Dhat4", x.est, sep = " = "), bty = "n")
-  legend("bottomleft", legend = c(str_c("LED n", n1, sep = " = "), str_c("    IR n", n0, sep = " = ")),
-         col = colour, lty = c(1, 2), lwd = 2, bty = "7")
-}
-overlap_flash_2sp <- function(x, y, col_x, col_y, rug = FALSE) {
-  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad # - - | | - -    = FALSE
-  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad  # sp X when flash = TRUE
-  y0 <- obs[obs$validated_species %in% y & obs$flash == FALSE, ]$rad # - - | | - -    = FALSE
-  y1 <- obs[obs$validated_species %in% y & obs$flash == TRUE, ]$rad # sp Y when flash = TRUE
-  par(mfrow = c(2, 2)) # setting plot parameters: 2x2 windows
-  overlap_flash(x, col_x, rug) # using the overlap_flash function for single species w/w/o flash-plot
-  overlap_flash(y, col_y, rug) #                 - - | | - -
-  overlapPlot(x0, y0,  # overlapping 2 species plot - flash = FALSE
-    main = "IR", rug = rug, linecol = c(col_x, col_y),
-    linetype = c(2, 2), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
-  )
-  xy0.est <- round(overlapEst(x0, y0, type = "Dhat4"), 3)  # estimated overlap using Dhat4 - flash = FALSE
-  xy1.est <- round(overlapEst(x1, y1, type = "Dhat4"), 3)  #           - - | | - -         - flash = TRUE
-  legend("top", legend = str_c("Dhat4", xy0.est, sep = " = "), bty = "n") # Dhat4 label
-  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(2, 2), lwd = 2, bty = "n") # legend
-  overlapPlot(x1, y1,  # overlapping 2 species plot - flash = TRUE
-    main = "white LED", rug = rug, linecol = c(col_x, col_y),
-    linetype = c(1, 1), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
-  )
-  legend("top", legend = str_c("Dhat4", xy1.est, sep = " = "), bty = "n")
-  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(1, 1), lwd = 2, bty = "n")
-  par(mfrow = c(1, 1)) # return normal plot parameters: 1x1 windows
-}
 ```
-
 
 # Presenting the data
 ```{r}
@@ -71,53 +33,25 @@ obs_by_loc <- obs %>% group_by(loc) %>% summarise(n = length(timeserie_id)) %>% 
 # plot(obs_by_loc)
 ```
 
-### Blank images
-```{r blanks, eval = FALSE}
-# Filtering out timelapse-pictures in Reconyx (455 is the only Browning-camera that has significant number of pictures here)
-timelapse <- obs %>% left_join(stations, by = "loc") %>%
-  filter(hour %in% c(8, 13) & mins == 0  &  secs == 0  &  validated_species == "nothing") # == "nothing" to single out tinelapse-photos
-summary(timelapse)
-table(timelapse$hour[timelapse$cam_mod =="Reconyx"])
+## Timeseries plot of periods from the troubleshooting and organisation with Neri
 
-table(timelapse$cam_mod)
-
-
-# table(timelapse$loc[timelapse$cam_mod == "Browning"])  #455 maybe has two cameras?
-# table(timelapse$validated_species)  # when val_sp == "nothing" not specified: 10 other species present
-# table(timelapse$validated_species[timelapse$hour == 13]) # elg:1, maar:2, menneske:3, raadyr:1
-# table(timelapse$validated_species[timelapse$hour == 8]) # ekorn:1, fugl:9, gaupe:1, katt:1, menneske:1, raadyr:4, rev:2, ukjent:4
-
-# Differentiate "nothing"-sequences and "nothing"-one-shots
-# validated_species == "nothing" #by loc,
-# and making an "independent event" criteria to distinguish repeated vegetation-triggering and other single-triggered events. 
-# TODO
-library(data.table)
-setDT(obs)[, event_id := 1L + cumsum(c(0L, diff(datetime) > 720)), by=.(loc, validated_species)]
-
-# TODO obs %>% group_by(validated_species, event_id) %>% filter(validated_species == "nothing") %>% table(obs$loc)
-
-
-names(obs)
+```{r effort-facet}
+ctrl <- c("Control_1","Control_2","Control_3","Control_4")
+effort %>% filter(!period %in% ctrl) %>% 
+ggplot()+
+  geom_point(aes(date, as.factor(loc), col=factor(flash))) +
+  theme_classic() + labs(y = "Location") +
+  theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
+        legend.position = "top")
+effort %>% filter(period %in% ctrl) %>% 
+ggplot()+
+  geom_point(aes(date, as.factor(loc), col = period)) +
+  theme_classic() + labs(y = "Location") +
+  theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
+        legend.position = "top")
+#  theme(axis.text.x = element_text(angle = 20))   # angle endrer tekst, for å unngå overlapp
+#  scale_y_discrete(guide = guide_axis(check.overlap = T)) # tar seg av overlappande tekst
 ```
-
-
-
-## time series of all cameras
-```{r time_series}
-
-p_timeseries <- ggplot(data = effort) +
-  geom_jitter(mapping = aes(date, period), alpha = 1 / 5, width = 0, height = 0.1)
-p_timeseries +   labs(title = "Active days of each period")  # TODO # find a way to mark n cameras by groups (A = 19, B = 20, C = 20)
-p_timeseries_facet <- ggplot(effort, aes(date, as.factor(loc))) +
-  theme(axis.text.x = element_text(angle = 20)) +
-  facet_wrap(~period, nrow = 2) +
-  scale_y_discrete(guide = guide_axis(check.overlap = T))
-p_timeseries_facet + geom_point(size = .8) + labs(title = "Active days of each camera faceted by periods")
-```
-
-The cameras were divided into 3 groups a 20 cameras. Group A were the control group, and stayed unchanged. Group B and C were each equipped with an additional PC850 Reconyx camera, which has a white LED flash, with alternating periods of 3 months. Group B was first in each period, as seen in the first plot.
-
-The second plots shows the effort from each camera, faceted by the periods. Unfortunately there is some debugging to do as _a camera from group B and one from C has fallen into the control period._ In addition, two cameras from group C enters/ stays in the second period without flash (0_2), instead of entering the 1_2-period. The same is true for a B camera, that enters 1_2 with the C group, a period late!
 
 
 
@@ -152,11 +86,55 @@ Removing sightings of "nothing", things related to humans, as well as NAs and bi
 Roe deer and red fox are the species with decidedly most data. The flash true/false-plot reveals similar proportions of detection abundances between the eight most common species.
 
 ## Density plots showing activity patterns with and without flash
-```{r overlap_flash}
-obs$hour <- as.numeric(format(obs$datetime, "%H"))
-obs$mins <- as.numeric(format(obs$datetime, "%M"))
-obs$rad <- ((obs$hour * 60 + obs$mins)/(24 * 60)) * 2 * pi  # Converting hours to minutes and dividing the number of minutes by the 
 
+
+
+```{r overlap-func, echo=FALSE}
+# functions building on overlap package
+overlap_flash <- function(x, colour = c("black", "blue"), rug = FALSE, main = str_to_title(x), ...) {
+  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad
+  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad
+  overlapPlot(x1, x0, linecol = rep(colour, 2), rug = rug, main = main, 
+              linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey", ...)
+  x.est <- round(overlapEst(x1, x0, type = "Dhat4"), 2)
+  n0 <- length(x0)
+  n1 <- length(x1)
+  legend("top", legend = str_c("Dhat4", x.est, sep = " = "), bty = "n")
+#  legend("bottomleft", legend = c(str_c("LED n", n1, sep = " = "), str_c("    IR n", n0, sep = " = ")),
+#         col = colour, lty = c(1, 2), lwd = 2, bty = "7")
+}
+overlap_flash_2sp <- function(x, y, col_x, col_y, rug = FALSE) {
+  x0 <- obs[obs$validated_species %in% x & obs$flash == FALSE, ]$rad # - - | | - -    = FALSE
+  x1 <- obs[obs$validated_species %in% x & obs$flash == TRUE, ]$rad  # sp X when flash = TRUE
+  y0 <- obs[obs$validated_species %in% y & obs$flash == FALSE, ]$rad # - - | | - -    = FALSE
+  y1 <- obs[obs$validated_species %in% y & obs$flash == TRUE, ]$rad # sp Y when flash = TRUE
+  par(mfrow = c(2, 2)) # setting plot parameters: 2x2 windows
+  overlap_flash(x, col_x, rug) # using the overlap_flash function for single species w/w/o flash-plot
+  overlap_flash(y, col_y, rug) #                 - - | | - -
+  overlapPlot(x0, y0,  # overlapping 2 species plot - flash = FALSE
+    main = "IR", rug = rug, linecol = c(col_x, col_y),
+    linetype = c(2, 2), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
+  )
+  xy0.est <- round(overlapEst(x0, y0, type = "Dhat4"), 3)  # estimated overlap using Dhat4 - flash = FALSE
+  xy1.est <- round(overlapEst(x1, y1, type = "Dhat4"), 3)  #           - - | | - -         - flash = TRUE
+  legend("top", legend = str_c("Dhat4", xy0.est, sep = " = "), bty = "n") # Dhat4 label
+  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(2, 2), lwd = 2, bty = "n") # legend
+  overlapPlot(x1, y1,  # overlapping 2 species plot - flash = TRUE
+    main = "white LED", rug = rug, linecol = c(col_x, col_y),
+    linetype = c(1, 1), linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey"
+  )
+  legend("top", legend = str_c("Dhat4", xy1.est, sep = " = "), bty = "n")
+  legend("bottomleft", legend = c(x, y), col = c(col_x, col_y), lty = c(1, 1), lwd = 2, bty = "n")
+  par(mfrow = c(1, 1)) # return normal plot parameters: 1x1 windows
+}
+obs$hour <- as.numeric(format(obs$datetime, "%H")) # setting up time cols 
+obs$mins <- as.numeric(format(obs$datetime, "%M")) # in a way that overlap
+obs$rad <- ((obs$hour * 60 + obs$mins)/(24 * 60)) * 2 * pi  # understands
+```
+
+
+
+```{r overlap-flash}
 overlap_flash("rev", "red", rug = TRUE) 
 overlap_flash_2sp("rev", "raadyr", "red", "blue", rug=TRUE)
 ```
@@ -165,8 +143,38 @@ Sites without white flash produces a more bumpy curve than does the sites with a
 
 The Dhat4 calculation reveals a larger difference in activity for foxes, than for roe deer, but seems to mainly stem from the twilight hours. Thus, it could be because of the size of the animals, rather than a reaction to the flash.
 
+### One plot for all species
+
+```{r overlap-flash-sp}
+
+sp <- c("rev", "raadyr", "grevling", "elg", "hjort", "gaupe")
+par(mfrow = c(2, 3))
+ par(cex = 0.6)
+ par(mar = c(0, 0, 0, 0), oma = c(4, 4, 0.5, 0.5))
+ par(tcl = -0.25)
+ par(mgp = c(2, 0.6, 0))
+for (i in sp[1:3]) {
+ overlap_flash(i, axes = FALSE,  ann=F, rug=T, xaxt="n")
+  legend("top", legend = str_c("\n ",i), bty = "n") # art
+}
+overlap_flash(sp[4], main=NULL, rug=T) 
+   legend("top", legend = str_c("\n ",sp[4]), bty = "n") # art 
+   legend(x=-4.2, y=0.018, legend = c("IR", "white LED"), #x+y sets legend position
+         col = c("black","blue"), lty = c(1, 2), lwd = 2, bty = "o")
+for (i in sp[5:6]){
+ overlap_flash(i, axes = FALSE,  ann=F, rug=T) 
+   legend("top", legend = str_c("\n ",i), bty = "n") # art
+}
+ mtext("Time", side = 1, outer = TRUE, cex = 0.7, line = 2.2,
+ col = "grey20")
+ mtext("Density", side = 2, outer = TRUE, cex = 0.7, line = 2.2,
+ col = "grey20")
+```
+
+
+
 ### Controlling for day-length
-```{r, suntime}
+```{r suntime}
 # Dates <- as.POSIXct(obs$date, tz="CET")
 # coords <- matrix(c(60.1, 10.6), nrow=1) # Rett nord for Oslo i longlat
 # Coords <- sp::SpatialPoints(coords, proj4string=sp::CRS("+proj=longlat +datum=WGS84"))
@@ -221,27 +229,177 @@ freq %>% # plot of frequency grouped by abc and flash T/F
 
 # Some final plots I want to add in my thesis
 
-## Timeseries plot of periods from the troubleshooting and organisation with Neri
 
-```{r effort-facet}
-ctrl <- c("Control_1","Control_2","Control_3","Control_4")
-effort %>% filter(!period %in% ctrl) %>% 
-ggplot()+
-  geom_point(aes(date, as.factor(loc), col=factor(flash))) +
-  theme_classic() + labs(y = "Location") +
-  theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
-        legend.position = "top")
-effort %>% filter(period %in% ctrl) %>% 
-ggplot()+
-  geom_point(aes(date, as.factor(loc), col = period)) +
-  theme_classic() + labs(y = "Location") +
-  theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
-        legend.position = "top")
+## Maps
+
+```{r mapsetup, message=FALSE, warning=FALSE, echo=FALSE}
+v <- st_read("Basisdata_30_Viken_25833_Kommuner_GML.gml", drivers = "GML", layer = "Kommune")
+o <- st_read("Basisdata_03_Oslo_25833_Kommuner_GML.gml",  drivers = "GML", layer = "Kommune")
+Viken<-rbind(v,o) #legg Oslo inn i Viken
+### Transform CRS to utm zone 32 (23033 for utm33)
+Viken <- st_transform(Viken_sf, crs = 23032)
+## automatically selected the first layer in a data source containing more than one.Reading layer `Kommune' from data source `C:\Users\Nora.Familie-PC\Documents\TorgeiR\flm\R\Basisdata_30_Viken_25833_Kommuner_GML.gml' using driver `GML'
+## GDAL Message 1: 64 bit integer overflow when converting 172793172790172913172915173031
+# Setting up loc-points
+loc_sfg <- st_multipoint(cbind(stations$x,stations$y)) 
+loc_sfc <- st_sfc(loc_sfg, crs = 23032) #23032 for utm zone 32 (23033 for utm33)
+# Create data.frame with attributes
+loc_df <- data.frame(loc = stations$loc,
+                        cam_mod = stations$cam_mod,
+                        abc = stations$abc)
+# Combine data.frame and spatial data
+loc_sf <- st_sf(loc_df, geometry = loc_sfc)
+loc_sf
+class(loc_sf)
+str(loc_sf)
+# loc_sf <- mutate(loc_sf, 
+#                    x = purrr::map_dbl(geometry, 1), 
+#                    y = purrr::map_dbl(geometry, 2))
+```
+```{r maps-scandi}
+library(maps)
+library(tmap)
+Norge <- st_as_sf(map("world",'Norway', plot = FALSE, fill = TRUE))
+ggplot() + geom_sf(data = Norge)
+Scandinavia <- st_as_sf(map("world",c("Norway","Sweden", "Finland","Denmark","UK", "Germany"), plot = F, fill = T))
+
+ggplot() +
+  geom_sf(data =Scandinavia) +
+  geom_sf(data = Viken, fill = "blue", alpha = .2) +  # Viken polygon
+  annotate("rect", xmin = 7.3, xmax = 13,
+           ymin = 58.5, ymax = 61.2,
+           alpha = .4) +
+  coord_sf(xlim = c(0,25), ylim = c(57,71)) +
+  theme_bw()
+
+# ggplot(Viken) +
+#   stat_sf_coordinates()
 ```
 
 
 
-## Maps
+```{r maps}
+loc_sf <- mutate(loc_sf, 
+                   x = purrr::map_dbl(geometry, 1), 
+                   y = purrr::map_dbl(geometry, 2))
+ggplot(data = Viken) +
+        geom_sf() +     # Viken
+        geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
+        geom_sf(data = loc_sf, color = "red", size = 3,   # CT sites
+        show.legend = "point") +
+        theme_minimal() +
+        theme(axis.title = element_blank()) +
+        coord_sf(xlim = range(loc_sf$x), ylim = range(loc_sf$y))
+#  xlim(c(190000,290000)) + ylim(c(6580000,6720000))
+```
+
+
+
+```{r}
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+ggplot(nc) +
+  geom_sf(aes(fill = AREA))
+
+# If not supplied, coord_sf() will take the CRS from the first layer
+# and automatically transform all other layers to use that CRS. This
+# ensures that all data will correctly line up
+nc_3857 <- sf::st_transform(nc, 3857)
+ggplot() +
+  geom_sf(data = nc) +
+  geom_sf(data = nc_3857, colour = "red", fill = NA)
+
+# Unfortunately if you plot other types of feature you'll need to use
+# show.legend to tell ggplot2 what type of legend to use
+nc_3857$mid <- sf::st_centroid(nc_3857$geometry)
+ggplot(nc_3857) +
+  geom_sf(colour = "white") +
+  geom_sf(aes(geometry = mid, size = AREA), show.legend = "point")
+
+# You can also use layers with x and y aesthetics: these are
+# assumed to already be in the common CRS.
+ggplot(nc) +
+  geom_sf() +
+  annotate("point", x = -80, y = 35, colour = "red", size = 4)
+
+# Thanks to the power of sf, a geom_sf nicely handles varying projections
+# setting the aspect ratio correctly.
+library(maps)
+world1 <- sf::st_as_sf(map('world', plot = FALSE, fill = TRUE))
+ggplot() + geom_sf(data = world1)
+map()
+world2 <- sf::st_transform(
+  world1,
+  "+proj=laea +y_0=0 +lon_0=155 +lat_0=-90 +ellps=WGS84 +no_defs"
+)
+ggplot() + geom_sf(data = world2)
+
+# To add labels, use geom_sf_label().
+ggplot(nc_3857[1:3, ]) +
+   geom_sf(aes(fill = AREA)) +
+   geom_sf_label(aes(label = NAME))
+```
+
+```{r}
+map()	# low resolution map of the world
+map(wrap = c(0,360), fill = TRUE, col = 2) # pacific-centered map of the world
+map(wrap = c(0, 360, NA), fill = TRUE, col = 2) # idem, without Antarctica
+map('usa')	# national boundaries
+map('county', 'new jersey')	# county map of New Jersey
+map('state', region = c('new york', 'new jersey', 'penn'))	# map of three states
+map("state", ".*dakota", myborder = 0)	# map of the dakotas
+map.axes()				# show the effect of myborder = 0
+if(require(mapproj))
+  map('state', proj = 'bonne', param = 45)	# Bonne equal-area projection of states
+
+# names of the San Juan islands in Washington state
+map('county', 'washington,san', names = TRUE, plot = FALSE)
+
+# national boundaries in one linetype, states in another
+# (figure 5 in the reference)
+map("state", interior = FALSE)
+map("state", boundary = FALSE, lty = 2, add = TRUE)
+
+# plot the ozone data on a base map
+# (figure 4 in the reference)
+data(ozone)
+map("state", xlim = range(ozone$x), ylim = range(ozone$y))
+text(ozone$x, ozone$y, ozone$median)
+box()
+```
+
+
+
+
+
+
+### Blank images
+```{r blanks, eval = FALSE}
+# Filtering out timelapse-pictures in Reconyx (455 is the only Browning-camera that has significant number of pictures here)
+timelapse <- obs %>% left_join(stations, by = "loc") %>%
+  filter(hour %in% c(8, 13) & mins == 0  &  secs == 0  &  validated_species == "nothing") # == "nothing" to single out tinelapse-photos
+summary(timelapse)
+table(timelapse$hour[timelapse$cam_mod =="Reconyx"])
+
+table(timelapse$cam_mod)
+
+
+# table(timelapse$loc[timelapse$cam_mod == "Browning"])  #455 maybe has two cameras?
+# table(timelapse$validated_species)  # when val_sp == "nothing" not specified: 10 other species present
+# table(timelapse$validated_species[timelapse$hour == 13]) # elg:1, maar:2, menneske:3, raadyr:1
+# table(timelapse$validated_species[timelapse$hour == 8]) # ekorn:1, fugl:9, gaupe:1, katt:1, menneske:1, raadyr:4, rev:2, ukjent:4
+
+# Differentiate "nothing"-sequences and "nothing"-one-shots
+# validated_species == "nothing" #by loc,
+# and making an "independent event" criteria to distinguish repeated vegetation-triggering and other single-triggered events. 
+# TODO
+library(data.table)
+setDT(obs)[, event_id := 1L + cumsum(c(0L, diff(datetime) > 720)), by=.(loc, validated_species)]
+
+# TODO obs %>% group_by(validated_species, event_id) %>% filter(validated_species == "nothing") %>% table(obs$loc)
+
+
+names(obs)
+```
 
 
 
