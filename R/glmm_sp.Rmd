@@ -3,8 +3,7 @@ title: "GLMM per art"
 author: "Torgeir"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    code_folding: hide 
+  github_document:
     toc: true
 ---
 
@@ -149,7 +148,7 @@ p_td2 + ggpubr::theme_classic2() +
 _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
-time.dep4 <- time.dep3 %>% filter(time.deploy < h/10)
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
 ```
 
 
@@ -175,8 +174,8 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
+plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(title = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -251,10 +250,10 @@ m_raa  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 # --------------------------------------------------------------------
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_raa, terms = c("time.deploy", "flash"))
+p_raa <- ggeffects::ggpredict(m_raa, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "Raw data")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_raa, add.data = TRUE) + labs(title  = "Raw data")
+plot(p_raa, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_raa) # check assumptions
 ```
 
@@ -269,7 +268,7 @@ The multicollinearity is moderate for the interaction term of time.deploy and fl
 ```{r raadyr-C-report}
 # Summary, report, model
 summary(m_raa)
-plot(p_sp)
+plot(p_raa) + labs(title = "Predicted counts of roe deer")
 ```
 
 The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
@@ -301,15 +300,13 @@ plot(result_stnd, show_intercept = TRUE) + labs(subtitle = ' standardize = "refi
 result <- equivalence_test(m_raa)
 plot(result, size_text = 3)
 result
-
-result_sim <- simulate_parameters(m_raa)
-plot(result_sim, stack = FALSE,
-     normalize_height = TRUE)
 ```
 
 
 ```{r raadyr-report2}
-report::report(m_raa) # text-summary of my model, to include in a report
+r_raa <- report(m_raa) # text-summary of my model, to include in a report
+summary(r_raa)
+as.report_table(r_raa)
 ```
 
 
@@ -330,10 +327,10 @@ m_rev  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_rev, terms = c("time.deploy", "flash"))
+p_rev <- ggeffects::ggpredict(m_rev, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
+plot(p_rev, add.data = TRUE) + labs(title = "add.data = TRUE")
+plot(p_rev, residuals = TRUE) + labs(title = "Residuals")
 performance::check_model(m_rev) # check assumptions
 ```
 
@@ -343,12 +340,13 @@ performance::check_model(m_rev) # check assumptions
 ```{r rev-report}
 # Summary, report, model
 summary(m_rev)
-plot(p_sp)
+plot(p_rev)
 ```
 
 
 ```{r rev-report2}
-report::report(m_rev) # text-summary of my model, to include in a report
+r_rev <- report(m_rev) # text-summary of my model, to include in a report
+as.report_text(r_rev, summary=T)
 ```
 
 
@@ -367,10 +365,10 @@ m_grvl  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy", "flash"))
+p_grvl <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_grvl, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_grvl, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_grvl) # check assumptions
 ```
 
@@ -380,12 +378,13 @@ performance::check_model(m_grvl) # check assumptions
 ```{r grevling-report}
 # Summary, report, model
 summary(m_grvl)
-plot(p_sp)
+plot(p_grvl)
 ```
 
 
 ```{r grevling-report2}
-report::report(m_grvl) # text-summary of my model, to include in a report
+r_grvl <- report(m_grvl) # text-summary of my model, to include in a report
+as.report_text(r_grvl, summary=T)
 ```
 
 
@@ -404,10 +403,10 @@ m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_elg, terms = c("time.deploy", "flash"))
+p_elg <- ggeffects::ggpredict(m_elg, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_elg, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_elg, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_elg) # check assumptions
 ```
 
@@ -417,12 +416,13 @@ performance::check_model(m_elg) # check assumptions
 ```{r elg-report}
 # Summary, report, model
 summary(m_elg)
-plot(p_sp)
+plot(p_elg)
 ```
 
 
 ```{r elg-report2}
-report::report(m_elg) # text-summary of my model, to include in a report
+r_elg <- report(m_elg) # text-summary of my model, to include in a report
+as.report_text(r_elg, summary=T)
 ```
 
 
@@ -441,10 +441,10 @@ m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy", "flash"))
+p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_hjort, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_hjort, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_hjort) # check assumptions
 ```
 
@@ -455,11 +455,12 @@ performance::check_model(m_hjort) # check assumptions
 # Summary, report, model
 summary(m_hjort)
 # report::report(m_hjort) # text-summary of my model, to include in a report
-plot(p_sp)
+plot(p_hjort)
 ```
 
 ```{r hjort-report2}
-report::report(m_hjort) # text-summary of my model, to include in a report
+r_hjort <- report(m_hjort) # text-summary of my model, to include in a report
+as.report_text(r_hjort, summary=T)
 ```
 
 
@@ -477,10 +478,10 @@ m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy", "flash"))
+p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_gaup, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_gaup, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_gaup) # check assumptions
 ```
 
@@ -490,11 +491,12 @@ performance::check_model(m_gaup) # check assumptions
 ```{r gaupe-report}
 # Summary, report, model
 summary(m_gaup)
-plot(p_sp)
+plot(p_gaup)
 ```
 
 ```{r gaupe-report2}
-report::report(m_gaup) # text-summary of my model, to include in a report
+r_gaup <- report(m_gaup) # text-summary of my model, to include in a report
+as.report_text(r_gaup, summary=T)
 ```
 
 
@@ -508,6 +510,15 @@ report::report(m_gaup) # text-summary of my model, to include in a report
 # plot(result)
 # 
 # rmarkdown::render("glmm_sp.Rmd", output_format = "github_document")
+```
+
+```{r model-report}
+as.report_table(r_raa  ) #, summary = T)
+as.report_table(r_rev  ) #, summary = T)
+as.report_table(r_grvl ) #, summary = T)
+as.report_table(r_elg  ) #, summary = T)
+as.report_table(r_hjort) #, summary = T)
+as.report_table(r_gaup ) #, summary = T)
 ```
 
 
@@ -534,8 +545,8 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_sp, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -548,3 +559,8 @@ summary(m_sp)
 report::report(m_sp) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
+
+```{r sessionInfo}
+report_parameters(sessionInfo())
+```
+
