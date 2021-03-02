@@ -43,7 +43,7 @@ I divided the sites randomly into three groups of 20 cameras. Cameras in group A
 
 \begin{figure}
     \begin{center}
-    	\includegraphics[scale=0.3]{img/experiment_setup} %insert figure of groups     
+    	\includegraphics[scale=0.3]{./img/experiment_setup.jpg} %insert figure of groups     
     \end{center}
     	\caption{Experiment setup}
     \label{fig:exp_set}
@@ -67,34 +67,38 @@ The camera boxes remained at each site untill the end of the experiment. Note th
 	\label{fig:period_timeseries}
 \end{figure}
 
-I visited sites of group B and C at least once every three months in order to move the LED cameras. For convenience I visited sites of group A less often. %Her trengs ein språkleg endring
+I visited sites of group B and C at least once every three months in order to move the LED cameras. For logistical reasons I visited sites of group A less often. %Her trengs ein språkleg endring
 However, as the cameras were part of other, ongoing projects, they were occasionally visited by other workers from NINA to retreive the Secure Digital memory cards (hereby SD Cards) for data. %write in full on first mention (-Atle)
 This was mostly the case for sites close to, and south of, Oslo, or rather, the cameras not normally operated by members of the NJFF.
+
+When doing the analyses I needed periods of similar lengths to each other. Therefore, I divided the control group-cameras into four periods of similar lengths to that of the cameras with white LED periods (see figure \vref{fig:period_timeseries}).
+
+
 
 
 
 \begin{figure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190212_161615169}
+		  	\includegraphics[width=.8\linewidth]{./img/cam_install_example/IMG_20190212_161615169.jpg}
 		  \caption{Browning infrared,\\ installed on a fallen tree}
 		  	\label{fig:cam_ex_a}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190515_170952923}
+		  	\includegraphics[width=.8\linewidth]{./img/cam_install_example/IMG_20190515_170952923.jpg}
 		  \caption{Reconyx infrared,\\ installed with a snow cap}
 		  	\label{fig:cam_ex_b}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190521_181329313}
+		  	\includegraphics[width=.8\linewidth]{./img/cam_install_example/IMG_20190521_181329313.jpg}
 		  \caption{Reconyx infrared above,\\ installed 160 cm above ground level}
 		  	\label{fig:cam_ex_c}
 	\end{subfigure}
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-		  	\includegraphics[width=.8\linewidth]{img/cam_install_example/IMG_20190529_181049340}
+		  	\includegraphics[width=.8\linewidth]{./img/cam_install_example/IMG_20190529_181049340.jpg}
 		  \caption{Browning infrared,\\ white LED flash has just been removed}
 		  	\label{fig:cam_ex_d}
 	\end{subfigure}
@@ -190,7 +194,7 @@ including all meta data from the camera, coupled with predicted species (FRA out
 I defined one event as any 1 species passing with a buffer time of 5 min before or after %TODO  Må bestemme lengde på intervall, og formulere betre
 
 
-The true number of active camera days are confounded by the inconvenient lack of time lapse photos from the Browning cameras. To approach the true number of active days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo.
+The true number of active camera days are confounded by the lack of time lapse photos from the Browning cameras. To approach the true number of active days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo.
 
 
 
@@ -215,12 +219,12 @@ To test for effects of the white LED flash I used the R programming language (\c
 	\subsection*{GLMM}
 To test $H_{1}$ I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the R package lme4 (\cite{lme4}).
 
-My dependant variable was count data, which follows a Poisson distribution ($ X \sim Pois(\lambda) $). That is, any value is a non-negative real number (0, 1, 2, ..., k), and randomly distributed.
-Thus, the error follows a non-Gaussian distribution, which calls for \emph{generalised} linear models. 
+My dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
+Thus, the error has a non-Gaussian distribution, which calls for \emph{generalised} linear models. %TODO språkvask
 
 My \emph{fixed effects}, or predictors, were flash type (white LED present/absent or control group), and time since deployment in days.
 For the cameras that was equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up/ took down the white LED.
-The control group's "day 0" of the time since deployment was set at arbitrary points by me when doing the analysis, in order to obtain periods of similar lengths to that of the experiment-locations. See period breaks in \ref{fig:period_timeseries}.
+
 Further, I also trimmed the period lengths down to a maximum length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualised in \ref{fig:median_period}. 
 As I expected there to be a trend over time, I included an interaction term between the fixed effects.
 
@@ -241,9 +245,9 @@ As I expected there to be a trend over time, I included an interaction term betw
 	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[scale=.8]{../R/FLM_notebook_files/figure-gfm/effort-facet-2.png}
-			\caption{\label{fig:timeseries_control} Control cameras}	
+			\caption{\label{fig:timeseries_control} Control cameras'\\ period breaks were set to arbitrary dates. }	
 	\end{subfigure}	
-\caption{\label{fig:timeseries_figure} Period timeseries}
+\caption{\label{fig:timeseries_figure} Thus, "day 0" of Control-cameras are often set at dates far from an actual visitation day.}
 \end{figure}
 
 
@@ -265,6 +269,21 @@ $$n.obs \sim time \times flash + (1|loc) + (1|week) $$
 %\end{align*} 
 
 However, this model only takes into account whether a flash was present or not. It can't tell if the flash actually went off, or how many times it did.
+
+
+% Results-part moved after comments from Atle:
+
+
+I fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict number of observations with time since deployment and flash type (formula: n.obs ~ time.deploy * flash).
+The model included location ID and week as random effects (formula: list(~1 | loc, ~1 | week)).
+
+
+Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
+
+
+
+
+
 
 	\subsection*{Cox Proportional Hazards}
 %What I am in truth testing is each camera's chance of contracting a roe deer disease, or fox disease, and how that chance changes when "treated" with a white LED flash.

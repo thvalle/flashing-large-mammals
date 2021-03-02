@@ -2,32 +2,28 @@
 \defcounter {refsection}{0}\relax 
 \select@language {UKenglish}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{3}
+\contentsline {chapter}{\numberline {1}Introduction}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Ledestjerne}{3}
+\contentsline {subparagraph}{Ledestjerne}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}Method and materials}{4}
+\contentsline {chapter}{\numberline {2}Method and materials}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Study species}{4}
+\contentsline {section}{\numberline {2.1}Study species}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Study area}{4}
+\contentsline {section}{\numberline {2.2}Study area}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Study design}{5}
+\contentsline {section}{\numberline {2.3}Study design}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data Collection}{7}
+\contentsline {section}{\numberline {2.4}Data Collection}{8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Data processing}{7}
+\contentsline {section}{\numberline {2.5}Data processing}{8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.6}Statistical analysis}{8}
+\contentsline {section}{\numberline {2.6}Statistical analysis}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.7}Results}{12}
+\contentsline {chapter}{\numberline {3}Results}{14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7.1}GLMM}{12}
+\contentsline {subsection}{\numberline {3.0.1}GLMM}{14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7.2}Kommentar}{14}
+\contentsline {subsection}{\numberline {3.0.2}CPH mixed effect}{14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7.3}CPH mixed effect}{14}
-\defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Discussion}{15}
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}GLMM}{15}
+\contentsline {chapter}{\numberline {4}Discussion}{19}
