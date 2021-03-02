@@ -1,10 +1,11 @@
 \title{	
 	{\large Flashing Large Mammals}\\
-	{\small Quantifying the effect of white LED flash on camera trapping detection rates}\\
+	%{\small Quantifying the effect of white LED flash on camera trapping detection rates}\\
+	{\small Does usage of white LED affect the detection rates of animals}\\
 	{~}\\
 	{\large Centre for Ecological and Evolutionary Synthesis}\\
 	{\includegraphics[scale=0.5]{./img/MN_IMBV_A_ENG.png}}\\
-%	{\includegraphics[scale=0.5]{./img/CEES.png}}\\	
+%	{\includegraphics[scale=0.5]{./img/CEES.png}}\\	%TODO
 }
 \author{Torgeir Holmgard Valle}
 \date{\today}

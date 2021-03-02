@@ -2036,9 +2036,8 @@
     <bcf:citekey order="7">RStudioTeam2020a</bcf:citekey>
     <bcf:citekey order="8">tidyverse</bcf:citekey>
     <bcf:citekey order="9">lme4</bcf:citekey>
-    <bcf:citekey order="10">lme4</bcf:citekey>
-    <bcf:citekey order="11">survival-package</bcf:citekey>
-    <bcf:citekey order="12">coxme-package</bcf:citekey>
+    <bcf:citekey order="10">survival-package</bcf:citekey>
+    <bcf:citekey order="11">coxme-package</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global" type="entry" sortscheme="none" sortnamekeyscheme="global">
   <bcf:sorting>

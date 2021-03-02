@@ -43,9 +43,10 @@ I divided the sites randomly into three groups of 20 cameras. Cameras in group A
 
 \begin{figure}
     \begin{center}
-    	\includegraphics[scale=0.3]{./img/experiment_setup.jpg} %insert figure of groups     
+    	\includegraphics[scale=0.3]{./img/experiment_setup.png} %insert figure of groups     
     \end{center}
-    	\caption{Experiment setup}
+    	\caption[Experiment setup]%
+    	{Experiment setup \par \small I chose 60 sites with preinstalled IR Camera Traps (CTs) for my study, and divided them into three groups, where the first group remained unchanged as a control, and the two other alternated on having an additional white LED camera present. In the end, seven CTs were removed from the analysis due to large gaps in the data, etc.}
     \label{fig:exp_set}
 \end{figure}
 
@@ -211,56 +212,38 @@ The true number of active camera days are confounded by the lack of time lapse p
 
 \section{Statistical analysis} %This is a reference to the session info appendix \ref{app:sessinfo}
 
-To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}), in the RStudio IDE (\cite{RStudioTeam2020a}), adopting large parts of the tidyverse framework along the way (\cite{tidyverse}). Session info in appendix \ref{app:sessinfo}. % easystats også, etterkvart
-
-% Multiple testing i arkiv/method-ark
+To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}), in the RStudio IDE (\cite{RStudioTeam2020a}), adopting large parts of the tidyverse framework along the way (\cite{tidyverse}). Session info in appendix \ref{app:sessinfo}. %Atle: Why sessioninfo?
+%TODO easystats også, etterkvart.
 
 
 	\subsection*{GLMM}
-To test $H_{1}$ I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the R package lme4 (\cite{lme4}).
+To test $H_{1}$ I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 (\cite{lme4}).
 
-My dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
-Thus, the error has a non-Gaussian distribution, which calls for \emph{generalised} linear models. %TODO språkvask
+Generalised Linear Model, because my dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
+Mixed effects to include location ID and week of the year as random effects, accounting for differences between camera sites, and seasonal changes during the year of study.
 
-My \emph{fixed effects}, or predictors, were flash type (white LED present/absent or control group), and time since deployment in days.
+Consequently, I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) on a subset of each species, to predict number of observations, with time since deployment in days interacting with flash type (formula: n.obs ~ time.deploy * flash).
+
+Standardized parameters were obtained by fitting the models on standardized versions of the data subset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. % for results: Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
+
+The flash type-variable corresponds to white LED present/absent or control group.
 For the cameras that was equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up/ took down the white LED.
-
-Further, I also trimmed the period lengths down to a maximum length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualised in \ref{fig:median_period}. 
-As I expected there to be a trend over time, I included an interaction term between the fixed effects.
-
-
-\begin{figure}
-\caption{\label{fig:median_period} Period lengths}
-	\centering
-	\includegraphics[scale=.8]{../R/glmm_sp_files/figure-gfm/period-length-wControl-1.png}
-\end{figure}
+The control group’s “day 0” of time since deployment were set by me when doing the analysis, at points reflecting my weeks of field work, in order to obtain periods of similar lengths to that of the white LED-locations. See 
+Further, I also trimmed the period lengths down to a reduced length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualized in \ref{fig:median_period}. 
 
 
-\begin{figure}
-	\begin{subfigure}{1\textwidth}
-		\centering
-		\includegraphics[scale=.8]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}
-			\caption{\label{fig:timeseries_flash} Cameras with white LED periods}	
-	\end{subfigure}	
-	\begin{subfigure}{1\textwidth}
-		\centering
-		\includegraphics[scale=.8]{../R/FLM_notebook_files/figure-gfm/effort-facet-2.png}
-			\caption{\label{fig:timeseries_control} Control cameras'\\ period breaks were set to arbitrary dates. }	
-	\end{subfigure}	
-\caption{\label{fig:timeseries_figure} Thus, "day 0" of Control-cameras are often set at dates far from an actual visitation day.}
-\end{figure}
+\input{tex/fig/method_period_lengths.tex}
+
+
+%### report output
+I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) to predict number of observations with time since deployment and flash type (formula: n.obs ~ time.deploy * flash).
+The model included location ID and week as random effects (formula: list(~1 | loc, ~1 | week)).
+
+
+%Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
 
 
 
-As previously mentioned, there were large differences in height, angle and microhabitat/ trail type between the cameras. Further, the different periods were spread out across the year, leading to seasonal changes in the dataset that weren't syncronised along the time since deployment-axis for each period.
-To account for these differences I included random effects in my model for location ID and week of the year.
-A mixed effect model was required to include both fixed and random effects.
-
-In sum, I needed a \emph{generalised} linear \emph{mixed} model (\textbf{GLMM}), which I fit to a subset of each species using the function \textsc{glmer} from the R package lme4 (\cite{lme4}).
-
-In full, the formula was:
-
-$$n.obs \sim time \times flash + (1|loc) + (1|week) $$
 
 %\begin{align*}
 %   n.obs \sim               && \text{Dependant variable}\\
@@ -268,17 +251,22 @@ $$n.obs \sim time \times flash + (1|loc) + (1|week) $$
 %   + (1|loc) + (1|week)     && \text{controlling for random effects}\\
 %\end{align*} 
 
-However, this model only takes into account whether a flash was present or not. It can't tell if the flash actually went off, or how many times it did.
+
+\subsection{Equivalence test}
+% Multiple testing i arkiv/method-ark
+I used the standard significance level of $\alpha = .05$, and performed an equivalence test on my model outputs, using the function equivalence-test from the R package parameters ().%\cite{package-parameters}). %TODO
+
+In an equivalence test, model parameters are tested against a Region of Practical Equivalence (ROPE) as opposed to merely one single mean value, thus accounting for the \emph{effect size} of each parameter.
+If the parameters estimate and CI falls outside the ROPE, their null hypothesis is rejected. However, if the CI is inside the ROPE, H0 is accepted, no matter if a standard Null Hypothesis Significance Test (NHST) would have deemed it significant.
+
+Inside the function equivalence-test I used the Two One-Sided Tests (TOST) rule, where the confidence interval (CI) is set to $1 - 2\times \alpha$. In my case that gave a narrow CI of .90,
+
+For models from count data, the residual variance is often used to define the ROPE range. However, the description of the rope-range function from the package bayestestR () states this threshold as "rather experimental" and that the range is probably often similar to the default [-0.1, 0.1] of a standardized parameter.
+Hence, I used the default ROPE range which corresponds to a negligible effect size according to Cohen, 1988.
+
+%In the TOST procedure, the null hypothesis is the presence of a true effect of DL or DU, and the alternative hypothesis is an effect that falls within the equivalence bounds or the absence of an effect that is worthwhile to examine. \cite{Lakens2017}
 
 
-% Results-part moved after comments from Atle:
-
-
-I fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict number of observations with time since deployment and flash type (formula: n.obs ~ time.deploy * flash).
-The model included location ID and week as random effects (formula: list(~1 | loc, ~1 | week)).
-
-
-Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
 
 
 
@@ -288,7 +276,11 @@ Standardized parameters were obtained by fitting the model on a standardized ver
 	\subsection*{Cox Proportional Hazards}
 %What I am in truth testing is each camera's chance of contracting a roe deer disease, or fox disease, and how that chance changes when "treated" with a white LED flash.
 
-Therefore I set up a new column in my dataset called flashed, that told if the flash went off in syncrony with the IR camera.
+
+However, the way I set up the GLMMs, it only takes into account whether a flash was present or not. It can't tell if the flash actually went off, or how many times it did.
+
+
+Therefore I set up a new column in my dataset called flashed, that told if the flash went off in synchrony with the IR camera.
 I then used the flashed-column to set up a time to event-analysis.
 
 Also called Survival analysis, time to event-analyses compares groups' risk of experiencing an event, and was first developed for use in medicinal studies (e.g. cancer risk studies).
@@ -312,15 +304,6 @@ In survival-analyses the time-variable is part of the outcome of the model. Even
 Both these models told me something about the fallacy of $H_0$, whether I could reject it, or fail to reject it.
 If the null hypothesis was rejected for a species, I considered $H_1$ to be true. Then I went on to test $H_2$
 
-
-	\subsection*{Spatial covariates}
-
-
-To test $H_2$, I performed a new CPH, and looked for an interaction between the flashed-variable, and a spatial covariate for distance to nearest house as a proxy for urbanisation and ALAN (data from FKB). 
-This time, I removed the random effect of Location ID in order to include the spatial variation in my data. This complicate things as I now reinclude latitude-correlation with IR camera models, different angles etc.
-
-
-Kommentar: stopper her inntil videre. Det er truleg for liten tid til å gjennomføre denne analysen, i tillegg til at den kanskje er vanskelig å tolke / lite truverdig når eg ikkje kan kontrollere for forskjeller mellom kamera lenger.
 
 
 

@@ -20,10 +20,10 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.6}Statistical analysis}{10}
 \defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.6.1}Equivalence test}{10}
+\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Results}{14}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.0.1}GLMM}{14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.0.2}CPH mixed effect}{14}
-\defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Discussion}{19}
+\contentsline {chapter}{\numberline {4}Discussion}{18}
