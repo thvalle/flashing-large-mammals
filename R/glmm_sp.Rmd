@@ -172,7 +172,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(title = "residuals")
@@ -250,7 +250,7 @@ m_raa  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 # --------------------------------------------------------------------
 # ggpredict is similar to expand.grid
-p_raa <- ggeffects::ggpredict(m_raa, terms = c("time.deploy", "flash"))
+p_raa <- ggeffects::ggpredict(m_raa, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_raa, add.data = TRUE) + labs(title  = "Raw data")
 plot(p_raa, residuals = TRUE) + labs(title  = "Residuals")
@@ -307,6 +307,7 @@ result
 r_raa <- report(m_raa) # text-summary of my model, to include in a report
 summary(r_raa)
 as.report_table(r_raa)
+as.report_info(r_raa)
 ```
 
 
@@ -327,7 +328,7 @@ m_rev  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_rev <- ggeffects::ggpredict(m_rev, terms = c("time.deploy", "flash"))
+p_rev <- ggeffects::ggpredict(m_rev, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_rev, add.data = TRUE) + labs(title = "add.data = TRUE")
 plot(p_rev, residuals = TRUE) + labs(title = "Residuals")
@@ -340,7 +341,7 @@ performance::check_model(m_rev) # check assumptions
 ```{r rev-report}
 # Summary, report, model
 summary(m_rev)
-plot(p_rev)
+plot(p_rev)+ labs(title = "Predicted counts of red fox")
 ```
 
 
@@ -365,7 +366,7 @@ m_grvl  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_grvl <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy", "flash"))
+p_grvl <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_grvl, add.data = TRUE) + labs(title  = "add.data = TRUE")
 plot(p_grvl, residuals = TRUE) + labs(title  = "Residuals")
@@ -378,7 +379,7 @@ performance::check_model(m_grvl) # check assumptions
 ```{r grevling-report}
 # Summary, report, model
 summary(m_grvl)
-plot(p_grvl)
+plot(p_grvl)+ labs(title = "Predicted counts of badger")
 ```
 
 
@@ -403,7 +404,7 @@ m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_elg <- ggeffects::ggpredict(m_elg, terms = c("time.deploy", "flash"))
+p_elg <- ggeffects::ggpredict(m_elg, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_elg, add.data = TRUE) + labs(title  = "add.data = TRUE")
 plot(p_elg, residuals = TRUE) + labs(title  = "Residuals")
@@ -416,7 +417,7 @@ performance::check_model(m_elg) # check assumptions
 ```{r elg-report}
 # Summary, report, model
 summary(m_elg)
-plot(p_elg)
+plot(p_elg)+ labs(title = "Predicted counts of moose")
 ```
 
 
@@ -441,7 +442,7 @@ m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy", "flash"))
+p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_hjort, add.data = TRUE) + labs(title  = "add.data = TRUE")
 plot(p_hjort, residuals = TRUE) + labs(title  = "Residuals")
@@ -455,7 +456,7 @@ performance::check_model(m_hjort) # check assumptions
 # Summary, report, model
 summary(m_hjort)
 # report::report(m_hjort) # text-summary of my model, to include in a report
-plot(p_hjort)
+plot(p_hjort)+ labs(title = "Predicted counts of red deer")
 ```
 
 ```{r hjort-report2}
@@ -478,7 +479,7 @@ m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy", "flash"))
+p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_gaup, add.data = TRUE) + labs(title  = "add.data = TRUE")
 plot(p_gaup, residuals = TRUE) + labs(title  = "Residuals")
@@ -491,7 +492,7 @@ performance::check_model(m_gaup) # check assumptions
 ```{r gaupe-report}
 # Summary, report, model
 summary(m_gaup)
-plot(p_gaup)
+plot(p_gaup)+ labs(title = "Predicted counts of lynx")
 ```
 
 ```{r gaupe-report2}
@@ -513,16 +514,42 @@ as.report_text(r_gaup, summary=T)
 ```
 
 ```{r model-report}
-as.report_table(r_raa  ) #, summary = T)
-as.report_table(r_rev  ) #, summary = T)
-as.report_table(r_grvl ) #, summary = T)
-as.report_table(r_elg  ) #, summary = T)
-as.report_table(r_hjort) #, summary = T)
-as.report_table(r_gaup ) #, summary = T)
+library(insight)
+library(xtable)
+
+para_raa  <- model_parameters(m_raa,   standardize = "refit")  %>% add_row(Parameter = "Roe deer", .before = 1)
+para_rev  <- model_parameters(m_rev,   standardize = "refit")  %>% add_row(Parameter = "Red fox",  .before = 1)
+para_grvl <- model_parameters(m_grvl,  standardize = "refit")  %>% add_row(Parameter = "Badger",   .before = 1)
+para_elg  <- model_parameters(m_elg,   standardize = "refit")  %>% add_row(Parameter = "Moose",    .before = 1)
+para_hjort<- model_parameters(m_hjort, standardize = "refit")  %>% add_row(Parameter = "Red deer", .before = 1)
+para_gaup <- model_parameters(m_gaup,  standardize = "refit")  %>% add_row(Parameter = "Lynx",     .before = 1)
+para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
+  format_table(ci_brackets = c("(", ")")) %>% 
+  select(!df)
+
+print(xtable(para_all, type = "latex"), file = "../Thesis/tex/tab/parameters.tex")
 ```
 
+```{r mod-plot}
+# # example for multiple imputed datasets
+# sp <- c("raadyr","rev","grevling","elg","hjort","gaupe")
+#   predictions <- lapply(1:5, function(sp) {
+#     m <- glmer(n.obs ~ time.deploy * flash + species +# fixed effects
+#             (1 | loc) + (1 | week), # random effects
+#             data   = filter(time.dep4, species %in% sp),
+#             family = poisson)
+#     ggpredict(m, "species")
+#   })
+# predictions %>% pool_predictions()
+# pool_parameters()
+# #pool_predictions(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
+#plot(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
 
-
+sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Roe deer","Red fox","Badger"))
+sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Moose","Red deer","Lynx"))
+```
 
 
 
@@ -543,7 +570,7 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(title  = "add.data = TRUE")
 plot(p_sp, residuals = TRUE) + labs(title  = "Residuals")

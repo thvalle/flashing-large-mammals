@@ -1,7 +1,7 @@
 GLMM per art
 ================
 Torgeir
-01 mars, 2021
+03 mars, 2021
 
 -   [Purpose](#purpose)
 -   [About the model](#about-the-model)
@@ -314,15 +314,15 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
+plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
+plot(p_sp, residuals = TRUE) + labs(title = "residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-2.png)<!-- -->
@@ -487,15 +487,15 @@ m_raa  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 # --------------------------------------------------------------------
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_raa, terms = c("time.deploy", "flash"))
+p_raa <- ggeffects::ggpredict(m_raa, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "Raw data")
+plot(p_raa, add.data = TRUE) + labs(title  = "Raw data")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-C-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_raa, residuals = TRUE) + labs(title  = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-C-2.png)<!-- -->
@@ -580,7 +580,7 @@ summary(m_raa)
     ## tm.dply:flC  0.191 -0.698 -0.404 -0.229  0.481
 
 ``` r
-plot(p_sp)
+plot(p_raa) + labs(title = "Predicted counts of roe deer")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-C-report-1.png)<!-- -->
@@ -702,6 +702,20 @@ as.report_table(r_raa)
     ## R2 (marginal)                 |             |                |        |     |        |            |                   | 1.88e-03
     ## Sigma                         |             |                |        |     |        |            |                   |     1.00
 
+``` r
+as.report_info(r_raa)
+```
+
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -3.39 (95% CI [-3.99, -2.79], p < .001). Within this model:
+    ## 
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.02], p = 0.297; Std. beta = -0.06, 95% CI [-0.17, 0.05])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.11, 95% CI [-0.14, 0.36], p = 0.386; Std. beta = 0.05, 95% CI [-0.09, 0.18])
+    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.21, 95% CI [-1.21, 0.79], p = 0.680; Std. beta = -0.16, 95% CI [-1.14, 0.82])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.04], p = 0.572; Std. beta = -0.04, 95% CI [-0.17, 0.10])
+    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.05, 0.08], p = 0.681; Std. beta = 0.03, 95% CI [-0.12, 0.18])
+    ## 
+    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
+
 # Skrivestopp
 
 ## Red Fox
@@ -717,15 +731,15 @@ m_rev  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_rev, terms = c("time.deploy", "flash"))
+p_rev <- ggeffects::ggpredict(m_rev, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle = "add.data = TRUE")
+plot(p_rev, add.data = TRUE) + labs(title = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/rev-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle = "residuals")
+plot(p_rev, residuals = TRUE) + labs(title = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/rev-2.png)<!-- -->
@@ -795,7 +809,7 @@ summary(m_rev)
     ## tm.dply:flC  0.379 -0.692 -0.409 -0.488  0.483
 
 ``` r
-plot(p_sp)
+plot(p_rev)+ labs(title = "Predicted counts of red fox")
 ```
 
 ![](glmm_sp_files/figure-gfm/rev-report-1.png)<!-- -->
@@ -826,15 +840,15 @@ m_grvl  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy", "flash"))
+p_grvl <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_grvl, add.data = TRUE) + labs(title  = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/grevling-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_grvl, residuals = TRUE) + labs(title  = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/grevling-2.png)<!-- -->
@@ -904,7 +918,7 @@ summary(m_grvl)
     ## tm.dply:flC  0.303 -0.726 -0.391 -0.452  0.446
 
 ``` r
-plot(p_sp)
+plot(p_grvl)+ labs(title = "Predicted counts of badger")
 ```
 
 ![](glmm_sp_files/figure-gfm/grevling-report-1.png)<!-- -->
@@ -943,15 +957,15 @@ m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 
 ``` r
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_elg, terms = c("time.deploy", "flash"))
+p_elg <- ggeffects::ggpredict(m_elg, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_elg, add.data = TRUE) + labs(title  = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/elg-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_elg, residuals = TRUE) + labs(title  = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/elg-2.png)<!-- -->
@@ -1025,7 +1039,7 @@ summary(m_elg)
     ##  - Rescale variables?
 
 ``` r
-plot(p_sp)
+plot(p_elg)+ labs(title = "Predicted counts of moose")
 ```
 
 ![](glmm_sp_files/figure-gfm/elg-report-1.png)<!-- -->
@@ -1061,15 +1075,15 @@ m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 
 ``` r
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy", "flash"))
+p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_hjort, add.data = TRUE) + labs(title  = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/hjort-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_hjort, residuals = TRUE) + labs(title  = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/hjort-2.png)<!-- -->
@@ -1142,7 +1156,7 @@ summary(m_hjort)
 
 ``` r
 # report::report(m_hjort) # text-summary of my model, to include in a report
-plot(p_sp)
+plot(p_hjort)+ labs(title = "Predicted counts of red deer")
 ```
 
 ![](glmm_sp_files/figure-gfm/hjort-report-1.png)<!-- -->
@@ -1178,15 +1192,15 @@ m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 
 ``` r
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy", "flash"))
+p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
+plot(p_gaup, add.data = TRUE) + labs(title  = "add.data = TRUE")
 ```
 
 ![](glmm_sp_files/figure-gfm/gaupe-1.png)<!-- -->
 
 ``` r
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_gaup, residuals = TRUE) + labs(title  = "Residuals")
 ```
 
 ![](glmm_sp_files/figure-gfm/gaupe-2.png)<!-- -->
@@ -1258,7 +1272,7 @@ summary(m_gaup)
     ## Model failed to converge with max|grad| = 0.0532481 (tol = 0.002, component 1)
 
 ``` r
-plot(p_sp)
+plot(p_gaup)+ labs(title = "Predicted counts of lynx")
 ```
 
 ![](glmm_sp_files/figure-gfm/gaupe-report-1.png)<!-- -->
@@ -1287,106 +1301,75 @@ as.report_text(r_gaup, summary=T)
 ```
 
 ``` r
-as.report_table(r_raa  , summary = T)
+library(insight)
+library(xtable)
 ```
 
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. |      Fit
-    ## ------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -3.39 | [-3.99, -2.79] | -11.08 | Inf | < .001 |      -3.49 |         
-    ## time.deploy                   |       -0.02 | [-0.07,  0.02] |  -1.04 | Inf | 0.297  |      -0.06 |         
-    ## flash [1]                     |        0.11 | [-0.14,  0.36] |   0.87 | Inf | 0.386  |       0.05 |         
-    ## flash [Control]               |       -0.21 | [-1.21,  0.79] |  -0.41 | Inf | 0.680  |      -0.16 |         
-    ## time.deploy * flash [1]       |       -0.02 | [-0.07,  0.04] |  -0.57 | Inf | 0.572  |      -0.04 |         
-    ## time.deploy * flash [Control] |        0.01 | [-0.05,  0.08] |   0.41 | Inf | 0.681  |       0.03 |         
-    ##                               |             |                |        |     |        |            |         
-    ## R2 (conditional)              |             |                |        |     |        |            |     0.45
-    ## R2 (marginal)                 |             |                |        |     |        |            | 1.88e-03
-    ## Sigma                         |             |                |        |     |        |            |     1.00
+    ## 
+    ## Attaching package: 'xtable'
+
+    ## The following object is masked from 'package:insight':
+    ## 
+    ##     display
+
+    ## The following object is masked from 'package:parameters':
+    ## 
+    ##     display
+
+    ## The following object is masked from 'package:performance':
+    ## 
+    ##     display
 
 ``` r
-as.report_table(r_rev  , summary = T)
+para_raa  <- model_parameters(m_raa,   standardize = "refit")  %>% add_row(Parameter = "Roe deer", .before = 1)
+para_rev  <- model_parameters(m_rev,   standardize = "refit")  %>% add_row(Parameter = "Red fox",  .before = 1)
+para_grvl <- model_parameters(m_grvl,  standardize = "refit")  %>% add_row(Parameter = "Badger",   .before = 1)
+para_elg  <- model_parameters(m_elg,   standardize = "refit")  %>% add_row(Parameter = "Moose",    .before = 1)
 ```
 
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. |      Fit
-    ## ------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -3.41 | [-3.80, -3.02] | -17.22 | Inf | < .001 |      -3.41 |         
-    ## time.deploy                   |   -7.90e-04 | [-0.06,  0.06] |  -0.03 | Inf | 0.978  |  -1.87e-03 |         
-    ## flash [1]                     |        0.15 | [-0.17,  0.48] |   0.92 | Inf | 0.356  |       0.12 |         
-    ## flash [Control]               |       -0.04 | [-0.67,  0.58] |  -0.13 | Inf | 0.894  |      -0.04 |         
-    ## time.deploy * flash [1]       |   -8.71e-03 | [-0.08,  0.06] |  -0.23 | Inf | 0.815  |      -0.02 |         
-    ## time.deploy * flash [Control] |   -5.25e-04 | [-0.08,  0.08] |  -0.01 | Inf | 0.990  |  -1.21e-03 |         
-    ##                               |             |                |        |     |        |            |         
-    ## R2 (conditional)              |             |                |        |     |        |            |     0.19
-    ## R2 (marginal)                 |             |                |        |     |        |            | 1.16e-03
-    ## Sigma                         |             |                |        |     |        |            |     1.00
+    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+    ## Model failed to converge with max|grad| = 0.102251 (tol = 0.002, component 1)
+
+    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
+    ##  - Rescale variables?
 
 ``` r
-as.report_table(r_grvl , summary = T)
-```
+para_hjort<- model_parameters(m_hjort, standardize = "refit")  %>% add_row(Parameter = "Red deer", .before = 1)
+para_gaup <- model_parameters(m_gaup,  standardize = "refit")  %>% add_row(Parameter = "Lynx",     .before = 1)
+para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
+  format_table(ci_brackets = c("(", ")")) %>% 
+  select(!df)
 
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. |      Fit
-    ## ------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -4.49 | [-5.12, -3.87] | -14.07 | Inf | < .001 |      -4.26 |         
-    ## time.deploy                   |        0.06 | [ 0.00,  0.12] |   1.87 | Inf | 0.062  |       0.14 |         
-    ## flash [1]                     |        0.06 | [-0.31,  0.43] |   0.33 | Inf | 0.744  |       0.06 |         
-    ## flash [Control]               |       -0.16 | [-1.01,  0.69] |  -0.37 | Inf | 0.712  |      -0.35 |         
-    ## time.deploy * flash [1]       |   -1.11e-03 | [-0.08,  0.08] |  -0.03 | Inf | 0.977  |  -2.65e-03 |         
-    ## time.deploy * flash [Control] |       -0.05 | [-0.14,  0.05] |  -0.99 | Inf | 0.324  |      -0.11 |         
-    ##                               |             |                |        |     |        |            |         
-    ## R2 (conditional)              |             |                |        |     |        |            |     0.42
-    ## R2 (marginal)                 |             |                |        |     |        |            | 5.93e-03
-    ## Sigma                         |             |                |        |     |        |            |     1.00
+print(xtable(para_all, type = "latex"), file = "../Thesis/tex/tab/parameters.tex")
+```
 
 ``` r
-as.report_table(r_elg  , summary = T)
+# # example for multiple imputed datasets
+# sp <- c("raadyr","rev","grevling","elg","hjort","gaupe")
+#   predictions <- lapply(1:5, function(sp) {
+#     m <- glmer(n.obs ~ time.deploy * flash + species +# fixed effects
+#             (1 | loc) + (1 | week), # random effects
+#             data   = filter(time.dep4, species %in% sp),
+#             family = poisson)
+#     ggpredict(m, "species")
+#   })
+# predictions %>% pool_predictions()
+# pool_parameters()
+# #pool_predictions(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
+#plot(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
+
+sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Roe deer","Red fox","Badger"))
 ```
 
-    ## Parameter                     | Coefficient |         95% CI |        z |  df |      p | Std. Coef. |      Fit
-    ## --------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -4.80 | [-4.80, -4.80] | -6941.69 | Inf | < .001 |      -4.62 |         
-    ## time.deploy                   |        0.05 | [ 0.05,  0.05] |    68.71 | Inf | < .001 |       0.11 |         
-    ## flash [1]                     |        0.39 | [ 0.38,  0.39] |   557.37 | Inf | < .001 |       0.15 |         
-    ## flash [Control]               |       -0.09 | [-0.09, -0.08] |  -123.81 | Inf | < .001 |      -0.19 |         
-    ## time.deploy * flash [1]       |       -0.06 | [-0.06, -0.06] |   -89.30 | Inf | < .001 |      -0.14 |         
-    ## time.deploy * flash [Control] |       -0.03 | [-0.03, -0.03] |   -45.97 | Inf | < .001 |      -0.06 |         
-    ##                               |             |                |          |     |        |            |         
-    ## R2 (conditional)              |             |                |          |     |        |            |     0.31
-    ## R2 (marginal)                 |             |                |          |     |        |            | 3.91e-03
-    ## Sigma                         |             |                |          |     |        |            |     1.00
+![](glmm_sp_files/figure-gfm/mod-plot-1.png)<!-- -->
 
 ``` r
-as.report_table(r_hjort, summary = T)
+sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Moose","Red deer","Lynx"))
 ```
 
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. |      Fit
-    ## ------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -5.96 | [-7.03, -4.88] | -10.88 | Inf | < .001 |      -6.06 |         
-    ## time.deploy                   |       -0.03 | [-0.14,  0.09] |  -0.44 | Inf | 0.658  |      -0.06 |         
-    ## flash [1]                     |       -0.64 | [-1.36,  0.08] |  -1.73 | Inf | 0.083  |      -0.03 |         
-    ## flash [Control]               |       -0.17 | [-1.77,  1.42] |  -0.21 | Inf | 0.832  |      -0.32 |         
-    ## time.deploy * flash [1]       |        0.16 | [ 0.00,  0.31] |   1.99 | Inf | 0.047  |       0.37 |         
-    ## time.deploy * flash [Control] |       -0.04 | [-0.20,  0.13] |  -0.46 | Inf | 0.649  |      -0.09 |         
-    ##                               |             |                |        |     |        |            |         
-    ## R2 (conditional)              |             |                |        |     |        |            |     0.44
-    ## R2 (marginal)                 |             |                |        |     |        |            | 5.52e-03
-    ## Sigma                         |             |                |        |     |        |            |     1.00
-
-``` r
-as.report_table(r_gaup , summary = T)
-```
-
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. |  Fit
-    ## --------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -6.89 | [-8.06, -5.72] | -11.52 | Inf | < .001 |      -6.75 |     
-    ## time.deploy                   |        0.04 | [-0.14,  0.21] |   0.40 | Inf | 0.691  |       0.08 |     
-    ## flash [1]                     |        0.37 | [-0.73,  1.46] |   0.65 | Inf | 0.513  |       0.39 |     
-    ## flash [Control]               |        0.07 | [-1.63,  1.77] |   0.08 | Inf | 0.935  |      -0.33 |     
-    ## time.deploy * flash [1]       |    5.00e-03 | [-0.23,  0.24] |   0.04 | Inf | 0.967  |       0.02 |     
-    ## time.deploy * flash [Control] |       -0.10 | [-0.41,  0.21] |  -0.64 | Inf | 0.521  |      -0.23 |     
-    ##                               |             |                |        |     |        |            |     
-    ## R2 (conditional)              |             |                |        |     |        |            | 0.28
-    ## R2 (marginal)                 |             |                |        |     |        |            | 0.01
-    ## Sigma                         |             |                |        |     |        |            | 1.00
+![](glmm_sp_files/figure-gfm/mod-plot-2.png)<!-- -->
 
 # Hare, deer and squirrelywhere (and pine marten)
 
@@ -1405,10 +1388,10 @@ m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
             family = poisson) # poisson family of distributions
 
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy", "flash"))
+p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(subtitle  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(subtitle  = "residuals")
+plot(p_sp, add.data = TRUE) + labs(title  = "add.data = TRUE")
+plot(p_sp, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1426,6 +1409,7 @@ report_parameters(sessionInfo())
 ```
 
     ##   - effectsize (version 0.4.3.1; Ben-Shachar M et al., 2020)
+    ##   - xtable (version 1.8.4; David Dahl et al., 2019)
     ##   - Matrix (version 1.2.18; Douglas Bates and Martin Maechler, 2019)
     ##   - lme4 (version 1.1.26; Douglas Bates et al., 2015)
     ##   - ggplot2 (version 3.3.3; Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.)
@@ -1438,6 +1422,7 @@ report_parameters(sessionInfo())
     ##   - purrr (version 0.3.4; Lionel Henry and Hadley Wickham, 2020)
     ##   - ggeffects (version 1.0.1; Lüdecke D, 2018)
     ##   - parameters (version 0.12.0.1; Lüdecke D et al., 2020)
+    ##   - insight (version 0.13.1.1; Lüdecke D et al., 2019)
     ##   - see (version 0.6.2.1; Lüdecke et al., 2020)
     ##   - performance (version 0.7.0.1; Lüdecke et al., 2020)
     ##   - report (version 0.2.0; Makowski et al., 2020)
