@@ -58,13 +58,20 @@ library(lme4)
     ##     expand, pack, unpack
 
 ``` r
-library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regression Models
-# more at: https://strengejacke.github.io/ggeffects/
 library(performance) # diagnostic-plots to check assumptions
-library(report) # Result-summaries in text-format
+library(report)      # Result-summaries in text-format
 ```
 
     ## report is in alpha - help us improve by reporting bugs on github.com/easystats/report/issues
+
+``` r
+library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regression Models
+                          # more at: https://strengejacke.github.io/ggeffects/
+library(parameters)  # extract model-parameters etc. from (most) models
+library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
+```
+
+    ## Learn more about sjPlot with 'browseVignettes("sjPlot")'.
 
 ``` r
 # Data drom Data_exploration2_nesting.R
@@ -259,7 +266,8 @@ p_td2 + ggpubr::theme_classic2() +
 
 ``` r
 # filtering out periods longer than (shortest) median length.
-time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, must be rescaled by /10
+                 mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
 ```
 
 # Modelling
@@ -270,40 +278,8 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must 
 
 ``` r
 time.dep4$loc %>% unique() %>% is.na() %>% any()
-```
-
-    ## [1] FALSE
-
-``` r
 summary(time.dep4)
-```
 
-    ##       loc             date              species              flash      
-    ##  488    : 1986   Min.   :2019-01-15   Length:90258       0      :30672  
-    ##  494    : 1962   1st Qu.:2019-04-18   Class :character   1      :29268  
-    ##  864    : 1962   Median :2019-07-28   Mode  :character   Control:30318  
-    ##  861    : 1956   Mean   :2019-07-20                                     
-    ##  863    : 1956   3rd Qu.:2019-10-16                                     
-    ##  15     : 1938   Max.   :2020-02-26                                     
-    ##  (Other):78498                                                          
-    ##     period           time.deploy        n.obs            month      
-    ##  Length:90258       Min.   :0.000   Min.   :0.0000   08     : 9156  
-    ##  Class :character   1st Qu.:1.800   1st Qu.:0.0000   09     : 8892  
-    ##  Mode  :character   Median :3.700   Median :0.0000   03     : 8556  
-    ##                     Mean   :3.848   Mean   :0.0378   11     : 8124  
-    ##                     3rd Qu.:5.800   3rd Qu.:0.0000   06     : 8106  
-    ##                     Max.   :8.300   Max.   :6.0000   12     : 7872  
-    ##                                                      (Other):39552  
-    ##       week       period_length   
-    ##  Min.   : 1.00   Min.   : 0.800  
-    ##  1st Qu.:14.00   1st Qu.: 7.500  
-    ##  Median :29.00   Median : 9.800  
-    ##  Mean   :27.63   Mean   : 9.535  
-    ##  3rd Qu.:40.00   3rd Qu.:11.800  
-    ##  Max.   :52.00   Max.   :19.600  
-    ## 
-
-``` r
 # filter species
 sp = "raadyr"
 time_sp <- filter(time.dep4, species %in% sp, !period %in% ctrl) #.dep4 = trimmed data
@@ -317,36 +293,9 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-gfm/raadyr-1.png)<!-- -->
-
-``` r
 plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-gfm/raadyr-2.png)<!-- -->
-
-``` r
 performance::check_model(m_sp) # check assumptions
 ```
-
-    ## Loading required namespace: qqplotr
-
-    ## `geom_smooth()` using formula 'y ~ x'
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
-    ## Warning: Removed 9846 rows containing missing values (geom_text_repel).
-
-    ## `geom_smooth()` using formula 'y ~ x'
-
-    ## `geom_smooth()` using formula 'y ~ x'
-
-    ## Warning: ggrepel: 139 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
-![](glmm_sp_files/figure-gfm/raadyr-3.png)<!-- -->
 
 The response variable is a summary of number of events per day. Most
 days had no roe deer. In the performance-test for model assumptions *it
@@ -377,48 +326,9 @@ now, I will go on completing models for the rest of the species.
 ``` r
 # Summary, report, model
 summary(m_sp)
-```
-
-    ## Generalized linear mixed model fit by maximum likelihood (Laplace
-    ##   Approximation) [glmerMod]
-    ##  Family: poisson  ( log )
-    ## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-    ##    Data: time_sp
-    ## 
-    ##      AIC      BIC   logLik deviance df.resid 
-    ##   5044.5   5087.8  -2516.3   5032.5     9984 
-    ## 
-    ## Scaled residuals: 
-    ##     Min      1Q  Median      3Q     Max 
-    ## -1.1278 -0.2871 -0.1761 -0.0897 13.2825 
-    ## 
-    ## Random effects:
-    ##  Groups Name        Variance Std.Dev.
-    ##  week   (Intercept) 0.3011   0.5487  
-    ##  loc    (Intercept) 2.0987   1.4487  
-    ## Number of obs: 9990, groups:  week, 52; loc, 36
-    ## 
-    ## Fixed effects:
-    ##                    Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)        -3.35669    0.28430 -11.807   <2e-16 ***
-    ## time.deploy        -0.02660    0.02560  -1.039    0.299    
-    ## flash1              0.10871    0.12880   0.844    0.399    
-    ## time.deploy:flash1 -0.01120    0.02998  -0.374    0.709    
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1
-    ## time.deploy -0.328              
-    ## flash1      -0.247  0.562       
-    ## tm.dply:fl1  0.219 -0.681 -0.832
-
-``` r
 # report::report(m_sp) # text-summary of my model, to include in a report
 plot(p_sp)
 ```
-
-![](glmm_sp_files/figure-gfm/raadyr-report-1.png)<!-- -->
 
 ### Model interpretation
 
@@ -504,6 +414,8 @@ plot(p_raa, residuals = TRUE) + labs(title  = "Residuals")
 performance::check_model(m_raa) # check assumptions
 ```
 
+    ## Loading required namespace: qqplotr
+
     ## `geom_smooth()` using formula 'y ~ x'
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -552,38 +464,47 @@ summary(m_raa)
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -1.1836 -0.2832 -0.1641 -0.0763 14.1898 
+    ## -1.1836 -0.2832 -0.1641 -0.0763 14.1894 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
-    ##  loc    (Intercept) 2.6166   1.6176  
+    ##  loc    (Intercept) 2.6164   1.6175  
     ##  week   (Intercept) 0.3232   0.5685  
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                          Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)              -3.39302    0.30628 -11.078   <2e-16 ***
-    ## time.deploy              -0.02443    0.02343  -1.043    0.297    
-    ## flash1                    0.10899    0.12577   0.867    0.386    
-    ## flashControl             -0.21111    0.51213  -0.412    0.680    
-    ## time.deploy:flash1       -0.01654    0.02927  -0.565    0.572    
-    ## time.deploy:flashControl  0.01316    0.03205   0.411    0.681    
+    ##                    Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -3.60407    0.43060  -8.370   <2e-16 ***
+    ## time.deploy        -0.01127    0.02298  -0.490    0.624    
+    ## flash0              0.21104    0.51227   0.412    0.680    
+    ## flash1              0.32001    0.51138   0.626    0.531    
+    ## time.deploy:flash0 -0.01317    0.03205  -0.411    0.681    
+    ## time.deploy:flash1 -0.02971    0.03132  -0.948    0.343    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy -0.276                            
-    ## flash1      -0.223  0.584                     
-    ## flashContrl -0.544  0.153  0.130              
-    ## tm.dply:fl1  0.193 -0.706 -0.829 -0.106       
-    ## tm.dply:flC  0.191 -0.698 -0.404 -0.229  0.481
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.203                            
+    ## flash0      -0.802  0.163                     
+    ## flash1      -0.805  0.171  0.970              
+    ## tm.dply:fl0  0.136 -0.683 -0.229 -0.130       
+    ## tm.dply:fl1  0.149 -0.744 -0.134 -0.224  0.573
 
 ``` r
 plot(p_raa) + labs(title = "Predicted counts of roe deer")
 ```
 
 ![](glmm_sp_files/figure-gfm/raadyr-C-report-1.png)<!-- -->
+
+``` r
+model_parameters(m_raa,   standardize = "refit") %>% plot()
+```
+
+    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+    ## Model failed to converge with max|grad| = 0.00228998 (tol = 0.002, component 1)
+
+![](glmm_sp_files/figure-gfm/raadyr-C-report-2.png)<!-- -->
 
 The control intercept is almost on top of the IR-intercept, but it has a
 more negative trend than the IR-group. After I got updated data and
@@ -640,6 +561,12 @@ plot(result, size_text = 3)
 
 ``` r
 result_stnd <- model_parameters(m_raa, standardize = "refit")
+```
+
+    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+    ## Model failed to converge with max|grad| = 0.00228998 (tol = 0.002, component 1)
+
+``` r
 plot(result_stnd, show_intercept = TRUE) + labs(subtitle = ' standardize = "refit" ',
                                            caption = "Values are less centered on zero")
 ```
@@ -662,57 +589,57 @@ result
     ## 
     ##   ROPE: [-0.10 0.10]
     ## 
-    ##                      Parameter        H0 inside ROPE        90% CI
-    ##                    (Intercept)  Rejected      0.00 % [-3.90 -2.89]
-    ##                    time.deploy  Accepted    100.00 % [-0.06  0.01]
-    ##                      flash [1] Undecided     47.83 % [-0.10  0.32]
-    ##                flash [Control] Undecided     11.87 % [-1.05  0.63]
-    ##        time.deploy * flash [1]  Accepted    100.00 % [-0.06  0.03]
-    ##  time.deploy * flash [Control]  Accepted    100.00 % [-0.04  0.07]
+    ##                Parameter        H0 inside ROPE        90% CI
+    ##              (Intercept)  Rejected      0.00 % [-4.31 -2.90]
+    ##              time.deploy  Accepted    100.00 % [-0.05  0.03]
+    ##                flash [0] Undecided     11.87 % [-0.63  1.05]
+    ##                flash [1] Undecided     11.89 % [-0.52  1.16]
+    ##  time.deploy * flash [0]  Accepted    100.00 % [-0.07  0.04]
+    ##  time.deploy * flash [1]  Accepted    100.00 % [-0.08  0.02]
 
 ``` r
 r_raa <- report(m_raa) # text-summary of my model, to include in a report
 summary(r_raa)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept is at -3.39 (95% CI [-3.99, -2.79]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept is at -3.60 (95% CI [-4.45, -2.76]). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.02], p = 0.297, Std. beta = -0.06)
-    ##   - The effect of flash [1] is non-significantly positive (beta = 0.11, 95% CI [-0.14, 0.36], p = 0.386, Std. beta = 0.05)
-    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.21, 95% CI [-1.21, 0.79], p = 0.680, Std. beta = -0.16)
-    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.04], p = 0.572, Std. beta = -0.04)
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.05, 0.08], p = 0.681, Std. beta = 0.03)
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.06, 0.03], p = 0.624, Std. beta = -0.03)
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.21, 95% CI [-0.79, 1.22], p = 0.680, Std. beta = 0.16)
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.32, 95% CI [-0.68, 1.32], p = 0.531, Std. beta = 0.21)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.05], p = 0.681, Std. beta = -0.03)
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.09, 0.03], p = 0.343, Std. beta = -0.07)
 
 ``` r
 as.report_table(r_raa)
 ```
 
-    ## Parameter                     | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-    ## --------------------------------------------------------------------------------------------------------------------------------
-    ## (Intercept)                   |       -3.39 | [-3.99, -2.79] | -11.08 | Inf | < .001 |      -3.49 |    [-4.06, -2.91] |         
-    ## time.deploy                   |       -0.02 | [-0.07,  0.02] |  -1.04 | Inf | 0.297  |      -0.06 |    [-0.17,  0.05] |         
-    ## flash [1]                     |        0.11 | [-0.14,  0.36] |   0.87 | Inf | 0.386  |       0.05 |    [-0.09,  0.18] |         
-    ## flash [Control]               |       -0.21 | [-1.21,  0.79] |  -0.41 | Inf | 0.680  |      -0.16 |    [-1.14,  0.82] |         
-    ## time.deploy * flash [1]       |       -0.02 | [-0.07,  0.04] |  -0.57 | Inf | 0.572  |      -0.04 |    [-0.17,  0.10] |         
-    ## time.deploy * flash [Control] |        0.01 | [-0.05,  0.08] |   0.41 | Inf | 0.681  |       0.03 |    [-0.12,  0.18] |         
-    ##                               |             |                |        |     |        |            |                   |         
-    ## AIC                           |             |                |        |     |        |            |                   |  7669.27
-    ## BIC                           |             |                |        |     |        |            |                   |  7730.22
-    ## R2 (conditional)              |             |                |        |     |        |            |                   |     0.45
-    ## R2 (marginal)                 |             |                |        |     |        |            |                   | 1.88e-03
-    ## Sigma                         |             |                |        |     |        |            |                   |     1.00
+    ## Parameter               | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+    ## -------------------------------------------------------------------------------------------------------------------------
+    ## (Intercept)             |       -3.60 | [-4.45, -2.76] | -8.37 | Inf | < .001 |      -3.65 |    [-4.47, -2.82] |         
+    ## time.deploy             |       -0.01 | [-0.06,  0.03] | -0.49 | Inf | 0.624  |      -0.03 |    [-0.13,  0.08] |         
+    ## flash [0]               |        0.21 | [-0.79,  1.22] |  0.41 | Inf | 0.680  |       0.16 |    [-0.82,  1.14] |         
+    ## flash [1]               |        0.32 | [-0.68,  1.32] |  0.63 | Inf | 0.531  |       0.21 |    [-0.77,  1.18] |         
+    ## time.deploy * flash [0] |       -0.01 | [-0.08,  0.05] | -0.41 | Inf | 0.681  |      -0.03 |    [-0.18,  0.12] |         
+    ## time.deploy * flash [1] |       -0.03 | [-0.09,  0.03] | -0.95 | Inf | 0.343  |      -0.07 |    [-0.21,  0.07] |         
+    ##                         |             |                |       |     |        |            |                   |         
+    ## AIC                     |             |                |       |     |        |            |                   |  7669.27
+    ## BIC                     |             |                |       |     |        |            |                   |  7730.22
+    ## R2 (conditional)        |             |                |       |     |        |            |                   |     0.45
+    ## R2 (marginal)           |             |                |       |     |        |            |                   | 1.88e-03
+    ## Sigma                   |             |                |       |     |        |            |                   |     1.00
 
 ``` r
 as.report_info(r_raa)
 ```
 
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept, corresponding to time.deploy = 0 and flash = 0, is at -3.39 (95% CI [-3.99, -2.79], p < .001). Within this model:
+    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -3.60 (95% CI [-4.45, -2.76], p < .001). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.02], p = 0.297; Std. beta = -0.06, 95% CI [-0.17, 0.05])
-    ##   - The effect of flash [1] is non-significantly positive (beta = 0.11, 95% CI [-0.14, 0.36], p = 0.386; Std. beta = 0.05, 95% CI [-0.09, 0.18])
-    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.21, 95% CI [-1.21, 0.79], p = 0.680; Std. beta = -0.16, 95% CI [-1.14, 0.82])
-    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.07, 0.04], p = 0.572; Std. beta = -0.04, 95% CI [-0.17, 0.10])
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.05, 0.08], p = 0.681; Std. beta = 0.03, 95% CI [-0.12, 0.18])
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.06, 0.03], p = 0.624; Std. beta = -0.03, 95% CI [-0.13, 0.08])
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.21, 95% CI [-0.79, 1.22], p = 0.680; Std. beta = 0.16, 95% CI [-0.82, 1.14])
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.32, 95% CI [-0.68, 1.32], p = 0.531; Std. beta = 0.21, 95% CI [-0.77, 1.18])
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.05], p = 0.681; Std. beta = -0.03, 95% CI [-0.18, 0.12])
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.09, 0.03], p = 0.343; Std. beta = -0.07, 95% CI [-0.21, 0.07])
     ## 
     ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
 
@@ -781,32 +708,32 @@ summary(m_rev)
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -0.6303 -0.2405 -0.1838 -0.1304 13.6640 
+    ## -0.6303 -0.2405 -0.1838 -0.1304 13.6641 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
-    ##  loc    (Intercept) 0.74695  0.8643  
+    ##  loc    (Intercept) 0.74693  0.8643  
     ##  week   (Intercept) 0.06125  0.2475  
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                            Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)              -3.4114602  0.1980593 -17.224   <2e-16 ***
-    ## time.deploy              -0.0007902  0.0285064  -0.028    0.978    
-    ## flash1                    0.1531968  0.1658902   0.923    0.356    
-    ## flashControl             -0.0426496  0.3186060  -0.134    0.894    
-    ## time.deploy:flash1       -0.0087114  0.0372372  -0.234    0.815    
-    ## time.deploy:flashControl -0.0005255  0.0404039  -0.013    0.990    
+    ##                      Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -3.4540659  0.2570878 -13.435   <2e-16 ***
+    ## time.deploy        -0.0013144  0.0291773  -0.045    0.964    
+    ## flash0              0.0426336  0.3187784   0.134    0.894    
+    ## flash1              0.1958055  0.3169724   0.618    0.537    
+    ## time.deploy:flash0  0.0005195  0.0404086   0.013    0.990    
+    ## time.deploy:flash1 -0.0081886  0.0395639  -0.207    0.836    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy -0.541                            
-    ## flash1      -0.440  0.587                     
-    ## flashContrl -0.592  0.329  0.271              
-    ## tm.dply:fl1  0.378 -0.695 -0.848 -0.231       
-    ## tm.dply:flC  0.379 -0.692 -0.409 -0.488  0.483
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.443                            
+    ## flash0      -0.784  0.355                     
+    ## flash1      -0.790  0.360  0.864              
+    ## tm.dply:fl0  0.313 -0.709 -0.488 -0.277       
+    ## tm.dply:fl1  0.324 -0.733 -0.281 -0.481  0.567
 
 ``` r
 plot(p_rev)+ labs(title = "Predicted counts of red fox")
@@ -819,13 +746,13 @@ r_rev <- report(m_rev) # text-summary of my model, to include in a report
 as.report_text(r_rev, summary=T)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 1.16e-03. The model's intercept is at -3.41 (95% CI [-3.80, -3.02]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 1.16e-03. The model's intercept is at -3.45 (95% CI [-3.96, -2.95]). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -7.90e-04, 95% CI [-0.06, 0.06], p = 0.978, Std. beta = -1.87e-03)
-    ##   - The effect of flash [1] is non-significantly positive (beta = 0.15, 95% CI [-0.17, 0.48], p = 0.356, Std. beta = 0.12)
-    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.04, 95% CI [-0.67, 0.58], p = 0.894, Std. beta = -0.04)
-    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -8.71e-03, 95% CI [-0.08, 0.06], p = 0.815, Std. beta = -0.02)
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -5.25e-04, 95% CI [-0.08, 0.08], p = 0.990, Std. beta = -1.21e-03)
+    ##   - The effect of time.deploy is non-significantly negative (beta = -1.31e-03, 95% CI [-0.06, 0.06], p = 0.964, Std. beta = -3.03e-03)
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.04, 95% CI [-0.58, 0.67], p = 0.894, Std. beta = 0.04)
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.20, 95% CI [-0.43, 0.82], p = 0.537, Std. beta = 0.16)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly positive (beta = 5.20e-04, 95% CI [-0.08, 0.08], p = 0.990, Std. beta = 1.12e-03)
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -8.19e-03, 95% CI [-0.09, 0.07], p = 0.836, Std. beta = -0.02)
 
 ## Badger
 
@@ -890,7 +817,7 @@ summary(m_grvl)
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -1.0953 -0.1976 -0.1167 -0.0628 29.5365 
+    ## -1.0953 -0.1976 -0.1167 -0.0628 29.5366 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
@@ -899,23 +826,23 @@ summary(m_grvl)
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                           Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)              -4.491946   0.319319 -14.067   <2e-16 ***
-    ## time.deploy               0.060290   0.032319   1.865   0.0621 .  
-    ## flash1                    0.061151   0.187005   0.327   0.7437    
-    ## flashControl             -0.159825   0.432726  -0.369   0.7119    
-    ## time.deploy:flash1       -0.001114   0.039462  -0.028   0.9775    
-    ## time.deploy:flashControl -0.048149   0.048780  -0.987   0.3236    
+    ##                    Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -4.65186    0.39382 -11.812   <2e-16 ***
+    ## time.deploy         0.01214    0.03369   0.360    0.719    
+    ## flash0              0.15984    0.43265   0.369    0.712    
+    ## flash1              0.22107    0.42873   0.516    0.606    
+    ## time.deploy:flash0  0.04815    0.04878   0.987    0.324    
+    ## time.deploy:flash1  0.04702    0.04710   0.998    0.318    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy -0.414                            
-    ## flash1      -0.322  0.592                     
-    ## flashContrl -0.485  0.333  0.237              
-    ## tm.dply:fl1  0.293 -0.687 -0.874 -0.208       
-    ## tm.dply:flC  0.303 -0.726 -0.391 -0.452  0.446
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.333                            
+    ## flash0      -0.705  0.334                     
+    ## flash1      -0.712  0.338  0.906              
+    ## tm.dply:fl0  0.250 -0.751 -0.451 -0.285       
+    ## tm.dply:fl1  0.267 -0.789 -0.293 -0.439  0.662
 
 ``` r
 plot(p_grvl)+ labs(title = "Predicted counts of badger")
@@ -928,13 +855,13 @@ r_grvl <- report(m_grvl) # text-summary of my model, to include in a report
 as.report_text(r_grvl, summary=T)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.42) and the part related to the fixed effects alone (marginal R2) is of 5.93e-03. The model's intercept is at -4.49 (95% CI [-5.12, -3.87]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.42) and the part related to the fixed effects alone (marginal R2) is of 5.93e-03. The model's intercept is at -4.65 (95% CI [-5.42, -3.88]). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly positive (beta = 0.06, 95% CI [-3.05e-03, 0.12], p = 0.062, Std. beta = 0.14)
-    ##   - The effect of flash [1] is non-significantly positive (beta = 0.06, 95% CI [-0.31, 0.43], p = 0.744, Std. beta = 0.06)
-    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.16, 95% CI [-1.01, 0.69], p = 0.712, Std. beta = -0.35)
-    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -1.11e-03, 95% CI [-0.08, 0.08], p = 0.977, Std. beta = -2.65e-03)
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.14, 0.05], p = 0.324, Std. beta = -0.11)
+    ##   - The effect of time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.05, 0.08], p = 0.719, Std. beta = 0.03)
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.16, 95% CI [-0.69, 1.01], p = 0.712, Std. beta = 0.35)
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.22, 95% CI [-0.62, 1.06], p = 0.606, Std. beta = 0.40)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.05, 0.14], p = 0.324, Std. beta = 0.11)
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.05, 0.14], p = 0.318, Std. beta = 0.11)
 
 ## Moose
 
@@ -950,10 +877,7 @@ m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
 ```
 
     ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-    ## Model failed to converge with max|grad| = 0.102245 (tol = 0.002, component 1)
-
-    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
-    ##  - Rescale variables?
+    ## Model failed to converge with max|grad| = 0.00315998 (tol = 0.002, component 1)
 
 ``` r
 # ggpredict is similar to expand.grid
@@ -978,13 +902,13 @@ performance::check_model(m_elg) # check assumptions
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-    ## Warning: Removed 14787 rows containing missing values (geom_text_repel).
+    ## Warning: Removed 14807 rows containing missing values (geom_text_repel).
 
     ## `geom_smooth()` using formula 'y ~ x'
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-    ## Warning: ggrepel: 252 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 234 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ![](glmm_sp_files/figure-gfm/elg-3.png)<!-- -->
@@ -1003,40 +927,38 @@ summary(m_elg)
     ##    Data: time_sp
     ## 
     ##      AIC      BIC   logLik deviance df.resid 
-    ##   2981.9   3042.9  -1483.0   2965.9    15035 
+    ##   2981.9   3042.8  -1482.9   2965.9    15035 
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -0.4540 -0.1618 -0.1047 -0.0663 20.6438 
+    ## -0.4528 -0.1618 -0.1053 -0.0675 20.3353 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
-    ##  loc    (Intercept) 1.456    1.207   
-    ##  week   (Intercept) 0.558    0.747   
+    ##  loc    (Intercept) 1.3638   1.1678  
+    ##  week   (Intercept) 0.5544   0.7446  
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                            Estimate Std. Error  z value Pr(>|z|)    
-    ## (Intercept)              -4.7988876  0.0006913 -6941.69   <2e-16 ***
-    ## time.deploy               0.0475324  0.0006917    68.71   <2e-16 ***
-    ## flash1                    0.3852109  0.0006911   557.37   <2e-16 ***
-    ## flashControl             -0.0855770  0.0006912  -123.81   <2e-16 ***
-    ## time.deploy:flash1       -0.0617140  0.0006911   -89.30   <2e-16 ***
-    ## time.deploy:flashControl -0.0317791  0.0006913   -45.97   <2e-16 ***
+    ##                    Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -4.84060    0.39269 -12.327   <2e-16 ***
+    ## time.deploy         0.01557    0.04624   0.337    0.736    
+    ## flash0              0.07402    0.46979   0.158    0.875    
+    ## flash1              0.45778    0.46087   0.993    0.321    
+    ## time.deploy:flash0  0.03184    0.06479   0.492    0.623    
+    ## time.deploy:flash1 -0.02959    0.06171  -0.480    0.632    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy 0.000                             
-    ## flash1      0.000  0.000                      
-    ## flashContrl 0.000  0.000  0.000               
-    ## tm.dply:fl1 0.000  0.000  0.000  0.000        
-    ## tm.dply:flC 0.000  0.000  0.000  0.000  0.000 
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.485                            
+    ## flash0      -0.754  0.426                     
+    ## flash1      -0.769  0.429  0.865              
+    ## tm.dply:fl0  0.333 -0.716 -0.552 -0.341       
+    ## tm.dply:fl1  0.366 -0.760 -0.364 -0.537  0.617
     ## optimizer (Nelder_Mead) convergence code: 0 (OK)
-    ## Model failed to converge with max|grad| = 0.102245 (tol = 0.002, component 1)
-    ## Model is nearly unidentifiable: very large eigenvalue
-    ##  - Rescale variables?
+    ## Model failed to converge with max|grad| = 0.00315998 (tol = 0.002, component 1)
 
 ``` r
 plot(p_elg)+ labs(title = "Predicted counts of moose")
@@ -1049,13 +971,13 @@ r_elg <- report(m_elg) # text-summary of my model, to include in a report
 as.report_text(r_elg, summary=T)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.31) and the part related to the fixed effects alone (marginal R2) is of 3.91e-03. The model's intercept is at -4.80 (95% CI [-4.80, -4.80]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.30) and the part related to the fixed effects alone (marginal R2) is of 3.75e-03. The model's intercept is at -4.84 (95% CI [-5.61, -4.07]). Within this model:
     ## 
-    ##   - The effect of time.deploy is significantly positive (beta = 0.05, 95% CI [0.05, 0.05], p < .001, Std. beta = 0.11)
-    ##   - The effect of flash [1] is significantly positive (beta = 0.39, 95% CI [0.38, 0.39], p < .001, Std. beta = 0.15)
-    ##   - The effect of flash [Control] is significantly negative (beta = -0.09, 95% CI [-0.09, -0.08], p < .001, Std. beta = -0.19)
-    ##   - The interaction effect of flash [1] on time.deploy is significantly negative (beta = -0.06, 95% CI [-0.06, -0.06], p < .001, Std. beta = -0.14)
-    ##   - The interaction effect of flash [Control] on time.deploy is significantly negative (beta = -0.03, 95% CI [-0.03, -0.03], p < .001, Std. beta = -0.06)
+    ##   - The effect of time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.08, 0.11], p = 0.736, Std. beta = 0.04)
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.07, 95% CI [-0.85, 0.99], p = 0.875, Std. beta = 0.20)
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.46, 95% CI [-0.45, 1.36], p = 0.321, Std. beta = 0.34)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.10, 0.16], p = 0.623, Std. beta = 0.07)
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.15, 0.09], p = 0.632, Std. beta = -0.07)
 
 ## Red deer
 
@@ -1068,12 +990,7 @@ m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
-```
 
-    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-    ## Model failed to converge with max|grad| = 0.0057325 (tol = 0.002, component 1)
-
-``` r
 # ggpredict is similar to expand.grid
 p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
@@ -1096,13 +1013,13 @@ performance::check_model(m_hjort) # check assumptions
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-    ## Warning: Removed 14656 rows containing missing values (geom_text_repel).
+    ## Warning: Removed 14660 rows containing missing values (geom_text_repel).
 
     ## `geom_smooth()` using formula 'y ~ x'
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-    ## Warning: ggrepel: 386 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 382 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ![](glmm_sp_files/figure-gfm/hjort-3.png)<!-- -->
@@ -1125,34 +1042,32 @@ summary(m_hjort)
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -0.5198 -0.1101 -0.0394 -0.0256 24.8132 
+    ## -0.5198 -0.1101 -0.0394 -0.0256 24.8152 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
-    ##  loc    (Intercept) 4.5183   2.1256  
+    ##  loc    (Intercept) 4.5261   2.1275  
     ##  week   (Intercept) 0.2999   0.5476  
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                          Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)              -5.95762    0.54739 -10.884   <2e-16 ***
-    ## time.deploy              -0.02601    0.05877  -0.442   0.6581    
-    ## flash1                   -0.63586    0.36729  -1.731   0.0834 .  
-    ## flashControl             -0.17339    0.81502  -0.213   0.8315    
-    ## time.deploy:flash1        0.15672    0.07884   1.988   0.0468 *  
-    ## time.deploy:flashControl -0.03850    0.08456  -0.455   0.6489    
+    ##                    Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -6.13225    0.72326  -8.479   <2e-16 ***
+    ## time.deploy        -0.06455    0.06330  -1.020   0.3078    
+    ## flash0              0.17311    0.81582   0.212   0.8320    
+    ## flash1             -0.46259    0.83274  -0.555   0.5786    
+    ## time.deploy:flash0  0.03858    0.08456   0.456   0.6482    
+    ## time.deploy:flash1  0.19528    0.08558   2.282   0.0225 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy -0.396                            
-    ## flash1      -0.288  0.519                     
-    ## flashContrl -0.495  0.248  0.178              
-    ## tm.dply:fl1  0.283 -0.684 -0.867 -0.170       
-    ## tm.dply:flC  0.266 -0.664 -0.343 -0.381  0.453
-    ## optimizer (Nelder_Mead) convergence code: 0 (OK)
-    ## Model failed to converge with max|grad| = 0.0057325 (tol = 0.002, component 1)
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.323                            
+    ## flash0      -0.753  0.278                     
+    ## flash1      -0.745  0.283  0.901              
+    ## tm.dply:fl0  0.228 -0.720 -0.380 -0.221       
+    ## tm.dply:fl1  0.245 -0.738 -0.219 -0.418  0.571
 
 ``` r
 # report::report(m_hjort) # text-summary of my model, to include in a report
@@ -1166,13 +1081,13 @@ r_hjort <- report(m_hjort) # text-summary of my model, to include in a report
 as.report_text(r_hjort, summary=T)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.44) and the part related to the fixed effects alone (marginal R2) is of 5.52e-03. The model's intercept is at -5.96 (95% CI [-7.03, -4.88]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.44) and the part related to the fixed effects alone (marginal R2) is of 5.52e-03. The model's intercept is at -6.13 (95% CI [-7.55, -4.71]). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.14, 0.09], p = 0.658, Std. beta = -0.06)
-    ##   - The effect of flash [1] is non-significantly negative (beta = -0.64, 95% CI [-1.36, 0.08], p = 0.083, Std. beta = -0.03)
-    ##   - The effect of flash [Control] is non-significantly negative (beta = -0.17, 95% CI [-1.77, 1.42], p = 0.832, Std. beta = -0.32)
-    ##   - The interaction effect of flash [1] on time.deploy is significantly positive (beta = 0.16, 95% CI [2.19e-03, 0.31], p < .05, Std. beta = 0.37)
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.04, 95% CI [-0.20, 0.13], p = 0.649, Std. beta = -0.09)
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.06, 95% CI [-0.19, 0.06], p = 0.308, Std. beta = -0.15)
+    ##   - The effect of flash [0] is non-significantly positive (beta = 0.17, 95% CI [-1.43, 1.77], p = 0.832, Std. beta = 0.33)
+    ##   - The effect of flash [1] is non-significantly negative (beta = -0.46, 95% CI [-2.09, 1.17], p = 0.579, Std. beta = 0.29)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.13, 0.20], p = 0.648, Std. beta = 0.09)
+    ##   - The interaction effect of flash [1] on time.deploy is significantly positive (beta = 0.20, 95% CI [0.03, 0.36], p < .05, Std. beta = 0.46)
 
 ## Lynx
 
@@ -1185,12 +1100,7 @@ m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
               (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
-```
 
-    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-    ## Model failed to converge with max|grad| = 0.0532481 (tol = 0.002, component 1)
-
-``` r
 # ggpredict is similar to expand.grid
 p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
@@ -1213,13 +1123,13 @@ performance::check_model(m_gaup) # check assumptions
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-    ## Warning: Removed 14787 rows containing missing values (geom_text_repel).
+    ## Warning: Removed 14788 rows containing missing values (geom_text_repel).
 
     ## `geom_smooth()` using formula 'y ~ x'
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-    ## Warning: ggrepel: 255 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 252 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ![](glmm_sp_files/figure-gfm/gaupe-3.png)<!-- -->
@@ -1242,34 +1152,32 @@ summary(m_gaup)
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -0.3296 -0.0556 -0.0319 -0.0254 23.5615 
+    ## -0.3291 -0.0556 -0.0319 -0.0254 23.5992 
     ## 
     ## Random effects:
     ##  Groups Name        Variance Std.Dev.
-    ##  loc    (Intercept) 2.2755   1.5085  
-    ##  week   (Intercept) 0.3021   0.5496  
+    ##  loc    (Intercept) 2.2787   1.5095  
+    ##  week   (Intercept) 0.3044   0.5517  
     ## Number of obs: 15043, groups:  loc, 53; week, 52
     ## 
     ## Fixed effects:
-    ##                          Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)              -6.88857    0.59799 -11.519   <2e-16 ***
-    ## time.deploy               0.03578    0.08985   0.398    0.691    
-    ## flash1                    0.36661    0.56014   0.654    0.513    
-    ## flashControl              0.07134    0.86849   0.082    0.935    
-    ## time.deploy:flash1        0.00500    0.12072   0.041    0.967    
-    ## time.deploy:flashControl -0.10125    0.15784  -0.641    0.521    
+    ##                    Estimate Std. Error z value Pr(>|z|)    
+    ## (Intercept)        -6.83448    0.74649  -9.155   <2e-16 ***
+    ## time.deploy        -0.06326    0.13124  -0.482    0.630    
+    ## flash0             -0.04830    0.86926  -0.056    0.956    
+    ## flash1              0.31196    0.86197   0.362    0.717    
+    ## time.deploy:flash0  0.09730    0.15789   0.616    0.538    
+    ## time.deploy:flash1  0.10416    0.15664   0.665    0.506    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
-    ##             (Intr) tm.dpl flash1 flshCn tm.d:1
-    ## time.deploy -0.604                            
-    ## flash1      -0.526  0.612                     
-    ## flashContrl -0.537  0.400  0.336              
-    ## tm.dply:fl1  0.423 -0.715 -0.852 -0.278       
-    ## tm.dply:flC  0.337 -0.556 -0.334 -0.669  0.393
-    ## optimizer (Nelder_Mead) convergence code: 0 (OK)
-    ## Model failed to converge with max|grad| = 0.0532481 (tol = 0.002, component 1)
+    ##             (Intr) tm.dpl flash0 flash1 tm.d:0
+    ## time.deploy -0.627                            
+    ## flash0      -0.736  0.532                     
+    ## flash1      -0.762  0.548  0.791              
+    ## tm.dply:fl0  0.510 -0.822 -0.670 -0.459       
+    ## tm.dply:fl1  0.526 -0.842 -0.461 -0.673  0.705
 
 ``` r
 plot(p_gaup)+ labs(title = "Predicted counts of lynx")
@@ -1282,13 +1190,13 @@ r_gaup <- report(m_gaup) # text-summary of my model, to include in a report
 as.report_text(r_gaup, summary=T)
 ```
 
-    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.28) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -6.89 (95% CI [-8.06, -5.72]). Within this model:
+    ## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.29) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -6.83 (95% CI [-8.30, -5.37]). Within this model:
     ## 
-    ##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.14, 0.21], p = 0.691, Std. beta = 0.08)
-    ##   - The effect of flash [1] is non-significantly positive (beta = 0.37, 95% CI [-0.73, 1.46], p = 0.513, Std. beta = 0.39)
-    ##   - The effect of flash [Control] is non-significantly positive (beta = 0.07, 95% CI [-1.63, 1.77], p = 0.935, Std. beta = -0.33)
-    ##   - The interaction effect of flash [1] on time.deploy is non-significantly positive (beta = 5.00e-03, 95% CI [-0.23, 0.24], p = 0.967, Std. beta = 0.02)
-    ##   - The interaction effect of flash [Control] on time.deploy is non-significantly negative (beta = -0.10, 95% CI [-0.41, 0.21], p = 0.521, Std. beta = -0.23)
+    ##   - The effect of time.deploy is non-significantly negative (beta = -0.06, 95% CI [-0.32, 0.19], p = 0.630, Std. beta = -0.15)
+    ##   - The effect of flash [0] is non-significantly negative (beta = -0.05, 95% CI [-1.75, 1.66], p = 0.956, Std. beta = 0.33)
+    ##   - The effect of flash [1] is non-significantly positive (beta = 0.31, 95% CI [-1.38, 2.00], p = 0.717, Std. beta = 0.71)
+    ##   - The interaction effect of flash [0] on time.deploy is non-significantly positive (beta = 0.10, 95% CI [-0.21, 0.41], p = 0.538, Std. beta = 0.23)
+    ##   - The interaction effect of flash [1] on time.deploy is non-significantly positive (beta = 0.10, 95% CI [-0.20, 0.41], p = 0.506, Std. beta = 0.24)
 
 ------------------------------------------------------------------------
 
@@ -1301,16 +1209,11 @@ as.report_text(r_gaup, summary=T)
 ```
 
 ``` r
-library(insight)
 library(xtable)
 ```
 
     ## 
     ## Attaching package: 'xtable'
-
-    ## The following object is masked from 'package:insight':
-    ## 
-    ##     display
 
     ## The following object is masked from 'package:parameters':
     ## 
@@ -1322,22 +1225,25 @@ library(xtable)
 
 ``` r
 para_raa  <- model_parameters(m_raa,   standardize = "refit")  %>% add_row(Parameter = "Roe deer", .before = 1)
-para_rev  <- model_parameters(m_rev,   standardize = "refit")  %>% add_row(Parameter = "Red fox",  .before = 1)
-para_grvl <- model_parameters(m_grvl,  standardize = "refit")  %>% add_row(Parameter = "Badger",   .before = 1)
-para_elg  <- model_parameters(m_elg,   standardize = "refit")  %>% add_row(Parameter = "Moose",    .before = 1)
 ```
 
     ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-    ## Model failed to converge with max|grad| = 0.102251 (tol = 0.002, component 1)
-
-    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
-    ##  - Rescale variables?
+    ## Model failed to converge with max|grad| = 0.00228998 (tol = 0.002, component 1)
 
 ``` r
+para_rev  <- model_parameters(m_rev,   standardize = "refit")  %>% add_row(Parameter = "Red fox",  .before = 1)
+para_grvl <- model_parameters(m_grvl,  standardize = "refit")  %>% add_row(Parameter = "Badger",   .before = 1)
+para_elg  <- model_parameters(m_elg,   standardize = "refit")  %>% add_row(Parameter = "Moose",    .before = 1)
 para_hjort<- model_parameters(m_hjort, standardize = "refit")  %>% add_row(Parameter = "Red deer", .before = 1)
+```
+
+    ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+    ## Model failed to converge with max|grad| = 0.00660776 (tol = 0.002, component 1)
+
+``` r
 para_gaup <- model_parameters(m_gaup,  standardize = "refit")  %>% add_row(Parameter = "Lynx",     .before = 1)
 para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
-  format_table(ci_brackets = c("(", ")")) %>% 
+  insight::format_table(ci_brackets = c("(", ")")) %>% 
   select(!df)
 
 print(xtable(para_all, type = "latex"), file = "../Thesis/tex/tab/parameters.tex")
@@ -1370,6 +1276,12 @@ sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Speci
 ```
 
 ![](glmm_sp_files/figure-gfm/mod-plot-2.png)<!-- -->
+
+``` r
+plot_model(m_raa)
+```
+
+![](glmm_sp_files/figure-gfm/mod-plot-3.png)<!-- -->
 
 # Hare, deer and squirrelywhere (and pine marten)
 
@@ -1421,8 +1333,8 @@ report_parameters(sessionInfo())
     ##   - tibble (version 3.0.6; Kirill Müller and Hadley Wickham, 2021)
     ##   - purrr (version 0.3.4; Lionel Henry and Hadley Wickham, 2020)
     ##   - ggeffects (version 1.0.1; Lüdecke D, 2018)
+    ##   - sjPlot (version 2.8.7; Lüdecke D, 2021)
     ##   - parameters (version 0.12.0.1; Lüdecke D et al., 2020)
-    ##   - insight (version 0.13.1.1; Lüdecke D et al., 2019)
     ##   - see (version 0.6.2.1; Lüdecke et al., 2020)
     ##   - performance (version 0.7.0.1; Lüdecke et al., 2020)
     ##   - report (version 0.2.0; Makowski et al., 2020)

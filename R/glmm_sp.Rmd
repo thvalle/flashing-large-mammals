@@ -10,10 +10,13 @@ output:
 ```{r setup}
 library(tidyverse)
 library(lme4)
-library(ggeffects) # Estimated Marginal Means and Marginal Effects from Regression Models
-# more at: https://strengejacke.github.io/ggeffects/
 library(performance) # diagnostic-plots to check assumptions
-library(report) # Result-summaries in text-format
+library(report)      # Result-summaries in text-format
+library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regression Models
+                          # more at: https://strengejacke.github.io/ggeffects/
+library(parameters)  # extract model-parameters etc. from (most) models
+library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
+
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
 ```
@@ -148,7 +151,8 @@ p_td2 + ggpubr::theme_classic2() +
 _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
-time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, must be rescaled by /10
+                 mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
 ```
 
 
@@ -158,7 +162,7 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must 
 
 ### Diagnostics
 
-```{r raadyr}
+```{r raadyr, eval=FALSE}
 time.dep4$loc %>% unique() %>% is.na() %>% any()
 summary(time.dep4)
 
@@ -196,7 +200,7 @@ My random effects follows a normal distribution.
 #### Concluding
 I am not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
 
-```{r raadyr-report}
+```{r raadyr-report, eval=FALSE}
 # Summary, report, model
 summary(m_sp)
 # report::report(m_sp) # text-summary of my model, to include in a report
@@ -269,6 +273,7 @@ The multicollinearity is moderate for the interaction term of time.deploy and fl
 # Summary, report, model
 summary(m_raa)
 plot(p_raa) + labs(title = "Predicted counts of roe deer")
+model_parameters(m_raa,   standardize = "refit") %>% plot()
 ```
 
 The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
@@ -514,17 +519,21 @@ as.report_text(r_gaup, summary=T)
 ```
 
 ```{r model-report}
-library(insight)
 library(xtable)
-
-para_raa  <- model_parameters(m_raa,   standardize = "refit")  %>% add_row(Parameter = "Roe deer", .before = 1)
-para_rev  <- model_parameters(m_rev,   standardize = "refit")  %>% add_row(Parameter = "Red fox",  .before = 1)
-para_grvl <- model_parameters(m_grvl,  standardize = "refit")  %>% add_row(Parameter = "Badger",   .before = 1)
-para_elg  <- model_parameters(m_elg,   standardize = "refit")  %>% add_row(Parameter = "Moose",    .before = 1)
-para_hjort<- model_parameters(m_hjort, standardize = "refit")  %>% add_row(Parameter = "Red deer", .before = 1)
-para_gaup <- model_parameters(m_gaup,  standardize = "refit")  %>% add_row(Parameter = "Lynx",     .before = 1)
+para_raa  <- model_parameters(m_raa,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Roe deer", .before = 1) # adds a row for species name in the resulting table
+para_rev  <- model_parameters(m_rev,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Red fox",  .before = 1)
+para_grvl <- model_parameters(m_grvl,  standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Badger",   .before = 1)
+para_elg  <- model_parameters(m_elg,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Moose",    .before = 1)
+para_hjort<- model_parameters(m_hjort, standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Red deer", .before = 1)
+para_gaup <- model_parameters(m_gaup,  standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+  add_row(Parameter = "Lynx",     .before = 1)
 para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
-  format_table(ci_brackets = c("(", ")")) %>% 
+  insight::format_table(ci_brackets = c("(", ")")) %>% 
   select(!df)
 
 print(xtable(para_all, type = "latex"), file = "../Thesis/tex/tab/parameters.tex")
@@ -549,6 +558,33 @@ sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species
                     m.labels = c("Roe deer","Red fox","Badger"))
 sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
                     m.labels = c("Moose","Red deer","Lynx"))
+
+plot_model(m_raa)
+
+
+check_overdispersion(m_raa)   # No overdispersion detected
+check_overdispersion(m_rev)   # -     -    | |    -    -
+check_overdispersion(m_grvl)  # -     -    | |    -    -
+check_overdispersion(m_elg)   # -     -    | |    -    -
+check_overdispersion(m_hjort) # -     -    | |    -    -
+check_overdispersion(m_gaup)  # -     -    | |    -    -
+check_zeroinflation(m_raa)   # Model seems ok, ratio of observed and 
+check_zeroinflation(m_rev)   #    predicted zeros is within the tolerance range.  
+check_zeroinflation(m_grvl)  #          -     -    | |    -    -   
+check_zeroinflation(m_elg)   #          -     -    | |    -    -   
+check_zeroinflation(m_hjort) #          -     -    | |    -    -  
+check_zeroinflation(m_gaup)  #          -     -    | |    -    -
+check_singularity(m_raa)   # FALSE
+check_singularity(m_rev)   #--||--
+check_singularity(m_grvl)  #--||--   
+check_singularity(m_elg)   #--||--   
+check_singularity(m_hjort) #--||--  
+check_singularity(m_gaup)  #--||--
+m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
+m_compare
+m_compare %>% plot() #A `range` must be provided for data with only one observation.
+test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
+# which is because they are different subsets of each other
 ```
 
 
