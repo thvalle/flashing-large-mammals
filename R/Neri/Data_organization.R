@@ -184,9 +184,9 @@ ggplot(data=treatment[!is.na(treatment$period),])+
       # to my field-work days, but with a focus on getting more days in each period
       # than the median I use in GLMM to trim long periods.
  
-TK <- treatment %>% mutate(period = if_else(period == "Control" & date <  "2019-04-01", "Control_1", period)) #83d -7
-TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-07-14", "Control_2", period)) #111d -14
-TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-10-21", "Control_3", period)) #79d +13
+TK <- treatment %>% mutate(period = if_else(period == "Control" & date <  "2019-05-01", "Control_1", period)) #83d  +23
+TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-07-23", "Control_2", period)) #111d -14?
+TK    <-  TK    %>% mutate(period = if_else(period == "Control" & date <  "2019-10-21", "Control_3", period)) #79d  +13
 treatment <- TK %>% mutate(period = if_else(period == "Control" & date >= "2019-10-21", "Control_4", period)) #134d -6
 
       # some calculations and helpers during the process
@@ -335,7 +335,7 @@ write.csv(unique(flash$loc), "LokaliteterMedBlits.csv")
 #   group_by(species) %>% summarise(n = n()) # sums up observations per species
 
 
-library(lubridate)
+# library(lubridate)
 # # Kjapp feilsøking etter tidspunkter -----------------------------------------
 #  på 831 (blits var riktig) og 833 (blit var feil) 
 # 

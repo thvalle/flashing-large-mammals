@@ -1,6 +1,6 @@
 ---
 title: "GLMM per art"
-author: "Torgeir"
+author: "Torgeir Holmgard Valle"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   github_document:
@@ -49,11 +49,12 @@ time.dep2 <- time.dep %>%
   # including Control as part of the flash-column, since it differs from flash=0
   mutate(flash = factor(
         ifelse(period %in% ctrl, "Control", flash)),
-         week = lubridate::isoweek(date))
-# time.dep2 <- time.dep2c %>% 
-#   filter(!period %in% ctrl) %>%  # but removing it for now, because it is set up in a longer timeframe
-#   mutate(flash = factor(flash, levels = c(0,1)) )
-# class(time.dep2$flash)
+        week = lubridate::isoweek(date),
+        period = factor(period))
+time.dep2 <- time.dep2 %>% 
+   mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
+levels(time.dep2$flash) <- c("Control", "IR", "LED")
+levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
 ```
 
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
@@ -75,16 +76,16 @@ time.period %>% filter(period_length <= cut) %>%
 time.dep3 <- time.dep2 %>% left_join(time.period) %>%
   filter(period_length >= cut)
 # find median length after filtering short lengths out
-time.period %>% filter(period_length >= cut) %>% filter(flash == 1) %>%  
+time.period %>% filter(period_length >= cut) %>% filter(flash == "LED") %>%  
   summary() # median period length 85 days, mean: 84
-time.period %>% filter(period_length >= cut) %>% filter(flash == 0) %>%  
+time.period %>% filter(period_length >= cut) %>% filter(flash == "IR") %>%  
   summary() # median period length 79 days, mean: 89
 # extract lengths of each unique period
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
 #extracting median and multiplying by 10, to use in the correctly scaled plot
-hh <-       h$period_length[h$flash == 1] %>%  median()       # median white LED
-hh <- c(hh, h$period_length[h$flash == 0] %>%  median()) * 10 # + median IR
+hh <-       h$period_length[h$flash == "LED"] %>%  median()       # median white LED
+hh <- c(hh, h$period_length[h$flash == "IR"] %>%  median()) * 10 # + median IR
 # smallest median 
 h <- min(hh)
 ```
@@ -112,7 +113,7 @@ p_td <- time.dep3 %>% filter(!period %in% ctrl) %>%
   coord_flip() + 
   labs(title = "Period lengths per camera",
        x = "Location", y = "Time since deployment",
-       caption = "Vertical lines reprecent median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.") +
+       caption = "Vertical lines reprecent median period lengths for IR and white LED.\n Data superceding that were trimmed away for the GLMM-modelling.") +
   ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
 p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   geom_hline(aes(yintercept = max(hh)), linetype = "dashed",  alpha =.5) +
@@ -131,19 +132,23 @@ There was an overweight of IR-periods extending past the median line.
 ```{r period-length-wControl, message=FALSE, warning=FALSE}
 # remake plot with Control-group data, faceted
 p_td2 <- time.dep3 %>% 
-  ggplot(aes(loc, 10*time.deploy, colour = period))  +
-  geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
+  ggplot(aes(loc, 10*time.deploy, col = period))  +
+  geom_line(aes(linetype = period),
+    position = position_dodge(width = 1), lineend = "square") +
   coord_flip() +  
   geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
-  scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150))) + facet_grid(rows = "flash") +
+  scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150, 200))) +
+  facet_grid(rows = "flash", scales = "free_y") +
   labs(#title = "Period lengths per camera",
        x = "Location", y = "Time since deployment",
-       caption = "Vertical line reprecents median period length for IR and white LED.\n Data superceding that is trimmed away for the GLMM-modelling.")
+       caption = "Vertical line reprecents median period length for IR.\n Data superceding that were trimmed away for the GLMM-modelling.")
   
 
 p_td2 + ggpubr::theme_classic2() +
   theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-        scale_colour_brewer(palette="Spectral")
+        scale_linetype_manual(values = rep(c("solid","solid"), 4) ) + #option to change to solid,dashed
+        scale_color_manual(values = c(rep(c("#74add1","#4575b4"), each = 2), # trt-colr
+                                      rep(c("#f46d43","#fdae61"),each = 2) ) ) #ctrl-colr
 ```
 
 
@@ -151,8 +156,8 @@ p_td2 + ggpubr::theme_classic2() +
 _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
-time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, must be rescaled by /10
-                 mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
+                
 ```
 
 
