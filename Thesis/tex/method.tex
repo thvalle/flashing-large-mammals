@@ -222,34 +222,21 @@ To test $H_{1}$ I looked for differences in detection rate per day, using Genera
 Generalised Linear Model, because my dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
 Mixed effects to include location ID and week of the year as random effects, accounting for differences between camera sites, and seasonal changes during the year of study.
 
-Consequently, I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) on a subset of each species, to predict number of observations, with time since deployment in days interacting with flash type (formula: n.obs ~ time.deploy * flash).
+Accordingly, I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) on a subset of each species, to predict number of observations, with time since deployment in days interacting with flash type (formula: n.obs ~ time.deploy * flash).
 
-Standardized parameters were obtained by fitting the models on standardized versions of the data subset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. % for results: Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
+Standardized parameters were obtained by fitting the models on standardized versions of the data subset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
 
 The flash type-variable corresponds to white LED present/absent or control group.
 For the cameras that was equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up/ took down the white LED.
 The control group’s “day 0” of time since deployment were set by me when doing the analysis, at points reflecting my weeks of field work, in order to obtain periods of similar lengths to that of the white LED-locations. See 
-Further, I also trimmed the period lengths down to a reduced length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualized in \ref{fig:median_period}. 
+Further, I also trimmed the period lengths down to a reduced length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualized in \ref{fig:median_period}.
+Finally, due to large eigenvalues, the model failed to converge, and an error message prompted me to rescale variables.
+Therefore I divided the time since deployment-variable by ten, which solved the error.
+Consequently, the time axis is shown in days/10, which means that 7.5 corresponds to 75 days.
 
 
 \input{tex/fig/method_period_lengths.tex}
 
-
-%### report output
-I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) to predict number of observations with time since deployment and flash type (formula: n.obs ~ time.deploy * flash).
-The model included location ID and week as random effects (formula: list(~1 | loc, ~1 | week)).
-
-
-%Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. Predicted counts visualised in \vref{fig:glmm_sp}, model parameters visualised in \vref{fig:para_sp}.
-
-
-
-
-%\begin{align*}
-%   n.obs \sim               && \text{Dependant variable}\\
-%   time  \times flash       && \text{predicted by fixed effects}\\
-%   + (1|loc) + (1|week)     && \text{controlling for random effects}\\
-%\end{align*} 
 
 
 \subsection{Equivalence test}

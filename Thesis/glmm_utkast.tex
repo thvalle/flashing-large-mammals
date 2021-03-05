@@ -1,0 +1,84 @@
+\section{Statistical analysis} %This is a reference to the session info appendix \ref{app:sessinfo}
+
+To test for effects of the white LED flash I used the R programming language (\cite{RCoreTeam2020}), in the RStudio IDE (\cite{RStudioTeam2020a}), adopting large parts of the tidyverse framework along the way (\cite{tidyverse}). Session info in appendix \ref{app:sessinfo}. %Atle: Why sessioninfo?
+%TODO easystats også, etterkvart.
+
+
+	\subsection*{GLMM}
+To test $H_{1}$ I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 (\cite{lme4}).
+
+Generalised Linear Model, because my dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
+Mixed effects to include location ID and week of the year as random effects, accounting for differences between camera sites, and seasonal changes during the year of study.
+
+Accordingly, I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) on a subset of each species, to predict number of observations, with time since deployment in days interacting with flash type (formula: n.obs ~ time.deploy * flash).
+
+Standardized parameters were obtained by fitting the models on standardized versions of the data subset. 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation. 
+
+The flash type-variable corresponds to white LED present/absent or control group.
+For the cameras that was equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up/ took down the white LED.
+The control group’s “day 0” of time since deployment were set by me when doing the analysis, at points reflecting my weeks of field work, in order to obtain periods of similar lengths to that of the white LED-locations. See 
+Further, I also trimmed the period lengths down to a reduced length, based on the median length of the IR and white LED periods. Thus, any period exceeding the shortest median length, was trimmed down, as visualized in \ref{fig:median_period}.
+Finally, due to large eigenvalues, the model failed to converge, and an error message prompted me to rescale variables.
+Therefore I divided the time since deployment-variable by ten, which solved the error.
+Consequently, the time axis is shown in days/10, which means that 7.5 corresponds to 75 days.
+
+
+\input{tex/fig/method_period_lengths.tex}
+
+
+
+\subsection{Equivalence test}
+% Multiple testing i arkiv/method-ark
+I used the standard significance level of $\alpha = .05$, and performed an equivalence test on my model outputs, using the function equivalence-test from the R package parameters ().%\cite{package-parameters}). %TODO
+
+In an equivalence test, model parameters are tested against a Region of Practical Equivalence (ROPE) as opposed to merely one single mean value, thus accounting for the \emph{effect size} of each parameter.
+If the parameters estimate and CI falls outside the ROPE, their null hypothesis is rejected. However, if the CI is inside the ROPE, H0 is accepted, no matter if a standard Null Hypothesis Significance Test (NHST) would have deemed it significant.
+
+Inside the function equivalence-test I used the Two One-Sided Tests (TOST) rule, where the confidence interval (CI) is set to $1 - 2\times \alpha$. In my case that gave a narrow CI of .90,
+
+For models from count data, the residual variance is often used to define the ROPE range. However, the description of the rope-range function from the package bayestestR () states this threshold as "rather experimental" and that the range is probably often similar to the default [-0.1, 0.1] of a standardized parameter.
+Hence, I used the default ROPE range which corresponds to a negligible effect size according to Cohen, 1988.
+
+
+\chapter{Results}
+
+\section{GLMM}
+
+For roe deer, the model explaining variation in detection rate has a substantial explanatory power (conditional R2 = 0.45), but the part related to the fixed effects alone (marginal R2) is just 0.01.
+
+In other words, most of the explained variation in detection rate is due to seasonal changes and variation between the different camera sites captured in the random terms.
+Neither the intercept value, nor the interaction term with time were deemed significant for the white LED periods (flash[1]).
+
+The white LED periods had a non-significant positive effect in the beginning (flash[1] in table \ref{tab:param}) compared to the IR periods (Intercept). However, along the time since deployment-axis (time.deploy $\ast$ flash [1]) there was a negative effect, to the extent that after two months the mean detection rate was lower for white LED periods, than for IR (flash [0]; figure 3.1a). However, the confidence interval (CI) of both white LED and IR periods almost completely overlaps, and hence, are not significantly different.
+
+
+As the control-group stayed unchanged through the whole study period, and was visited less than the other cameras, I expected there to be no trend over time (i.e. time.deploy $\ast$ flash [Control] $\approx 0$).
+Any fluctuations in detection rates due to weekly (and ultimately seasonal) changes should be controlled for by the random effect-argument for week of the year. 
+
+
+\input{tex/tab/parameters.tex}
+								%Caption outside the .tex-file or else it would be deleted every time I update the parameter-table
+\caption{\label{tab:param} Standardised model parameters. Results of generalised linear mixed effect models on detection rate of species at 53 different locations in south-eastern Norway, with three different treatment levels; period with only IR camera (flash:0), period with additional white LED camera (flash:1) and site unchanged through the whole study period (flash:Control). Random effects are location ID and week of year. Standardised parameters were obtained by fitting the model on a standardised version of the dataset. 95\% Confidence Intervals and p-values were computed using the Wald approximation.}
+
+\end{table} % må inn og fjerne end{table} kvar gong tabellen oppdaterest!
+
+ 
+%\input{tex/fig/result_figs.tex}
+\begin{figure}
+		  \centering
+		  	\includegraphics[width=.8\linewidth]{../R/glmm_sp_files/figure-gfm/raadyr-C-report-1.png}
+		  \caption{Roe deer}
+\end{figure}
+
+
+\subsection{Equivalence test}
+
+As all the parameters in the roe deer GLMM were considered non-significant, it is interesting to evaluate them against a Region of Practical Equivalence (ROPE) in an equivalence test.
+When a parameter is within the ROPE in an equivalence test, it signifies that the difference from the mean, and the variance of the parameter, is low enough that we can accept H0 (that using white LED has no effect on the detection rate), rather than just fail to reject it.
+
+According to this test, white LED is different enough that we cannot conclude on it’s immediate effect (intercept value), but it’s trend over time (interaction with time since deployment) is practically equivalent to H0. 
+In other words, the equivalence test suggests that there is no significant difference in the long run, but there might be an increase in detections right after the day of deployment.
+However, the increase could also result from inhereting a slightly higher detection rate from the IR periods \emph{if} there truly is a negative effect of the white LED over long periods of time.
+
+
+
