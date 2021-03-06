@@ -4,11 +4,13 @@ To test for effects of the white LED flash I used the R programming language (\c
 %TODO easystats også, etterkvart.
 
 
-	\subsection*{GLMM}
-To test $H_{1}$ I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 (\cite{lme4}).
 
-Generalised Linear Model, because my dependent variable was count data, which I assume follows a Poisson distribution ($ X \sim Pois(\lambda) $).
-Mixed effects to include location ID and week of the year as random effects, accounting for differences between camera sites, and seasonal changes during the year of study.
+
+	\subsection*{GLMM}
+----
+
+----
+
 
 Accordingly, I fitted a poisson mixed model (estimated using Maximum Likelihood and Nelder-Mead optimizer) on a subset of each species, to predict number of observations, with time since deployment in days interacting with flash type (formula: n.obs ~ time.deploy * flash).
 
@@ -47,13 +49,13 @@ Hence, I used the default ROPE range which corresponds to a negligible effect si
 For roe deer, the model explaining variation in detection rate has a substantial explanatory power (conditional R2 = 0.45), but the part related to the fixed effects alone (marginal R2) is just 0.01.
 
 In other words, most of the explained variation in detection rate is due to seasonal changes and variation between the different camera sites captured in the random terms.
-Neither the intercept value, nor the interaction term with time were deemed significant for the white LED periods (flash[1]).
+Neither the main term, nor the interaction term with time were significant for the white LED periods (flash[1]).
 
 The white LED periods had a non-significant positive effect in the beginning (flash[1] in table \ref{tab:param}) compared to the IR periods (Intercept). However, along the time since deployment-axis (time.deploy $\ast$ flash [1]) there was a negative effect, to the extent that after two months the mean detection rate was lower for white LED periods, than for IR (flash [0]; figure 3.1a). However, the confidence interval (CI) of both white LED and IR periods almost completely overlaps, and hence, are not significantly different.
 
 
 As the control-group stayed unchanged through the whole study period, and was visited less than the other cameras, I expected there to be no trend over time (i.e. time.deploy $\ast$ flash [Control] $\approx 0$).
-Any fluctuations in detection rates due to weekly (and ultimately seasonal) changes should be controlled for by the random effect-argument for week of the year. 
+Any fluctuations in detection rates due to weekly (and ultimately seasonal) changes should be controlled for by the random effect-term for week of the year. 
 
 
 \input{tex/tab/parameters.tex}
@@ -79,6 +81,7 @@ When a parameter is within the ROPE in an equivalence test, it signifies that th
 According to this test, white LED is different enough that we cannot conclude on it’s immediate effect (intercept value), but it’s trend over time (interaction with time since deployment) is practically equivalent to H0. 
 In other words, the equivalence test suggests that there is no significant difference in the long run, but there might be an increase in detections right after the day of deployment.
 However, the increase could also result from inhereting a slightly higher detection rate from the IR periods \emph{if} there truly is a negative effect of the white LED over long periods of time.
+
 
 
 

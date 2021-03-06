@@ -23,7 +23,7 @@ time.dep <- readRDS("timedep.rds")
 
 ## Purpose
 
-This notebook is meant to set up the final GLMModels going into my thesis. Upset is identical to the "glmm_in_process"-file, but structure is different as I'm going to make one model for each species. I will write my thoughts about each model as I go along, which will guide me in the writing of method, result and discussion.
+Remaking glmm_sp in a modular fashion, so that changes in the script of one model affects all the rest.
 
 # About the model
 
@@ -167,13 +167,14 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must 
 
 ### Diagnostics
 
-```{r raadyr, eval=FALSE}
-time.dep4$loc %>% unique() %>% is.na() %>% any()
-summary(time.dep4)
+```{r summary, eval=FALSE}
+time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
+summary(time.dep4) #
+```
 
-# filter species
-sp = "raadyr"
-time_sp <- filter(time.dep4, species %in% sp, !period %in% ctrl) #.dep4 = trimmed data
+
+```{r sp, eval=FALSE}
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
@@ -205,11 +206,11 @@ My random effects follows a normal distribution.
 #### Concluding
 I am not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
 
-```{r raadyr-report, eval=FALSE}
+```{r sp-report, eval=FALSE}
 # Summary, report, model
 summary(m_sp)
-# report::report(m_sp) # text-summary of my model, to include in a report
-plot(p_sp)
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) 
 ```
 
 ### Model interpretation
@@ -247,24 +248,13 @@ The interaction with time since deployment is, however, still non-significant.
 _Now I want to look at a model including the Control-group._
 
 
-```{r raadyr-C}
+```{r raadyr}
 # filter species
 sp = "raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
-
-# Model
-m_raa  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# --------------------------------------------------------------------
-# ggpredict is similar to expand.grid
-p_raa <- ggeffects::ggpredict(m_raa, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_raa, add.data = TRUE) + labs(title  = "Raw data")
-plot(p_raa, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_raa) # check assumptions
+<<sp>>
 ```
+
+
 
 There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
 
@@ -273,13 +263,14 @@ The homogeneity of variance is still off. It deems on me more and more that this
 The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
 
 
-
-```{r raadyr-C-report}
-# Summary, report, model
-summary(m_raa)
-plot(p_raa) + labs(title = "Predicted counts of roe deer")
-model_parameters(m_raa,   standardize = "refit") %>% plot()
+```{r raadyr-report}
+<<sp-report>>
+para_sp %>% plot()
 ```
+
+
+
+
 
 The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
 Looking at the plot, the confidence interval tells us all we need to know, as they almost completely overlap.
@@ -295,6 +286,8 @@ This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lake
 >"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
 The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
 
+
+
 ```{r parameters}
 library(parameters)
 library(effectsize)
@@ -302,8 +295,7 @@ library(see)
 result <- model_parameters(m_raa)
 plot(result, size_text = 3)
 
-result_stnd <- model_parameters(m_raa, standardize = "refit")
-plot(result_stnd, show_intercept = TRUE) + labs(subtitle = ' standardize = "refit" ',
+plot(para_sp, show_intercept = TRUE) + labs(subtitle = ' standardize = "refit" ',
                                            caption = "Values are less centered on zero")
 
 # default rules, like in bayestestR::equivalence_test()
@@ -313,14 +305,23 @@ result
 ```
 
 
-```{r raadyr-report2}
-r_raa <- report(m_raa) # text-summary of my model, to include in a report
-summary(r_raa)
-as.report_table(r_raa)
-as.report_info(r_raa)
+```{r sp-report2}
+summary(r_sp)
+as.report_table(r_sp)
+as.report_info(r_sp)
 ```
 
 
+```{r raadyr-objects}
+# Model
+m_raa    = m_sp
+# ggpredict 
+p_raa    = p_sp
+# report-object
+r_raa    = r_sp
+# parameters refit
+para_raa = para_sp
+```
 
 
 # Skrivestopp

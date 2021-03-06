@@ -4,23 +4,23 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Ledestjerne}{5}
+\contentsline {subparagraph}{Hypotheses}{5}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {2}Method and materials}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Study species}{6}
+\contentsline {section}{\numberline {2.1}Study area}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Study area}{6}
+\contentsline {section}{\numberline {2.2}Study species}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Study design}{7}
+\contentsline {section}{\numberline {2.3}Study design}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data Collection}{8}
+\contentsline {section}{\numberline {2.4}Data Collection}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Data processing}{8}
+\contentsline {section}{\numberline {2.5}Data processing}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.6}Statistical analysis}{10}
+\contentsline {section}{\numberline {2.6}Statistical analysis}{11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.6.1}Equivalence test}{10}
+\contentsline {subsection}{\numberline {2.6.1}Equivalence test}{11}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Results}{14}
 \defcounter {refsection}{0}\relax 

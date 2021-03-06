@@ -6,5 +6,9 @@ R/geo/kameraliste.csv
 R/camerahabitat20210110.xlsx
 R/TIFF_GRAIN
 R/glmm_in_process_cache
-
 *.bak
+*.aux
+*.tex.bak
+*.lot
+*.lof
+*.blg
