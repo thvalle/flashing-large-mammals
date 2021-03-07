@@ -247,12 +247,12 @@ Still the same pattern with higher intercept and a negative slope along the time
 The interaction with time since deployment is, however, still non-significant.
 _Now I want to look at a model including the Control-group._
 
-
-```{r raadyr}
+`r sp = "raadyr"`
+```{r raadyr, ref.label='sp'}
 # filter species
-sp = "raadyr"
-<<sp>>
+#<<sp>>
 ```
+
 
 
 
@@ -263,9 +263,8 @@ The homogeneity of variance is still off. It deems on me more and more that this
 The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
 
 
-```{r raadyr-report}
-<<sp-report>>
-para_sp %>% plot()
+```{r raadyr-report, ref.label='sp-report'}
+#<<sp-report>>
 ```
 
 
@@ -292,15 +291,16 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 library(parameters)
 library(effectsize)
 library(see)
-result <- model_parameters(m_raa)
-plot(result, size_text = 3)
+result <- model_parameters(m_sp) 
+plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+                                    subtitle = ' not standardized ')
 
-plot(para_sp, show_intercept = TRUE) + labs(subtitle = ' standardize = "refit" ',
-                                           caption = "Values are less centered on zero")
+plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+                                    subtitle = 'standardize  = "refit" ')
 
 # default rules, like in bayestestR::equivalence_test()
-result <- equivalence_test(m_raa)
-plot(result, size_text = 3)
+result <- equivalence_test(m_sp)
+plot(result)
 result
 ```
 
@@ -324,191 +324,127 @@ para_raa = para_sp
 ```
 
 
+sp
+sp-report
+sp-report2
+parameters
+
+objects
+
+
 # Skrivestopp
 
 ## Red Fox
 
-```{r rev}
-# filter species
-sp = "rev"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+`r sp = "rev"`
+
+```{r rev, ref.label=c('sp','sp-report')}
+```
+```{r rev2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r rev-objects}
 # Model
-m_rev  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_rev <- ggeffects::ggpredict(m_rev, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_rev, add.data = TRUE) + labs(title = "add.data = TRUE")
-plot(p_rev, residuals = TRUE) + labs(title = "Residuals")
-performance::check_model(m_rev) # check assumptions
+m_rev    = m_sp
+# ggpredict 
+p_rev    = p_sp
+# report-object
+r_rev    = r_sp
+# parameters refit
+para_rev = para_sp
 ```
 
 
-### Interpret
-
-```{r rev-report}
-# Summary, report, model
-summary(m_rev)
-plot(p_rev)+ labs(title = "Predicted counts of red fox")
+```{r knit-exit, eval=FALSE}
+knitr::knit_exit() # to exit knitting process here instead of at the document end
 ```
-
-
-```{r rev-report2}
-r_rev <- report(m_rev) # text-summary of my model, to include in a report
-as.report_text(r_rev, summary=T)
-```
-
-
 
 
 ## Badger
 
-```{r grevling}
-# filter species
-sp = "grevling"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+`r sp = "grevling"`
+
+```{r grevling, ref.label=c('sp','sp-report')}
+```
+```{r grevling2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r grevling-objects}
 # Model
-m_grvl  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_grvl <- ggeffects::ggpredict(m_grvl, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_grvl, add.data = TRUE) + labs(title  = "add.data = TRUE")
-plot(p_grvl, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_grvl) # check assumptions
+m_grvl    = m_sp
+# ggpredict 
+p_grvl    = p_sp
+# report-object
+r_grvl    = r_sp
+# parameters refit
+para_grvl = para_sp
 ```
-
-
-### Interpret
-
-```{r grevling-report}
-# Summary, report, model
-summary(m_grvl)
-plot(p_grvl)+ labs(title = "Predicted counts of badger")
-```
-
-
-```{r grevling-report2}
-r_grvl <- report(m_grvl) # text-summary of my model, to include in a report
-as.report_text(r_grvl, summary=T)
-```
-
-
 
 
 ## Moose
 
-```{r elg}
-# filter species
-sp = "elg"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+`r sp = "elg"`
+
+```{r elg, ref.label=c('sp','sp-report')}
+```
+```{r elg2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r elg-objects}
 # Model
-m_elg  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_elg <- ggeffects::ggpredict(m_elg, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_elg, add.data = TRUE) + labs(title  = "add.data = TRUE")
-plot(p_elg, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_elg) # check assumptions
+m_elg    = m_sp
+# ggpredict 
+p_elg    = p_sp
+# report-object
+r_elg    = r_sp
+# parameters refit
+para_elg = para_sp
 ```
-
-
-### Interpret
-
-```{r elg-report}
-# Summary, report, model
-summary(m_elg)
-plot(p_elg)+ labs(title = "Predicted counts of moose")
-```
-
-
-```{r elg-report2}
-r_elg <- report(m_elg) # text-summary of my model, to include in a report
-as.report_text(r_elg, summary=T)
-```
-
-
-
 
 ## Red deer
 
-```{r hjort}
-# filter species
-sp = "hjort"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+`r sp = "hjort"`
+
+```{r hjort, ref.label=c('sp','sp-report')}
+```
+```{r hjort2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r hjort-objects}
 # Model
-m_hjort  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_hjort <- ggeffects::ggpredict(m_hjort, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_hjort, add.data = TRUE) + labs(title  = "add.data = TRUE")
-plot(p_hjort, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_hjort) # check assumptions
+m_hjort    = m_sp
+# ggpredict 
+p_hjort    = p_sp
+# report-object
+r_hjort    = r_sp
+# parameters refit
+para_hjort = para_sp
 ```
-
-
-### Interpret
-
-```{r hjort-report}
-# Summary, report, model
-summary(m_hjort)
-# report::report(m_hjort) # text-summary of my model, to include in a report
-plot(p_hjort)+ labs(title = "Predicted counts of red deer")
-```
-
-```{r hjort-report2}
-r_hjort <- report(m_hjort) # text-summary of my model, to include in a report
-as.report_text(r_hjort, summary=T)
-```
-
 
 
 ## Lynx
 
-```{r gaupe}
-# filter species
-sp = "gaupe"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+`r sp = "gaupe"`
+
+```{r gaupe, ref.label=c('sp','sp-report')}
+```
+```{r gaupe2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r gaupe-objects}
 # Model
-m_gaup  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_gaup <- ggeffects::ggpredict(m_gaup, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_gaup, add.data = TRUE) + labs(title  = "add.data = TRUE")
-plot(p_gaup, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_gaup) # check assumptions
-```
-
-
-### Interpret
-
-```{r gaupe-report}
-# Summary, report, model
-summary(m_gaup)
-plot(p_gaup)+ labs(title = "Predicted counts of lynx")
-```
-
-```{r gaupe-report2}
-r_gaup <- report(m_gaup) # text-summary of my model, to include in a report
-as.report_text(r_gaup, summary=T)
+m_gaup    = m_sp
+# ggpredict 
+p_gaup    = p_sp
+# report-object
+r_gaup    = r_sp
+# parameters refit
+para_gaup = para_sp
 ```
 
 
@@ -526,40 +462,30 @@ as.report_text(r_gaup, summary=T)
 
 ```{r model-report}
 library(xtable)
-para_raa  <- model_parameters(m_raa,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
+para_raa  <- para_raa %>% 
   add_row(Parameter = "Roe deer", .before = 1) # adds a row for species name in the resulting table
-para_rev  <- model_parameters(m_rev,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
-  add_row(Parameter = "Red fox",  .before = 1)
-para_grvl <- model_parameters(m_grvl,  standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
-  add_row(Parameter = "Badger",   .before = 1)
-para_elg  <- model_parameters(m_elg,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
-  add_row(Parameter = "Moose",    .before = 1)
-para_hjort<- model_parameters(m_hjort, standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
-  add_row(Parameter = "Red deer", .before = 1)
-para_gaup <- model_parameters(m_gaup,  standardize = "refit", two_sd = TRUE, exponentiate = TRUE) %>% 
-  add_row(Parameter = "Lynx",     .before = 1)
+para_rev  <- para_rev   %>% add_row(Parameter = "Red fox",  .before = 1)
+para_grvl <- para_grvl  %>% add_row(Parameter = "Badger",   .before = 1)
+para_elg  <- para_elg   %>% add_row(Parameter = "Moose",    .before = 1)
+para_hjort<- para_hjort %>% add_row(Parameter = "Red deer", .before = 1)
+para_gaup <- para_gaup  %>% add_row(Parameter = "Lynx",     .before = 1)
+# bind tables together
 para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
   insight::format_table(ci_brackets = c("(", ")")) %>% 
   select(!df)
+# save as latex-table in the Thesis folder
+print(xtable(para_all, type = "latex"), include.colnames = F,
+      file = "../Thesis/tex/tab/parameters.tex")
 
-print(xtable(para_all, type = "latex"), file = "../Thesis/tex/tab/parameters.tex")
+# trying to find a automated way of removinf \end{table}
+
+#tbl <- xtable(table(time.dep2$species), type = "latex") 
+#class(tbl)
+#tbl %>% filter(!tbl %in% "\\end{table}")
+#sub("\\end{tabl", "%",tbl)
 ```
 
 ```{r mod-plot}
-# # example for multiple imputed datasets
-# sp <- c("raadyr","rev","grevling","elg","hjort","gaupe")
-#   predictions <- lapply(1:5, function(sp) {
-#     m <- glmer(n.obs ~ time.deploy * flash + species +# fixed effects
-#             (1 | loc) + (1 | week), # random effects
-#             data   = filter(time.dep4, species %in% sp),
-#             family = poisson)
-#     ggpredict(m, "species")
-#   })
-# predictions %>% pool_predictions()
-# pool_parameters()
-# #pool_predictions(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
-#plot(list(p_raa, p_rev,p_grvl,p_elg,p_hjort,p_gaup))
-
 sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
                     m.labels = c("Roe deer","Red fox","Badger"))
 sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
@@ -567,7 +493,15 @@ sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Speci
 
 plot_model(m_raa)
 
+m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
+m_compare
+m_compare %>% plot() #A `range` must be provided for data with only one observation.
+# test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
+# which is because they are different subsets of each other
+```
 
+
+```{r mod-checks}
 check_overdispersion(m_raa)   # No overdispersion detected
 check_overdispersion(m_rev)   # -     -    | |    -    -
 check_overdispersion(m_grvl)  # -     -    | |    -    -
@@ -586,11 +520,6 @@ check_singularity(m_grvl)  #--||--
 check_singularity(m_elg)   #--||--   
 check_singularity(m_hjort) #--||--  
 check_singularity(m_gaup)  #--||--
-m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
-m_compare
-m_compare %>% plot() #A `range` must be provided for data with only one observation.
-test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
-# which is because they are different subsets of each other
 ```
 
 
@@ -601,33 +530,27 @@ Blueprint for other species in chunk below:
 
 ### Diagnostics
 
-```{r xx, eval=FALSE}
-# filter species
-sp = "xx"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+
+<!--`r sp = "xx"`-->
+
+```{r xx, ref.label=c('sp','sp-report'), eval=FALSE}
+```
+```{r xx2, ref.label=c('sp-report2','parameters'), eval=FALSE}
+```
+
+
+```{r xx-objects, eval=FALSE}
 # Model
-m_sp  <- glmer(n.obs ~ time.deploy * flash + # fixed effects
-              (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-
-# ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title  = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(title  = "Residuals")
-performance::check_model(m_sp) # check assumptions
+m_xx    = m_sp
+# ggpredict 
+p_xx    = p_sp
+# report-object
+r_xx    = r_sp
+# parameters refit
+para_xx = para_sp
 ```
 
 
-### Interpret
-
-```{r xx-report, eval=FALSE}
-# Summary, report, model
-summary(m_sp)
-report::report(m_sp) # text-summary of my model, to include in a report
-plot(p_sp)
-```
 
 ```{r sessionInfo}
 report_parameters(sessionInfo())
