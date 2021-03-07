@@ -16,6 +16,7 @@ library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regres
                           # more at: https://strengejacke.github.io/ggeffects/
 library(parameters)  # extract model-parameters etc. from (most) models
 library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
+library(see)         # plot-related package from the easystats-verse
 
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
@@ -288,9 +289,6 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 
 
 ```{r parameters}
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -308,11 +306,11 @@ result
 ```{r sp-report2}
 summary(r_sp)
 as.report_table(r_sp)
-as.report_info(r_sp)
 ```
 
 
 ```{r raadyr-objects}
+# Storing species-specific objects for later
 # Model
 m_raa    = m_sp
 # ggpredict 
@@ -332,7 +330,9 @@ parameters
 objects
 
 
-# Skrivestopp
+#### Skrivestopp
+
+-------------------------------------------------------------
 
 ## Red Fox
 
@@ -448,9 +448,8 @@ para_gaup = para_sp
 ```
 
 
-
-
 ----------------------------------------------
+# All models
 
 ```{r model-comparison, eval=FALSE}
 # library(rstanarm)
@@ -459,6 +458,8 @@ para_gaup = para_sp
 # 
 # rmarkdown::render("glmm_sp.Rmd", output_format = "github_document")
 ```
+
+## Parameter-table
 
 ```{r model-report}
 library(xtable)
@@ -484,15 +485,35 @@ print(xtable(para_all, type = "latex"), include.colnames = F,
 #tbl %>% filter(!tbl %in% "\\end{table}")
 #sub("\\end{tabl", "%",tbl)
 ```
+## Joint forest-plots
 
 ```{r mod-plot}
 sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
                     m.labels = c("Roe deer","Red fox","Badger"))
 sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
                     m.labels = c("Moose","Red deer","Lynx"))
+```
 
-plot_model(m_raa)
+## Predict-plots
 
+ggpredict-plots for marginal effects.
+
+```{r mod-predict}
+p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
+p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
+p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
+p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
+p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
+p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
+```
+
+
+
+## Model comparison-plots
+
+Whichs species' detection rates was best explained by the my model formula?
+
+```{r mod-comparisons}
 m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
 m_compare
 m_compare %>% plot() #A `range` must be provided for data with only one observation.
@@ -521,6 +542,22 @@ check_singularity(m_elg)   #--||--
 check_singularity(m_hjort) #--||--  
 check_singularity(m_gaup)  #--||--
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

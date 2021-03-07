@@ -13,12 +13,16 @@ Torgeir Holmgard Valle
         -   [Model interpretation](#model-interpretation)
         -   [Some parameter-plots from see and
             effectsize](#some-parameter-plots-from-see-and-effectsize)
--   [Skrivestopp](#skrivestopp)
     -   [Red Fox](#red-fox)
     -   [Badger](#badger)
     -   [Moose](#moose)
     -   [Red deer](#red-deer)
     -   [Lynx](#lynx)
+-   [All models](#all-models)
+    -   [Parameter-table](#parameter-table)
+    -   [Joint forest-plots](#joint-forest-plots)
+    -   [Predict-plots](#predict-plots)
+    -   [Model comparison-plots](#model-comparison-plots)
 -   [Hare, deer and squirrelywhere (and pine
     marten)](#hare-deer-and-squirrelywhere-and-pine-marten)
     -   [Diagnostics](#diagnostics-1)
@@ -65,11 +69,8 @@ library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regres
                           # more at: https://strengejacke.github.io/ggeffects/
 library(parameters)  # extract model-parameters etc. from (most) models
 library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
-```
+library(see)         # plot-related package from the easystats-verse
 
-    ## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
-
-``` r
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
 ```
@@ -537,9 +538,6 @@ vignette](https://easystats.github.io/parameters/reference/equivalence_test.lm.h
 > the ROPE, we accept H0, else it is undecided
 
 ``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -613,20 +611,7 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |       |     |        |            |                   |     1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 1.88e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -3.60 (95% CI [-4.45, -2.76], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.06, 0.03], p = 0.624; Std. beta = -0.03, 95% CI [-0.13, 0.08])
-    ##   - The effect of flash [IR] is non-significantly positive (beta = 0.21, 95% CI [-0.79, 1.22], p = 0.680; Std. beta = 0.16, 95% CI [-0.82, 1.14])
-    ##   - The effect of flash [LED] is non-significantly positive (beta = 0.32, 95% CI [-0.68, 1.32], p = 0.531; Std. beta = 0.21, 95% CI [-0.77, 1.18])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.05], p = 0.681; Std. beta = -0.03, 95% CI [-0.18, 0.12])
-    ##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.09, 0.03], p = 0.343; Std. beta = -0.07, 95% CI [-0.21, 0.07])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
+# Storing species-specific objects for later
 # Model
 m_raa    = m_sp
 # ggpredict 
@@ -641,7 +626,9 @@ sp sp-report sp-report2 parameters
 
 objects
 
-# Skrivestopp
+#### Skrivestopp
+
+------------------------------------------------------------------------
 
 ## Red Fox
 
@@ -766,23 +753,6 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 1.16e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -3.45 (95% CI [-3.96, -2.95], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -1.31e-03, 95% CI [-0.06, 0.06], p = 0.964; Std. beta = -3.03e-03, 95% CI [-0.14, 0.13])
-    ##   - The effect of flash [IR] is non-significantly positive (beta = 0.04, 95% CI [-0.58, 0.67], p = 0.894; Std. beta = 0.04, 95% CI [-0.50, 0.59])
-    ##   - The effect of flash [LED] is non-significantly positive (beta = 0.20, 95% CI [-0.43, 0.82], p = 0.537; Std. beta = 0.16, 95% CI [-0.38, 0.71])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 5.20e-04, 95% CI [-0.08, 0.08], p = 0.990; Std. beta = 1.12e-03, 95% CI [-0.18, 0.19])
-    ##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -8.19e-03, 95% CI [-0.09, 0.07], p = 0.836; Std. beta = -0.02, 95% CI [-0.20, 0.16])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -962,23 +932,6 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.42) and the part related to the fixed effects alone (marginal R2) is of 5.93e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -4.65 (95% CI [-5.42, -3.88], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.05, 0.08], p = 0.719; Std. beta = 0.03, 95% CI [-0.13, 0.18])
-    ##   - The effect of flash [IR] is non-significantly positive (beta = 0.16, 95% CI [-0.69, 1.01], p = 0.712; Std. beta = 0.35, 95% CI [-0.41, 1.10])
-    ##   - The effect of flash [LED] is non-significantly positive (beta = 0.22, 95% CI [-0.62, 1.06], p = 0.606; Std. beta = 0.40, 95% CI [-0.35, 1.16])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.05, 0.14], p = 0.324; Std. beta = 0.11, 95% CI [-0.11, 0.34])
-    ##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.05, 0.14], p = 0.318; Std. beta = 0.11, 95% CI [-0.11, 0.33])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -1161,23 +1114,6 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.30) and the part related to the fixed effects alone (marginal R2) is of 3.75e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -4.84 (95% CI [-5.61, -4.07], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.08, 0.11], p = 0.736; Std. beta = 0.04, 95% CI [-0.18, 0.25])
-    ##   - The effect of flash [IR] is non-significantly positive (beta = 0.07, 95% CI [-0.85, 0.99], p = 0.875; Std. beta = 0.20, 95% CI [-0.57, 0.96])
-    ##   - The effect of flash [LED] is non-significantly positive (beta = 0.46, 95% CI [-0.45, 1.36], p = 0.321; Std. beta = 0.34, 95% CI [-0.42, 1.11])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.10, 0.16], p = 0.623; Std. beta = 0.07, 95% CI [-0.22, 0.37])
-    ##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.03, 95% CI [-0.15, 0.09], p = 0.632; Std. beta = -0.07, 95% CI [-0.35, 0.21])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -1356,23 +1292,6 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |       |     |        |            |                   |     1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.44) and the part related to the fixed effects alone (marginal R2) is of 5.52e-03. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -6.13 (95% CI [-7.55, -4.71], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.06, 95% CI [-0.19, 0.06], p = 0.308; Std. beta = -0.15, 95% CI [-0.44, 0.14])
-    ##   - The effect of flash [IR] is non-significantly positive (beta = 0.17, 95% CI [-1.43, 1.77], p = 0.832; Std. beta = 0.33, 95% CI [-1.15, 1.80])
-    ##   - The effect of flash [LED] is non-significantly negative (beta = -0.46, 95% CI [-2.09, 1.17], p = 0.579; Std. beta = 0.29, 95% CI [-1.19, 1.78])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.13, 0.20], p = 0.648; Std. beta = 0.09, 95% CI [-0.30, 0.48])
-    ##   - The interaction effect of flash [LED] on time.deploy is significantly positive (beta = 0.20, 95% CI [0.03, 0.36], p < .05; Std. beta = 0.46, 95% CI [0.06, 0.85])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -1548,23 +1467,6 @@ as.report_table(r_sp)
     ## Sigma                     |             |                |       |     |        |            |                   |   1.00
 
 ``` r
-as.report_info(r_sp)
-```
-
-    ## We fitted a poisson mixed model (estimated using ML and Nelder-Mead optimizer) to predict n.obs with time.deploy and flash (formula: n.obs ~ time.deploy * flash). The model included loc and week as random effects (formula: list(~1 | loc, ~1 | week)). The model's total explanatory power is substantial (conditional R2 = 0.29) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept, corresponding to time.deploy = 0 and flash = Control, is at -6.83 (95% CI [-8.30, -5.37], p < .001). Within this model:
-    ## 
-    ##   - The effect of time.deploy is non-significantly negative (beta = -0.06, 95% CI [-0.32, 0.19], p = 0.630; Std. beta = -0.15, 95% CI [-0.75, 0.46])
-    ##   - The effect of flash [IR] is non-significantly negative (beta = -0.05, 95% CI [-1.75, 1.66], p = 0.956; Std. beta = 0.33, 95% CI [-0.94, 1.59])
-    ##   - The effect of flash [LED] is non-significantly positive (beta = 0.31, 95% CI [-1.38, 2.00], p = 0.717; Std. beta = 0.71, 95% CI [-0.54, 1.96])
-    ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.10, 95% CI [-0.21, 0.41], p = 0.538; Std. beta = 0.23, 95% CI [-0.50, 0.96])
-    ##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.10, 95% CI [-0.20, 0.41], p = 0.506; Std. beta = 0.24, 95% CI [-0.48, 0.97])
-    ## 
-    ## Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-
-``` r
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -1619,6 +1521,8 @@ para_gaup = para_sp
 
 ------------------------------------------------------------------------
 
+# All models
+
 ``` r
 # library(rstanarm)
 # #result <- #compare_parameters(m_raa, m_rev, m_grvl, m_elg, m_hjort, m_gaup) #can't find function :-/
@@ -1626,6 +1530,8 @@ para_gaup = para_sp
 # 
 # rmarkdown::render("glmm_sp.Rmd", output_format = "github_document")
 ```
+
+## Parameter-table
 
 ``` r
 library(xtable)
@@ -1666,6 +1572,8 @@ print(xtable(para_all, type = "latex"), include.colnames = F,
 #sub("\\end{tabl", "%",tbl)
 ```
 
+## Joint forest-plots
+
 ``` r
 sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
                     m.labels = c("Roe deer","Red fox","Badger"))
@@ -1680,11 +1588,50 @@ sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Speci
 
 ![](glmm_sp_files/figure-gfm/mod-plot-2.png)<!-- -->
 
+## Predict-plots
+
+ggpredict-plots for marginal effects.
+
 ``` r
-plot_model(m_raa)
+p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
 ```
 
-![](glmm_sp_files/figure-gfm/mod-plot-3.png)<!-- -->
+![](glmm_sp_files/figure-gfm/mod-predict-1.png)<!-- -->
+
+``` r
+p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
+```
+
+![](glmm_sp_files/figure-gfm/mod-predict-2.png)<!-- -->
+
+``` r
+p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
+```
+
+![](glmm_sp_files/figure-gfm/mod-predict-3.png)<!-- -->
+
+``` r
+p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
+```
+
+![](glmm_sp_files/figure-gfm/mod-predict-4.png)<!-- -->
+
+``` r
+p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
+```
+
+![](glmm_sp_files/figure-gfm/mod-predict-5.png)<!-- -->
+
+``` r
+p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
+```
+
+![](glmm_sp_files/figure-gfm/mod-predict-6.png)<!-- -->
+
+## Model comparison-plots
+
+Whichs species’ detection rates was best explained by the my model
+formula?
 
 ``` r
 m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
@@ -1717,7 +1664,7 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
     ## Warning in change_scale.numeric(X[[i]], ...): A `range` must be provided for
     ## data with only one observation.
 
-![](glmm_sp_files/figure-gfm/mod-plot-4.png)<!-- -->
+![](glmm_sp_files/figure-gfm/mod-comparisons-1.png)<!-- -->
 
 ``` r
 # test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
@@ -1935,10 +1882,6 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 ``` r
 summary(r_sp)
 as.report_table(r_sp)
-as.report_info(r_sp)
-library(parameters)
-library(effectsize)
-library(see)
 result <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
@@ -1967,7 +1910,6 @@ para_xx = para_sp
 report_parameters(sessionInfo())
 ```
 
-    ##   - effectsize (version 0.4.3.1; Ben-Shachar M et al., 2020)
     ##   - xtable (version 1.8.4; David Dahl et al., 2019)
     ##   - Matrix (version 1.2.18; Douglas Bates and Martin Maechler, 2019)
     ##   - lme4 (version 1.1.26; Douglas Bates et al., 2015)
