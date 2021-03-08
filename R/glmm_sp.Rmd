@@ -58,8 +58,6 @@ time.dep2 <- time.dep2 %>%
    mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
 levels(time.dep2$flash) <- c("Control", "IR", "LED")
 levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
-
-time.dep2$species %>% unique()
 ```
 
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
@@ -178,8 +176,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -542,6 +538,8 @@ para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gau
 # save as latex-table in the Thesis folder
 print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
+xtable(para_all, type = "html") # output in Rmd
+
 
 # unable to find a automated way of removing \end{table}
 ```
@@ -565,21 +563,22 @@ sjPlot::plot_models(m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Spec
 ggpredict-plots for marginal effects.
 
 ```{r mod-predict}
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
-p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
-p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) 
-p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")
-p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel"    )
+p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.text = element_blank())
+p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.text = element_blank())
+p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.text = element_blank())
+p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.text.x = element_blank())
+p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.text = element_blank())
+p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.text = element_blank())
+p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.text = element_blank())
+p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.text.y = element_blank())
+p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.text = element_blank())
 library(cowplot)
 # plot grid     
 # # script from https://wilkelab.org/cowplot/articles/shared_legends.html
 prow <- cowplot::plot_grid(
   p1 + theme(legend.position="none"),
   p2 + theme(legend.position="none"),
+  p3 + theme(legend.position="none"),
   p4 + theme(legend.position="none"),
   p5 + theme(legend.position="none"),
   p6 + theme(legend.position="none"),
@@ -587,7 +586,8 @@ prow <- cowplot::plot_grid(
   p8 + theme(legend.position="none"),
   p9 + theme(legend.position="none"),
   align = 'vh',
-  labels = c("A", "B", "C","D","E","F","G","H","I"),
+  axis =  "tblr", # aligns
+#  labels = c("A", "B", "C","D","E","F","G","H","I"),
   hjust = -1,
   nrow = 3)
 

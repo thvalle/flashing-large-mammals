@@ -1,7 +1,7 @@
 Flashing Large Mammals - exploring the data
 ================
 Torgeir Holmgard Valle
-05 mars, 2021
+08 mars, 2021
 
 ``` r
 library(tidyverse)
@@ -10,9 +10,11 @@ library(tidyverse)
     ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.3     v purrr   0.3.4
-    ## v tibble  3.0.6     v dplyr   1.0.4
-    ## v tidyr   1.1.2     v stringr 1.4.0
+    ## v tibble  3.1.0     v dplyr   1.0.5
+    ## v tidyr   1.1.3     v stringr 1.4.0
     ## v readr   1.4.0     v forcats 0.5.0
+
+    ## Warning: package 'tibble' was built under R version 4.0.4
 
     ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
@@ -82,36 +84,55 @@ length(unique(obs$image_id))     # is it because only one picture is selected pe
     ## [1] 25710
 
 ``` r
-obs_by_loc <- obs %>% group_by(loc) %>% summarise(n = length(timeserie_id)) %>% arrange(desc(n))
+# obs_by_loc <- obs %>% group_by(loc) %>% summarise(n = length(timeserie_id)) %>% arrange(desc(n))
 # plot(obs_by_loc)
+
+x <- obs %>% left_join(stations) %>% group_by(abc, loc) %>% 
+  summarise(n=n())
 ```
+
+    ## Joining, by = "loc"
+
+    ## `summarise()` has grouped output by 'abc'. You can override using the `.groups` argument.
+
+``` r
+x %>% group_by(abc) %>% count() %>% pander::pander()
+```
+
+| abc |  n  |
+|:---:|:---:|
+|  A  | 19  |
+|  B  | 19  |
+|  C  | 18  |
 
 ## Timeseries plot of periods from the troubleshooting and organisation with Neri
 
 ``` r
 p_eff <- effort %>%
-  mutate(trt_gr = ifelse(period %in% ctrl, "Control", "Treatment")) %>% 
+  mutate(trt_gr = ifelse(period %in% ctrl, "Control", "Treatment"), # faceting factor
+         flash = factor(ifelse(period %in% ctrl[c(2,4)], 4, flash), ordered = T, # colouring factor
+                      levels = c(2,3,1,4), labels = c("IR", "LED", "Control", " "))) %>% 
 ggplot() +
   facet_grid(rows = "trt_gr", scales = "free_y", space = "free_y") +
-  geom_point(aes(date, as.factor(loc), col=period), size = 0.9) +
+  geom_point(aes(date, as.factor(loc), col=flash), size = 0.9) +
   theme_classic() + labs(y = "Location") +
   theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
-        legend.position = "top") +
-  scale_color_manual(values = c(rep(c("#abd9e9","#4575b4"),each=2), # trt-colr
-                                rep(c("#f46d43","#fdae61"),2) ) ) + #ctrl-colr
-  guides(colour = guide_legend(nrow = 2, override.aes = list(size = 2)), #adjust rows of legend
-               x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
-               # x = guide_axis(angle = -20)) + #adjust axis-text angle
-p_eff +
+        legend.position = "top")+
+  # scale_color_manual(values = c(rep(c("#abd9e9","#4575b4"),each=2), # trt-colr
+  #                               rep(c("#f46d43","#fdae61"),2) ), #ctrl-colr
+  #                    labels = c("IR", "LED", "Control", "Control")) + 
+  scale_color_manual(values = c(c("#abd9e9","#4575b4"),          # trt-colr
+                                rep(c("#f46d43","#fdae61")) )) + # ctrl-colr
+  guides(colour = guide_legend(override.aes = list(size = 2)), #adjust rows of legend
+                x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
+                # x = guide_axis(angle = -10))  #adjust axis-text angle
+p_eff +   theme(legend.title = element_blank()) +
   scale_x_date(NULL, breaks = f_work, date_labels = "%d-%b",
                sec.axis = sec_axis(~., breaks = c(c$c,f_work[10]), labels = scales::date_format("%d-%b %y") ) ) +
   geom_vline(xintercept = f_work, linetype = "dashed",  alpha =.5) +
-  #geom_rect(aes(xmin = f_work[c(1,3,5,7,9)], xmax = f_work[c(2,4,6,8,10)],
-  #              ymin = rep(-Inf,5), ymax = rep(-Inf,5), fill = "grey"), alpha = 0.4)
-  #geom_rect(aes(x=f_work[1] ,y=Inf) )
-  #geom_rect(aes(xmin=df$xmin,xmax=df$xmax,ymin=df$ymin,ymax=df$ymax), col="grey") 
   geom_rect(data = rects, aes(xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf),
-            alpha = 0.2 )
+            alpha = 0.1 ) +
+  labs(caption = "Control group was divided into four periods resembling those of the treatment groups. \n Upper axis displays the dates of period breaks in the control group, shaded are display my field work periods.")
 ```
 
 ![](FLM_notebook_files/figure-gfm/effort-facet-1.png)<!-- -->
@@ -302,24 +323,24 @@ freq %>% # plot of frequency grouped by abc and flash T/F
     ## Integer64 values larger than 9.0072e+15 lost significance after conversion to double;
     ## use argument int64_as_string = TRUE to import them lossless, as character
     ## Simple feature collection with 52 features and 10 fields
-    ## geometry type:  POLYGON
-    ## dimension:      XY
-    ## bbox:           xmin: 82868.22 ymin: 6521821 xmax: 328157.6 ymax: 6791455
-    ## projected CRS:  ETRS89 / UTM zone 33N
+    ## Geometry type: POLYGON
+    ## Dimension:     XY
+    ## Bounding box:  xmin: 82868.22 ymin: 6521821 xmax: 328157.6 ymax: 6791455
+    ## Projected CRS: ETRS89 / UTM zone 33N
 
     ## options:        GML 
     ## Reading layer `Kommune' from data source `C:\Users\Nora.Familie-PC\Documents\TorgeiR\flm\R\Basisdata_03_Oslo_25833_Kommuner_GML.gml' using driver `GML'
     ## Simple feature collection with 1 feature and 10 fields
-    ## geometry type:  POLYGON
-    ## dimension:      XY
-    ## bbox:           xmin: 248657.3 ymin: 6637442 xmax: 273925.9 ymax: 6674529
-    ## projected CRS:  ETRS89 / UTM zone 33N
+    ## Geometry type: POLYGON
+    ## Dimension:     XY
+    ## Bounding box:  xmin: 248657.3 ymin: 6637442 xmax: 273925.9 ymax: 6674529
+    ## Projected CRS: ETRS89 / UTM zone 33N
 
     ## Simple feature collection with 60 features and 3 fields
-    ## geometry type:  MULTIPOINT
-    ## dimension:      XY
-    ## bbox:           xmin: 516948 ymin: 6581339 xmax: 619655 ymax: 6701802
-    ## projected CRS:  ED50 / UTM zone 32N
+    ## Geometry type: MULTIPOINT
+    ## Dimension:     XY
+    ## Bounding box:  xmin: 516948 ymin: 6581339 xmax: 619655 ymax: 6701802
+    ## Projected CRS: ED50 / UTM zone 32N
     ## First 10 features:
     ##     loc  cam_mod abc                       geometry
     ## 1  1254 Browning   B MULTIPOINT ((516948 6701802...
@@ -384,96 +405,19 @@ ggplot() +
 ```
 
 ``` r
-loc_sf <- mutate(loc_sf, 
-                   x = purrr::map_dbl(geometry, 1), 
-                   y = purrr::map_dbl(geometry, 2))
+xy <- st_bbox(loc_sf) # retrieve xlim+ylim from geometry
 ggplot(data = Viken) +
         geom_sf() +     # Viken
-        geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
-        geom_sf(data = loc_sf, color = "red", size = 3,   # CT sites
-        show.legend = "point") +
+        # geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
+        geom_sf_text(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
+        geom_sf(data = loc_sf, aes(color = cam_mod, fill = cam_mod, shape = cam_mod), size = 2,   # CT sites
+        show.legend = "point", alpha = 0.4) + #alle loc får begge cam_mod levels ...
         theme_minimal() +
         theme(axis.title = element_blank()) +
-        coord_sf(xlim = range(loc_sf$x), ylim = range(loc_sf$y))
+        coord_sf(xlim = xy[c(1,3)], ylim = xy[c(2,4)])
 ```
 
 ![](FLM_notebook_files/figure-gfm/maps-1.png)<!-- -->
-
-``` r
-#  xlim(c(190000,290000)) + ylim(c(6580000,6720000))
-```
-
-``` r
-nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-ggplot(nc) +
-  geom_sf(aes(fill = AREA))
-
-# If not supplied, coord_sf() will take the CRS from the first layer
-# and automatically transform all other layers to use that CRS. This
-# ensures that all data will correctly line up
-nc_3857 <- sf::st_transform(nc, 3857)
-ggplot() +
-  geom_sf(data = nc) +
-  geom_sf(data = nc_3857, colour = "red", fill = NA)
-
-# Unfortunately if you plot other types of feature you'll need to use
-# show.legend to tell ggplot2 what type of legend to use
-nc_3857$mid <- sf::st_centroid(nc_3857$geometry)
-ggplot(nc_3857) +
-  geom_sf(colour = "white") +
-  geom_sf(aes(geometry = mid, size = AREA), show.legend = "point")
-
-# You can also use layers with x and y aesthetics: these are
-# assumed to already be in the common CRS.
-ggplot(nc) +
-  geom_sf() +
-  annotate("point", x = -80, y = 35, colour = "red", size = 4)
-
-# Thanks to the power of sf, a geom_sf nicely handles varying projections
-# setting the aspect ratio correctly.
-library(maps)
-world1 <- sf::st_as_sf(map('world', plot = FALSE, fill = TRUE))
-ggplot() + geom_sf(data = world1)
-map()
-world2 <- sf::st_transform(
-  world1,
-  "+proj=laea +y_0=0 +lon_0=155 +lat_0=-90 +ellps=WGS84 +no_defs"
-)
-ggplot() + geom_sf(data = world2)
-
-# To add labels, use geom_sf_label().
-ggplot(nc_3857[1:3, ]) +
-   geom_sf(aes(fill = AREA)) +
-   geom_sf_label(aes(label = NAME))
-```
-
-``` r
-map()   # low resolution map of the world
-map(wrap = c(0,360), fill = TRUE, col = 2) # pacific-centered map of the world
-map(wrap = c(0, 360, NA), fill = TRUE, col = 2) # idem, without Antarctica
-map('usa')  # national boundaries
-map('county', 'new jersey') # county map of New Jersey
-map('state', region = c('new york', 'new jersey', 'penn'))  # map of three states
-map("state", ".*dakota", myborder = 0)  # map of the dakotas
-map.axes()              # show the effect of myborder = 0
-if(require(mapproj))
-  map('state', proj = 'bonne', param = 45)  # Bonne equal-area projection of states
-
-# names of the San Juan islands in Washington state
-map('county', 'washington,san', names = TRUE, plot = FALSE)
-
-# national boundaries in one linetype, states in another
-# (figure 5 in the reference)
-map("state", interior = FALSE)
-map("state", boundary = FALSE, lty = 2, add = TRUE)
-
-# plot the ozone data on a base map
-# (figure 4 in the reference)
-data(ozone)
-map("state", xlim = range(ozone$x), ylim = range(ozone$y))
-text(ozone$x, ozone$y, ozone$median)
-box()
-```
 
 ### Blank images
 
@@ -528,31 +472,32 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] tmap_3.3          maps_3.3.0        sf_0.9-7          overlap_0.3.3    
-    ##  [5] lubridate_1.7.9.2 forcats_0.5.0     stringr_1.4.0     dplyr_1.0.4      
-    ##  [9] purrr_0.3.4       readr_1.4.0       tidyr_1.1.2       tibble_3.0.6     
+    ##  [1] tmap_3.3          maps_3.3.0        sf_0.9-8          overlap_0.3.3    
+    ##  [5] lubridate_1.7.9.2 forcats_0.5.0     stringr_1.4.0     dplyr_1.0.5      
+    ##  [9] purrr_0.3.4       readr_1.4.0       tidyr_1.1.3       tibble_3.1.0     
     ## [13] ggplot2_3.3.3     tidyverse_1.3.0  
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] httr_1.4.2         viridisLite_0.3.0  jsonlite_1.7.2     modelr_0.1.8      
-    ##  [5] assertthat_0.2.1   sp_1.4-5           highr_0.8          cellranger_1.1.0  
-    ##  [9] yaml_2.2.1         lattice_0.20-41    pillar_1.4.7       backports_1.2.1   
-    ## [13] glue_1.4.2         digest_0.6.27      RColorBrewer_1.1-2 rvest_0.3.6       
-    ## [17] colorspace_2.0-0   htmltools_0.5.1.1  XML_3.99-0.5       pkgconfig_2.0.3   
-    ## [21] raster_3.4-5       broom_0.7.4        haven_2.3.1        stars_0.5-1       
-    ## [25] scales_1.1.1       generics_0.1.0     farver_2.0.3       ellipsis_0.3.1    
-    ## [29] withr_2.4.1        leafsync_0.1.0     cli_2.3.0          magrittr_2.0.1    
-    ## [33] crayon_1.4.1       readxl_1.3.1       evaluate_0.14      fs_1.5.0          
-    ## [37] xml2_1.3.2         lwgeom_0.2-5       class_7.3-17       tools_4.0.3       
-    ## [41] hms_1.0.0          lifecycle_0.2.0    munsell_0.5.0      reprex_0.3.0      
-    ## [45] compiler_4.0.3     e1071_1.7-4        rlang_0.4.10       classInt_0.4-3    
-    ## [49] units_0.6-7        grid_4.0.3         tmaptools_3.1-1    dichromat_2.0-0   
-    ## [53] rstudioapi_0.13    htmlwidgets_1.5.3  crosstalk_1.1.1    base64enc_0.1-3   
-    ## [57] leafem_0.1.3       labeling_0.4.2     rmarkdown_2.6      gtable_0.3.0      
-    ## [61] codetools_0.2-16   abind_1.4-5        DBI_1.1.1          R6_2.5.0          
-    ## [65] knitr_1.31         KernSmooth_2.23-17 stringi_1.5.3      parallel_4.0.3    
-    ## [69] Rcpp_1.0.6         png_0.1-7          vctrs_0.3.6        leaflet_2.0.4.1   
-    ## [73] dbplyr_2.0.0       tidyselect_1.1.0   xfun_0.20
+    ##  [1] fs_1.5.0           RColorBrewer_1.1-2 httr_1.4.2         tools_4.0.3       
+    ##  [5] backports_1.2.1    utf8_1.1.4         R6_2.5.0           KernSmooth_2.23-17
+    ##  [9] DBI_1.1.1          colorspace_2.0-0   raster_3.4-5       sp_1.4-5          
+    ## [13] withr_2.4.1        tidyselect_1.1.0   leaflet_2.0.4.1    compiler_4.0.3    
+    ## [17] leafem_0.1.3       cli_2.3.1          rvest_0.3.6        xml2_1.3.2        
+    ## [21] labeling_0.4.2     scales_1.1.1       classInt_0.4-3     digest_0.6.27     
+    ## [25] rmarkdown_2.7.3    base64enc_0.1-3    dichromat_2.0-0    pkgconfig_2.0.3   
+    ## [29] htmltools_0.5.1.1  dbplyr_2.0.0       highr_0.8          htmlwidgets_1.5.3 
+    ## [33] rlang_0.4.10       readxl_1.3.1       rstudioapi_0.13    farver_2.1.0      
+    ## [37] generics_0.1.0     jsonlite_1.7.2     crosstalk_1.1.1    magrittr_2.0.1    
+    ## [41] Rcpp_1.0.6         munsell_0.5.0      fansi_0.4.2        abind_1.4-5       
+    ## [45] lifecycle_1.0.0    stringi_1.5.3      leafsync_0.1.0     yaml_2.2.1        
+    ## [49] tmaptools_3.1-1    grid_4.0.3         parallel_4.0.3     crayon_1.4.1      
+    ## [53] lattice_0.20-41    stars_0.5-1        haven_2.3.1        pander_0.6.3      
+    ## [57] hms_1.0.0          knitr_1.31         pillar_1.5.1       codetools_0.2-16  
+    ## [61] reprex_0.3.0       XML_3.99-0.5       glue_1.4.2         evaluate_0.14     
+    ## [65] modelr_0.1.8       vctrs_0.3.6        png_0.1-7          cellranger_1.1.0  
+    ## [69] gtable_0.3.0       assertthat_0.2.1   xfun_0.21          lwgeom_0.2-5      
+    ## [73] broom_0.7.4        e1071_1.7-4        class_7.3-17       viridisLite_0.3.0 
+    ## [77] units_0.7-0        ellipsis_0.3.1
 
 ``` r
 # packrat

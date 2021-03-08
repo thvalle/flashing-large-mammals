@@ -71,7 +71,7 @@ library(sjPlot)      # parameters + sjPlot probably does a similar and better jo
 ```
 
 ```
-## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
+## #refugeeswelcome
 ```
 
 ```r
@@ -116,19 +116,6 @@ time.dep2 <- time.dep2 %>%
    mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
 levels(time.dep2$flash) <- c("Control", "IR", "LED")
 levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
-
-time.dep2$species %>% unique()
-```
-
-```
-##  [1] "andre_maardyr"  "andre_pattedyr" "bjorn"          "ekorn"         
-##  [5] "elg"            "fugl"           "gaupe"          "grevling"      
-##  [9] "hare"           "hjort"          "hund"           "jerv"          
-## [13] "katt"           "kjoeretoey"     "ku"             "menneske"      
-## [17] "motorsykkel"    "maar"           "nothing"        "null"          
-## [21] "rev"            "rugde"          "raadyr"         "sau"           
-## [25] "skogshons"      "smagnagere"     "sykkel"         "ukjent"        
-## [29] "ulv"            "villsvin"
 ```
 
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
@@ -306,8 +293,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -383,18 +368,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/raadyr-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/raadyr-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -427,7 +400,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/raadyr-3.png)<!-- -->
+![](glmm_sp_files/figure-html/raadyr-1.png)<!-- -->
 
 
 
@@ -642,18 +615,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/rev-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/rev-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -682,7 +643,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/rev-3.png)<!-- -->
+![](glmm_sp_files/figure-html/rev-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -851,18 +812,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/grevling-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/grevling-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -891,7 +840,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/grevling-3.png)<!-- -->
+![](glmm_sp_files/figure-html/grevling-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -1061,18 +1010,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/elg-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/elg-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1101,7 +1038,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/elg-3.png)<!-- -->
+![](glmm_sp_files/figure-html/elg-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -1265,18 +1202,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/hjort-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/hjort-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1305,7 +1230,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/hjort-3.png)<!-- -->
+![](glmm_sp_files/figure-html/hjort-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -1473,18 +1398,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/gaupe-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/gaupe-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1513,7 +1426,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/gaupe-3.png)<!-- -->
+![](glmm_sp_files/figure-html/gaupe-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -1688,18 +1601,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/hare-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/hare-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1728,7 +1629,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/hare-3.png)<!-- -->
+![](glmm_sp_files/figure-html/hare-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -1905,18 +1806,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/ekorn-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/ekorn-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -1945,7 +1834,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/ekorn-3.png)<!-- -->
+![](glmm_sp_files/figure-html/ekorn-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -2120,18 +2009,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-```
-
-![](glmm_sp_files/figure-html/maar-1.png)<!-- -->
-
-```r
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
-```
-
-![](glmm_sp_files/figure-html/maar-2.png)<!-- -->
-
-```r
 performance::check_model(m_sp) # check assumptions
 ```
 
@@ -2160,7 +2037,7 @@ performance::check_model(m_sp) # check assumptions
 ## increasing max.overlaps
 ```
 
-![](glmm_sp_files/figure-html/maar-3.png)<!-- -->
+![](glmm_sp_files/figure-html/maar-1.png)<!-- -->
 
 ```r
 # Summary, report, model
@@ -2357,7 +2234,87 @@ para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gau
 # save as latex-table in the Thesis folder
 print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
+xtable(para_all, type = "html") # output in Rmd
+```
 
+```
+## % latex table generated in R 4.0.3 by xtable 1.8-4 package
+## % Mon Mar 08 22:50:15 2021
+## \begin{table}[ht]
+## \centering
+## \begin{tabular}{rllllll}
+##   \hline
+##  & Parameter & Coefficient & SE & 95\% CI & z & p \\ 
+##   \hline
+## 1 & Roe deer &  &  &  &  &        \\ 
+##   2 & (Intercept) & 0.03 & 0.01 & (0.01, 0.06) & -8.64 & $<$ .001 \\ 
+##   3 & time.deploy & 0.97 & 0.05 & (0.88, 1.08) & -0.49 & 0.624  \\ 
+##   4 & flash [IR] & 1.17 & 0.59 & (0.44, 3.12) & 0.32 & 0.748  \\ 
+##   5 & flash [LED] & 1.23 & 0.61 & (0.46, 3.27) & 0.41 & 0.680  \\ 
+##   6 & time.deploy * flash [IR] & 0.97 & 0.07 & (0.84, 1.12) & -0.41 & 0.681  \\ 
+##   7 & time.deploy * flash [LED] & 0.93 & 0.07 & (0.81, 1.08) & -0.95 & 0.343  \\ 
+##   8 & Red fox &  &  &  &  &        \\ 
+##   9 & (Intercept) & 0.03 & 7.25e-03 & (0.02, 0.05) & -15.01 & $<$ .001 \\ 
+##   10 & time.deploy & 1.00 & 0.07 & (0.87, 1.14) & -0.04 & 0.965  \\ 
+##   11 & flashIR & 1.05 & 0.29 & (0.61, 1.80) & 0.16 & 0.872  \\ 
+##   12 & flashLED & 1.18 & 0.33 & (0.68, 2.03) & 0.59 & 0.554  \\ 
+##   13 & time.deploy:flashIR & 1.00 & 0.10 & (0.83, 1.21) & 0.01 & 0.991  \\ 
+##   14 & time.deploy:flashLED & 0.98 & 0.09 & (0.82, 1.18) & -0.21 & 0.835  \\ 
+##   15 & Badger &  &  &  &  &        \\ 
+##   16 & (Intercept) & 0.01 & 3.71e-03 & (0.00, 0.02) & -12.40 & $<$ .001 \\ 
+##   17 & time.deploy & 1.03 & 0.08 & (0.88, 1.20) & 0.36 & 0.718  \\ 
+##   18 & flashIR & 1.41 & 0.55 & (0.66, 3.01) & 0.89 & 0.372  \\ 
+##   19 & flashLED & 1.49 & 0.58 & (0.70, 3.18) & 1.04 & 0.297  \\ 
+##   20 & time.deploy:flashIR & 1.12 & 0.13 & (0.89, 1.40) & 0.99 & 0.324  \\ 
+##   21 & time.deploy:flashLED & 1.12 & 0.12 & (0.90, 1.39) & 1.00 & 0.318  \\ 
+##   22 & Moose &  &  &  &  &        \\ 
+##   23 & (Intercept) & 8.39e-03 & 2.88e-03 & (0.00, 0.02) & -13.91 & $<$ .001 \\ 
+##   24 & time.deploy & 1.04 & 0.11 & (0.84, 1.28) & 0.34 & 0.736  \\ 
+##   25 & flashIR & 1.22 & 0.48 & (0.56, 2.62) & 0.50 & 0.616  \\ 
+##   26 & flashLED & 1.41 & 0.55 & (0.66, 3.02) & 0.88 & 0.376  \\ 
+##   27 & time.deploy:flashIR & 1.08 & 0.16 & (0.80, 1.45) & 0.49 & 0.623  \\ 
+##   28 & time.deploy:flashLED & 0.93 & 0.14 & (0.70, 1.24) & -0.48 & 0.632  \\ 
+##   29 & Red deer &  &  &  &  &        \\ 
+##   30 & (Intercept) & 1.69e-03 & 1.16e-03 & (0.00, 0.01) & -9.32 & $<$ .001 \\ 
+##   31 & time.deploy & 0.86 & 0.13 & (0.64, 1.15) & -1.02 & 0.308  \\ 
+##   32 & flashIR & 1.39 & 1.05 & (0.32, 6.08) & 0.43 & 0.665  \\ 
+##   33 & flashLED & 1.34 & 1.01 & (0.30, 5.91) & 0.39 & 0.698  \\ 
+##   34 & time.deploy:flashIR & 1.09 & 0.22 & (0.74, 1.62) & 0.46 & 0.649  \\ 
+##   35 & time.deploy:flashLED & 1.58 & 0.32 & (1.07, 2.35) & 2.28 & 0.023  \\ 
+##   36 & Lynx &  &  &  &  &        \\ 
+##   37 & (Intercept) & 8.44e-04 & 4.92e-04 & (0.00, 0.00) & -12.14 & $<$ .001 \\ 
+##   38 & time.deploy & 0.86 & 0.27 & (0.47, 1.58) & -0.48 & 0.630  \\ 
+##   39 & flashIR & 1.39 & 0.90 & (0.39, 4.92) & 0.50 & 0.614  \\ 
+##   40 & flashLED & 2.04 & 1.30 & (0.58, 7.12) & 1.12 & 0.264  \\ 
+##   41 & time.deploy:flashIR & 1.26 & 0.47 & (0.61, 2.60) & 0.62 & 0.538  \\ 
+##   42 & time.deploy:flashLED & 1.28 & 0.47 & (0.62, 2.63) & 0.66 & 0.506  \\ 
+##   43 & Hare &  &  &  &  &        \\ 
+##   44 & (Intercept) & 0.02 & 6.19e-03 & (0.01, 0.03) & -10.38 & $<$ .001 \\ 
+##   45 & time.deploy & 1.05 & 0.08 & (0.90, 1.22) & 0.64 & 0.523  \\ 
+##   46 & flashIR & 1.07 & 0.50 & (0.42, 2.70) & 0.14 & 0.889  \\ 
+##   47 & flashLED & 1.15 & 0.54 & (0.46, 2.90) & 0.29 & 0.769  \\ 
+##   48 & time.deploy:flashIR & 0.92 & 0.10 & (0.74, 1.14) & -0.77 & 0.440  \\ 
+##   49 & time.deploy:flashLED & 1.05 & 0.11 & (0.85, 1.30) & 0.45 & 0.655  \\ 
+##   50 & European Pine Marten &  &  &  &  &        \\ 
+##   51 & (Intercept) & 2.47e-03 & 9.19e-04 & (0.00, 0.01) & -16.14 & $<$ .001 \\ 
+##   52 & time.deploy & 1.03 & 0.22 & (0.67, 1.57) & 0.13 & 0.898  \\ 
+##   53 & flashIR & 3.43 & 1.40 & (1.54, 7.63) & 3.01 & 0.003  \\ 
+##   54 & flashLED & 2.34 & 0.97 & (1.04, 5.28) & 2.05 & 0.040  \\ 
+##   55 & time.deploy:flashIR & 0.93 & 0.23 & (0.56, 1.52) & -0.30 & 0.766  \\ 
+##   56 & time.deploy:flashLED & 1.28 & 0.33 & (0.77, 2.13) & 0.95 & 0.343  \\ 
+##   57 & Red squirrel &  &  &  &  &        \\ 
+##   58 & (Intercept) & 4.29e-03 & 2.65e-06 & (0.00, 0.00) & -8809.76 & $<$ .001 \\ 
+##   59 & time.deploy & 0.91 & 5.61e-04 & (0.91, 0.91) & -157.65 & $<$ .001 \\ 
+##   60 & flashIR & 1.24 & 7.68e-04 & (1.24, 1.24) & 349.66 & $<$ .001 \\ 
+##   61 & flashLED & 1.60 & 9.89e-04 & (1.60, 1.60) & 757.50 & $<$ .001 \\ 
+##   62 & time.deploy:flashIR & 0.86 & 5.34e-04 & (0.86, 0.86) & -237.02 & $<$ .001 \\ 
+##   63 & time.deploy:flashLED & 1.24 & 7.65e-04 & (1.24, 1.24) & 343.62 & $<$ .001 \\ 
+##    \hline
+## \end{tabular}
+## \end{table}
+```
+
+```r
 # unable to find a automated way of removing \end{table}
 ```
 
@@ -2394,15 +2351,15 @@ ggpredict-plots for marginal effects.
 
 
 ```r
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
-p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
-p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) 
-p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")
-p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel"    )
+p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.text = element_blank())
+p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.text = element_blank())
+p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.text = element_blank())
+p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.text.x = element_blank())
+p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.text = element_blank())
+p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.text = element_blank())
+p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.text = element_blank())
+p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.text.y = element_blank())
+p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.text = element_blank())
 library(cowplot)
 ```
 
@@ -2429,6 +2386,7 @@ library(cowplot)
 prow <- cowplot::plot_grid(
   p1 + theme(legend.position="none"),
   p2 + theme(legend.position="none"),
+  p3 + theme(legend.position="none"),
   p4 + theme(legend.position="none"),
   p5 + theme(legend.position="none"),
   p6 + theme(legend.position="none"),
@@ -2436,7 +2394,8 @@ prow <- cowplot::plot_grid(
   p8 + theme(legend.position="none"),
   p9 + theme(legend.position="none"),
   align = 'vh',
-  labels = c("A", "B", "C","D","E","F","G","H","I"),
+  axis =  "tblr", # aligns
+#  labels = c("A", "B", "C","D","E","F","G","H","I"),
   hjust = -1,
   nrow = 3)
 
@@ -2793,8 +2752,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-plot(p_sp, add.data = TRUE) + labs(title = "add.data = TRUE")
-plot(p_sp, residuals = TRUE) + labs(title = "residuals")
 performance::check_model(m_sp) # check assumptions
 # Summary, report, model
 summary(m_sp)
