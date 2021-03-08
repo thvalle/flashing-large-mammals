@@ -3,8 +3,10 @@ title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document:
+  html_document:
     toc: true
+    toc_float: true
+    keep_md: true
 ---
 
 ```{r setup}
@@ -42,11 +44,11 @@ about the differences of `lmer` and `glmer`-functions:
 The model formula I will use is $n \sim \ time.deploy\ * flash $ for each species, and my $\alpha = 0.05$.
 
 ```{r timedep2}
-sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe")
+sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
 ctrl <- c("Control_1", "Control_2", "Control_3","Control_4")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
-  filter(species %in% sp) %>% #filtering out species
+#  filter(species %in% sp) %>% #filtering out species
   # including Control as part of the flash-column, since it differs from flash=0
   mutate(flash = factor(
         ifelse(period %in% ctrl, "Control", flash)),
@@ -56,6 +58,8 @@ time.dep2 <- time.dep2 %>%
    mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
 levels(time.dep2$flash) <- c("Control", "IR", "LED")
 levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
+
+time.dep2$species %>% unique()
 ```
 
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
@@ -65,44 +69,35 @@ Then I'll cut the duration of all periods overextending the smallest median.
 
 
 ```{r period-median, message=FALSE}
-# filter out shortest periods, and find median period length
-cut <- .3 # setting the minimum length of a period
-# find lengths
+# find median period length
 time.period <- time.dep2 %>% group_by(loc, period, flash) %>% 
   summarise(period_length = max(time.deploy))
-# checking which periods will be removed
-time.period %>% filter(period_length <= cut) %>%
-  arrange(period_length) #%>% kableExtra::kable("html")
-# then merge lengths and filter based on that
-time.dep3 <- time.dep2 %>% left_join(time.period) %>%
-  filter(period_length >= cut)
-# find median length after filtering short lengths out
-time.period %>% filter(period_length >= cut) %>% filter(flash == "LED") %>%  
+
+# checking shortest periods
+time.period %>% arrange(period_length) # 1 period (LED) is 0 days
+
+# then merge lengths and filter out period of 0 days
+time.dep3 <- time.dep2 %>% left_join(time.period) %>% 
+  filter(period_length > 0)
+
+# find median length 
+time.period %>% filter(flash == "LED") %>%  
   summary() # median period length 85 days, mean: 84
-time.period %>% filter(period_length >= cut) %>% filter(flash == "IR") %>%  
+time.period %>% filter(flash == "IR") %>%  
   summary() # median period length 79 days, mean: 89
+
 # extract lengths of each unique period
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
 #extracting median and multiplying by 10, to use in the correctly scaled plot
 hh <-       h$period_length[h$flash == "LED"] %>%  median()       # median white LED
-hh <- c(hh, h$period_length[h$flash == "IR"] %>%  median()) * 10 # + median IR
+hh <- c(hh, h$period_length[h$flash == "IR" ] %>%  median()) * 10 # + median IR
 # smallest median 
 h <- min(hh)
 ```
 
-79 days is the median period length of IR-periods, and it is shorter than the median of white LED flash. The summary also tells us that
 
-__Update:__ With the updated dataset, the IR median has shifted to 84 days, white LED to 85. 84 is the new trimming value.
-
-Periods below 5 days has now been removed, which as of 18.02.2021 (before updated data from Neri) were 1 period.
-With new data and Control group, there are 3 periods filtered out, two of which were Control-periods: 
-
-|loc|	period|flash |period_length| 
-|---|-------|------|:-----------:|
-|829|	1_1   |	1	   | 0.0 = 0 days|
-|258|	Ctrl1 |	Ctrl | 0.4 = 4 days|
-|460|	Ctrl1 |	Ctrl | 0.5 = 5 days|
+With the updated dataset, the IR median has shifted to 84 days, white LED to 85. 84 is the new trimming value.
 
 
 
@@ -166,13 +161,11 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must 
 
 ## Roe deer
 
-### Diagnostics
 
 ```{r summary, eval=FALSE}
 time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #
 ```
-
 
 ```{r sp, eval=FALSE}
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
@@ -448,21 +441,88 @@ para_gaup = para_sp
 ```
 
 
+# Small species
+
+Added late, because I was unsure about whether it made sense to include them or not.
+After having learned about the random effects, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
+
+## Hare
+
+`r sp = "hare"`
+
+```{r hare, ref.label=c('sp','sp-report')}
+```
+```{r hare2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r hare-objects}
+# Model
+m_hare    = m_sp
+# ggpredict 
+p_hare    = p_sp
+# report-object
+r_hare    = r_sp
+# parameters refit
+para_hare = para_sp
+```
+
+
+## Red squirrel
+
+`r sp = "ekorn"`
+
+```{r ekorn, ref.label=c('sp','sp-report')}
+```
+```{r ekorn2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r ekorn-objects}
+# Model
+m_ekorn    = m_sp
+# ggpredict 
+p_ekorn    = p_sp
+# report-object
+r_ekorn    = r_sp
+# parameters refit
+para_ekorn = para_sp
+```
+
+
+
+## European Pine marten
+
+`r sp = "maar"`
+
+```{r maar, ref.label=c('sp','sp-report')}
+```
+```{r maar2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r maar-objects}
+# Model
+m_maar    = m_sp
+# ggpredict 
+p_maar    = p_sp
+# report-object
+r_maar    = r_sp
+# parameters refit
+para_maar = para_sp
+```
+
+
+
 ----------------------------------------------
+
 # All models
 
-```{r model-comparison, eval=FALSE}
-# library(rstanarm)
-# #result <- #compare_parameters(m_raa, m_rev, m_grvl, m_elg, m_hjort, m_gaup) #can't find function :-/
-# plot(result)
-# 
-# rmarkdown::render("glmm_sp.Rmd", output_format = "github_document")
-```
 
 ## Parameter-table
 
 ```{r model-report}
-library(xtable)
+library(xtable)  # To make a latex-table for the thesis
 para_raa  <- para_raa %>% 
   add_row(Parameter = "Roe deer", .before = 1) # adds a row for species name in the resulting table
 para_rev  <- para_rev   %>% add_row(Parameter = "Red fox",  .before = 1)
@@ -470,28 +530,34 @@ para_grvl <- para_grvl  %>% add_row(Parameter = "Badger",   .before = 1)
 para_elg  <- para_elg   %>% add_row(Parameter = "Moose",    .before = 1)
 para_hjort<- para_hjort %>% add_row(Parameter = "Red deer", .before = 1)
 para_gaup <- para_gaup  %>% add_row(Parameter = "Lynx",     .before = 1)
+para_hare <- para_hare  %>% add_row(Parameter = "Hare",     .before = 1)
+para_maar <- para_maar  %>% add_row(Parameter = "European Pine Marten", .before = 1)
+para_ekorn<- para_ekorn %>% add_row(Parameter = "Red squirrel", .before = 1)
+
 # bind tables together
-para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup) %>%
-  insight::format_table(ci_brackets = c("(", ")")) %>% 
-  select(!df)
+para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup,para_hare,para_maar,para_ekorn) %>%
+  insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
+  select(!df) # remove the df-column, containing "Inf" for every species
+
 # save as latex-table in the Thesis folder
-print(xtable(para_all, type = "latex"), include.colnames = F,
+print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
 
-# trying to find a automated way of removinf \end{table}
-
-#tbl <- xtable(table(time.dep2$species), type = "latex") 
-#class(tbl)
-#tbl %>% filter(!tbl %in% "\\end{table}")
-#sub("\\end{tabl", "%",tbl)
+# unable to find a automated way of removing \end{table}
 ```
+
 ## Joint forest-plots
 
+Plots divided into size-based groups of three x three species.
+Thus, ungulates are one group, the largest carnivores are one, and the smallest three form the most mixed group of hare, squirrel and pine marten 
+
 ```{r mod-plot}
-sjPlot::plot_models(m_raa, m_rev, m_grvl, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Roe deer","Red fox","Badger"))
-sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Moose","Red deer","Lynx"))
+sjPlot::plot_models(m_rev, m_grvl, m_gaup, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Badger","Lynx","Red fox"))
+sjPlot::plot_models(m_raa, m_elg, m_hjort, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Roe deer","Moose","Red deer"))
+sjPlot::plot_models(m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Hare","Pine marten","Red squirrel"))
 ```
 
 ## Predict-plots
@@ -499,12 +565,52 @@ sjPlot::plot_models(m_elg, m_hjort, m_gaup, spacing = 0.4, legend.title = "Speci
 ggpredict-plots for marginal effects.
 
 ```{r mod-predict}
-p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
-p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
-p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
-p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
-p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
-p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
+p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )
+p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )
+p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )
+p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )
+p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )
+p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
+p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) 
+p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")
+p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel"    )
+library(cowplot)
+# plot grid     
+# # script from https://wilkelab.org/cowplot/articles/shared_legends.html
+prow <- cowplot::plot_grid(
+  p1 + theme(legend.position="none"),
+  p2 + theme(legend.position="none"),
+  p4 + theme(legend.position="none"),
+  p5 + theme(legend.position="none"),
+  p6 + theme(legend.position="none"),
+  p7 + theme(legend.position="none"),
+  p8 + theme(legend.position="none"),
+  p9 + theme(legend.position="none"),
+  align = 'vh',
+  labels = c("A", "B", "C","D","E","F","G","H","I"),
+  hjust = -1,
+  nrow = 3)
+
+# # extract the legend from one of the plots
+# legend <- get_legend(
+#   # create some space to the left of the legend
+#   p1 + theme(legend.box.margin = margin(0, 0, 0, 12))
+# )
+# 
+# # add the legend to the row we made earlier. Give it one-third of 
+# # the width of one plot (via rel_widths).
+# plot_grid(prow, legend, rel_widths = c(3, .4))
+
+# extract a legend that is laid out horizontally
+legend_b <- get_legend(
+  p1 + 
+    guides(color = guide_legend(nrow = 1)) +
+    theme(legend.position = "bottom")
+)
+
+# add the legend underneath the row we made earlier. Give it 10%
+# of the height of one plot (via rel_heights).
+plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .1))
 ```
 
 
@@ -514,7 +620,9 @@ p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )
 Whichs species' detection rates was best explained by the my model formula?
 
 ```{r mod-comparisons}
-m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup, rank=T)
+m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,
+                                 m_gaup, m_hare, m_ekorn, m_maar,
+            metrics = "common", rank=T) # "common" will compute AIC, BIC, R2, ICC and RMSE
 m_compare
 m_compare %>% plot() #A `range` must be provided for data with only one observation.
 # test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
@@ -558,14 +666,13 @@ check_singularity(m_gaup)  #--||--
 
 
 
-
+--------------------------------------------
 
 
 # Hare, deer and squirrelywhere (and pine marten) 
 
 Blueprint for other species in chunk below:
 
-### Diagnostics
 
 
 <!--`r sp = "xx"`-->
@@ -588,8 +695,13 @@ para_xx = para_sp
 ```
 
 
+----------------------------------------------
+
+# SessionInfo
 
 ```{r sessionInfo}
-report_parameters(sessionInfo())
+sessionInfo()
+
+report_parameters(sessionInfo()) # output to include in Appendix
 ```
 
