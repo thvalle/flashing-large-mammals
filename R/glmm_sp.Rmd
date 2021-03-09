@@ -200,7 +200,7 @@ I am not sure about how to make up for breaking these assumptions. For now, I wi
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE) 
+para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
 ```
 
 ### Model interpretation
@@ -278,7 +278,7 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 
 
 ```{r parameters}
-result <- model_parameters(m_sp) 
+para_sp_norm <- model_parameters(m_sp) 
 plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
                                     subtitle = ' not standardized ')
 
@@ -540,8 +540,24 @@ print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
 xtable(para_all, type = "html") # output in Rmd
 
+# not standardized
+para_all2 <- bind_rows(
+model_parameters(m_raa)   %>% add_row(Parameter = "Roe deer", .before = 1),
+model_parameters(m_rev)   %>% add_row(Parameter = "Red fox", .before = 1),
+model_parameters(m_grvl)  %>% add_row(Parameter = "Badger", .before = 1),
+model_parameters(m_elg)   %>% add_row(Parameter = "Moose", .before = 1),
+model_parameters(m_hjort) %>% add_row(Parameter = "Red deer", .before = 1),
+model_parameters(m_gaup)  %>% add_row(Parameter = "Lynx", .before = 1),
+model_parameters(m_hare)  %>% add_row(Parameter = "Hare", .before = 1),
+model_parameters(m_maar)  %>% add_row(Parameter = "European Pine Marten", .before = 1),
+model_parameters(m_ekorn) %>% add_row(Parameter = "Red squirrel", .before = 1)
+) %>% 
+ insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
+  select(!df) # remove the df-column, containing "Inf" for every species
 
-# unable to find a automated way of removing \end{table}
+# save as latex-table in the Thesis folder
+print(xtable(para_all2, type = "latex"), include.rownames = F,
+      file = "../Thesis/tex/tab/parameters2.tex")
 ```
 
 ## Joint forest-plots
@@ -550,11 +566,15 @@ Plots divided into size-based groups of three x three species.
 Thus, ungulates are one group, the largest carnivores are one, and the smallest three form the most mixed group of hare, squirrel and pine marten 
 
 ```{r mod-plot}
-sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, 
-                    m_hare, m_maar,m_ekorn,m_gaup, spacing = 1.2,
+p_mds1<- sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, spacing = .8,
                     legend.title = "Species",
-                    m.labels = c("Roe deer","Red fox","Badger","Moose","Red deer",
-                                 "Hare","Pine marten","Red squirrel","Lynx"))
+                    m.labels = c("Roe deer","Red fox","Badger","Moose","Red deer"))
+p_mds2 <- sjPlot::plot_models(m_hare, m_maar,m_ekorn,m_gaup, spacing = .8,
+                    legend.title = "Species",
+                    m.labels = c("Hare","Pine marten","Red squirrel","Lynx"))
+p_mds1;p_mds2
+saveRDS(p_mds1, "pmds1.rds")
+saveRDS(p_mds2, "pmds2.rds")
 ```
 
 ## Predict-plots
@@ -575,14 +595,14 @@ library(cowplot)
 # plot grid     
 # # script from https://wilkelab.org/cowplot/articles/shared_legends.html
 prow <- cowplot::plot_grid(
-  p1 + theme(legend.position="none") +scale_y_continuous(breaks=c(.2,.4,.6)),
+  p1 + theme(legend.position="none"),
   p2 + theme(legend.position="none"),
   p3 + theme(legend.position="none"),
   p4 + theme(legend.position="none"),
   p5 + theme(legend.position="none"),
   p6 + theme(legend.position="none"),
   p7 + theme(legend.position="none"),
-  p8 + theme(legend.position="none")+scale_y_continuous(breaks=c(.02,.04,.06)),
+  p8 + theme(legend.position="none"),
   p9 + theme(legend.position="none"),
   align = 'vh',
   axis =  "tblr", # aligns
@@ -610,6 +630,12 @@ legend_b <- get_legend(
 # add the legend underneath the row we made earlier. Give it 10%
 # of the height of one plot (via rel_heights).
 plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .1))
+
+# bring plots along somewhere else, to tweak
+saveRDS(prow,"prow.rds")  
+saveRDS(legend_b,"legend_b.rds")
+list_plot <- list(p1,p2,p3,p4,p5,p6,p7,p8,p9)
+saveRDS(list_plot, "list_plot") # all plot in one list
 ```
 
 

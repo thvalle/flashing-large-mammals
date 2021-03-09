@@ -2235,7 +2235,7 @@ xtable(para_all, type = "html") # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.3 by xtable 1.8-4 package
-## % Tue Mar 09 12:46:35 2021
+## % Tue Mar 09 13:55:53 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2321,18 +2321,21 @@ Thus, ungulates are one group, the largest carnivores are one, and the smallest 
 
 
 ```r
-sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, 
-                    m_hare, m_maar,m_ekorn,m_gaup, spacing = 1.2,
+p_mds1<- sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, spacing = .8,
                     legend.title = "Species",
-                    m.labels = c("Roe deer","Red fox","Badger","Moose","Red deer",
-                                 "Hare","Pine marten","Red squirrel","Lynx"))
+                    m.labels = c("Roe deer","Red fox","Badger","Moose","Red deer"))
+p_mds2 <- sjPlot::plot_models(m_hare, m_maar,m_ekorn,m_gaup, spacing = .8,
+                    legend.title = "Species",
+                    m.labels = c("Hare","Pine marten","Red squirrel","Lynx"))
+p_mds1;p_mds2
 ```
 
-```
-## Warning: position_dodge requires non-overlapping x intervals
-```
+![](glmm_sp_files/figure-html/mod-plot-1.png)<!-- -->![](glmm_sp_files/figure-html/mod-plot-2.png)<!-- -->
 
-![](glmm_sp_files/figure-html/mod-plot-1.png)<!-- -->
+```r
+saveRDS(p_mds1, "pmds1.rds")
+saveRDS(p_mds2, "pmds2.rds")
+```
 
 ## Predict-plots
 
@@ -2373,33 +2376,21 @@ library(cowplot)
 # plot grid     
 # # script from https://wilkelab.org/cowplot/articles/shared_legends.html
 prow <- cowplot::plot_grid(
-  p1 + theme(legend.position="none") +scale_y_continuous(breaks=c(.2,.4,.6)),
+  p1 + theme(legend.position="none"),
   p2 + theme(legend.position="none"),
   p3 + theme(legend.position="none"),
   p4 + theme(legend.position="none"),
   p5 + theme(legend.position="none"),
   p6 + theme(legend.position="none"),
   p7 + theme(legend.position="none"),
-  p8 + theme(legend.position="none")+scale_y_continuous(breaks=c(.02,.04,.06)),
+  p8 + theme(legend.position="none"),
   p9 + theme(legend.position="none"),
   align = 'vh',
   axis =  "tblr", # aligns
 #  labels = c("A", "B", "C","D","E","F","G","H","I"),
   hjust = -1,
   nrow = 3)
-```
 
-```
-## Scale for 'y' is already present. Adding another scale for 'y', which will
-## replace the existing scale.
-```
-
-```
-## Scale for 'y' is already present. Adding another scale for 'y', which will
-## replace the existing scale.
-```
-
-```r
 # # extract the legend from one of the plots
 # legend <- get_legend(
 #   # create some space to the left of the legend
@@ -2423,6 +2414,14 @@ plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .1))
 ```
 
 ![](glmm_sp_files/figure-html/mod-predict-1.png)<!-- -->
+
+```r
+# bring plots along somewhere else, to tweak
+saveRDS(prow,"prow.rds")  
+saveRDS(legend_b,"legend_b.rds")
+list_plot <- list(p1,p2,p3,p4,p5,p6,p7,p8,p9)
+saveRDS(list_plot, "list_plot") # all plot in one list
+```
 
 
 
