@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "08 mars, 2021"
+date: "09 mars, 2021"
 output:
   html_document:
     toc: true
@@ -71,7 +71,7 @@ library(sjPlot)      # parameters + sjPlot probably does a similar and better jo
 ```
 
 ```
-## #refugeeswelcome
+## Learn more about sjPlot with 'browseVignettes("sjPlot")'.
 ```
 
 ```r
@@ -2239,7 +2239,7 @@ xtable(para_all, type = "html") # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.3 by xtable 1.8-4 package
-## % Mon Mar 08 22:50:15 2021
+## % Tue Mar 09 09:50:11 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2325,25 +2325,18 @@ Thus, ungulates are one group, the largest carnivores are one, and the smallest 
 
 
 ```r
-sjPlot::plot_models(m_rev, m_grvl, m_gaup, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Badger","Lynx","Red fox"))
+sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_gaup, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Roe deer","Red fox","Badger", "Moose","Lynx"))
 ```
 
 ![](glmm_sp_files/figure-html/mod-plot-1.png)<!-- -->
 
 ```r
-sjPlot::plot_models(m_raa, m_elg, m_hjort, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Roe deer","Moose","Red deer"))
+sjPlot::plot_models(m_hjort, m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Red deer","Red squirrel","Hare","Pine marten"))
 ```
 
 ![](glmm_sp_files/figure-html/mod-plot-2.png)<!-- -->
-
-```r
-sjPlot::plot_models(m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Hare","Pine marten","Red squirrel"))
-```
-
-![](glmm_sp_files/figure-html/mod-plot-3.png)<!-- -->
 
 ## Predict-plots
 
@@ -2351,15 +2344,15 @@ ggpredict-plots for marginal effects.
 
 
 ```r
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.text = element_blank())
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.text = element_blank())
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.text = element_blank())
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.text.x = element_blank())
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.text = element_blank())
-p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.text = element_blank())
-p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.text = element_blank())
-p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.text.y = element_blank())
-p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.text = element_blank())
+p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.title = element_blank())
+p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.title = element_blank())
+p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.title = element_blank())
+p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.title.x = element_blank())
+p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.title = element_blank())
+p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
+p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
+p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
+p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
 library(cowplot)
 ```
 

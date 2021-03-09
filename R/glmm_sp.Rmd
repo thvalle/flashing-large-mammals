@@ -135,14 +135,15 @@ p_td2 <- time.dep3 %>%
   facet_grid(rows = "flash", scales = "free_y") +
   labs(#title = "Period lengths per camera",
        x = "Location", y = "Time since deployment",
-       caption = "Vertical line reprecents median period length for IR.\n Data superceding that were trimmed away for the GLMM-modelling.")
+       #caption = "Vertical line reprecents median period length for IR.\n Data superceding that were trimmed away for the GLMM-modelling.")
   
 
 p_td2 + ggpubr::theme_classic2() +
   theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
         scale_linetype_manual(values = rep(c("solid","solid"), 4) ) + #option to change to solid,dashed
         scale_color_manual(values = c(rep(c("#74add1","#4575b4"), each = 2), # trt-colr
-                                      rep(c("#f46d43","#fdae61"),each = 2) ) ) #ctrl-colr
+                                      rep(c("#f46d43","#fdae61"),each = 2) ) ) ) #ctrl-colr
+  #labs(caption = "Vertical line represents the median IR period length. \n Data superceding that were trimmed away for the GLMM")
 ```
 
 
@@ -550,12 +551,10 @@ Plots divided into size-based groups of three x three species.
 Thus, ungulates are one group, the largest carnivores are one, and the smallest three form the most mixed group of hare, squirrel and pine marten 
 
 ```{r mod-plot}
-sjPlot::plot_models(m_rev, m_grvl, m_gaup, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Badger","Lynx","Red fox"))
-sjPlot::plot_models(m_raa, m_elg, m_hjort, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Roe deer","Moose","Red deer"))
-sjPlot::plot_models(m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Hare","Pine marten","Red squirrel"))
+sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_gaup, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Roe deer","Red fox","Badger", "Moose","Lynx"))
+sjPlot::plot_models(m_hjort, m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
+                    m.labels = c("Red deer","Red squirrel","Hare","Pine marten"))
 ```
 
 ## Predict-plots
@@ -563,15 +562,15 @@ sjPlot::plot_models(m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Spec
 ggpredict-plots for marginal effects.
 
 ```{r mod-predict}
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.text = element_blank())
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.text = element_blank())
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.text = element_blank())
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.text.x = element_blank())
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.text = element_blank())
-p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.text = element_blank())
-p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.text = element_blank())
-p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.text.y = element_blank())
-p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.text = element_blank())
+p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.title = element_blank())
+p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.title = element_blank())
+p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.title = element_blank())
+p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.title.x = element_blank())
+p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.title = element_blank())
+p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
+p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
+p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
+p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
 library(cowplot)
 # plot grid     
 # # script from https://wilkelab.org/cowplot/articles/shared_legends.html

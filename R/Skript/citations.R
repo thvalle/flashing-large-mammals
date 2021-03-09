@@ -5,6 +5,7 @@ options(citation.bibtex.max = 999) # forcing the printing of bibtex-entry by cit
 # 2021.02.09----------------------
 citation("base")
 citation("survival")
+
 citation("coxme")
 citation("lme4")
 citation("ggplot2") # could deserve a proper mention along the way.

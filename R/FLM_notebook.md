@@ -1,7 +1,7 @@
 Flashing Large Mammals - exploring the data
 ================
 Torgeir Holmgard Valle
-08 mars, 2021
+09 mars, 2021
 
 ``` r
 library(tidyverse)
@@ -33,6 +33,12 @@ library(lubridate)
 
 ``` r
 library(overlap)
+library(sf) # for handling spatial data
+```
+
+    ## Linking to GEOS 3.9.0, GDAL 3.2.1, PROJ 7.2.1
+
+``` r
 # All the tibbles from Data_explor_setup.R, and package + function from Density.R
 obs      <- readRDS("Observations_prepared1.rds") %>%
   mutate(species = validated_species)
@@ -131,8 +137,7 @@ p_eff +   theme(legend.title = element_blank()) +
                sec.axis = sec_axis(~., breaks = c(c$c,f_work[10]), labels = scales::date_format("%d-%b %y") ) ) +
   geom_vline(xintercept = f_work, linetype = "dashed",  alpha =.5) +
   geom_rect(data = rects, aes(xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf),
-            alpha = 0.1 ) +
-  labs(caption = "Control group was divided into four periods resembling those of the treatment groups. \n Upper axis displays the dates of period breaks in the control group, shaded are display my field work periods.")
+            alpha = 0.1 )
 ```
 
 ![](FLM_notebook_files/figure-gfm/effort-facet-1.png)<!-- -->
@@ -229,13 +234,15 @@ reaction to the flash.
 ### One plot for all species
 
 ``` r
-sp <- c("rev", "raadyr", "grevling", "elg", "hjort", "gaupe")
-par(mfrow = c(2, 3))
+sp <- c("rev", "raadyr", "grevling", "elg", "hjort", "gaupe", "ekorn", "hare", "maar")
+par(mfrow = c(3, 3))
  par(cex = 0.6)
  par(mar = c(0, 0, 0, 0), oma = c(4, 4, 0.5, 0.5))
  par(tcl = -0.25)
  par(mgp = c(2, 0.6, 0))
-for (i in sp[1:3]) {
+overlap_flash(sp[1], main=NULL, rug=T) 
+   legend("top", legend = str_c("\n ",sp[1]), bty = "n") # art 
+for (i in sp[2:3]) {
  overlap_flash(i, axes = FALSE,  ann=F, rug=T, xaxt="n")
   legend("top", legend = str_c("\n ",i), bty = "n") # art
 }
@@ -244,6 +251,12 @@ overlap_flash(sp[4], main=NULL, rug=T)
    legend(x=-4.2, y=0.018, legend = c("IR", "white LED"), #x+y sets legend position
          col = c("black","blue"), lty = c(1, 2), lwd = 2, bty = "o")
 for (i in sp[5:6]){
+ overlap_flash(i, axes = FALSE,  ann=F, rug=T) 
+   legend("top", legend = str_c("\n ",i), bty = "n") # art
+}
+overlap_flash(sp[7], main=NULL, rug=T) 
+   legend("top", legend = str_c("\n ",sp[7]), bty = "n") # art 
+for (i in sp[8:9]){
  overlap_flash(i, axes = FALSE,  ann=F, rug=T) 
    legend("top", legend = str_c("\n ",i), bty = "n") # art
 }
@@ -386,13 +399,19 @@ ggplot() + geom_sf(data = Norge)
 
 ``` r
 Scandinavia <- st_as_sf(map("world",c("Norway","Sweden", "Finland","Denmark","UK", "Germany"), plot = F, fill = T))
-
+# loc_trans <- st_sfc(loc_sf, crs=)
+xy <- st_bbox(loc_sf) # retrieve xlim+ylim from geometry
 ggplot() +
   geom_sf(data =Scandinavia) +
-  geom_sf(data = Viken, fill = "blue", alpha = .2) +  # Viken polygon
-  annotate("rect", xmin = 7.3, xmax = 13,
-           ymin = 58.5, ymax = 61.2,
-           alpha = .4) +
+#  geom_sf(data = Viken, fill = "blue", alpha = .02) +  # Viken polygon
+#  geom_sf(data = loc_sf, fill = "blue", alpha = .2) +  # loc range
+
+  # annotate("rect", xmin = xy[1], xmax = xy[3],
+  #        ymin = xy[2], ymax = xy[4],
+  #        alpha = .4) +
+   annotate(geom="rect", xmin = 9.28, xmax = 11.4, # i samsvar med excel-
+            ymin = 59.2, ymax = 60.5,              # kjørearket mitt
+            alpha = .5, col = "black") +
   coord_sf(xlim = c(0,25), ylim = c(57,71)) +
   theme_bw()
 ```
@@ -405,7 +424,6 @@ ggplot() +
 ```
 
 ``` r
-xy <- st_bbox(loc_sf) # retrieve xlim+ylim from geometry
 ggplot(data = Viken) +
         geom_sf() +     # Viken
         # geom_sf_label(aes(label = navn)) + #denne kommandoen kan også hente ut namnelapper
@@ -480,8 +498,8 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##  [1] fs_1.5.0           RColorBrewer_1.1-2 httr_1.4.2         tools_4.0.3       
     ##  [5] backports_1.2.1    utf8_1.1.4         R6_2.5.0           KernSmooth_2.23-17
-    ##  [9] DBI_1.1.1          colorspace_2.0-0   raster_3.4-5       sp_1.4-5          
-    ## [13] withr_2.4.1        tidyselect_1.1.0   leaflet_2.0.4.1    compiler_4.0.3    
+    ##  [9] DBI_1.1.1          colorspace_2.0-0   raster_3.4-5       withr_2.4.1       
+    ## [13] sp_1.4-5           tidyselect_1.1.0   leaflet_2.0.4.1    compiler_4.0.3    
     ## [17] leafem_0.1.3       cli_2.3.1          rvest_0.3.6        xml2_1.3.2        
     ## [21] labeling_0.4.2     scales_1.1.1       classInt_0.4-3     digest_0.6.27     
     ## [25] rmarkdown_2.7.3    base64enc_0.1-3    dichromat_2.0-0    pkgconfig_2.0.3   
