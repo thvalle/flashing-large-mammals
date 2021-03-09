@@ -68,13 +68,6 @@ library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regres
                           # more at: https://strengejacke.github.io/ggeffects/
 library(parameters)  # extract model-parameters etc. from (most) models
 library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
-```
-
-```
-## Learn more about sjPlot with 'browseVignettes("sjPlot")'.
-```
-
-```r
 library(see)         # plot-related package from the easystats-verse
 
 # Data drom Data_exploration2_nesting.R
@@ -247,18 +240,21 @@ p_td2 <- time.dep3 %>%
   scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150, 200))) +
   facet_grid(rows = "flash", scales = "free_y") +
   labs(#title = "Period lengths per camera",
-       x = "Location", y = "Time since deployment",
-       caption = "Vertical line reprecents median period length for IR.\n Data superceding that were trimmed away for the GLMM-modelling.")
+       x = "Location", y = "Time since deployment") # 
   
 
 p_td2 + ggpubr::theme_classic2() +
   theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
         scale_linetype_manual(values = rep(c("solid","solid"), 4) ) + #option to change to solid,dashed
         scale_color_manual(values = c(rep(c("#74add1","#4575b4"), each = 2), # trt-colr
-                                      rep(c("#f46d43","#fdae61"),each = 2) ) ) #ctrl-colr
+                                      rep(c("#f46d43","#fdae61"),each = 2) ) )  #ctrl-colr
 ```
 
 ![](glmm_sp_files/figure-html/period-length-wControl-1.png)<!-- -->
+
+```r
+  #labs(caption = "Vertical line represents the median IR period length. \n Data superceding that were trimmed away for the GLMM")
+```
 
 
 
@@ -2239,7 +2235,7 @@ xtable(para_all, type = "html") # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.3 by xtable 1.8-4 package
-## % Tue Mar 09 09:50:11 2021
+## % Tue Mar 09 12:46:35 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2325,18 +2321,18 @@ Thus, ungulates are one group, the largest carnivores are one, and the smallest 
 
 
 ```r
-sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_gaup, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Roe deer","Red fox","Badger", "Moose","Lynx"))
+sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, 
+                    m_hare, m_maar,m_ekorn,m_gaup, spacing = 1.2,
+                    legend.title = "Species",
+                    m.labels = c("Roe deer","Red fox","Badger","Moose","Red deer",
+                                 "Hare","Pine marten","Red squirrel","Lynx"))
+```
+
+```
+## Warning: position_dodge requires non-overlapping x intervals
 ```
 
 ![](glmm_sp_files/figure-html/mod-plot-1.png)<!-- -->
-
-```r
-sjPlot::plot_models(m_hjort, m_ekorn, m_hare, m_maar, spacing = 0.4, legend.title = "Species",
-                    m.labels = c("Red deer","Red squirrel","Hare","Pine marten"))
-```
-
-![](glmm_sp_files/figure-html/mod-plot-2.png)<!-- -->
 
 ## Predict-plots
 
@@ -2349,10 +2345,10 @@ p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.
 p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.title = element_blank())
 p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.title.x = element_blank())
 p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.title = element_blank())
-p6 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
-p7 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
-p8 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
-p9 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
+p6 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
+p7 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
+p8 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
+p9 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
 library(cowplot)
 ```
 
@@ -2377,21 +2373,33 @@ library(cowplot)
 # plot grid     
 # # script from https://wilkelab.org/cowplot/articles/shared_legends.html
 prow <- cowplot::plot_grid(
-  p1 + theme(legend.position="none"),
+  p1 + theme(legend.position="none") +scale_y_continuous(breaks=c(.2,.4,.6)),
   p2 + theme(legend.position="none"),
   p3 + theme(legend.position="none"),
   p4 + theme(legend.position="none"),
   p5 + theme(legend.position="none"),
   p6 + theme(legend.position="none"),
   p7 + theme(legend.position="none"),
-  p8 + theme(legend.position="none"),
+  p8 + theme(legend.position="none")+scale_y_continuous(breaks=c(.02,.04,.06)),
   p9 + theme(legend.position="none"),
   align = 'vh',
   axis =  "tblr", # aligns
 #  labels = c("A", "B", "C","D","E","F","G","H","I"),
   hjust = -1,
   nrow = 3)
+```
 
+```
+## Scale for 'y' is already present. Adding another scale for 'y', which will
+## replace the existing scale.
+```
+
+```
+## Scale for 'y' is already present. Adding another scale for 'y', which will
+## replace the existing scale.
+```
+
+```r
 # # extract the legend from one of the plots
 # legend <- get_legend(
 #   # create some space to the left of the legend
@@ -2725,11 +2733,7 @@ check_singularity(m_gaup)  #--||--
 --------------------------------------------
 
 
-# Hare, deer and squirrelywhere (and pine marten) 
-
-Blueprint for other species in chunk below:
-
-
+### Blueprint for other species in chunk below:
 
 <!---->
 
