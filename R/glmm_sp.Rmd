@@ -6,6 +6,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+    code_folding: hide
     keep_md: true
 ---
 
@@ -22,6 +23,13 @@ library(see)         # plot-related package from the easystats-verse
 
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
+obs      <- readRDS("Observations_prepared1.rds")
+obs <- obs %>% 
+  mutate(species = validated_species,
+         Hour = as.numeric(format(obs$datetime, "%H")), # for density-plots
+         flash = factor(obs$flash, labels = c("IR", "LED"))) # --||--
+# Set global plot theme
+theme_set(ggpubr::theme_classic2())
 ```
 
 ## Purpose
@@ -107,8 +115,8 @@ p_td <- time.dep3 %>% filter(!period %in% ctrl) %>%
   coord_flip() + 
   labs(title = "Period lengths per camera",
        x = "Location", y = "Time since deployment",
-       caption = "Vertical lines reprecent median period lengths for IR and white LED.\n Data superceding that were trimmed away for the GLMM-modelling.") +
-  ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
+       caption = "Vertical lines reprecent median period lengths for IR and white LED.\n Data superceding that were trimmed away for the GLMM-modelling.") 
+  #ggpubr::theme_classic2() #+ theme(legend.position = "right") find way to set legend inside
 p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   geom_hline(aes(yintercept = max(hh)), linetype = "dashed",  alpha =.5) +
   #annotate(geom = "text",x=4, y=h+8.6, label = "- median", size = 3, alpha =.7) +
@@ -137,7 +145,7 @@ p_td2 <- time.dep3 %>%
        x = "Location", y = "Time since deployment") # 
   
 
-p_td2 + ggpubr::theme_classic2() +
+p_td2 + #ggpubr::theme_classic2() +
   theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
         scale_linetype_manual(values = rep(c("solid","solid"), 4) ) + #option to change to solid,dashed
         scale_color_manual(values = c(rep(c("#74add1","#4575b4"), each = 2), # trt-colr
@@ -151,28 +159,27 @@ _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
-                
+  
+time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
+summary(time.dep4) #            
 ```
 
 
 # Modelling
 
+
 ## Roe deer
 
 
-```{r summary, eval=FALSE}
-time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
-summary(time.dep4) #
-```
-
 ```{r sp, eval=FALSE}
+# sp ="raadyr"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
-
+parameters::format_parameters(m_sp)
 # ggpredict is similar to expand.grid
 p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
@@ -201,6 +208,7 @@ I am not sure about how to make up for breaking these assumptions. For now, I wi
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
 ### Model interpretation
@@ -277,19 +285,70 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 
 
 
-```{r parameters}
-para_sp_norm <- model_parameters(m_sp) 
-plot(result, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-                                    subtitle = ' not standardized ')
-
-plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-                                    subtitle = 'standardize  = "refit" ')
-
-# default rules, like in bayestestR::equivalence_test()
-result <- equivalence_test(m_sp)
-plot(result)
-result
+```{r, eval=FALSE}
+# just a shortcut for editing
+m_sp <- readRDS("m_raadyr.rds")
+p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 ```
+
+
+```{r parameters}
+library(cowplot) # to make grid-plots
+library(magick)
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#e41a1c","#377eb8")) +
+   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+   ggpubr::theme_classic2() + theme(legend.position = "bottom", legend.title = element_blank()) 
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp)
+result
+
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("TimeDeploy", "IR", "LED", "TimeDeploy * IR", "TimeDeploy * LED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + 
+    theme(legend.position = "bottom") +
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text(
+                                   size=10,
+                                   face="italic")) ) 
+
+# Density plots
+p_dens <- filter(obs, species %in% sp) %>% 
+  ggplot(aes(Hour)) +
+  geom_bar(col="black") +
+  geom_density(aes(y=..density..*1700, 
+                   fill=flash, alpha=.1), 
+               show.legend = c(alpha = F)) +
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
+  #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
+  #               legend.title = element_blank())
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file)
+
+p_grid <- cowplot::plot_grid(p_sp1,p_eq,p_dens,jpg,
+                   #nrow = 2,
+                   rel_widths = c(3,4),
+                   rel_heights = c(3,2),
+                   labels="auto"
+                   #align = "h"
+) 
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
 
 
 ```{r sp-report2}
@@ -327,13 +386,13 @@ objects
 
 `r sp = "rev"`
 
-```{r rev, ref.label=c('sp','sp-report')}
+```{r rev, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r rev2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r rev-objects}
+```{r rev-objects, cache=TRUE}
 # Model
 m_rev    = m_sp
 # ggpredict 
@@ -354,13 +413,13 @@ knitr::knit_exit() # to exit knitting process here instead of at the document en
 
 `r sp = "grevling"`
 
-```{r grevling, ref.label=c('sp','sp-report')}
+```{r grevling, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r grevling2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r grevling-objects}
+```{r grevling-objects, cache=TRUE}
 # Model
 m_grvl    = m_sp
 # ggpredict 
@@ -376,13 +435,13 @@ para_grvl = para_sp
 
 `r sp = "elg"`
 
-```{r elg, ref.label=c('sp','sp-report')}
+```{r elg, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r elg2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r elg-objects}
+```{r elg-objects, cache=TRUE}
 # Model
 m_elg    = m_sp
 # ggpredict 
@@ -397,13 +456,13 @@ para_elg = para_sp
 
 `r sp = "hjort"`
 
-```{r hjort, ref.label=c('sp','sp-report')}
+```{r hjort, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r hjort2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r hjort-objects}
+```{r hjort-objects, cache=TRUE}
 # Model
 m_hjort    = m_sp
 # ggpredict 
@@ -419,13 +478,13 @@ para_hjort = para_sp
 
 `r sp = "gaupe"`
 
-```{r gaupe, ref.label=c('sp','sp-report')}
+```{r gaupe, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r gaupe2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r gaupe-objects}
+```{r gaupe-objects, cache=TRUE}
 # Model
 m_gaup    = m_sp
 # ggpredict 
@@ -446,13 +505,13 @@ After having learned about the random effects, I think it does make sense, even 
 
 `r sp = "hare"`
 
-```{r hare, ref.label=c('sp','sp-report')}
+```{r hare, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r hare2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r hare-objects}
+```{r hare-objects, cache=TRUE}
 # Model
 m_hare    = m_sp
 # ggpredict 
@@ -468,13 +527,13 @@ para_hare = para_sp
 
 `r sp = "ekorn"`
 
-```{r ekorn, ref.label=c('sp','sp-report')}
+```{r ekorn, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r ekorn2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r ekorn-objects}
+```{r ekorn-objects, cache=TRUE}
 # Model
 m_ekorn    = m_sp
 # ggpredict 
@@ -491,13 +550,13 @@ para_ekorn = para_sp
 
 `r sp = "maar"`
 
-```{r maar, ref.label=c('sp','sp-report')}
+```{r maar, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
 ```{r maar2, ref.label=c('sp-report2','parameters')}
 ```
 
 
-```{r maar-objects}
+```{r maar-objects, cache=TRUE}
 # Model
 m_maar    = m_sp
 # ggpredict 
@@ -655,7 +714,7 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
 ```
 
 
-```{r mod-checks}
+```{r mod-checks, eval=FALSE}
 check_overdispersion(m_raa)   # No overdispersion detected
 check_overdispersion(m_rev)   # -     -    | |    -    -
 check_overdispersion(m_grvl)  # -     -    | |    -    -

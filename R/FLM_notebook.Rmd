@@ -192,6 +192,20 @@ Sites without white flash produces a more bumpy curve than does the sites with a
 
 The Dhat4 calculation reveals a larger difference in activity for foxes, than for roe deer, but seems to mainly stem from the twilight hours. Thus, it could be because of the size of the animals, rather than a reaction to the flash.
 
+### Separate plot for each species
+
+```{r, eval=FALSE}
+sp <- c("rev", "raadyr", "grevling", "elg", "hjort", "gaupe", "ekorn", "hare", "maar")
+# 1. Open jpeg file
+png("png/rev.png")
+# jpeg(cat(".jpg"), width = 350, height = "350")
+# 2. Create the plot
+overlap_flash(sp[1], rug = TRUE, main = "")
+# 3. Close the file
+dev.off()
+```
+
+
 ### One plot for all species
 
 ```{r overlap-flash-sp}
