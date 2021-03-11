@@ -550,8 +550,14 @@ This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lake
 >"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
 The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
 
+## Roe deer plot
 
 
+```r
+# just a shortcut for editing
+m_sp <- readRDS("m_raadyr.rds")
+p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+```
 
 
 
@@ -643,7 +649,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -841,6 +849,8 @@ r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
+### Plot
+
 
 ```r
 summary(r_sp)
@@ -936,7 +946,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -1089,6 +1101,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -1183,7 +1198,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -1340,6 +1357,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -1434,7 +1454,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -1588,6 +1610,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -1682,7 +1707,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -1829,6 +1856,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -1923,7 +1953,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -2085,6 +2117,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -2179,7 +2214,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -2353,6 +2390,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -2447,7 +2487,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -2595,6 +2637,9 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, expon
 saveRDS(m_sp, file = paste0("m_",sp,".rds"))
 ```
 
+### Plot
+
+
 ```r
 summary(r_sp)
 ```
@@ -2689,7 +2734,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -2781,7 +2828,7 @@ xtable(para_all, type = "html") # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.3 by xtable 1.8-4 package
-## % Wed Mar 10 14:47:57 2021
+## % Wed Mar 10 21:38:28 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2900,73 +2947,6 @@ saveRDS(p_mds1, "pmds1.rds")
 saveRDS(p_mds2, "pmds2.rds")
 ```
 
-## Predict-plots
-
-ggpredict-plots for marginal effects.
-
-
-```r
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.title = element_blank())
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.title = element_blank())
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.title = element_blank())
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.title.x = element_blank())
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.title = element_blank())
-p6 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
-p7 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
-p8 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
-p9 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
-library(cowplot)
-# plot grid     
-# # script from https://wilkelab.org/cowplot/articles/shared_legends.html
-prow <- cowplot::plot_grid(
-  p1 + theme(legend.position="none"),
-  p2 + theme(legend.position="none"),
-  p3 + theme(legend.position="none"),
-  p4 + theme(legend.position="none"),
-  p5 + theme(legend.position="none"),
-  p6 + theme(legend.position="none"),
-  p7 + theme(legend.position="none"),
-  p8 + theme(legend.position="none"),
-  p9 + theme(legend.position="none"),
-  align = 'vh',
-  axis =  "tblr", # aligns
-#  labels = c("A", "B", "C","D","E","F","G","H","I"),
-  hjust = -1,
-  nrow = 3)
-
-# # extract the legend from one of the plots
-# legend <- get_legend(
-#   # create some space to the left of the legend
-#   p1 + theme(legend.box.margin = margin(0, 0, 0, 12))
-# )
-# 
-# # add the legend to the row we made earlier. Give it one-third of 
-# # the width of one plot (via rel_widths).
-# plot_grid(prow, legend, rel_widths = c(3, .4))
-
-# extract a legend that is laid out horizontally
-legend_b <- get_legend(
-  p1 + 
-    guides(color = guide_legend(nrow = 1)) +
-    theme(legend.position = "bottom")
-)
-
-# add the legend underneath the row we made earlier. Give it 10%
-# of the height of one plot (via rel_heights).
-plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .1))
-```
-
-![](glmm_sp_files/figure-html/mod-predict-1.png)<!-- -->
-
-```r
-# bring plots along somewhere else, to tweak
-saveRDS(prow,"prow.rds")  
-saveRDS(legend_b,"legend_b.rds")
-list_plot <- list(p1,p2,p3,p4,p5,p6,p7,p8,p9)
-saveRDS(list_plot, "list_plot") # all plot in one list
-```
-
-
 
 ## Model comparison-plots
 
@@ -3019,242 +2999,23 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
 
 ```r
 check_overdispersion(m_raa)   # No overdispersion detected
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =     0.805
-##   Pearson's Chi-Squared = 12106.261
-##                 p-value =         1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_overdispersion(m_rev)   # -     -    | |    -    -
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =     0.874
-##   Pearson's Chi-Squared = 13146.532
-##                 p-value =         1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_overdispersion(m_grvl)  # -     -    | |    -    -
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =     0.753
-##   Pearson's Chi-Squared = 11319.647
-##                 p-value =         1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_overdispersion(m_elg)   # -     -    | |    -    -
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =     0.725
-##   Pearson's Chi-Squared = 10906.898
-##                 p-value =         1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_overdispersion(m_hjort) # -     -    | |    -    -
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =    0.513
-##   Pearson's Chi-Squared = 7717.267
-##                 p-value =        1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_overdispersion(m_gaup)  # -     -    | |    -    -
-```
-
-```
-## # Overdispersion test
-## 
-##        dispersion ratio =    0.463
-##   Pearson's Chi-Squared = 6957.452
-##                 p-value =        1
-```
-
-```
-## No overdispersion detected.
-```
-
-```r
 check_zeroinflation(m_raa)   # Model seems ok, ratio of observed and 
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 13874
-##   Predicted zeros: 13854
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_zeroinflation(m_rev)   #    predicted zeros is within the tolerance range.  
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 14327
-##   Predicted zeros: 14335
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_zeroinflation(m_grvl)  #          -     -    | |    -    -   
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 14400
-##   Predicted zeros: 14412
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_zeroinflation(m_elg)   #          -     -    | |    -    -   
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 14727
-##   Predicted zeros: 14724
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_zeroinflation(m_hjort) #          -     -    | |    -    -  
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 14864
-##   Predicted zeros: 14859
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_zeroinflation(m_gaup)  #          -     -    | |    -    -
-```
-
-```
-## # Check for zero-inflation
-## 
-##    Observed zeros: 14982
-##   Predicted zeros: 14987
-##             Ratio: 1.00
-```
-
-```
-## Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
-```
-
-```r
 check_singularity(m_raa)   # FALSE
-```
-
-```
-## [1] FALSE
-```
-
-```r
 check_singularity(m_rev)   #--||--
-```
-
-```
-## [1] FALSE
-```
-
-```r
 check_singularity(m_grvl)  #--||--   
-```
-
-```
-## [1] FALSE
-```
-
-```r
 check_singularity(m_elg)   #--||--   
-```
-
-```
-## [1] FALSE
-```
-
-```r
 check_singularity(m_hjort) #--||--  
-```
-
-```
-## [1] FALSE
-```
-
-```r
 check_singularity(m_gaup)  #--||--
-```
-
-```
-## [1] FALSE
 ```
 
 
@@ -3338,7 +3099,9 @@ p_dens <- filter(obs, species %in% sp) %>%
   geom_density(aes(y=..density..*1700, 
                    fill=flash, alpha=.1), 
                show.legend = c(alpha = F)) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_y_continuous(n.breaks = 12) 
+
   #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
   #               legend.title = element_blank())
 
@@ -3410,26 +3173,26 @@ sessionInfo()
 ##  [5] rio_0.5.16         ggridges_0.5.3     sjlabelled_1.1.7   estimability_1.3  
 ##  [9] fs_1.5.0           rstudioapi_0.13    ggpubr_0.4.0       farver_2.1.0      
 ## [13] ggrepel_0.9.1      fansi_0.4.2        mvtnorm_1.1-1      lubridate_1.7.9.2 
-## [17] xml2_1.3.2         codetools_0.2-16   splines_4.0.3      robustbase_0.93-7 
-## [21] knitr_1.31         sjmisc_2.8.6       jsonlite_1.7.2     nloptr_1.2.2.2    
-## [25] broom_0.7.4        dbplyr_2.0.0       effectsize_0.4.3-1 compiler_4.0.3    
-## [29] httr_1.4.2         sjstats_0.18.1     emmeans_1.5.3      backports_1.2.1   
-## [33] assertthat_0.2.1   cli_2.3.1          htmltools_0.5.1.1  tools_4.0.3       
-## [37] coda_0.19-4        gtable_0.3.0       glue_1.4.2         Rcpp_1.0.6        
-## [41] carData_3.0-4      cellranger_1.1.0   jquerylib_0.1.3    vctrs_0.3.6       
-## [45] nlme_3.1-149       insight_0.13.1.1   xfun_0.21          openxlsx_4.2.3    
-## [49] rvest_0.3.6        lifecycle_1.0.0    statmod_1.4.35     rstatix_0.6.0     
-## [53] DEoptimR_1.0-8     MASS_7.3-53        scales_1.1.1       hms_1.0.0         
-## [57] qqplotr_0.0.4      RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3          
-## [61] gridExtra_2.3      sass_0.3.1         stringi_1.5.3      highr_0.8         
-## [65] bayestestR_0.8.3.1 boot_1.3-25        zip_2.1.1          rlang_0.4.10      
-## [69] pkgconfig_2.0.3    evaluate_0.14      lattice_0.20-41    labeling_0.4.2    
-## [73] tidyselect_1.1.0   plyr_1.8.6         magrittr_2.0.1     R6_2.5.0          
-## [77] generics_0.1.0     DBI_1.1.1          mgcv_1.8-33        pillar_1.5.1      
-## [81] haven_2.3.1        foreign_0.8-80     withr_2.4.1        abind_1.4-5       
-## [85] modelr_0.1.8       crayon_1.4.1       car_3.0-10         utf8_1.1.4        
-## [89] rmarkdown_2.7.3    grid_4.0.3         readxl_1.3.1       data.table_1.13.6 
-## [93] reprex_0.3.0       digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002
+## [17] xml2_1.3.2         splines_4.0.3      robustbase_0.93-7  knitr_1.31        
+## [21] sjmisc_2.8.6       jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.4       
+## [25] dbplyr_2.0.0       effectsize_0.4.3-1 compiler_4.0.3     httr_1.4.2        
+## [29] sjstats_0.18.1     emmeans_1.5.3      backports_1.2.1    assertthat_0.2.1  
+## [33] cli_2.3.1          htmltools_0.5.1.1  tools_4.0.3        coda_0.19-4       
+## [37] gtable_0.3.0       glue_1.4.2         Rcpp_1.0.6         carData_3.0-4     
+## [41] cellranger_1.1.0   jquerylib_0.1.3    vctrs_0.3.6        nlme_3.1-149      
+## [45] insight_0.13.1.1   xfun_0.21          openxlsx_4.2.3     rvest_0.3.6       
+## [49] lifecycle_1.0.0    statmod_1.4.35     rstatix_0.6.0      DEoptimR_1.0-8    
+## [53] MASS_7.3-53        scales_1.1.1       hms_1.0.0          qqplotr_0.0.4     
+## [57] RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3           gridExtra_2.3     
+## [61] sass_0.3.1         stringi_1.5.3      highr_0.8          bayestestR_0.8.3.1
+## [65] boot_1.3-25        zip_2.1.1          rlang_0.4.10       pkgconfig_2.0.3   
+## [69] evaluate_0.14      lattice_0.20-41    labeling_0.4.2     tidyselect_1.1.0  
+## [73] plyr_1.8.6         magrittr_2.0.1     R6_2.5.0           generics_0.1.0    
+## [77] DBI_1.1.1          mgcv_1.8-33        pillar_1.5.1       haven_2.3.1       
+## [81] foreign_0.8-80     withr_2.4.1        abind_1.4-5        modelr_0.1.8      
+## [85] crayon_1.4.1       car_3.0-10         utf8_1.1.4         rmarkdown_2.7.3   
+## [89] grid_4.0.3         readxl_1.3.1       data.table_1.13.6  reprex_0.3.0      
+## [93] digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002
 ```
 
 ```r

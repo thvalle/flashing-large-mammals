@@ -90,7 +90,7 @@ points(stations[stations$cam_mod=="Reconyx",2],
        stations[stations$cam_mod=="Reconyx",3],pch=19,col="black")
 points(stations[stations$cam_mod=="Browning",2],
        stations[stations$cam_mod=="Browning",3],pch=19,col="brown")
-points(stations[stations$abc!="A",2], stations[stations$abc!="A",3], pch=16 ,col="black", cex=0.5)
+points(stations[stations$abc!="A",2], stations[stations$abc!="A",3], pch=16 ,col="white", cex=0.5)
 legend("bottomleft",legend=c("Browning","Reconyx"),
        pch = 19, col = c("brown", "black"))
 

@@ -283,7 +283,7 @@ This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lake
 >"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
 The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
 
-
+## Roe deer plot
 
 ```{r, eval=FALSE}
 # just a shortcut for editing
@@ -388,6 +388,8 @@ objects
 
 ```{r rev, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+### Plot
+
 ```{r rev2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -415,6 +417,9 @@ knitr::knit_exit() # to exit knitting process here instead of at the document en
 
 ```{r grevling, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r grevling2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -437,6 +442,9 @@ para_grvl = para_sp
 
 ```{r elg, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r elg2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -458,6 +466,9 @@ para_elg = para_sp
 
 ```{r hjort, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r hjort2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -480,6 +491,9 @@ para_hjort = para_sp
 
 ```{r gaupe, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r gaupe2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -507,6 +521,9 @@ After having learned about the random effects, I think it does make sense, even 
 
 ```{r hare, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r hare2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -529,6 +546,9 @@ para_hare = para_sp
 
 ```{r ekorn, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r ekorn2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -552,6 +572,9 @@ para_ekorn = para_sp
 
 ```{r maar, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
+
+### Plot
+
 ```{r maar2, ref.label=c('sp-report2','parameters')}
 ```
 
@@ -635,68 +658,6 @@ p_mds1;p_mds2
 saveRDS(p_mds1, "pmds1.rds")
 saveRDS(p_mds2, "pmds2.rds")
 ```
-
-## Predict-plots
-
-ggpredict-plots for marginal effects.
-
-```{r mod-predict}
-p1 <- p_raa   %>% plot() + labs(title = "", subtitle = "Roe deer" )+ theme(axis.title = element_blank())
-p2 <- p_rev   %>% plot() + labs(title = "", subtitle = "Red fox " )+ theme(axis.title = element_blank())
-p3 <- p_grvl  %>% plot() + labs(title = "", subtitle = "Badger "  )+ theme(axis.title = element_blank())
-p4 <- p_elg   %>% plot() + labs(title = "", subtitle = "Moose "   )+ theme(axis.title.x = element_blank())
-p5 <- p_hjort %>% plot() + labs(title = "", subtitle = "Red deer" )+ theme(axis.title = element_blank())
-p6 <- p_hare  %>% plot() + labs(title = "", subtitle = "Hare"    ) + theme(axis.title = element_blank())
-p7 <- p_maar  %>% plot() + labs(title = "", subtitle = "European Pine marten")+ theme(axis.title.y = element_blank())
-p8 <- p_ekorn %>% plot() + labs(title = "", subtitle = "Red squirrel")+ theme(axis.title = element_blank())
-p9 <- p_gaup  %>% plot() + labs(title = "", subtitle = "Lynx "    )+ theme(axis.title = element_blank())
-library(cowplot)
-# plot grid     
-# # script from https://wilkelab.org/cowplot/articles/shared_legends.html
-prow <- cowplot::plot_grid(
-  p1 + theme(legend.position="none"),
-  p2 + theme(legend.position="none"),
-  p3 + theme(legend.position="none"),
-  p4 + theme(legend.position="none"),
-  p5 + theme(legend.position="none"),
-  p6 + theme(legend.position="none"),
-  p7 + theme(legend.position="none"),
-  p8 + theme(legend.position="none"),
-  p9 + theme(legend.position="none"),
-  align = 'vh',
-  axis =  "tblr", # aligns
-#  labels = c("A", "B", "C","D","E","F","G","H","I"),
-  hjust = -1,
-  nrow = 3)
-
-# # extract the legend from one of the plots
-# legend <- get_legend(
-#   # create some space to the left of the legend
-#   p1 + theme(legend.box.margin = margin(0, 0, 0, 12))
-# )
-# 
-# # add the legend to the row we made earlier. Give it one-third of 
-# # the width of one plot (via rel_widths).
-# plot_grid(prow, legend, rel_widths = c(3, .4))
-
-# extract a legend that is laid out horizontally
-legend_b <- get_legend(
-  p1 + 
-    guides(color = guide_legend(nrow = 1)) +
-    theme(legend.position = "bottom")
-)
-
-# add the legend underneath the row we made earlier. Give it 10%
-# of the height of one plot (via rel_heights).
-plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .1))
-
-# bring plots along somewhere else, to tweak
-saveRDS(prow,"prow.rds")  
-saveRDS(legend_b,"legend_b.rds")
-list_plot <- list(p1,p2,p3,p4,p5,p6,p7,p8,p9)
-saveRDS(list_plot, "list_plot") # all plot in one list
-```
-
 
 
 ## Model comparison-plots

@@ -1,4 +1,5 @@
 library(sf)
+library(tidyverse);library(tidyr)
 v <- st_read("Basisdata_30_Viken_25833_Kommuner_GML.gml", drivers = "GML", layer = "Kommune")
 o <- st_read("Basisdata_03_Oslo_25833_Kommuner_GML.gml",  drivers = "GML", layer = "Kommune")
 viken<-rbind(v,o) #legg Oslo inn i Viken
@@ -24,9 +25,9 @@ str(loc_sf)
 #                    x = purrr::map_dbl(geometry, 1), 
 #                    y = purrr::map_dbl(geometry, 2))
 
+saveRDS(Viken, "viken.rds")
 
 
-par(mar = c(0,0,1,0))
 plot(Viken[8], reset = FALSE)# reset = FALSE: we want to add to a plot with a legend
 plot(Viken[8,1], col = 'black', add = TRUE)
 plot(o[8], col = 'black', add = TRUE)
@@ -36,19 +37,8 @@ library(maps)
 Norge = st_as_sf(map("world", 'Norway', plot = FALSE, fill = TRUE))
 Norge <- st_transform(Norge, crs = 23032)
 
-usa = st_as_sf(map('usa', plot = FALSE, fill = TRUE))
-laea = st_crs("+proj=laea +lat_0=30 +lon_0=-95") # Lambert equal area
-usa <- st_transform(usa, laea)
-g = st_graticule(usa)
-plot(st_geometry(g), axes = TRUE)
-plot(usa, graticule = TRUE, key.pos = NULL, axes = TRUE)
-g = st_graticule(usa, lon = seq(-130,-65,5))
-plot(usa, graticule = g, key.pos = NULL, axes = TRUE,
-     xlim = st_bbox(usa)[c(1,3)], ylim = st_bbox(usa)[c(2,4)],
-     xaxs = "i", yaxs = "i")
 
 
-library(ggplot2)
 ggplot() + geom_sf(data = Norge) 
 
 demo(nc, ask = FALSE, echo = FALSE)
@@ -56,46 +46,19 @@ ggplot() +
   geom_sf(data = nc, aes(fill = BIR74)) + 
   scale_y_continuous(breaks = 34:36)
 
-library(tidyverse);library(tidyr)
-nc2 <- nc %>% select(SID74, SID79, geom) %>% gather(VAR, SID, -geom)
-ggplot() + 
-  geom_sf(data = nc2, aes(fill = SID)) + 
-  facet_wrap(~VAR, ncol = 1) +
-  scale_y_continuous(breaks = 34:36)
 
-st_viewport 
-
-library(mapview)
-mapviewOptions(fgb = FALSE)
-mapview(nc["BIR74"], col.regions = sf.colors(10), fgb = FALSE)
-mapview(Viken["navn"], col.regions = sf.colors(10), fgb = FALSE)
 
 library(tmap)
-qtm(nc)
-qtm(v)
-qtm(o)
-qtm(Viken)
+
 
 tmap_mode("view")
+qtm(Viken) 
 
-tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
+tm_shape(Viken) 
++ tm_squares(size = 1, col = NA, shape = 22, scale = 4/3, ...)
 ttm()
 tmap_last()
 
-
-# 6 - Miscellaneous -------------------------------------------------------
-
-rgdal::make_EPSG()
-
-library(sf)
-demo(nc, ask = FALSE, echo = FALSE)
-nc$geom2 = st_centroid(st_geometry(nc))
-print(nc, n = 2)
-
-plot(st_geometry(nc))
-
-st_geometry(nc) <- "geom2"
-plot(st_geometry(nc))
 
 
 
@@ -103,27 +66,6 @@ plot(st_geometry(nc))
 vignette("tmap-getstarted", package = "tmap")
 library(tmap)
 
-data(World, metro, rivers, land)
-
-tmap_mode("plot")
-## tmap mode set to plotting
-tm_shape(land) +
-  tm_raster("elevation", palette = terrain.colors(10)) +
-  tm_shape(World) +
-  tm_borders("white", lwd = .5) +
-  tm_text("iso_a3", size = "AREA") +
-  tm_shape(metro) +
-  tm_symbols(col = "red", size = "pop2020", scale = .5) +
-  tm_legend(show = FALSE)
-
-tmap_mode("view")
-tm_shape(World) +
-  tm_polygons(c("HPI", "economy")) +
-  tm_facets(sync = TRUE, ncol = 2)
-
-tm_basemap("Stamen.Watercolor") +
-  tm_shape(metro) + tm_bubbles(size = "pop2020", col = "red") +
-  tm_tiles("Stamen.TonerLabels")
 
 leaflet::providers # some of the maps I want to look at:
 
@@ -134,18 +76,23 @@ leaflet::providers # some of the maps I want to look at:
 # "OpenTopoMap"             |--||--
 # "OpenStreetMap.Mapnik"    |--||--
 
-tmap_mode("view")
+tmap_mode("plot")
 tm_basemap() + 
-  tm_shape(loc_sf) + tm_bubbles(col = "red")+
-  tm_tiles("OpenWeatherMap")
+  tm_shape(loc_sf) + tm_bubbles(col = "cam_mod", size = 0.5)
 
+loc_sf$cam_mod
+
+ttm()
+tmap_last()
 # permanent options
 opts <- tmap_options(basemaps = c(Canvas = "Esri.WorldGrayCanvas", Imagery = "Esri.WorldImagery"),
                      overlays = c(Labels = paste0("http://services.arcgisonline.com/arcgis/rest/services/Canvas/",
                                                     "World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}")))
 tmap_mode("plot")
 tm_basemap() + 
+  tm_shape(Viken) +
   tm_shape(loc_sf) + tm_bubbles(col = "red")
+  #tm_polygons(Viken) + #will only draw polygon, not additional layers
 
 tm_shape(World) +
   tm_polygons("HPI") +
@@ -181,22 +128,21 @@ tm_shape(World) +
 # Exporting maps
 tm <- tm_shape(World) +
   tm_polygons("HPI", legend.title = "Happy Planet Index")
-
-## save an image ("plot" mode)
-tmap_save(tm, filename = "world_map.png")
-
-## save as stand-alone HTML file ("view" mode)
-tmap_save(tm, filename = "world_map.html")
-
-tmap_tip()
+# 
+# ## save an image ("plot" mode)
+# tmap_save(tm, filename = "world_map.png")
+# 
+# ## save as stand-alone HTML file ("view" mode)
+# tmap_save(tm, filename = "world_map.html")
+# 
+# tmap_tip()
 
 
 # Third tmap Vignette -----------------------------------------------------
-
+Viken <- readRDS("viken.rds")
 vignette("tmap-changes", package = "tmap")
 
 
-tm_polygons(Viken) #will only draw polygon, not additional layers
 
 data(World, metro)
 tmap_mode("view")
