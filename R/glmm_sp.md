@@ -601,7 +601,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -632,14 +632,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -652,24 +653,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -916,7 +917,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -947,14 +948,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -967,24 +969,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -1186,7 +1188,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -1217,14 +1219,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -1237,24 +1240,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -1460,7 +1463,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -1491,14 +1494,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -1511,24 +1515,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -1731,7 +1735,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -1762,14 +1766,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -1782,24 +1787,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -1995,7 +2000,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -2026,14 +2031,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -2046,24 +2052,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -2274,7 +2280,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -2305,14 +2311,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -2325,24 +2332,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -2565,7 +2572,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -2596,14 +2603,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -2616,24 +2624,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -2830,7 +2838,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -2861,14 +2869,15 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 ```
 
 ```
@@ -2881,24 +2890,24 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
@@ -2992,7 +3001,7 @@ xtable(para_all, type = "html") # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Thu Mar 11 17:16:00 2021
+## % Thu Mar 11 21:11:23 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -3236,7 +3245,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "bottom", legend.title = element_blank(),
-        axis.title = element_text(size = 9)) 
+        axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -3251,37 +3260,38 @@ par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom",
-          axis.text.y = element_text(vjust = -0.7, hjust = 0,
-                                 margin = margin(l = 10, r = -55))) +
-    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
-                                 title.theme = element_text(
-                                   size=10,
-                                   face="italic")) ) 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+                                 margin = margin(l = 10, r = -55)),
+          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
 
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
-  geom_bar(col="black") +
+  geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*40*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
   scale_fill_bluebrown(reverse = T) 
 
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
 #                    #nrow = 2,
-#                    rel_widths = c(3,4),
+#                    # rel_widths = c(3,4),
 #                    rel_heights = c(3,2),
 #                    labels="auto"
 #                    #align = "h"
-# ) 
+# )
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
