@@ -23,11 +23,14 @@ library(see)         # plot-related package from the easystats-verse
 
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
-obs      <- readRDS("Observations_prepared1.rds")
+
+ctrl <- c("Control_1", "Control_2", "Control_3","Control_4")
+obs      <- readRDS("Observations_prepared1.rds") %>% 
+  mutate(flash = ifelse(period %in% ctrl, "Control",flash))
 obs <- obs %>% 
   mutate(species = validated_species,
          Hour = as.numeric(format(obs$datetime, "%H")), # for density-plots
-         flash = factor(obs$flash, labels = c("IR", "LED"))) # --||--
+         flash = factor(obs$flash, labels = c("IR", "LED","Control"))) # --||--
 # Set global plot theme
 theme_set(ggpubr::theme_classic2())
 ```
@@ -287,6 +290,7 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 
 ```{r, eval=FALSE}
 # just a shortcut for editing
+sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 ```
@@ -299,7 +303,9 @@ library(magick)
 p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() + theme(legend.position = "bottom", legend.title = element_blank()) 
+   ggpubr::theme_classic2() +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title = element_text(size = 9)) 
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -310,34 +316,50 @@ result <- equivalence_test(m_sp)
 result
 
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("TimeDeploy", "IR", "LED", "TimeDeploy * IR", "TimeDeploy * LED")
+par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + 
-    theme(legend.position = "bottom") +
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+    theme(legend.position = "bottom",
+          axis.text.y = element_text(vjust = -0.7, hjust = 0,
+                                 margin = margin(l = 10, r = -55))) +
+    guides(colour = guide_legend(nrow = 1, override.aes = list(size = .5),
                                  title.theme = element_text(
                                    size=10,
                                    face="italic")) ) 
 
 # Density plots
-p_dens <- filter(obs, species %in% sp) %>% 
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black") +
-  geom_density(aes(y=..density..*1700, 
-                   fill=flash, alpha=.1), 
-               show.legend = c(alpha = F)) +
-  theme(legend.position = "none") +
-  scale_y_continuous(n.breaks = 12) 
+  geom_density(aes(y=..density..*40*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'))+ #size
+  scale_fill_bluebrown(reverse = T) 
 
-  #theme(legend.position = c(1, 1), legend.justification = c(1, 1),
-  #               legend.title = element_blank())
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
+#                    #nrow = 2,
+#                    rel_widths = c(3,4),
+#                    rel_heights = c(3,2),
+#                    labels="auto"
+#                    #align = "h"
+# ) 
+
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file)
 
-p_grid <- cowplot::plot_grid(p_sp1,p_eq,p_dens,jpg,
+p_grid <- cowplot::plot_grid(p_sp1,
+                             p_eq,
+                             p_dens,
+                             jpg,
                    #nrow = 2,
                    rel_widths = c(3,4),
                    rel_heights = c(3,2),
