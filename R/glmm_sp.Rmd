@@ -162,7 +162,8 @@ _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
-  
+time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / 1.4) # scaled by 2 weeks (84=6*14(2w))
+
 time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
 ```
@@ -176,17 +177,17 @@ summary(time.dep4) #
 
 ```{r sp, eval=FALSE}
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
-parameters::format_parameters(m_sp)
 # ggpredict is similar to expand.grid
-p_sp <- ggeffects::ggpredict(m_sp, terms = c("time.deploy [all]", "flash"))
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
-performance::check_model(m_sp) # check assumptions
+assumpt <- performance::check_model(m_sp) # check assumptions
 ```
 
 
@@ -266,6 +267,8 @@ The multicollinearity is moderate for the interaction term of time.deploy and fl
 
 ```{r raadyr-report, ref.label='sp-report'}
 #<<sp-report>>
+
+assumpt
 ```
 
 
@@ -335,7 +338,7 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*40*count, #scaling density with the count
+  geom_density(aes(y=..density..*30*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
@@ -362,7 +365,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                              p_dens,
                              jpg,
                    #nrow = 2,
-                   rel_widths = c(3,4),
+                   #rel_widths = c(3,4),
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
@@ -643,23 +646,37 @@ para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gau
 # save as latex-table in the Thesis folder
 print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
-xtable(para_all, type = "html") # output in Rmd
+xtable(para_all) # output in Rmd
+```
+
+
+```{r model-report2, eval=FALSE}
+library(xtable)  # To make a latex-table for the thesis
+m_raa  <- readRDS("m_raadyr.rds")    
+m_rev  <- readRDS("m_rev.rds") 
+m_grvl <- readRDS("m_grevling.rds") 
+m_elg  <- readRDS("m_elg.rds")
+m_hjort<- readRDS("m_hjort.rds") 
+m_gaup <- readRDS("m_gaupe.rds")
+m_hare <- readRDS("m_hare.rds")
+m_maar <- readRDS("m_maar.rds")
+m_ekorn<- readRDS("m_ekorn.rds") 
 
 # not standardized
 para_all2 <- bind_rows(
-model_parameters(m_raa)   %>% add_row(Parameter = "Roe deer", .before = 1),
-model_parameters(m_rev)   %>% add_row(Parameter = "Red fox", .before = 1),
-model_parameters(m_grvl)  %>% add_row(Parameter = "Badger", .before = 1),
-model_parameters(m_elg)   %>% add_row(Parameter = "Moose", .before = 1),
-model_parameters(m_hjort) %>% add_row(Parameter = "Red deer", .before = 1),
-model_parameters(m_gaup)  %>% add_row(Parameter = "Lynx", .before = 1),
-model_parameters(m_hare)  %>% add_row(Parameter = "Hare", .before = 1),
-model_parameters(m_maar)  %>% add_row(Parameter = "European Pine Marten", .before = 1),
-model_parameters(m_ekorn) %>% add_row(Parameter = "Red squirrel", .before = 1)
+model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",            rep("",5)), .before = 1),
+model_parameters(m_rev)   %>% add_column(Species = c("Red fox",             rep("",5)), .before = 1),
+model_parameters(m_grvl)  %>% add_column(Species = c("Badger",              rep("",5)), .before = 1),
+model_parameters(m_elg)   %>% add_column(Species = c("Moose",               rep("",5)), .before = 1),
+model_parameters(m_hjort) %>% add_column(Species = c("Red deer",            rep("",5)), .before = 1),
+model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",                rep("",5)), .before = 1),
+model_parameters(m_hare)  %>% add_column(Species = c("Hare",                rep("",5)), .before = 1),
+model_parameters(m_maar)  %>% add_column(Species = c("European Pine Marten",rep("",5)), .before = 1),
+model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",        rep("",5)), .before = 1)
 ) %>% 
  insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
-
+para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","LED", "TimeDeploy * IR", "TimeDeploy * LED"), times=9)
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters2.tex")

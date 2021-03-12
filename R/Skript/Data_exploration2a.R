@@ -25,11 +25,11 @@ obs.stat <- ddply(obs, .(loc, period, validated_species), summarise,
 
 torg <- obs %>% group_by(loc,period,validated_species) %>%
   summarise( diff = round(difftime(datetime, lag(datetime), units="mins"), 0) )
-torg$diff[is.na(torg$diff)] <- 60 # all "first"-observations gets an arbitrary t.diff of 1 hour
+torg$diff[is.na(torg$diff)] <- 100 # all "first"-observations gets an arbitrary t.diff of 100 mins
 
 torg2 <- torg %>% group_by(loc,period,validated_species) %>%
-  summarise( n.obs2 = sum( diff > 10) ) # count all observations that were
-                              # more than 10 mins later than the previous event
+  summarise( n.obs2 = sum( diff > 20) ) # count all observations that were
+                              # more than 20 mins later than the previous event
 
 diff.stat <- obs.stat %>% left_join(torg2) %>% 
   mutate( eq = n.obs != n.obs2)
@@ -165,13 +165,13 @@ for (i in unique(obs$loc)) {
 
 torg <- obs %>% group_by(loc,date,validated_species) %>%
   summarise( diff = round(difftime(datetime, lag(datetime), units="mins"), 0) )
-torg$diff[is.na(torg$diff)] <- 60
+torg$diff[is.na(torg$diff)] <- 100 # 1st obs given an arbitrary difftime of 100mins
 # obs.agg <- ddply(obs, .(loc, date, validated_species), summarise, 
 #   n.obs = length(validated_species))
 
 obs.agg <- torg %>% group_by(loc,date,validated_species) %>%
-  summarise( n.obs = sum( diff > 15) ) # count all observations that were
-# more than 15 mins later than the previous event
+  summarise( n.obs = sum( diff > 20) ) # count all observations that were
+# more than 20 mins later than the previous event
 
 
 
@@ -227,31 +227,30 @@ time.dep$time.deploy <- time.dep$time.deploy/10 # shortening / zooming out on de
 
                                  saveRDS(time.dep, "timedep.rds") #for å ta med meg datasett til glmm_in_process
 
-                                 #saveRDS()
 # After saving --------------------------------------------------------------------
 
 # Model with random effect of loc and month on the intercept
-sp = "rev"
-my.glmer <- glmer(n.obs ~ time.deploy + as.factor(flash) + (1 | loc) + (1 | month), 
-  time.dep[time.dep$validated_species %in% sp & 
-          !time.dep$period %in% "Control"
-          & time.dep$time.deploy < 6.1 # = all tim.d less than 61 days
-          ,], family = poisson) 
-summary(my.glmer)
-report::report(my.glmer) # veldig ryddig og fin output!
-
-# Plotting the fixed effects of the model. I need to look up a way to do this correctly...
-new.dat <- expand.grid(flash = c(0, 1), time.deploy = 0:6)
-new.dat$fit <- exp(-3.490394 + 0.006966 * new.dat$time.deploy + 
-  0.089652 * new.dat$flash)
-new.dat$time.deploy <- new.dat$time.deploy * 10  # Rescaling back to the original scale
-
-plot(fit ~ time.deploy, new.dat[new.dat$flash %in% 0, ], ylim = c(0, 
-  0.2), type = "l")
-lines(fit ~ time.deploy, new.dat[new.dat$flash %in% 1, ], ylim = c(0, 
-  0.2), lty = 2)
-legend("topleft",legend=c("white LED","IR"),
-       lty = c(2,1))
-
-
+# sp = "rev"
+# my.glmer <- glmer(n.obs ~ time.deploy + as.factor(flash) + (1 | loc) + (1 | month), 
+#   time.dep[time.dep$validated_species %in% sp & 
+#           !time.dep$period %in% "Control"
+#           & time.dep$time.deploy < 6.1 # = all tim.d less than 61 days
+#           ,], family = poisson) 
+# summary(my.glmer)
+# report::report(my.glmer) # veldig ryddig og fin output!
+# 
+# # Plotting the fixed effects of the model. I need to look up a way to do this correctly...
+# new.dat <- expand.grid(flash = c(0, 1), time.deploy = 0:6)
+# new.dat$fit <- exp(-3.490394 + 0.006966 * new.dat$time.deploy + 
+#   0.089652 * new.dat$flash)
+# new.dat$time.deploy <- new.dat$time.deploy * 10  # Rescaling back to the original scale
+# 
+# plot(fit ~ time.deploy, new.dat[new.dat$flash %in% 0, ], ylim = c(0, 
+#   0.2), type = "l")
+# lines(fit ~ time.deploy, new.dat[new.dat$flash %in% 1, ], ylim = c(0, 
+#   0.2), lty = 2)
+# legend("topleft",legend=c("white LED","IR"),
+#        lty = c(2,1))
+# 
+# 
 
