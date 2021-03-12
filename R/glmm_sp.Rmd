@@ -162,7 +162,7 @@ _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
-time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / 1.4) # scaled by 2 weeks (84=6*14(2w))
+time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 2 weeks (84=12*7(1w))
 
 time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
@@ -184,7 +184,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
-# ggpredict is similar to expand.grid
+# ggeffect calls effects::Effect
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -212,7 +212,7 @@ I am not sure about how to make up for breaking these assumptions. For now, I wi
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
-saveRDS(m_sp, file = paste0("m_",sp,".rds"))
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
 ### Model interpretation
@@ -365,7 +365,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                              p_dens,
                              jpg,
                    #nrow = 2,
-                   #rel_widths = c(3,4),
+                   rel_widths = c(3,4),
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
@@ -650,7 +650,7 @@ xtable(para_all) # output in Rmd
 ```
 
 
-```{r model-report2, eval=FALSE}
+```{r model-report2}
 library(xtable)  # To make a latex-table for the thesis
 m_raa  <- readRDS("m_raadyr.rds")    
 m_rev  <- readRDS("m_rev.rds") 
