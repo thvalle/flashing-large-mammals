@@ -14,16 +14,34 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.3}Study design}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data Collection}{10}
+\contentsline {section}{\numberline {2.4}Data Collection}{9}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Data processing}{10}
+\contentsline {section}{\numberline {2.5}Data processing}{9}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.6}Statistical analysis}{11}
+\contentsline {section}{\numberline {2.6}Statistical analysis}{10}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.6.1}Equivalence test}{11}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Results}{14}
+\contentsline {chapter}{\numberline {3}Results}{13}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}GLMM}{14}
+\contentsline {section}{\numberline {3.1}GLMM}{13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Equivalence test}{14}
+\contentsline {subsection}{\numberline {3.1.1}All species}{13}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.2}Roe deer}{15}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.3}Red fox}{17}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.4}Badger}{18}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.5}Moose}{19}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.6}Red deer}{20}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.7}Lynx}{21}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.8}Hare}{22}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.9}Pine marten}{23}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.10}Red squirrel}{24}
