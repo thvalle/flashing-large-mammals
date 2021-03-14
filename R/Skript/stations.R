@@ -27,7 +27,7 @@
         # loc_UTM33 <- spTransform(loc_points,CRS("+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"))
         # stations$x <- loc_UTM33$x
         # stations$y <- loc_UTM33$y
-         stations$loc <- as.integer(stations$loc)
+         # stations$loc <- as.integer(stations$loc)
 #write_rds(stations, "stations.rds") 
 
 library(tidyverse)
@@ -113,12 +113,6 @@ class(statcov)
 library(sf)
 library(tidyverse)
 
-ju_sfg <- st_point(c(-134.4333, 58.3059)) #Juneau
-an_sfg <- st_point(c(-149.8631, 61.2174)) #Anchorage
-fa_sfg <- st_point(c(-147.7767, 64.8354)) #Fairbanks
-nm_sfg <- st_point(c(-165.4064, 64.5011)) #Nome
-
-
 
 
 
@@ -166,12 +160,8 @@ Viken_sf <- st_transform(Viken_sf, crs = 23032)
 ### View object
 Viken_sf
 
+Viken <- Viken_sf[8]
 
-
-## For å hente ut koordinater til å plotte tekst, til dømes
-loc_sf <- mutate(loc_sf, 
-                   x = purrr::map_dbl(geometry, 1), 
-                   y = purrr::map_dbl(geometry, 2))
 
 
 ggplot(data = Viken_sf) +
@@ -183,17 +173,113 @@ ggplot(data = Viken_sf) +
         theme(axis.title = element_blank()) 
 
 ## ------------------------------------------------------------------------
+# 
+# # plotting all norway-maps
+# library(maps)
+# x <- map('world', 'Norway', names = TRUE, plot = FALSE)
+# for (i in x) { map("world",i) }
+# 
+# 
+# 
+# #tmap has interactive leaflet maps:
+# library(tmap)
+# qtm(nc)
+# tmap_mode("view")
+# ## tmap mode set to interactive viewing
+# tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
+# 
 
-# plotting all norway-maps
-library(maps)
-x <- map('world', 'Norway', names = TRUE, plot = FALSE)
-for (i in x) { map("world",i) }
+
+
+#ggmaps API
+# 
+# ggmap::register_google(key = "key here",
+#                        write = TRUE) #write=TRUE to keep the key saved
+library(ggmap)
+map.norge <- get_map("Norge", zoom = 4)
+
+ggmap(map.norge,
+      extent = "device") +
+        coord_cartesian(xlim = c(0,))
+
+qmplot(loc_sf)
+
+library(ggplot2)
+library(ggmap)
+library(sf)
+
+nc_map <- get_map("oslo", maptype = "satellite", zoom = 8, source = "google")
+
+st_crs(nc_map)
+# Coordinate Reference System: NA
+
+# assume the coordinate refence system is 3857
+plot(st_transform(loc_sf, crs = 3857)[1], bgMap = nc_map)
 
 
 
-#tmap has interactive leaflet maps:
-library(tmap)
-qtm(nc)
-tmap_mode("view")
-## tmap mode set to interactive viewing
-tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
+# -----------------------------
+
+
+# changing gears (get a color map)
+houston <- get_map("houston", zoom = 14)
+HoustonMap <- ggmap(houston, extent = "device", legend = "topleft")
+
+# a filled contour plot...
+HoustonMap +
+        stat_density2d(aes(x = lon, y = lat, fill = ..level.., alpha = ..level..),
+                       size = 2, bins = 4, data = violent_crimes, geom = "polygon") +
+        scale_fill_gradient("Violent\nCrime\nDensity") +
+        scale_alpha(range = c(.4, .75), guide = FALSE) +
+        guides(fill = guide_colorbar(barwidth = 1.5, barheight = 10))
+
+# ... with an insert
+
+overlay <- stat_density2d(aes(x = lon, y = lat, fill = ..level.., alpha = ..level..),
+                          bins = 4, geom = "polygon", data = violent_crimes)
+
+attr(houston,"bb") # to help finding (x/y)(min/max) vals below
+
+HoustonMap +
+        stat_density2d(aes(x = lon, y = lat, fill = ..level.., alpha = ..level..),
+                       bins = 4, geom = "polygon", data = violent_crimes) +
+        scale_fill_gradient("Violent\nCrime\nDensity") +
+        scale_alpha(range = c(.4, .75), guide = FALSE) +
+        guides(fill = guide_colorbar(barwidth = 1.5, barheight = 10)) +
+        inset(
+                grob = ggplotGrob(ggplot() + overlay +
+                                          scale_fill_gradient("Violent\nCrime\nDensity") +
+                                          scale_alpha(range = c(.4, .75), guide = FALSE) +
+                                          theme_inset()
+                ),
+                xmin = -95.35877, xmax = -95.34229,
+                ymin = 29.73754, ymax = 29.75185
+        )
+
+
+
+
+
+
+
+
+
+## more examples
+##################################################
+
+# you can layer anything on top of the maps (even meaningless stuff)
+df <- data.frame(
+        lon = rep(seq(-95.39, -95.35, length.out = 8), each = 20),
+        lat = sapply(
+                rep(seq(29.74, 29.78, length.out = 8), each = 20),
+                function(x) rnorm(1, x, .002)
+        ),
+        class = rep(letters[1:8], each = 20)
+)
+
+qplot(lon, lat, data = df, geom = "boxplot", fill = class)
+
+HoustonMap +
+        geom_boxplot(aes(x = lon, y = lat, fill = class), data = df)
+
+

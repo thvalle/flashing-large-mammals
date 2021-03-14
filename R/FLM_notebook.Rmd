@@ -76,7 +76,8 @@ rects <- data.frame(xstart = f_work[c(1,3,5,7,9)],
 ```{r effort-facet}
 p_eff <- effort %>%
   mutate(trt_gr = ifelse(period %in% ctrl, "Control", "Treatment"), # faceting factor
-         flash = factor(ifelse(period %in% ctrl[c(2,4)], 4, flash), ordered = T, # colouring factor
+         # renaming control-groups in order to extract period-breaks, and not confuse with ctrl_1,2,3,4
+         flash = factor(ifelse(period %in% ctrl[c(2,4)], 4, flash), ordered = T,
                       levels = c(2,3,1,4), labels = c("IR", "LED", "Control", " "))) %>% 
 ggplot() +
   facet_grid(rows = "trt_gr", scales = "free_y", space = "free_y") +
@@ -88,7 +89,7 @@ ggplot() +
   #                               rep(c("#f46d43","#fdae61"),2) ), #ctrl-colr
   #                    labels = c("IR", "LED", "Control", "Control")) + 
   scale_color_manual(values = c(c("#abd9e9","#4575b4"),          # trt-colr
-                                rep(c("#f46d43","#fdae61")) )) + # ctrl-colr
+                                rep(c("#fdae61","#f46d43")) )) + # ctrl-colr
   guides(colour = guide_legend(override.aes = list(size = 2)), #adjust rows of legend
                 x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
                 # x = guide_axis(angle = -10))  #adjust axis-text angle

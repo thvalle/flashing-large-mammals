@@ -71,6 +71,14 @@ levels(time.dep2$flash) <- c("Control", "IR", "LED")
 levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
 ```
 
+```{r IR-control, eval=FALSE}
+# stations <- readRDS("stations.rds") %>% mutate(loc = as.factor(loc))
+# time.dep2 <- time.dep2 %>% left_join(stations) 
+# # IR-periods in group C are identical to Control-groups
+# time.dep2$flash[time.dep2$period == "IR_1" & time.dep2$abc == "C"] <- "Control"
+```
+
+
 Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
 
 First I'll filter out any periods shorter than 4 days ( _as of 18.02.2021, only 1 period_ ). 
@@ -93,16 +101,20 @@ time.dep3 <- time.dep2 %>% left_join(time.period) %>%
 time.period %>% filter(flash == "LED") %>%  
   summary() # median period length 85 days, mean: 84
 time.period %>% filter(flash == "IR") %>%  
-  summary() # median period length 79 days, mean: 89
+  summary() # median period length 78 days, mean: 89
+time.period %>% filter(flash == "Control") %>%  
+  summary() # median period length 89 days, mean: 93
 
 # extract lengths of each unique period
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
 #extracting median and multiplying by 10, to use in the correctly scaled plot
-hh <-       h$period_length[h$flash == "LED"] %>%  median()       # median white LED
-hh <- c(hh, h$period_length[h$flash == "IR" ] %>%  median()) * 10 # + median IR
+hh <-       h$period_length[h$flash == "LED"]      %>%  median()       #  white LED
+hh <- c(hh, h$period_length[h$flash == "IR" ]      %>%  median())      # +  IR
+hh <- c(hh, h$period_length[h$flash == "Control" ] %>%  median()) * 10 # +  Control
 # smallest median 
 h <- min(hh)
+h # 84 shortest median (IR)
 ```
 
 
@@ -134,6 +146,9 @@ p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
 There was an overweight of IR-periods extending past the median line.
 
 
+
+
+
 ```{r period-length-wControl, message=FALSE, warning=FALSE}
 # remake plot with Control-group data, faceted
 p_td2 <- time.dep3 %>% 
@@ -152,7 +167,7 @@ p_td2 + #ggpubr::theme_classic2() +
   theme(legend.position = "none", axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
         scale_linetype_manual(values = rep(c("solid","solid"), 4) ) + #option to change to solid,dashed
         scale_color_manual(values = c(rep(c("#74add1","#4575b4"), each = 2), # trt-colr
-                                      rep(c("#f46d43","#fdae61"),each = 2) ) )  #ctrl-colr
+                                      rep(c("#fdae61","#f46d43"),each = 2) ) )  #ctrl-colr
   #labs(caption = "Vertical line represents the median IR period length. \n Data superceding that were trimmed away for the GLMM")
 ```
 
@@ -162,7 +177,7 @@ _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
 # filtering out periods longer than (shortest) median length.
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
-time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 2 weeks (84=12*7(1w))
+# time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 1 weeks (84=12*7(1w))
 
 time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
@@ -177,8 +192,8 @@ summary(time.dep4) #
 
 ```{r sp, eval=FALSE}
 # sp ="raadyr"
-# time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
-time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
@@ -338,7 +353,7 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*30*count, #scaling density with the count
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
                    fill=flash, alpha=.1),
                show.legend = c(alpha = F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
@@ -661,6 +676,8 @@ m_gaup <- readRDS("m_gaupe.rds")
 m_hare <- readRDS("m_hare.rds")
 m_maar <- readRDS("m_maar.rds")
 m_ekorn<- readRDS("m_ekorn.rds") 
+# gather all models
+m_all <- list(m_raa, m_rev ,m_grvl, m_elg, m_hjort, m_gaup, m_hare, m_maar, m_ekorn)
 
 # not standardized
 para_all2 <- bind_rows(
@@ -716,24 +733,19 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
 
 
 ```{r mod-checks, eval=FALSE}
-check_overdispersion(m_raa)   # No overdispersion detected
-check_overdispersion(m_rev)   # -     -    | |    -    -
-check_overdispersion(m_grvl)  # -     -    | |    -    -
-check_overdispersion(m_elg)   # -     -    | |    -    -
-check_overdispersion(m_hjort) # -     -    | |    -    -
-check_overdispersion(m_gaup)  # -     -    | |    -    -
-check_zeroinflation(m_raa)   # Model seems ok, ratio of observed and 
-check_zeroinflation(m_rev)   #    predicted zeros is within the tolerance range.  
-check_zeroinflation(m_grvl)  #          -     -    | |    -    -   
-check_zeroinflation(m_elg)   #          -     -    | |    -    -   
-check_zeroinflation(m_hjort) #          -     -    | |    -    -  
-check_zeroinflation(m_gaup)  #          -     -    | |    -    -
-check_singularity(m_raa)   # FALSE
-check_singularity(m_rev)   #--||--
-check_singularity(m_grvl)  #--||--   
-check_singularity(m_elg)   #--||--   
-check_singularity(m_hjort) #--||--  
-check_singularity(m_gaup)  #--||--
+overd <- list()
+zeroi <- list()
+singu <- list()
+for (i in 1:9) {
+overd[[i]] <- check_overdispersion(m_all[[i]])
+zeroi[[i]] <-  check_zeroinflation(m_all[[i]])
+singu[[i]] <- check_singularity(m_all[[i]])
+}
+
+overd # No overdispersion detected
+zeroi # Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
+singu %>% unique() # FALSE
+
 ```
 
 
