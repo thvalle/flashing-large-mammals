@@ -13,6 +13,7 @@ output:
 ```{r setup}
 library(tidyverse)
 library(lme4)
+library(cowplot)
 library(performance) # diagnostic-plots to check assumptions
 library(report)      # Result-summaries in text-format
 library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regression Models
@@ -56,7 +57,6 @@ The model formula I will use is $n \sim \ time.deploy\ * flash $ for each specie
 
 ```{r timedep2}
 sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
-ctrl <- c("Control_1", "Control_2", "Control_3","Control_4")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
 #  filter(species %in% sp) %>% #filtering out species
@@ -182,6 +182,97 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must 
 time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
 ```
+
+# Counts of species
+
+```{r events}
+sp_focus <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
+sp_eng <- c("Roe deer", "Red fox", "Badger", "Hare", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
+sp_eng <- sp_eng[9:1] # reverse order
+sp_count <- time.dep4 %>% group_by(species, flash) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+p_count <- ggplot(sp_count, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "Species", y = "Events") +
+  # scale_y_continuous(breaks = sp_count$count) + guides(x = guide_axis(n.dodge = 2))
+  scale_y_continuous(n.breaks = 10) + scale_x_discrete(labels = sp_eng) +
+  geom_col(aes(fill=flash), colour = "black") +
+  scale_fill_bluebrown(reverse=T) +
+  theme(axis.title.x = element_blank(),legend.position = "none",
+        legend.title = element_blank()) 
+
+ p_count + coord_flip() +
+   theme(legend.box.background = element_rect(),axis.title.y = element_blank(),
+                legend.position = c(.8, .3),legend.justification = c("left", "top"))
+ 
+# data without flash-grouping
+sp_count_trim <- time.dep4 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+sp_count_full <- time.dep3 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+# plot full and trimmed on top of each other
+ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "Species", y = "Events") +
+  scale_y_continuous(n.breaks = 10) + 
+  geom_col() +
+  geom_col(data=sp_count_trim, fill="blue") +
+  geom_label(aes(x=species,y=count,label = count))
+```
+
+
+```{r active-days}
+active_trimmed <- time.dep4 %>% group_by(loc, period, period_length, flash) %>% 
+  summarise(days_trim = max(time.deploy))
+# by flash
+active_f <- active_trimmed %>% group_by(flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) ) %>% # for both variables
+  reshape2::melt(measure=c("Full","Trimmed"), id="flash") #melt both into one variable
+# plot
+ggplot(active_f,aes(flash,value,fill=variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_bluebrown() + labs(x= "Period group", y= "Number of active camera trapping days",
+                                caption = "Total number of active camera trapping days per period group in blue,\n and active camera days included in the GLMM after trimming the periods.") +
+   geom_label(aes(label=value),nudge_x = rep(c(-.23,.23),each=3), show.legend = F ) +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+
+
+# by period
+active_p <- active_trimmed %>% group_by(period, flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) ) %>% # for both variables
+  reshape2::melt(measure=c("Full","Trimmed"), id=c("period","flash")) #melt both into one variable
+ggplot(active_p,aes(period,value,fill=variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_bluebrown() + labs(x= "Period group", y= "Number of active camera trapping days") +
+  facet_wrap(~flash, scales = "free_x") +
+  guides(x = guide_axis(check.overlap = T)) +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+
+# periods stacked on flash + faceted
+p_days <- active_p %>% mutate(period = fct_rev(period)) %>% 
+ggplot(aes(flash,value,fill=flash,col=period)) +
+  geom_col() +
+  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_color_grey(start = 0, end = 0) + #black surrounding colour
+  labs(x= "Period group", y= "Active camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  facet_wrap(~variable) +
+  theme(legend.position = "none", axis.title.x = element_blank())
+p_days
+```
+
+
+```{r days-count, eval=FALSE}
+plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
+                                       sec.axis = dup_axis(name = element_blank())) ,
+          p_days + scale_y_continuous(#n.breaks = 7,
+                                       sec.axis = dup_axis(name = element_blank()) ),
+          nrow = 2,
+          rel_heights = c(2,3))
+```
+
 
 
 # Modelling
@@ -322,7 +413,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -339,14 +430,24 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
+
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
 
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
@@ -359,21 +460,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,

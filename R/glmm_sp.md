@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "14 mars, 2021"
+date: "17 mars, 2021"
 output:
   html_document:
     toc: true
@@ -52,6 +52,7 @@ library(lme4)
 ```
 
 ```r
+library(cowplot)
 library(performance) # diagnostic-plots to check assumptions
 library(report)      # Result-summaries in text-format
 ```
@@ -62,13 +63,34 @@ library(report)      # Result-summaries in text-format
 
 ```r
 library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regression Models
+```
+
+```
+## 
+## Attaching package: 'ggeffects'
+```
+
+```
+## The following object is masked from 'package:cowplot':
+## 
+##     get_title
+```
+
+```r
                           # more at: https://strengejacke.github.io/ggeffects/
 library(parameters)  # extract model-parameters etc. from (most) models
 library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
 ```
 
 ```
-## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
+## 
+## Attaching package: 'sjPlot'
+```
+
+```
+## The following objects are masked from 'package:cowplot':
+## 
+##     plot_grid, save_plot
 ```
 
 ```r
@@ -119,7 +141,6 @@ The model formula I will use is $n \sim \ time.deploy\ * flash $ for each specie
 
 ```r
 sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
-ctrl <- c("Control_1", "Control_2", "Control_3","Control_4")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
 #  filter(species %in% sp) %>% #filtering out species
@@ -360,6 +381,136 @@ summary(time.dep4) #
 ## 
 ```
 
+# Counts of species
+
+
+```r
+sp_focus <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
+sp_eng <- c("Roe deer", "Red fox", "Badger", "Hare", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
+sp_eng <- sp_eng[9:1] # reverse order
+sp_count <- time.dep4 %>% group_by(species, flash) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+```
+
+```
+## `summarise()` has grouped output by 'species'. You can override using the `.groups` argument.
+```
+
+```r
+p_count <- ggplot(sp_count, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "Species", y = "Events") +
+  # scale_y_continuous(breaks = sp_count$count) + guides(x = guide_axis(n.dodge = 2))
+  scale_y_continuous(n.breaks = 10) + scale_x_discrete(labels = sp_eng) +
+  geom_col(aes(fill=flash), colour = "black") +
+  scale_fill_bluebrown(reverse=T) +
+  theme(axis.title.x = element_blank(),legend.position = "none",
+        legend.title = element_blank()) 
+
+ p_count + coord_flip() +
+   theme(legend.box.background = element_rect(),axis.title.y = element_blank(),
+                legend.position = c(.8, .3),legend.justification = c("left", "top"))
+```
+
+![](glmm_sp_files/figure-html/events-1.png)<!-- -->
+
+```r
+# data without flash-grouping
+sp_count_trim <- time.dep4 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+sp_count_full <- time.dep3 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
+  summarise(count = sum(n.obs))
+# plot full and trimmed on top of each other
+ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "Species", y = "Events") +
+  scale_y_continuous(n.breaks = 10) + 
+  geom_col() +
+  geom_col(data=sp_count_trim, fill="blue") +
+  geom_label(aes(x=species,y=count,label = count))
+```
+
+![](glmm_sp_files/figure-html/events-2.png)<!-- -->
+
+
+
+```r
+active_trimmed <- time.dep4 %>% group_by(loc, period, period_length, flash) %>% 
+  summarise(days_trim = max(time.deploy))
+```
+
+```
+## `summarise()` has grouped output by 'loc', 'period', 'period_length'. You can override using the `.groups` argument.
+```
+
+```r
+# by flash
+active_f <- active_trimmed %>% group_by(flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) ) %>% # for both variables
+  reshape2::melt(measure=c("Full","Trimmed"), id="flash") #melt both into one variable
+# plot
+ggplot(active_f,aes(flash,value,fill=variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_bluebrown() + labs(x= "Period group", y= "Number of active camera trapping days",
+                                caption = "Total number of active camera trapping days per period group in blue,\n and active camera days included in the GLMM after trimming the periods.") +
+   geom_label(aes(label=value),nudge_x = rep(c(-.23,.23),each=3), show.legend = F ) +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+```
+
+![](glmm_sp_files/figure-html/active-days-1.png)<!-- -->
+
+```r
+# by period
+active_p <- active_trimmed %>% group_by(period, flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) ) %>% # for both variables
+  reshape2::melt(measure=c("Full","Trimmed"), id=c("period","flash")) #melt both into one variable
+```
+
+```
+## `summarise()` has grouped output by 'period'. You can override using the `.groups` argument.
+```
+
+```r
+ggplot(active_p,aes(period,value,fill=variable)) +
+  geom_col(position = "dodge") +
+  scale_fill_bluebrown() + labs(x= "Period group", y= "Number of active camera trapping days") +
+  facet_wrap(~flash, scales = "free_x") +
+  guides(x = guide_axis(check.overlap = T)) +
+  theme(legend.position = "bottom", legend.title = element_blank(),
+        axis.title.x = element_blank())
+```
+
+![](glmm_sp_files/figure-html/active-days-2.png)<!-- -->
+
+```r
+# periods stacked on flash + faceted
+p_days <- active_p %>% mutate(period = fct_rev(period)) %>% 
+ggplot(aes(flash,value,fill=flash,col=period)) +
+  geom_col() +
+  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_color_grey(start = 0, end = 0) + #black surrounding colour
+  labs(x= "Period group", y= "Active camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  facet_wrap(~variable) +
+  theme(legend.position = "none", axis.title.x = element_blank())
+p_days
+```
+
+![](glmm_sp_files/figure-html/active-days-3.png)<!-- -->
+
+
+
+```r
+plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
+                                       sec.axis = dup_axis(name = element_blank())) ,
+          p_days + scale_y_continuous(#n.breaks = 7,
+                                       sec.axis = dup_axis(name = element_blank()) ),
+          nrow = 2,
+          rel_heights = c(2,3))
+```
+
+
 
 # Modelling
 
@@ -554,26 +705,6 @@ p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 
 ```r
 library(cowplot) # to make grid-plots
-```
-
-```
-## 
-## Attaching package: 'cowplot'
-```
-
-```
-## The following objects are masked from 'package:sjPlot':
-## 
-##     plot_grid, save_plot
-```
-
-```
-## The following object is masked from 'package:ggeffects':
-## 
-##     get_title
-```
-
-```r
 library(magick)
 ```
 
@@ -589,7 +720,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -622,10 +753,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -638,6 +770,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -649,21 +790,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -863,7 +1007,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -896,10 +1040,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -912,6 +1057,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -923,21 +1077,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -1092,7 +1249,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -1125,10 +1282,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -1141,6 +1299,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -1152,21 +1319,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -1315,7 +1485,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -1348,10 +1518,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -1364,6 +1535,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -1375,21 +1555,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -1537,7 +1720,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -1570,10 +1753,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -1586,6 +1770,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -1597,21 +1790,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -1760,7 +1956,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -1793,10 +1989,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -1809,6 +2006,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -1820,21 +2026,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -1988,7 +2197,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -2021,10 +2230,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -2037,6 +2247,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -2048,21 +2267,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -2238,7 +2460,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -2271,10 +2493,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -2287,6 +2510,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -2298,21 +2530,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -2462,7 +2697,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -2495,10 +2730,11 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -2511,6 +2747,15 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
@@ -2522,21 +2767,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -2626,7 +2874,7 @@ xtable(para_all) # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Sun Mar 14 15:22:35 2021
+## % Wed Mar 17 09:38:57 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2878,7 +3126,7 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: â€œribbonâ€
                colors = c("black","#e41a1c","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "top", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -2895,14 +3143,24 @@ par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
     scale_x_discrete(labels = par_lab) + # new axis names
-    theme(legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -55)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
+
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("LED \   (",c[2,2],")")
 
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
@@ -2915,21 +3173,24 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'))+ #size
-  scale_fill_bluebrown(reverse = T) 
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
+                    labels=c(lab_ctrl, lab_IR, lab_LED))
 
 
-# cowplot::plot_grid(NULL,p_eq,p_dens,NULL,
+
+# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
-#                    # rel_widths = c(3,4),
-#                    rel_heights = c(3,2),
-#                    labels="auto"
-#                    #align = "h"
-# )
+#                    # rel_widths = c(3,4,6,1),
+#                    # rel_heights = c(3,2),
+#                    labels="auto",
+#                    axis = "r"
+# ) 
 
 
 sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file)
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_sp1,
                              p_eq,
@@ -2986,9 +3247,9 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] xtable_1.8-4        magick_2.7.0        cowplot_1.1.1      
-##  [4] see_0.6.2.1         sjPlot_2.8.7        parameters_0.12.0.1
-##  [7] ggeffects_1.0.1     report_0.2.0        performance_0.7.0.1
+##  [1] xtable_1.8-4        magick_2.7.0        see_0.6.2.1        
+##  [4] sjPlot_2.8.7        parameters_0.12.0.1 ggeffects_1.0.1    
+##  [7] report_0.2.0        performance_0.7.0.1 cowplot_1.1.1      
 ## [10] lme4_1.1-26         Matrix_1.3-2        forcats_0.5.1      
 ## [13] stringr_1.4.0       dplyr_1.0.5         purrr_0.3.4        
 ## [16] readr_1.4.0         tidyr_1.1.3         tibble_3.1.0       
@@ -3004,21 +3265,21 @@ sessionInfo()
 ## [25] effectsize_0.4.3-1 compiler_4.0.4     httr_1.4.2         sjstats_0.18.1    
 ## [29] emmeans_1.5.4      backports_1.2.1    assertthat_0.2.1   survey_4.0        
 ## [33] cli_2.3.1          htmltools_0.5.1.1  tools_4.0.4        coda_0.19-4       
-## [37] gtable_0.3.0       glue_1.4.2         Rcpp_1.0.6         carData_3.0-4     
-## [41] cellranger_1.1.0   jquerylib_0.1.3    vctrs_0.3.6        nlme_3.1-152      
-## [45] insight_0.13.1.1   xfun_0.22          openxlsx_4.2.3     rvest_1.0.0       
-## [49] lifecycle_1.0.0    statmod_1.4.35     rstatix_0.7.0      MASS_7.3-53.1     
-## [53] scales_1.1.1       hms_1.0.0          RColorBrewer_1.1-2 yaml_2.2.1        
-## [57] curl_4.3           sass_0.3.1         stringi_1.5.3      highr_0.8         
-## [61] bayestestR_0.8.3.1 boot_1.3-27        zip_2.1.1          rlang_0.4.10      
-## [65] pkgconfig_2.0.3    evaluate_0.14      lattice_0.20-41    labeling_0.4.2    
-## [69] tidyselect_1.1.0   plyr_1.8.6         magrittr_2.0.1     R6_2.5.0          
-## [73] generics_0.1.0     DBI_1.1.1          pillar_1.5.1       haven_2.3.1       
-## [77] foreign_0.8-81     withr_2.4.1        survival_3.2-7     abind_1.4-5       
-## [81] nnet_7.3-15        modelr_0.1.8       crayon_1.4.1       car_3.0-10        
-## [85] utf8_1.1.4         rmarkdown_2.7.3    grid_4.0.4         readxl_1.3.1      
-## [89] data.table_1.14.0  reprex_1.0.0       digest_0.6.27      munsell_0.5.0     
-## [93] bslib_0.2.4.9002   mitools_2.4
+## [37] gtable_0.3.0       glue_1.4.2         reshape2_1.4.4     Rcpp_1.0.6        
+## [41] carData_3.0-4      cellranger_1.1.0   jquerylib_0.1.3    vctrs_0.3.6       
+## [45] nlme_3.1-152       insight_0.13.1.1   xfun_0.22          openxlsx_4.2.3    
+## [49] rvest_1.0.0        lifecycle_1.0.0    statmod_1.4.35     rstatix_0.7.0     
+## [53] MASS_7.3-53.1      scales_1.1.1       hms_1.0.0          RColorBrewer_1.1-2
+## [57] yaml_2.2.1         curl_4.3           sass_0.3.1         stringi_1.5.3     
+## [61] highr_0.8          bayestestR_0.8.3.1 boot_1.3-27        zip_2.1.1         
+## [65] rlang_0.4.10       pkgconfig_2.0.3    evaluate_0.14      lattice_0.20-41   
+## [69] labeling_0.4.2     tidyselect_1.1.0   plyr_1.8.6         magrittr_2.0.1    
+## [73] R6_2.5.0           generics_0.1.0     DBI_1.1.1          pillar_1.5.1      
+## [77] haven_2.3.1        foreign_0.8-81     withr_2.4.1        survival_3.2-7    
+## [81] abind_1.4-5        nnet_7.3-15        modelr_0.1.8       crayon_1.4.1      
+## [85] car_3.0-10         utf8_1.1.4         rmarkdown_2.7.3    grid_4.0.4        
+## [89] readxl_1.3.1       data.table_1.14.0  reprex_1.0.0       digest_0.6.27     
+## [93] munsell_0.5.0      bslib_0.2.4.9002   mitools_2.4
 ```
 
 ```r

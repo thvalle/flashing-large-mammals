@@ -85,9 +85,6 @@ ggplot() +
   theme_classic() + labs(y = "Location") +
   theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
         legend.position = "top")+
-  # scale_color_manual(values = c(rep(c("#abd9e9","#4575b4"),each=2), # trt-colr
-  #                               rep(c("#f46d43","#fdae61"),2) ), #ctrl-colr
-  #                    labels = c("IR", "LED", "Control", "Control")) + 
   scale_color_manual(values = c(c("#abd9e9","#4575b4"),          # trt-colr
                                 rep(c("#fdae61","#f46d43")) )) + # ctrl-colr
   guides(colour = guide_legend(override.aes = list(size = 2)), #adjust rows of legend
