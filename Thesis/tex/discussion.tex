@@ -1,20 +1,14 @@
 \chapter{Discussion}
 
+What I've really been attempting to do in this thesis, is to look for any surprising differences in the detection rate of target species when using a white LED camera trap. Therefore, I have been more afraid of commiting a type II error (false positive; accepting H0 when it really is false) than I have been of committing a type I error (rejecting H0 when it really is true).
+Hopefully, the equivalence tests I've performed can say something meaningful about the effect size of white LED flash-usage.
+
+Surely, there are examples of some individual animals reacting strongly to the white light, and fleeing from the site (see photo series in fig TK).
+Indeed, many papers have adviced against using white LED CTs during behaviour studies ().
+
+Still, when the goal is to merely detect species, and estimate a species density, does the white LED stress animals to the extent that our results will be biased? %dårlig formulering
 
 
-Hypothesising GLMM:
-
-\textbf{If} $H_1$ is true, and there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods usually starts after a flash period (with the exception of the first IR-period, i.e. first red periods in figure \vref{fig:timeseries_flash}).
-
-Remembering my study design, 20 cameras start with white LED, 20 with IR.
-Intercept should theoretically be identical in the 1st period.
-2nd period; white LEDs are moved. New LED CTs should have same intercept (unchanged detection rate), and new IR CTs should have a hypothetical lower intercept due to the effect of white LED.
-3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept), and so on.
-
-Which sums up to 3 IR periods where detection rates could start lower than that of white LED.
-
-If that was true, and the white LED interacting with time had a significantly negative slope, then the slope of IR should be positive, as the roe deer detection rate returned to normal.
-The slope for the control-group(time.deploy:flashControl) should represent a normal detection rate, and be close to flat ($ \beta \approx 0$), intercept possibly closer to that of white LED, than IR.
 
 
 
@@ -31,3 +25,21 @@ The slope for the control-group(time.deploy:flashControl) should represent a nor
 
 %TIPS FRÅ INGVILD:
 % Bare pass på at du svarer på hypotesene dine og drøfter dem
+
+
+
+
+Hypothesising GLMM:
+
+\textbf{If} $H_1$ is true, and there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods usually starts after a flash period (with the exception of the first IR-period, i.e. first red periods in figure \vref{fig:timeseries_flash}).
+
+Remembering my study design, 20 cameras start with white LED, 20 with IR.
+Intercept should theoretically be identical in the 1st period.
+2nd period; white LEDs are moved. New LED CTs should have same intercept (unchanged detection rate), and new IR CTs should have a hypothetical lower intercept due to the effect of white LED.
+3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept), and so on.
+
+Which sums up to 3 IR periods where detection rates could start lower than that of white LED.
+
+If that was true, and the white LED interacting with time had a significantly negative slope, then the slope of IR should be positive, as the roe deer detection rate returned to normal.
+The slope for the control-group(time.deploy:flashControl) should represent a normal detection rate, and be close to flat ($ \beta \approx 0$), intercept possibly closer to that of white LED, than IR.
+

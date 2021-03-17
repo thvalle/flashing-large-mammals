@@ -87,6 +87,70 @@
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
     \endentry
+    \entry{Henrich2020}{article}{}
+      \name{author}{7}{}{%
+        {{uniquename=0,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
+           family={Henrich},
+           family_i={H\bibinitperiod},
+           given={Maik},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=5e98a26a9acbe53cba1caed564152b5a}{%
+           family={Niederlechner},
+           family_i={N\bibinitperiod},
+           given={Sandra},
+           given_i={S\bibinitperiod}}}%
+        {{uniquename=0,hash=7acec411e8fcb58e39fb4cd3b43fbae4}{%
+           family={Kröschel},
+           family_i={K\bibinitperiod},
+           given={Max},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=885f933da6c42bf36e8c6c406d6550d6}{%
+           family={Thoma},
+           family_i={T\bibinitperiod},
+           given={Stefanie},
+           given_i={S\bibinitperiod}}}%
+        {{uniquename=0,hash=8efbcfda15d6816970d81361c26d0804}{%
+           family={Dormann},
+           family_i={D\bibinitperiod},
+           given={Carsten\bibnamedelima F.},
+           given_i={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{uniquename=0,hash=f2023df7507c5721104bd31350623c8c}{%
+           family={Hartig},
+           family_i={H\bibinitperiod},
+           given={Florian},
+           given_i={F\bibinitperiod}}}%
+        {{uniquename=0,hash=7a3b2c1ad75a363dbd62c7140aaee6c0}{%
+           family={Heurich},
+           family_i={H\bibinitperiod},
+           given={Marco},
+           given_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{1158d5f33e7af81b7ff00614d53248b9}
+      \strng{fullhash}{eb5173b7a87e8bdde475e2eb1f572e36}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera traps have become an important tool in wildlife monitoring. However, an issue in interpreting their data in statistical analyses of population densities, demography or behaviour is that the probability of detecting the target animals and their behaviours may vary depending on environmental and methodological factors. A specific problem is the type of flash used in the camera trap, as animals may react differently to different flash types and change their avoidance or habituation behaviour accordingly over time. Here, we provide the first systematic test of the impact of flash type in studies of red deer (Cervus elaphus) and roe deer (Capreolus capreolus), based on an analysis of behavioural responses to white, standard infrared and black flashes during 900 camera trap deployments in the Bavarian Forest National Park and the Northern Black Forest. The results revealed that both deer species were more likely to react to standard infrared than to black flash, but trigger delays prevented comparisons to white flash. Red deer reacted more frequently to camera traps than did roe deer, and responses were more common in the Northern Black Forest than in the Bavarian Forest National Park, where hunting is severely restricted. Contrary to our expectations, camera trapping rates of free-ranging deer did not significantly decline over time for any flash type or species. Despite the lack of evidence for avoidance behaviour, we recommend the use of black flash for behavioural studies of deer populations to minimize the risk of introducing a source of disturbance whereas infrared and white flash are equally suitable for determinations of demographic parameters.}
+      \field{annotation}{Studien såg på forskjeller mellom svart, infrar{ø}d og kvit blits, men kvit blei ekskludert frå ein del analyser grunna forsinkelser i trigger, samt fråvêr av rapidfire-funksjon (blitsen måtte ladast mellom kvar fyring). Hjort viste st{ø}rre grad av påverknad frå kamera (i snitt), mens rådyr i vinterinnhegning såg ut til å unngå kameraene. Monge individ: vanskelig å skilne endringer i visitt-rate Naturleg låg gjenvisitt-rate: lite sannsynleg med unnviking av kamera}
+      \field{issn}{20563485}
+      \field{journaltitle}{Remote Sensing in Ecology and Conservation}
+      \field{number}{3}
+      \field{title}{{The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer}}
+      \field{volume}{6}
+      \field{year}{2020}
+      \field{pages}{399\bibrangedash 410}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1002/rse2.150
+      \endverb
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/Henrich_2020 --- The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer.pdf:pdf
+      \endverb
+      \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
+    \endentry
     \entry{Beddari2019}{article}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=49c5d3f04746c4e707798fee11f091ef}{%
@@ -452,6 +516,33 @@
       \verb 10.18637/jss.v067.i01
       \endverb
     \endentry
+    \entry{survival-book}{book}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=4f6c14a2026dbc26a9ae0576424ab726}{%
+           family={{Terry\bibnamedelimb M.\bibnamedelimi Therneau}},
+           family_i={T\bibinitperiod}}}%
+        {{uniquename=0,hash=2b7569d40a223378d1db79c83cf72626}{%
+           family={{Patricia\bibnamedelimb M.\bibnamedelimi Grambsch}},
+           family_i={P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{d7f8cb5bfa3c9735ea0dd996da41e4c5}
+      \strng{fullhash}{d7f8cb5bfa3c9735ea0dd996da41e4c5}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2000}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{0-387-98784-3}
+      \field{title}{{Modeling Survival Data: Extending the {C}ox Model}}
+      \field{year}{2000}
+    \endentry
     \entry{survival-package}{manual}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
@@ -501,6 +592,7 @@
       \endverb
     \endentry
   \endsortlist
+  \missing{easystats}
 \endrefsection
 \endinput
 

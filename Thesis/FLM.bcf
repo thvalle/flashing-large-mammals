@@ -2028,16 +2028,19 @@
   </bcf:bibdata>
   <bcf:section number="0">
     <bcf:citekey order="1">Burton2015</bcf:citekey>
-    <bcf:citekey order="2">Beddari2019</bcf:citekey>
-    <bcf:citekey order="3">Moen1999</bcf:citekey>
-    <bcf:citekey order="4">Odden2015</bcf:citekey>
-    <bcf:citekey order="5">Trailcampro2014</bcf:citekey>
-    <bcf:citekey order="6">RCoreTeam2020</bcf:citekey>
-    <bcf:citekey order="7">RStudioTeam2020a</bcf:citekey>
-    <bcf:citekey order="8">tidyverse</bcf:citekey>
-    <bcf:citekey order="9">lme4</bcf:citekey>
-    <bcf:citekey order="10">survival-package</bcf:citekey>
-    <bcf:citekey order="11">coxme-package</bcf:citekey>
+    <bcf:citekey order="2">Henrich2020</bcf:citekey>
+    <bcf:citekey order="3">Beddari2019</bcf:citekey>
+    <bcf:citekey order="4">Moen1999</bcf:citekey>
+    <bcf:citekey order="5">Odden2015</bcf:citekey>
+    <bcf:citekey order="6">Trailcampro2014</bcf:citekey>
+    <bcf:citekey order="7">RCoreTeam2020</bcf:citekey>
+    <bcf:citekey order="8">RStudioTeam2020a</bcf:citekey>
+    <bcf:citekey order="9">tidyverse</bcf:citekey>
+    <bcf:citekey order="10">easystats</bcf:citekey>
+    <bcf:citekey order="11">lme4</bcf:citekey>
+    <bcf:citekey order="12">survival-book</bcf:citekey>
+    <bcf:citekey order="13">survival-package</bcf:citekey>
+    <bcf:citekey order="14">coxme-package</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global" type="entry" sortscheme="none" sortnamekeyscheme="global">
   <bcf:sorting>
