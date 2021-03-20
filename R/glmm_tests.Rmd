@@ -1,5 +1,5 @@
 ---
-title: "GLMM periods"
+title: "GLMM without locations where n.obs = 0 for every period"
 author: "Torgeir Holmgard Valle"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -37,7 +37,10 @@ theme_set(ggpubr::theme_classic2())
 
 ## Purpose
 
-Remaking glmm_sp to test periods instead of just flash type, and to do the models without weekly random effect. What happens to Time since deployment?
+Remaking glmm_sp to test whether removing locations that never detected any individuals of each species. Bad formulation... For each species specific model, I removed the locations that never saw any individuals of said species.
+And I did it to see if my models improved.
+
+Rationale: Of course type of flash won't be able to predict any detection rate changes at cameras that never detected any individuals of a species.
 
 
 
@@ -97,12 +100,13 @@ h <- min(hh)
 
 _Lastly, performing the filter:_
 ```{r time.dep4-filtr}
+habitat <- readRDS("habitat.rds") %>% 
+  mutate(loc = factor(loc))
 # filtering out periods longer than (shortest) median length.
-time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
-time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 1 weeks (84=12*7(1w))
+time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, must be rescaled by /10
+  left_join(habitat, by = "loc") 
+# time.dep5 <- time.dep4 %>% filter(loc[n.obs > 0])
 
-time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
-summary(time.dep4) #            
 ```
 
 
@@ -113,18 +117,21 @@ summary(time.dep4) #
 
 
 ```{r sp, eval=FALSE}
-# sp ="raadyr"
-# time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
-time_sp <- filter(time.dep5, species %in% sp, !period %in% ctrl) #.dep5 = fully scaled time.deploy
+# sp ="maar"
+loc1 <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp, loc %in% loc1) #.dep4 = trimmed data
+# time_sp <- filter(time.dep5, species %in% sp, !period %in% ctrl) #.dep5 = test-transformations
 # Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * period + # fixed effects
-            (1 | loc) + (1 | week), # random effects
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week) + (1|habitat), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 # ggeffect calls effects::Effect
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "period"))
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# N sites
+length(loc1)
 ```
 
 
@@ -134,7 +141,7 @@ assumpt <- performance::check_model(m_sp) # check assumptions
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
-saveRDS(m_sp, file = paste0("m2_",sp,".rds")) # save model objects as shortcut for when editing etc.
+# saveRDS(m_sp, file = paste0("m2_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
 
@@ -170,11 +177,11 @@ library(cowplot) # to make grid-plots
 library(magick)
 # ggpredict
 p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-              # colors = c("black","#e41a1c","#377eb8")
+               colors = c("black","#e41a1c","#377eb8"),
               ) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
-  theme(#legend.position = "bottom", legend.title = element_blank(),
+  theme(legend.position = "bottom", legend.title = element_blank(),
         axis.title = element_text(size = 11)) 
 
 # standardized plots aren't very different, other than on the scale
@@ -186,15 +193,11 @@ result <- equivalence_test(m_sp)
 result
 
 # labels for equivalence test - prettier to the human eye
-# par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
-# par_lab <- par_lab[5:1]
+par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    # scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-          axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-                                 margin = margin(l = 10, r = -75)),
-          axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    scale_x_discrete(labels = par_lab) + # new axis names
     guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
@@ -299,7 +302,8 @@ para_rev = para_sp
 ```
 
 
-```{r knit-exit, eval=FALSE}
+```{r knit-exit, eval=TRUE
+}
 knitr::knit_exit() # to exit knitting process here instead of at the document end
 ```
 

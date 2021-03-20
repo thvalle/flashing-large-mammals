@@ -261,6 +261,15 @@ ggplot(aes(flash,value,fill=flash,col=period)) +
   facet_wrap(~variable) +
   theme(legend.position = "none", axis.title.x = element_blank())
 p_days
+
+ active_p %>% mutate(period = fct_rev(period)) %>% 
+ggplot(aes(flash,value,fill=flash,col=period)) +
+  geom_col(aes(group=variable),position = "dodge") +
+  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_color_grey(start = 0, end = 0) + #black surrounding colour
+  labs(x= "Period group", y= "Active camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  theme(legend.position = "none", axis.title.x = element_blank())
 ```
 
 
@@ -283,7 +292,9 @@ plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300)
 
 ```{r sp, eval=FALSE}
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -294,6 +305,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -402,6 +414,7 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -488,7 +501,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
        #  hjust = 1, halign = 1, valign = 0)
 ```
@@ -688,8 +701,24 @@ para_hare = para_sp
 ## Red squirrel
 
 `r sp = "ekorn"`
+```{r ekorn1}
+time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson,
+            nAGQ = 0) # change optimizer to oenalized iteratively reweighted least squares step
+# ggeffect calls effects::Effect
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+va_r <- insight::get_variance(m_sp)
+```
 
-```{r ekorn, ref.label=c('sp','sp-report'), cache=TRUE}
+
+```{r ekorn, ref.label=c('sp-report'), cache=TRUE}
+
 ```
 
 ### Plot

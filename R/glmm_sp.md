@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "17 mars, 2021"
+date: "19 mars, 2021"
 output:
   html_document:
     toc: true
@@ -499,6 +499,19 @@ p_days
 
 ![](glmm_sp_files/figure-html/active-days-3.png)<!-- -->
 
+```r
+ active_p %>% mutate(period = fct_rev(period)) %>% 
+ggplot(aes(flash,value,fill=flash,col=period)) +
+  geom_col(aes(group=variable),position = "dodge") +
+  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_color_grey(start = 0, end = 0) + #black surrounding colour
+  labs(x= "Period group", y= "Active camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  theme(legend.position = "none", axis.title.x = element_blank())
+```
+
+![](glmm_sp_files/figure-html/active-days-4.png)<!-- -->
+
 
 
 ```r
@@ -521,7 +534,9 @@ plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300)
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -532,6 +547,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -598,7 +614,9 @@ _Now I want to look at a model including the Control-group._
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -609,6 +627,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -635,36 +654,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   7720.5   7781.6  -3852.3   7704.5    15241 
+##   7685.6   7745.8  -3834.8   7669.6    13589 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -1.1449 -0.2822 -0.1668 -0.0740 15.6126 
+## -1.1420 -0.2991 -0.1886 -0.1052 14.4688 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 2.6232   1.6196  
-##  week   (Intercept) 0.3125   0.5591  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.3112   0.5579  
+##  loc    (Intercept) 1.6675   1.2913  
+## Number of obs: 13597, groups:  week, 52; loc, 47
 ## 
 ## Fixed effects:
 ##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -3.467254   0.429974  -8.064 7.39e-16 ***
-## time.deploy          -0.049750   0.022421  -2.219   0.0265 *  
-## flashIR               0.080028   0.509726   0.157   0.8752    
-## flashLED              0.204374   0.508295   0.402   0.6876    
-## time.deploy:flashIR   0.019651   0.028421   0.691   0.4893    
-## time.deploy:flashLED  0.002864   0.027063   0.106   0.9157    
+## (Intercept)          -2.845002   0.375683  -7.573 3.65e-14 ***
+## time.deploy          -0.050346   0.022439  -2.244   0.0249 *  
+## flashIR              -0.258452   0.439949  -0.587   0.5569    
+## flashLED             -0.133521   0.438404  -0.305   0.7607    
+## time.deploy:flashIR   0.020254   0.028440   0.712   0.4764    
+## time.deploy:flashLED  0.003374   0.027095   0.125   0.9009    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.200                            
-## flashIR     -0.799  0.123                     
-## flashLED    -0.801  0.127  0.969              
-## tm.dply:fIR  0.107 -0.556 -0.205 -0.086       
-## tm.dply:LED  0.122 -0.627 -0.094 -0.194  0.435
+## time.deploy -0.233                            
+## flashIR     -0.801  0.146                     
+## flashLED    -0.804  0.151  0.958              
+## tm.dply:fIR  0.125 -0.556 -0.239 -0.101       
+## tm.dply:LED  0.143 -0.627 -0.111 -0.228  0.435
 ```
 
 ```r
@@ -699,6 +718,7 @@ The Conditional Equivalence Testing as described by Campbell and Gustafson 2018.
 sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -738,10 +758,10 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-4.17 -2.76]
+##                (Intercept)  Rejected      0.00 % [-3.46 -2.23]
 ##                time.deploy  Accepted    100.00 % [-0.09 -0.01]
-##                 flash [IR] Undecided     11.93 % [-0.76  0.92]
-##                flash [LED] Undecided     11.96 % [-0.63  1.04]
+##                 flash [IR] Undecided     13.82 % [-0.98  0.47]
+##                flash [LED] Undecided     13.87 % [-0.85  0.59]
 ##   time.deploy * flash [IR]  Accepted    100.00 % [-0.03  0.07]
 ##  time.deploy * flash [LED]  Accepted    100.00 % [-0.04  0.05]
 ```
@@ -818,7 +838,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -837,13 +857,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.45) and the part related to the fixed effects alone (marginal R2) is of 3.00e-03. The model's intercept is at -3.47 (95% CI [-4.31, -2.62]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.38) and the part related to the fixed effects alone (marginal R2) is of 2.97e-03. The model's intercept is at -2.85 (95% CI [-3.58, -2.11]). Within this model:
 ## 
-##   - The effect of time.deploy is significantly negative (beta = -0.05, 95% CI [-0.09, -5.80e-03], p < .05, Std. beta = -0.12)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.08, 95% CI [-0.92, 1.08], p = 0.875, Std. beta = 0.16)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.20, 95% CI [-0.79, 1.20], p = 0.688, Std. beta = 0.22)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.04, 0.08], p = 0.489, Std. beta = 0.05)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 2.86e-03, 95% CI [-0.05, 0.06], p = 0.916, Std. beta = 6.78e-03)
+##   - The effect of time.deploy is significantly negative (beta = -0.05, 95% CI [-0.09, -6.37e-03], p < .05, Std. beta = -0.12)
+##   - The effect of flash [IR] is non-significantly negative (beta = -0.26, 95% CI [-1.12, 0.60], p = 0.557, Std. beta = -0.18)
+##   - The effect of flash [LED] is non-significantly negative (beta = -0.13, 95% CI [-0.99, 0.73], p = 0.761, Std. beta = -0.12)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.04, 0.08], p = 0.476, Std. beta = 0.05)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 3.37e-03, 95% CI [-0.05, 0.06], p = 0.901, Std. beta = 7.96e-03)
 ```
 
 ```r
@@ -853,17 +873,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
 ## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -3.47 | [-4.31, -2.62] | -8.06 | Inf | < .001 |      -3.66 |    [-4.49, -2.83] |         
-## time.deploy               |       -0.05 | [-0.09, -0.01] | -2.22 | Inf | 0.026  |      -0.12 |    [-0.22, -0.01] |         
-## flash [IR]                |        0.08 | [-0.92,  1.08] |  0.16 | Inf | 0.875  |       0.16 |    [-0.82,  1.13] |         
-## flash [LED]               |        0.20 | [-0.79,  1.20] |  0.40 | Inf | 0.688  |       0.22 |    [-0.76,  1.19] |         
-## time.deploy * flash [IR]  |        0.02 | [-0.04,  0.08] |  0.69 | Inf | 0.489  |       0.05 |    [-0.09,  0.18] |         
-## time.deploy * flash [LED] |    2.86e-03 | [-0.05,  0.06] |  0.11 | Inf | 0.916  |   6.78e-03 |    [-0.12,  0.13] |         
+## (Intercept)               |       -2.85 | [-3.58, -2.11] | -7.57 | Inf | < .001 |      -3.04 |    [-3.76, -2.32] |         
+## time.deploy               |       -0.05 | [-0.09, -0.01] | -2.24 | Inf | 0.025  |      -0.12 |    [-0.22, -0.02] |         
+## flash [IR]                |       -0.26 | [-1.12,  0.60] | -0.59 | Inf | 0.557  |      -0.18 |    [-1.02,  0.66] |         
+## flash [LED]               |       -0.13 | [-0.99,  0.73] | -0.30 | Inf | 0.761  |      -0.12 |    [-0.96,  0.72] |         
+## time.deploy * flash [IR]  |        0.02 | [-0.04,  0.08] |  0.71 | Inf | 0.476  |       0.05 |    [-0.08,  0.18] |         
+## time.deploy * flash [LED] |    3.37e-03 | [-0.05,  0.06] |  0.12 | Inf | 0.901  |   7.96e-03 |    [-0.12,  0.13] |         
 ##                           |             |                |       |     |        |            |                   |         
-## AIC                       |             |                |       |     |        |            |                   |  7720.52
-## BIC                       |             |                |       |     |        |            |                   |  7781.58
-## R2 (conditional)          |             |                |       |     |        |            |                   |     0.45
-## R2 (marginal)             |             |                |       |     |        |            |                   | 3.00e-03
+## AIC                       |             |                |       |     |        |            |                   |  7685.62
+## BIC                       |             |                |       |     |        |            |                   |  7745.76
+## R2 (conditional)          |             |                |       |     |        |            |                   |     0.38
+## R2 (marginal)             |             |                |       |     |        |            |                   | 2.97e-03
 ## Sigma                     |             |                |       |     |        |            |                   |     1.00
 ```
 
@@ -901,7 +921,9 @@ objects
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -912,6 +934,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1105,7 +1128,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -1142,7 +1165,9 @@ knitr::knit_exit() # to exit knitting process here instead of at the document en
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -1153,6 +1178,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1165,41 +1191,49 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   4756.8   4817.9  -2370.4   4740.8    15241 
+##   4728.3   4788.6  -2356.1   4712.3    13890 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -1.1202 -0.2034 -0.1190 -0.0644 30.3963 
+## -1.1151 -0.2166 -0.1326 -0.0764 28.2591 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 1.402    1.184   
-##  week   (Intercept) 1.607    1.268   
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 1.60     1.265   
+##  loc    (Intercept) 1.01     1.005   
+## Number of obs: 13898, groups:  week, 52; loc, 48
 ## 
 ## Fixed effects:
 ##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -4.790390   0.394331 -12.148   <2e-16 ***
-## time.deploy           0.065222   0.034370   1.898   0.0577 .  
-## flashIR               0.268451   0.419949   0.639   0.5227    
-## flashLED              0.335319   0.416470   0.805   0.4207    
-## time.deploy:flashIR   0.007081   0.041753   0.170   0.8653    
-## time.deploy:flashLED  0.003928   0.040091   0.098   0.9219    
+## (Intercept)          -4.489893   0.370455 -12.120   <2e-16 ***
+## time.deploy           0.063753   0.034385   1.854   0.0637 .  
+## flashIR               0.171324   0.386347   0.443   0.6574    
+## flashLED              0.244428   0.382821   0.638   0.5232    
+## time.deploy:flashIR   0.011448   0.041787   0.274   0.7841    
+## time.deploy:flashLED  0.004346   0.040130   0.108   0.9138    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.386                            
-## flashIR     -0.699  0.308                     
-## flashLED    -0.707  0.317  0.901              
-## tm.dply:fIR  0.249 -0.639 -0.441 -0.244       
-## tm.dply:LED  0.273 -0.693 -0.251 -0.429  0.537
+## time.deploy -0.416                            
+## flashIR     -0.685  0.340                     
+## flashLED    -0.694  0.351  0.882              
+## tm.dply:fIR  0.269 -0.638 -0.480 -0.266       
+## tm.dply:LED  0.294 -0.693 -0.277 -0.471  0.537
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+```
+
+```
+## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+## Model failed to converge with max|grad| = 0.00454548 (tol = 0.002, component 1)
+```
+
+```r
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -1211,13 +1245,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.41) and the part related to the fixed effects alone (marginal R2) is of 6.59e-03. The model's intercept is at -4.79 (95% CI [-5.56, -4.02]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.39) and the part related to the fixed effects alone (marginal R2) is of 5.65e-03. The model's intercept is at -4.49 (95% CI [-5.22, -3.76]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly positive (beta = 0.07, 95% CI [-2.14e-03, 0.13], p = 0.058, Std. beta = 0.15)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.27, 95% CI [-0.55, 1.09], p = 0.523, Std. beta = 0.30)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.34, 95% CI [-0.48, 1.15], p = 0.421, Std. beta = 0.35)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 7.08e-03, 95% CI [-0.07, 0.09], p = 0.865, Std. beta = 0.02)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 3.93e-03, 95% CI [-0.07, 0.08], p = 0.922, Std. beta = 9.28e-03)
+##   - The effect of time.deploy is non-significantly positive (beta = 0.06, 95% CI [-3.64e-03, 0.13], p = 0.064, Std. beta = 0.15)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.17, 95% CI [-0.59, 0.93], p = 0.657, Std. beta = 0.22)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.24, 95% CI [-0.51, 0.99], p = 0.523, Std. beta = 0.26)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.07, 0.09], p = 0.784, Std. beta = 0.03)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 4.35e-03, 95% CI [-0.07, 0.08], p = 0.914, Std. beta = 0.01)
 ```
 
 ```r
@@ -1227,17 +1261,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
 ## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.79 | [-5.56, -4.02] | -12.15 | Inf | < .001 |      -4.54 |    [-5.25, -3.82] |         
-## time.deploy               |        0.07 | [ 0.00,  0.13] |   1.90 | Inf | 0.058  |       0.15 |    [-0.01,  0.31] |         
-## flash [IR]                |        0.27 | [-0.55,  1.09] |   0.64 | Inf | 0.523  |       0.30 |    [-0.44,  1.04] |         
-## flash [LED]               |        0.34 | [-0.48,  1.15] |   0.81 | Inf | 0.421  |       0.35 |    [-0.39,  1.09] |         
-## time.deploy * flash [IR]  |    7.08e-03 | [-0.07,  0.09] |   0.17 | Inf | 0.865  |       0.02 |    [-0.18,  0.21] |         
-## time.deploy * flash [LED] |    3.93e-03 | [-0.07,  0.08] |   0.10 | Inf | 0.922  |   9.28e-03 |    [-0.18,  0.20] |         
+## (Intercept)               |       -4.49 | [-5.22, -3.76] | -12.12 | Inf | < .001 |      -4.24 |    [-4.90, -3.58] |         
+## time.deploy               |        0.06 | [ 0.00,  0.13] |   1.85 | Inf | 0.064  |       0.15 |    [-0.01,  0.31] |         
+## flash [IR]                |        0.17 | [-0.59,  0.93] |   0.44 | Inf | 0.657  |       0.22 |    [-0.45,  0.88] |         
+## flash [LED]               |        0.24 | [-0.51,  0.99] |   0.64 | Inf | 0.523  |       0.26 |    [-0.40,  0.93] |         
+## time.deploy * flash [IR]  |        0.01 | [-0.07,  0.09] |   0.27 | Inf | 0.784  |       0.03 |    [-0.17,  0.22] |         
+## time.deploy * flash [LED] |    4.35e-03 | [-0.07,  0.08] |   0.11 | Inf | 0.914  |       0.01 |    [-0.18,  0.20] |         
 ##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  4756.82
-## BIC                       |             |                |        |     |        |            |                   |  4817.88
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.41
-## R2 (marginal)             |             |                |        |     |        |            |                   | 6.59e-03
+## AIC                       |             |                |        |     |        |            |                   |  4728.27
+## BIC                       |             |                |        |     |        |            |                   |  4788.59
+## R2 (conditional)          |             |                |        |     |        |            |                   |     0.39
+## R2 (marginal)             |             |                |        |     |        |            |                   | 5.65e-03
 ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 ```
 
@@ -1267,10 +1301,10 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-5.44 -4.14]
-##                time.deploy  Rejected     80.76 % [ 0.01  0.12]
-##                 flash [IR] Undecided     14.48 % [-0.42  0.96]
-##                flash [LED] Undecided     14.60 % [-0.35  1.02]
+##                (Intercept)  Rejected      0.00 % [-5.10 -3.88]
+##                time.deploy  Rejected     82.04 % [ 0.01  0.12]
+##                 flash [IR] Undecided     15.74 % [-0.46  0.81]
+##                flash [LED] Undecided     15.88 % [-0.39  0.87]
 ##   time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.08]
 ##  time.deploy * flash [LED]  Accepted    100.00 % [-0.06  0.07]
 ```
@@ -1347,7 +1381,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -1378,7 +1412,9 @@ para_grvl = para_sp
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -1389,6 +1425,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1401,36 +1438,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   3024.2   3085.3  -1504.1   3008.2    15241 
+##   2956.3   3015.4  -1470.2   2940.3    11943 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.4387 -0.1650 -0.1084 -0.0700 20.2527 
+## -0.4229 -0.1843 -0.1363 -0.1026 17.4246 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 1.2645   1.1245  
-##  week   (Intercept) 0.5368   0.7327  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.5270   0.7260  
+##  loc    (Intercept) 0.4014   0.6335  
+## Number of obs: 11951, groups:  week, 52; loc, 41
 ## 
 ## Fixed effects:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -4.75449    0.37779 -12.585   <2e-16 ***
-## time.deploy           0.00966    0.04500   0.215    0.830    
-## flashIR              -0.04038    0.44068  -0.092    0.927    
-## flashLED              0.33855    0.43305   0.782    0.434    
-## time.deploy:flashIR   0.04578    0.05840   0.784    0.433    
-## time.deploy:flashLED -0.01081    0.05659  -0.191    0.849    
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)          -4.153451   0.302125 -13.747   <2e-16 ***
+## time.deploy           0.006304   0.045516   0.138    0.890    
+## flashIR              -0.081991   0.349354  -0.235    0.814    
+## flashLED              0.301856   0.338919   0.891    0.373    
+## time.deploy:flashIR   0.050860   0.059004   0.862    0.389    
+## time.deploy:flashLED -0.006982   0.056859  -0.123    0.902    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.490                            
-## flashIR     -0.725  0.357                     
-## flashLED    -0.746  0.371  0.845              
-## tm.dply:fIR  0.291 -0.629 -0.523 -0.276       
-## tm.dply:LED  0.337 -0.701 -0.299 -0.507  0.530
+## time.deploy -0.626                            
+## flashIR     -0.680  0.462                     
+## flashLED    -0.712  0.485  0.746              
+## tm.dply:fIR  0.372 -0.629 -0.670 -0.357       
+## tm.dply:LED  0.431 -0.703 -0.384 -0.655  0.529
 ```
 
 ```r
@@ -1447,13 +1484,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.28) and the part related to the fixed effects alone (marginal R2) is of 3.17e-03. The model's intercept is at -4.75 (95% CI [-5.49, -4.01]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 3.72e-03. The model's intercept is at -4.15 (95% CI [-4.75, -3.56]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly positive (beta = 9.66e-03, 95% CI [-0.08, 0.10], p = 0.830, Std. beta = 0.02)
-##   - The effect of flash [IR] is non-significantly negative (beta = -0.04, 95% CI [-0.90, 0.82], p = 0.927, Std. beta = 0.14)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.34, 95% CI [-0.51, 1.19], p = 0.434, Std. beta = 0.30)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.07, 0.16], p = 0.433, Std. beta = 0.11)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.12, 0.10], p = 0.849, Std. beta = -0.03)
+##   - The effect of time.deploy is non-significantly positive (beta = 6.30e-03, 95% CI [-0.08, 0.10], p = 0.890, Std. beta = 0.01)
+##   - The effect of flash [IR] is non-significantly negative (beta = -0.08, 95% CI [-0.77, 0.60], p = 0.814, Std. beta = 0.12)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.30, 95% CI [-0.36, 0.97], p = 0.373, Std. beta = 0.27)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.06, 0.17], p = 0.389, Std. beta = 0.12)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -6.98e-03, 95% CI [-0.12, 0.10], p = 0.902, Std. beta = -0.02)
 ```
 
 ```r
@@ -1463,17 +1500,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
 ## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.75 | [-5.49, -4.01] | -12.58 | Inf | < .001 |      -4.72 |    [-5.36, -4.07] |         
-## time.deploy               |    9.66e-03 | [-0.08,  0.10] |   0.21 | Inf | 0.830  |       0.02 |    [-0.19,  0.23] |         
-## flash [IR]                |       -0.04 | [-0.90,  0.82] |  -0.09 | Inf | 0.927  |       0.14 |    [-0.60,  0.87] |         
-## flash [LED]               |        0.34 | [-0.51,  1.19] |   0.78 | Inf | 0.434  |       0.30 |    [-0.44,  1.03] |         
-## time.deploy * flash [IR]  |        0.05 | [-0.07,  0.16] |   0.78 | Inf | 0.433  |       0.11 |    [-0.16,  0.38] |         
-## time.deploy * flash [LED] |       -0.01 | [-0.12,  0.10] |  -0.19 | Inf | 0.849  |      -0.03 |    [-0.29,  0.24] |         
+## (Intercept)               |       -4.15 | [-4.75, -3.56] | -13.75 | Inf | < .001 |      -4.13 |    [-4.59, -3.67] |         
+## time.deploy               |    6.30e-03 | [-0.08,  0.10] |   0.14 | Inf | 0.890  |       0.01 |    [-0.20,  0.23] |         
+## flash [IR]                |       -0.08 | [-0.77,  0.60] |  -0.23 | Inf | 0.814  |       0.12 |    [-0.39,  0.62] |         
+## flash [LED]               |        0.30 | [-0.36,  0.97] |   0.89 | Inf | 0.373  |       0.27 |    [-0.23,  0.78] |         
+## time.deploy * flash [IR]  |        0.05 | [-0.06,  0.17] |   0.86 | Inf | 0.389  |       0.12 |    [-0.15,  0.39] |         
+## time.deploy * flash [LED] |   -6.98e-03 | [-0.12,  0.10] |  -0.12 | Inf | 0.902  |      -0.02 |    [-0.28,  0.25] |         
 ##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  3024.21
-## BIC                       |             |                |        |     |        |            |                   |  3085.27
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.28
-## R2 (marginal)             |             |                |        |     |        |            |                   | 3.17e-03
+## AIC                       |             |                |        |     |        |            |                   |  2956.30
+## BIC                       |             |                |        |     |        |            |                   |  3015.41
+## R2 (conditional)          |             |                |        |     |        |            |                   |     0.19
+## R2 (marginal)             |             |                |        |     |        |            |                   | 3.72e-03
 ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 ```
 
@@ -1503,12 +1540,12 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-5.38 -4.13]
-##                time.deploy  Accepted    100.00 % [-0.06  0.08]
-##                 flash [IR] Undecided     13.80 % [-0.77  0.68]
-##                flash [LED] Undecided     14.04 % [-0.37  1.05]
-##   time.deploy * flash [IR] Undecided     78.22 % [-0.05  0.14]
-##  time.deploy * flash [LED] Undecided     97.91 % [-0.10  0.08]
+##                (Intercept)  Rejected      0.00 % [-4.65 -3.66]
+##                time.deploy  Accepted    100.00 % [-0.07  0.08]
+##                 flash [IR] Undecided     17.40 % [-0.66  0.49]
+##                flash [LED] Undecided     17.94 % [-0.26  0.86]
+##   time.deploy * flash [IR] Undecided     75.32 % [-0.05  0.15]
+##  time.deploy * flash [LED] Undecided     99.73 % [-0.10  0.09]
 ```
 
 ```r
@@ -1583,7 +1620,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -1613,7 +1650,9 @@ para_elg = para_sp
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -1624,6 +1663,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1636,36 +1676,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   1821.6   1882.6   -902.8   1805.6    15241 
+##   1743.4   1798.6   -863.7   1727.4     7336 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.5052 -0.1122 -0.0389 -0.0259 25.2298 
+## -0.4840 -0.1774 -0.1283 -0.0927 16.1188 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 4.5372   2.1301  
-##  week   (Intercept) 0.2605   0.5104  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.2568   0.5067  
+##  loc    (Intercept) 0.7147   0.8454  
+## Number of obs: 7344, groups:  week, 52; loc, 26
 ## 
 ## Fixed effects:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -5.99140    0.71466  -8.384  < 2e-16 ***
-## time.deploy          -0.09512    0.06103  -1.559  0.11909    
-## flashIR               0.07057    0.80593   0.088  0.93022    
-## flashLED             -0.59776    0.82486  -0.725  0.46865    
-## time.deploy:flashIR   0.06421    0.08034   0.799  0.42420    
-## time.deploy:flashLED  0.22974    0.08167   2.813  0.00491 ** 
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)          -3.891154   0.407582  -9.547  < 2e-16 ***
+## time.deploy          -0.094938   0.058353  -1.627  0.10374    
+## flashIR              -0.009873   0.498299  -0.020  0.98419    
+## flashLED             -0.687348   0.526986  -1.304  0.19213    
+## time.deploy:flashIR   0.061810   0.076779   0.805  0.42080    
+## time.deploy:flashLED  0.231225   0.078062   2.962  0.00306 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.309                            
-## flashIR     -0.748  0.253                     
-## flashLED    -0.739  0.261  0.899              
-## tm.dply:fIR  0.208 -0.689 -0.362 -0.196       
-## tm.dply:LED  0.228 -0.711 -0.194 -0.407  0.528
+## time.deploy -0.509                            
+## flashIR     -0.759  0.386                     
+## flashLED    -0.738  0.388  0.767              
+## tm.dply:fIR  0.344 -0.687 -0.555 -0.289       
+## tm.dply:LED  0.373 -0.713 -0.302 -0.609  0.531
 ```
 
 ```r
@@ -1682,13 +1722,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.44) and the part related to the fixed effects alone (marginal R2) is of 6.76e-03. The model's intercept is at -5.99 (95% CI [-7.39, -4.59]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.20) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -3.89 (95% CI [-4.69, -3.09]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly negative (beta = -0.10, 95% CI [-0.21, 0.02], p = 0.119, Std. beta = -0.22)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.07, 95% CI [-1.51, 1.65], p = 0.930, Std. beta = 0.32)
-##   - The effect of flash [LED] is non-significantly negative (beta = -0.60, 95% CI [-2.21, 1.02], p = 0.469, Std. beta = 0.29)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.06, 95% CI [-0.09, 0.22], p = 0.424, Std. beta = 0.15)
-##   - The interaction effect of flash [LED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.07, 0.39], p < .01, Std. beta = 0.54)
+##   - The effect of time.deploy is non-significantly negative (beta = -0.09, 95% CI [-0.21, 0.02], p = 0.104, Std. beta = -0.22)
+##   - The effect of flash [IR] is non-significantly negative (beta = -9.87e-03, 95% CI [-0.99, 0.97], p = 0.984, Std. beta = 0.23)
+##   - The effect of flash [LED] is non-significantly negative (beta = -0.69, 95% CI [-1.72, 0.35], p = 0.192, Std. beta = 0.21)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.06, 95% CI [-0.09, 0.21], p = 0.421, Std. beta = 0.15)
+##   - The interaction effect of flash [LED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.08, 0.38], p < .01, Std. beta = 0.55)
 ```
 
 ```r
@@ -1696,20 +1736,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -5.99 | [-7.39, -4.59] | -8.38 | Inf | < .001 |      -6.36 |    [-7.69, -5.03] |         
-## time.deploy               |       -0.10 | [-0.21,  0.02] | -1.56 | Inf | 0.119  |      -0.22 |    [-0.51,  0.06] |         
-## flash [IR]                |        0.07 | [-1.51,  1.65] |  0.09 | Inf | 0.930  |       0.32 |    [-1.15,  1.79] |         
-## flash [LED]               |       -0.60 | [-2.21,  1.02] | -0.72 | Inf | 0.469  |       0.29 |    [-1.18,  1.77] |         
-## time.deploy * flash [IR]  |        0.06 | [-0.09,  0.22] |  0.80 | Inf | 0.424  |       0.15 |    [-0.22,  0.52] |         
-## time.deploy * flash [LED] |        0.23 | [ 0.07,  0.39] |  2.81 | Inf | 0.005  |       0.54 |    [ 0.16,  0.92] |         
-##                           |             |                |       |     |        |            |                   |         
-## AIC                       |             |                |       |     |        |            |                   |  1821.56
-## BIC                       |             |                |       |     |        |            |                   |  1882.62
-## R2 (conditional)          |             |                |       |     |        |            |                   |     0.44
-## R2 (marginal)             |             |                |       |     |        |            |                   | 6.76e-03
-## Sigma                     |             |                |       |     |        |            |                   |     1.00
+## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
+## --------------------------------------------------------------------------------------------------------------------------
+## (Intercept)               |       -3.89 | [-4.69, -3.09] | -9.55 | Inf | < .001 |      -4.26 |    [-4.95, -3.57] |        
+## time.deploy               |       -0.09 | [-0.21,  0.02] | -1.63 | Inf | 0.104  |      -0.22 |    [-0.50,  0.05] |        
+## flash [IR]                |   -9.87e-03 | [-0.99,  0.97] | -0.02 | Inf | 0.984  |       0.23 |    [-0.58,  1.04] |        
+## flash [LED]               |       -0.69 | [-1.72,  0.35] | -1.30 | Inf | 0.192  |       0.21 |    [-0.61,  1.03] |        
+## time.deploy * flash [IR]  |        0.06 | [-0.09,  0.21] |  0.81 | Inf | 0.421  |       0.15 |    [-0.21,  0.50] |        
+## time.deploy * flash [LED] |        0.23 | [ 0.08,  0.38] |  2.96 | Inf | 0.003  |       0.55 |    [ 0.19,  0.91] |        
+##                           |             |                |       |     |        |            |                   |        
+## AIC                       |             |                |       |     |        |            |                   | 1743.43
+## BIC                       |             |                |       |     |        |            |                   | 1798.64
+## R2 (conditional)          |             |                |       |     |        |            |                   |    0.20
+## R2 (marginal)             |             |                |       |     |        |            |                   |    0.01
+## Sigma                     |             |                |       |     |        |            |                   |    1.00
 ```
 
 ```r
@@ -1738,12 +1778,12 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-7.17 -4.82]
-##                time.deploy Undecided     52.43 % [-0.20  0.01]
-##                 flash [IR] Undecided      7.54 % [-1.26  1.40]
-##                flash [LED] Undecided      7.37 % [-1.95  0.76]
-##   time.deploy * flash [IR] Undecided     63.54 % [-0.07  0.20]
-##  time.deploy * flash [LED]  Rejected      1.71 % [ 0.10  0.36]
+##                (Intercept)  Rejected      0.00 % [-4.56 -3.22]
+##                time.deploy Undecided     52.64 % [-0.19  0.00]
+##                 flash [IR] Undecided     12.20 % [-0.83  0.81]
+##                flash [LED] Undecided     11.54 % [-1.55  0.18]
+##   time.deploy * flash [IR] Undecided     65.12 % [-0.06  0.19]
+##  time.deploy * flash [LED]  Rejected      0.00 % [ 0.10  0.36]
 ```
 
 ```r
@@ -1818,7 +1858,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -1849,7 +1889,9 @@ para_hjort = para_sp
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -1860,6 +1902,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1872,36 +1915,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##    745.8    806.9   -364.9    729.8    15241 
+##    686.2    739.9   -335.1    670.2     6083 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.3313 -0.0534 -0.0320 -0.0251 23.1599 
+## -0.2932 -0.1020 -0.0814 -0.0654 19.4640 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 2.2896   1.5131  
-##  week   (Intercept) 0.3129   0.5594  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.2692   0.5188  
+##  loc    (Intercept) 0.4612   0.6791  
+## Number of obs: 6091, groups:  week, 52; loc, 22
 ## 
 ## Fixed effects:
 ##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -6.3836     0.7066  -9.034   <2e-16 ***
-## time.deploy           -0.2114     0.1389  -1.522    0.128    
-## flashIR               -0.4869     0.8306  -0.586    0.558    
-## flashLED              -0.1388     0.8269  -0.168    0.867    
-## time.deploy:flashIR    0.2399     0.1625   1.476    0.140    
-## time.deploy:flashLED   0.2502     0.1627   1.538    0.124    
+## (Intercept)           -4.8175     0.5848  -8.237   <2e-16 ***
+## time.deploy           -0.2199     0.1389  -1.583    0.113    
+## flashIR               -0.2004     0.7205  -0.278    0.781    
+## flashLED               0.1454     0.7163   0.203    0.839    
+## time.deploy:flashIR    0.2484     0.1626   1.528    0.127    
+## time.deploy:flashLED   0.2577     0.1622   1.589    0.112    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.566                            
-## flashIR     -0.711  0.467                     
-## flashLED    -0.738  0.487  0.772              
-## tm.dply:fIR  0.466 -0.833 -0.621 -0.411       
-## tm.dply:LED  0.481 -0.853 -0.410 -0.629  0.723
+## time.deploy -0.688                            
+## flashIR     -0.750  0.545                     
+## flashLED    -0.775  0.564  0.703              
+## tm.dply:fIR  0.573 -0.837 -0.717 -0.478       
+## tm.dply:LED  0.587 -0.855 -0.478 -0.724  0.727
 ```
 
 ```r
@@ -1918,13 +1961,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.29) and the part related to the fixed effects alone (marginal R2) is of 0.02. The model's intercept is at -6.38 (95% CI [-7.77, -5.00]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.18) and the part related to the fixed effects alone (marginal R2) is of 0.06. The model's intercept is at -4.82 (95% CI [-5.96, -3.67]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly negative (beta = -0.21, 95% CI [-0.48, 0.06], p = 0.128, Std. beta = -0.50)
-##   - The effect of flash [IR] is non-significantly negative (beta = -0.49, 95% CI [-2.11, 1.14], p = 0.558, Std. beta = 0.44)
-##   - The effect of flash [LED] is non-significantly negative (beta = -0.14, 95% CI [-1.76, 1.48], p = 0.867, Std. beta = 0.83)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.24, 95% CI [-0.08, 0.56], p = 0.140, Std. beta = 0.57)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.25, 95% CI [-0.07, 0.57], p = 0.124, Std. beta = 0.59)
+##   - The effect of time.deploy is non-significantly negative (beta = -0.22, 95% CI [-0.49, 0.05], p = 0.113, Std. beta = -0.52)
+##   - The effect of flash [IR] is non-significantly negative (beta = -0.20, 95% CI [-1.61, 1.21], p = 0.781, Std. beta = 0.76)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.15, 95% CI [-1.26, 1.55], p = 0.839, Std. beta = 1.15)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.25, 95% CI [-0.07, 0.57], p = 0.127, Std. beta = 0.59)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.26, 95% CI [-0.06, 0.58], p = 0.112, Std. beta = 0.61)
 ```
 
 ```r
@@ -1934,17 +1977,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
 ## -------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -6.38 | [-7.77, -5.00] | -9.03 | Inf | < .001 |      -7.20 |    [-8.38, -6.03] |       
-## time.deploy               |       -0.21 | [-0.48,  0.06] | -1.52 | Inf | 0.128  |      -0.50 |    [-1.14,  0.14] |       
-## flash [IR]                |       -0.49 | [-2.11,  1.14] | -0.59 | Inf | 0.558  |       0.44 |    [-0.85,  1.74] |       
-## flash [LED]               |       -0.14 | [-1.76,  1.48] | -0.17 | Inf | 0.867  |       0.83 |    [-0.45,  2.11] |       
-## time.deploy * flash [IR]  |        0.24 | [-0.08,  0.56] |  1.48 | Inf | 0.140  |       0.57 |    [-0.19,  1.32] |       
-## time.deploy * flash [LED] |        0.25 | [-0.07,  0.57] |  1.54 | Inf | 0.124  |       0.59 |    [-0.16,  1.35] |       
+## (Intercept)               |       -4.82 | [-5.96, -3.67] | -8.24 | Inf | < .001 |      -5.67 |    [-6.54, -4.80] |       
+## time.deploy               |       -0.22 | [-0.49,  0.05] | -1.58 | Inf | 0.113  |      -0.52 |    [-1.17,  0.12] |       
+## flash [IR]                |       -0.20 | [-1.61,  1.21] | -0.28 | Inf | 0.781  |       0.76 |    [-0.25,  1.77] |       
+## flash [LED]               |        0.15 | [-1.26,  1.55] |  0.20 | Inf | 0.839  |       1.15 |    [ 0.15,  2.14] |       
+## time.deploy * flash [IR]  |        0.25 | [-0.07,  0.57] |  1.53 | Inf | 0.127  |       0.59 |    [-0.17,  1.35] |       
+## time.deploy * flash [LED] |        0.26 | [-0.06,  0.58] |  1.59 | Inf | 0.112  |       0.61 |    [-0.14,  1.37] |       
 ##                           |             |                |       |     |        |            |                   |       
-## AIC                       |             |                |       |     |        |            |                   | 745.85
-## BIC                       |             |                |       |     |        |            |                   | 806.91
-## R2 (conditional)          |             |                |       |     |        |            |                   |   0.29
-## R2 (marginal)             |             |                |       |     |        |            |                   |   0.02
+## AIC                       |             |                |       |     |        |            |                   | 686.23
+## BIC                       |             |                |       |     |        |            |                   | 739.94
+## R2 (conditional)          |             |                |       |     |        |            |                   |   0.18
+## R2 (marginal)             |             |                |       |     |        |            |                   |   0.06
 ## Sigma                     |             |                |       |     |        |            |                   |   1.00
 ```
 
@@ -1974,12 +2017,12 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-7.55 -5.22]
-##                time.deploy Undecided     25.62 % [-0.44  0.02]
-##                 flash [IR] Undecided      7.32 % [-1.85  0.88]
-##                flash [LED] Undecided      7.35 % [-1.50  1.22]
-##   time.deploy * flash [IR] Undecided     23.83 % [-0.03  0.51]
-##  time.deploy * flash [LED] Undecided     21.93 % [-0.02  0.52]
+##                (Intercept)  Rejected      0.00 % [-5.78 -3.86]
+##                time.deploy Undecided     23.76 % [-0.45  0.01]
+##                 flash [IR] Undecided      8.44 % [-1.39  0.98]
+##                flash [LED] Undecided      8.49 % [-1.03  1.32]
+##   time.deploy * flash [IR] Undecided     22.25 % [-0.02  0.52]
+##  time.deploy * flash [LED] Undecided     20.45 % [-0.01  0.52]
 ```
 
 ```r
@@ -2054,7 +2097,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -2090,7 +2133,9 @@ After having learned about the random effects, I think it does make sense, even 
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -2101,6 +2146,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -2113,36 +2159,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   4968.2   5029.2  -2476.1   4952.2    15241 
+##   4925.0   4984.8  -2454.5   4909.0    12941 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.8595 -0.2203 -0.1209 -0.0669 22.4673 
+## -0.8564 -0.2406 -0.1523 -0.0946 19.4163 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 2.3289   1.5261  
-##  week   (Intercept) 0.4972   0.7051  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.4966   0.7047  
+##  loc    (Intercept) 1.3168   1.1475  
+## Number of obs: 12949, groups:  week, 52; loc, 45
 ## 
 ## Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -4.2903906  0.4267427 -10.054   <2e-16 ***
-## time.deploy           0.0357733  0.0316458   1.130    0.258    
-## flashIR               0.2387835  0.5046262   0.473    0.636    
-## flashLED              0.1054968  0.5063949   0.208    0.835    
-## time.deploy:flashIR  -0.0512379  0.0399331  -1.283    0.199    
-## time.deploy:flashLED  0.0008954  0.0412085   0.022    0.983    
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)          -3.906298   0.356946 -10.944   <2e-16 ***
+## time.deploy           0.035417   0.031660   1.119    0.263    
+## flashIR               0.382756   0.420738   0.910    0.363    
+## flashLED              0.249284   0.422826   0.590    0.555    
+## time.deploy:flashIR  -0.050236   0.039998  -1.256    0.209    
+## time.deploy:flashLED  0.001273   0.041318   0.031    0.975    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.312                            
-## flashIR     -0.778  0.220                     
-## flashLED    -0.778  0.236  0.935              
-## tm.dply:fIR  0.202 -0.623 -0.327 -0.178       
-## tm.dply:LED  0.207 -0.654 -0.186 -0.341  0.509
+## time.deploy -0.378                            
+## flashIR     -0.759  0.268                     
+## flashLED    -0.760  0.288  0.906              
+## tm.dply:fIR  0.243 -0.622 -0.395 -0.216       
+## tm.dply:LED  0.250 -0.655 -0.225 -0.410  0.510
 ```
 
 ```r
@@ -2159,13 +2205,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.41) and the part related to the fixed effects alone (marginal R2) is of 1.03e-03. The model's intercept is at -4.29 (95% CI [-5.13, -3.45]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.33) and the part related to the fixed effects alone (marginal R2) is of 3.02e-03. The model's intercept is at -3.91 (95% CI [-4.61, -3.21]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.03, 0.10], p = 0.258, Std. beta = 0.08)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.24, 95% CI [-0.75, 1.23], p = 0.636, Std. beta = 0.04)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.11, 95% CI [-0.89, 1.10], p = 0.835, Std. beta = 0.11)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.13, 0.03], p = 0.199, Std. beta = -0.12)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 8.95e-04, 95% CI [-0.08, 0.08], p = 0.983, Std. beta = 2.12e-03)
+##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.03, 0.10], p = 0.263, Std. beta = 0.08)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.38, 95% CI [-0.44, 1.21], p = 0.363, Std. beta = 0.19)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.25, 95% CI [-0.58, 1.08], p = 0.555, Std. beta = 0.25)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.13, 0.03], p = 0.209, Std. beta = -0.12)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.08, 0.08], p = 0.975, Std. beta = 3.03e-03)
 ```
 
 ```r
@@ -2175,17 +2221,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
 ## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.29 | [-5.13, -3.45] | -10.05 | Inf | < .001 |      -4.15 |    [-4.95, -3.36] |         
-## time.deploy               |        0.04 | [-0.03,  0.10] |   1.13 | Inf | 0.258  |       0.08 |    [-0.06,  0.23] |         
-## flash [IR]                |        0.24 | [-0.75,  1.23] |   0.47 | Inf | 0.636  |       0.04 |    [-0.90,  0.98] |         
-## flash [LED]               |        0.11 | [-0.89,  1.10] |   0.21 | Inf | 0.835  |       0.11 |    [-0.83,  1.04] |         
-## time.deploy * flash [IR]  |       -0.05 | [-0.13,  0.03] |  -1.28 | Inf | 0.199  |      -0.12 |    [-0.31,  0.06] |         
-## time.deploy * flash [LED] |    8.95e-04 | [-0.08,  0.08] |   0.02 | Inf | 0.983  |   2.12e-03 |    [-0.19,  0.19] |         
+## (Intercept)               |       -3.91 | [-4.61, -3.21] | -10.94 | Inf | < .001 |      -3.77 |    [-4.42, -3.12] |         
+## time.deploy               |        0.04 | [-0.03,  0.10] |   1.12 | Inf | 0.263  |       0.08 |    [-0.06,  0.23] |         
+## flash [IR]                |        0.38 | [-0.44,  1.21] |   0.91 | Inf | 0.363  |       0.19 |    [-0.57,  0.95] |         
+## flash [LED]               |        0.25 | [-0.58,  1.08] |   0.59 | Inf | 0.555  |       0.25 |    [-0.50,  1.01] |         
+## time.deploy * flash [IR]  |       -0.05 | [-0.13,  0.03] |  -1.26 | Inf | 0.209  |      -0.12 |    [-0.30,  0.07] |         
+## time.deploy * flash [LED] |    1.27e-03 | [-0.08,  0.08] |   0.03 | Inf | 0.975  |   3.03e-03 |    [-0.19,  0.19] |         
 ##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  4968.16
-## BIC                       |             |                |        |     |        |            |                   |  5029.22
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.41
-## R2 (marginal)             |             |                |        |     |        |            |                   | 1.03e-03
+## AIC                       |             |                |        |     |        |            |                   |  4925.04
+## BIC                       |             |                |        |     |        |            |                   |  4984.79
+## R2 (conditional)          |             |                |        |     |        |            |                   |     0.33
+## R2 (marginal)             |             |                |        |     |        |            |                   | 3.02e-03
 ## Sigma                     |             |                |        |     |        |            |                   |     1.00
 ```
 
@@ -2215,11 +2261,11 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-4.99 -3.59]
+##                (Intercept)  Rejected      0.00 % [-4.49 -3.32]
 ##                time.deploy  Accepted    100.00 % [-0.02  0.09]
-##                 flash [IR] Undecided     12.05 % [-0.59  1.07]
-##                flash [LED] Undecided     12.01 % [-0.73  0.94]
-##   time.deploy * flash [IR] Undecided     87.12 % [-0.12  0.01]
+##                 flash [IR] Undecided     14.45 % [-0.31  1.07]
+##                flash [LED] Undecided     14.38 % [-0.45  0.94]
+##   time.deploy * flash [IR] Undecided     87.82 % [-0.12  0.02]
 ##  time.deploy * flash [LED]  Accepted    100.00 % [-0.07  0.07]
 ```
 
@@ -2295,7 +2341,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -2323,94 +2369,76 @@ para_hare = para_sp
 
 
 
-
 ```r
-# sp ="raadyr"
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
             data   = time_sp,
-            family = poisson) # poisson family of distributions
-```
-
-```
-## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-## Model failed to converge with max|grad| = 0.113957 (tol = 0.002, component 1)
-```
-
-```
-## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
-##  - Rescale variables?
-```
-
-```r
+            family = poisson,
+            nAGQ = 0) # change optimizer to oenalized iteratively reweighted least squares step
 # ggeffect calls effects::Effect
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+va_r <- insight::get_variance(m_sp)
+```
+
+```
+## Warning: mu of 0.0 is too close to zero, estimate of random effect variances may
+## be unreliable.
+```
+
+
+
+```r
 # Summary, report, model
 summary(m_sp)
 ```
 
 ```
-## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
+## Generalized linear mixed model fit by maximum likelihood (Adaptive
+##   Gauss-Hermite Quadrature, nAGQ = 0) [glmerMod]
 ##  Family: poisson  ( log )
 ## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   2964.2   3025.2  -1474.1   2948.2    15241 
+##   2965.2   3026.2  -1474.6   2949.2    15241 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -1.2461 -0.1449 -0.0785 -0.0428 25.3257 
+## -1.2422 -0.1461 -0.0804 -0.0448 24.4439 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 2.7725   1.6651  
-##  week   (Intercept) 0.6682   0.8175  
+##  loc    (Intercept) 2.7175   1.6485  
+##  week   (Intercept) 0.6661   0.8162  
 ## Number of obs: 15249, groups:  loc, 53; week, 52
 ## 
 ## Fixed effects:
-##                        Estimate Std. Error  z value Pr(>|z|)    
-## (Intercept)          -5.7179706  0.0006208 -9211.38   <2e-16 ***
-## time.deploy           0.0820127  0.0006211   132.04   <2e-16 ***
-## flashIR               0.8281723  0.0006206  1334.43   <2e-16 ***
-## flashLED              0.5082355  0.0006206   818.92   <2e-16 ***
-## time.deploy:flashIR  -0.1777699  0.0006207  -286.42   <2e-16 ***
-## time.deploy:flashLED -0.0165444  0.0006206   -26.66   <2e-16 ***
+##                      Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)          -5.41726    0.51635 -10.491  < 2e-16 ***
+## time.deploy           0.08142    0.05059   1.609  0.10757    
+## flashIR               0.82010    0.60332   1.359  0.17405    
+## flashLED              0.50022    0.60747   0.823  0.41026    
+## time.deploy:flashIR  -0.17665    0.06337  -2.787  0.00531 ** 
+## time.deploy:flashLED -0.01604    0.06216  -0.258  0.79639    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy 0.000                             
-## flashIR     0.000  0.000                      
-## flashLED    0.000  0.000  0.000               
-## tm.dply:fIR 0.000  0.000  0.000  0.000        
-## tm.dply:LED 0.000  0.000  0.000  0.000  0.001 
-## optimizer (Nelder_Mead) convergence code: 0 (OK)
-## Model failed to converge with max|grad| = 0.113957 (tol = 0.002, component 1)
-## Model is nearly unidentifiable: very large eigenvalue
-##  - Rescale variables?
+## time.deploy -0.457                            
+## flashIR     -0.801  0.371                     
+## flashLED    -0.788  0.355  0.925              
+## tm.dply:fIR  0.339 -0.745 -0.435 -0.291       
+## tm.dply:LED  0.326 -0.719 -0.307 -0.456  0.588
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
-```
-
-```
-## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model failed to converge with max|grad| = 0.113886 (tol = 0.002, component 1)
-
-## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model is nearly unidentifiable: very large eigenvalue
-##  - Rescale variables?
-```
-
-```r
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -2422,13 +2450,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.40) and the part related to the fixed effects alone (marginal R2) is of 7.99e-03. The model's intercept is at -5.72 (95% CI [-5.72, -5.72]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.41) and the part related to the fixed effects alone (marginal R2) is of 8.18e-03. The model's intercept is at -5.42 (95% CI [-6.43, -4.41]). Within this model:
 ## 
-##   - The effect of time.deploy is significantly positive (beta = 0.08, 95% CI [0.08, 0.08], p < .001, Std. beta = 0.20)
-##   - The effect of flash [IR] is significantly positive (beta = 0.83, 95% CI [0.83, 0.83], p < .001, Std. beta = 0.15)
-##   - The effect of flash [LED] is significantly positive (beta = 0.51, 95% CI [0.51, 0.51], p < .001, Std. beta = 0.46)
-##   - The interaction effect of flash [IR] on time.deploy is significantly negative (beta = -0.18, 95% CI [-0.18, -0.18], p < .001, Std. beta = -0.42)
-##   - The interaction effect of flash [LED] on time.deploy is significantly negative (beta = -0.02, 95% CI [-0.02, -0.02], p < .001, Std. beta = -0.04)
+##   - The effect of time.deploy is non-significantly positive (beta = 0.08, 95% CI [-0.02, 0.18], p = 0.108, Std. beta = 0.19)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.82, 95% CI [-0.36, 2.00], p = 0.174, Std. beta = 0.13)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.50, 95% CI [-0.69, 1.69], p = 0.410, Std. beta = 0.44)
+##   - The interaction effect of flash [IR] on time.deploy is significantly negative (beta = -0.18, 95% CI [-0.30, -0.05], p < .01, Std. beta = -0.42)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.14, 0.11], p = 0.796, Std. beta = -0.04)
 ```
 
 ```r
@@ -2436,20 +2464,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |        z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ------------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -5.72 | [-5.72, -5.72] | -9211.38 | Inf | < .001 |      -5.41 |    [-5.41, -5.41] |         
-## time.deploy               |        0.08 | [ 0.08,  0.08] |   132.04 | Inf | < .001 |       0.20 |    [ 0.19,  0.20] |         
-## flash [IR]                |        0.83 | [ 0.83,  0.83] |  1334.43 | Inf | < .001 |       0.15 |    [ 0.15,  0.15] |         
-## flash [LED]               |        0.51 | [ 0.51,  0.51] |   818.92 | Inf | < .001 |       0.46 |    [ 0.46,  0.46] |         
-## time.deploy * flash [IR]  |       -0.18 | [-0.18, -0.18] |  -286.42 | Inf | < .001 |      -0.42 |    [-0.42, -0.42] |         
-## time.deploy * flash [LED] |       -0.02 | [-0.02, -0.02] |   -26.66 | Inf | < .001 |      -0.04 |    [-0.04, -0.04] |         
-##                           |             |                |          |     |        |            |                   |         
-## AIC                       |             |                |          |     |        |            |                   |  2964.18
-## BIC                       |             |                |          |     |        |            |                   |  3025.24
-## R2 (conditional)          |             |                |          |     |        |            |                   |     0.40
-## R2 (marginal)             |             |                |          |     |        |            |                   | 7.99e-03
-## Sigma                     |             |                |          |     |        |            |                   |     1.00
+## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## ----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)               |       -5.42 | [-6.43, -4.41] | -10.49 | Inf | < .001 |      -5.10 |    [-6.00, -4.20] |         
+## time.deploy               |        0.08 | [-0.02,  0.18] |   1.61 | Inf | 0.108  |       0.19 |    [-0.04,  0.43] |         
+## flash [IR]                |        0.82 | [-0.36,  2.00] |   1.36 | Inf | 0.174  |       0.13 |    [-0.93,  1.20] |         
+## flash [LED]               |        0.50 | [-0.69,  1.69] |   0.82 | Inf | 0.410  |       0.44 |    [-0.62,  1.50] |         
+## time.deploy * flash [IR]  |       -0.18 | [-0.30, -0.05] |  -2.79 | Inf | 0.005  |      -0.42 |    [-0.71, -0.12] |         
+## time.deploy * flash [LED] |       -0.02 | [-0.14,  0.11] |  -0.26 | Inf | 0.796  |      -0.04 |    [-0.33,  0.25] |         
+##                           |             |                |        |     |        |            |                   |         
+## AIC                       |             |                |        |     |        |            |                   |  2965.19
+## BIC                       |             |                |        |     |        |            |                   |  3026.25
+## R2 (conditional)          |             |                |        |     |        |            |                   |     0.41
+## R2 (marginal)             |             |                |        |     |        |            |                   | 8.18e-03
+## Sigma                     |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -2477,13 +2505,13 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter       H0 inside ROPE        90% CI
-##                (Intercept) Rejected      0.00 % [-5.72 -5.72]
-##                time.deploy Accepted    100.00 % [ 0.08  0.08]
-##                 flash [IR] Rejected      0.00 % [ 0.83  0.83]
-##                flash [LED] Rejected      0.00 % [ 0.51  0.51]
-##   time.deploy * flash [IR] Rejected      0.00 % [-0.18 -0.18]
-##  time.deploy * flash [LED] Accepted    100.00 % [-0.02 -0.02]
+##                  Parameter        H0 inside ROPE        90% CI
+##                (Intercept)  Rejected      0.00 % [-6.27 -4.57]
+##                time.deploy Undecided     61.17 % [-0.00  0.16]
+##                 flash [IR] Undecided     10.08 % [-0.17  1.81]
+##                flash [LED] Undecided     10.01 % [-0.50  1.50]
+##   time.deploy * flash [IR]  Rejected     13.23 % [-0.28 -0.07]
+##  time.deploy * flash [LED] Undecided     91.06 % [-0.12  0.09]
 ```
 
 ```r
@@ -2558,7 +2586,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -2590,7 +2618,9 @@ para_ekorn = para_sp
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -2601,6 +2631,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -2613,36 +2644,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   1851.1   1912.2   -917.6   1835.1    15241 
+##   1810.4   1869.5   -897.2   1794.4    12013 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.6441 -0.1077 -0.0705 -0.0496 29.6957 
+## -0.6339 -0.1250 -0.0881 -0.0639 28.0161 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 1.0187   1.0093  
-##  week   (Intercept) 0.5181   0.7198  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.5191   0.7205  
+##  loc    (Intercept) 0.5419   0.7361  
+## Number of obs: 12021, groups:  week, 52; loc, 42
 ## 
 ## Fixed effects:
 ##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -6.38348    0.56971 -11.205  < 2e-16 ***
-## time.deploy           0.09550    0.09487   1.007  0.31412    
-## flashIR               1.67067    0.61121   2.733  0.00627 ** 
-## flashLED              0.76176    0.63704   1.196  0.23178    
-## time.deploy:flashIR  -0.11350    0.10512  -1.080  0.28026    
-## time.deploy:flashLED  0.02351    0.10826   0.217  0.82807    
+## (Intercept)          -5.95070    0.54365 -10.946  < 2e-16 ***
+## time.deploy           0.09221    0.09492   0.972  0.33130    
+## flashIR               1.68930    0.57922   2.917  0.00354 ** 
+## flashLED              0.76081    0.60660   1.254  0.20976    
+## time.deploy:flashIR  -0.11214    0.10513  -1.067  0.28612    
+## time.deploy:flashLED  0.03203    0.10845   0.295  0.76776    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.774                            
-## flashIR     -0.852  0.693                     
-## flashLED    -0.816  0.666  0.857              
-## tm.dply:fIR  0.655 -0.852 -0.758 -0.600       
-## tm.dply:LED  0.637 -0.831 -0.606 -0.776  0.751
+## time.deploy -0.809                            
+## flashIR     -0.860  0.731                     
+## flashLED    -0.821  0.700  0.842              
+## tm.dply:fIR  0.684 -0.853 -0.799 -0.631       
+## tm.dply:LED  0.666 -0.832 -0.639 -0.815  0.753
 ```
 
 ```r
@@ -2659,13 +2690,13 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.26) and the part related to the fixed effects alone (marginal R2) is of 0.04. The model's intercept is at -6.38 (95% CI [-7.50, -5.27]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.22) and the part related to the fixed effects alone (marginal R2) is of 0.05. The model's intercept is at -5.95 (95% CI [-7.02, -4.89]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly positive (beta = 0.10, 95% CI [-0.09, 0.28], p = 0.314, Std. beta = 0.23)
-##   - The effect of flash [IR] is significantly positive (beta = 1.67, 95% CI [0.47, 2.87], p < .01, Std. beta = 1.23)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.76, 95% CI [-0.49, 2.01], p = 0.232, Std. beta = 0.85)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.11, 95% CI [-0.32, 0.09], p = 0.280, Std. beta = -0.27)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.19, 0.24], p = 0.828, Std. beta = 0.06)
+##   - The effect of time.deploy is non-significantly positive (beta = 0.09, 95% CI [-0.09, 0.28], p = 0.331, Std. beta = 0.22)
+##   - The effect of flash [IR] is significantly positive (beta = 1.69, 95% CI [0.55, 2.82], p < .01, Std. beta = 1.25)
+##   - The effect of flash [LED] is non-significantly positive (beta = 0.76, 95% CI [-0.43, 1.95], p = 0.210, Std. beta = 0.89)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.11, 95% CI [-0.32, 0.09], p = 0.286, Std. beta = -0.26)
+##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.18, 0.24], p = 0.768, Std. beta = 0.08)
 ```
 
 ```r
@@ -2675,17 +2706,17 @@ as.report_table(r_sp)
 ```
 ## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
 ## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -6.38 | [-7.50, -5.27] | -11.20 | Inf | < .001 |      -6.01 |    [-6.73, -5.29] |        
-## time.deploy               |        0.10 | [-0.09,  0.28] |   1.01 | Inf | 0.314  |       0.23 |    [-0.21,  0.67] |        
-## flash [IR]                |        1.67 | [ 0.47,  2.87] |   2.73 | Inf | 0.006  |       1.23 |    [ 0.44,  2.02] |        
-## flash [LED]               |        0.76 | [-0.49,  2.01] |   1.20 | Inf | 0.232  |       0.85 |    [ 0.05,  1.65] |        
-## time.deploy * flash [IR]  |       -0.11 | [-0.32,  0.09] |  -1.08 | Inf | 0.280  |      -0.27 |    [-0.76,  0.22] |        
-## time.deploy * flash [LED] |        0.02 | [-0.19,  0.24] |   0.22 | Inf | 0.828  |       0.06 |    [-0.45,  0.56] |        
+## (Intercept)               |       -5.95 | [-7.02, -4.89] | -10.95 | Inf | < .001 |      -5.59 |    [-6.23, -4.95] |        
+## time.deploy               |        0.09 | [-0.09,  0.28] |   0.97 | Inf | 0.331  |       0.22 |    [-0.22,  0.66] |        
+## flash [IR]                |        1.69 | [ 0.55,  2.82] |   2.92 | Inf | 0.004  |       1.25 |    [ 0.56,  1.95] |        
+## flash [LED]               |        0.76 | [-0.43,  1.95] |   1.25 | Inf | 0.210  |       0.89 |    [ 0.18,  1.59] |        
+## time.deploy * flash [IR]  |       -0.11 | [-0.32,  0.09] |  -1.07 | Inf | 0.286  |      -0.26 |    [-0.75,  0.22] |        
+## time.deploy * flash [LED] |        0.03 | [-0.18,  0.24] |   0.30 | Inf | 0.768  |       0.08 |    [-0.43,  0.58] |        
 ##                           |             |                |        |     |        |            |                   |        
-## AIC                       |             |                |        |     |        |            |                   | 1851.14
-## BIC                       |             |                |        |     |        |            |                   | 1912.20
-## R2 (conditional)          |             |                |        |     |        |            |                   |    0.26
-## R2 (marginal)             |             |                |        |     |        |            |                   |    0.04
+## AIC                       |             |                |        |     |        |            |                   | 1810.36
+## BIC                       |             |                |        |     |        |            |                   | 1869.51
+## R2 (conditional)          |             |                |        |     |        |            |                   |    0.22
+## R2 (marginal)             |             |                |        |     |        |            |                   |    0.05
 ## Sigma                     |             |                |        |     |        |            |                   |    1.00
 ```
 
@@ -2715,12 +2746,12 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-7.32 -5.45]
-##                time.deploy Undecided     51.44 % [-0.06  0.25]
-##                 flash [IR]  Rejected      0.00 % [ 0.67  2.68]
-##                flash [LED] Undecided      9.54 % [-0.29  1.81]
-##   time.deploy * flash [IR] Undecided     46.10 % [-0.29  0.06]
-##  time.deploy * flash [LED] Undecided     56.16 % [-0.15  0.20]
+##                (Intercept)  Rejected      0.00 % [-6.84 -5.06]
+##                time.deploy Undecided     52.49 % [-0.06  0.25]
+##                 flash [IR]  Rejected      0.00 % [ 0.74  2.64]
+##                flash [LED] Undecided     10.02 % [-0.24  1.76]
+##   time.deploy * flash [IR] Undecided     46.49 % [-0.29  0.06]
+##  time.deploy * flash [LED] Undecided     56.06 % [-0.15  0.21]
 ```
 
 ```r
@@ -2795,7 +2826,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -2874,7 +2905,7 @@ xtable(para_all) # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Wed Mar 17 09:38:57 2021
+## % Fri Mar 19 15:50:37 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2882,12 +2913,12 @@ xtable(para_all) # output in Rmd
 ##  & Parameter & Coefficient & SE & 95\% CI & z & p \\ 
 ##   \hline
 ## 1 & Roe deer &  &  &  &  &        \\ 
-##   2 & (Intercept) & 0.03 & 0.01 & (0.01, 0.06) & -8.69 & $<$ .001 \\ 
-##   3 & time.deploy & 0.89 & 0.05 & (0.80, 0.99) & -2.22 & 0.026  \\ 
-##   4 & flash [IR] & 1.17 & 0.58 & (0.44, 3.11) & 0.31 & 0.754  \\ 
-##   5 & flash [LED] & 1.24 & 0.62 & (0.47, 3.30) & 0.43 & 0.666  \\ 
-##   6 & time.deploy * flash [IR] & 1.05 & 0.07 & (0.92, 1.20) & 0.69 & 0.489  \\ 
-##   7 & time.deploy * flash [LED] & 1.01 & 0.06 & (0.89, 1.14) & 0.11 & 0.916  \\ 
+##   2 & (Intercept) & 0.05 & 0.02 & (0.02, 0.10) & -8.32 & $<$ .001 \\ 
+##   3 & time.deploy & 0.89 & 0.05 & (0.80, 0.99) & -2.24 & 0.025  \\ 
+##   4 & flash [IR] & 0.84 & 0.36 & (0.36, 1.93) & -0.42 & 0.674  \\ 
+##   5 & flash [LED] & 0.89 & 0.38 & (0.38, 2.05) & -0.28 & 0.778  \\ 
+##   6 & time.deploy * flash [IR] & 1.05 & 0.07 & (0.92, 1.20) & 0.71 & 0.476  \\ 
+##   7 & time.deploy * flash [LED] & 1.01 & 0.06 & (0.89, 1.14) & 0.12 & 0.901  \\ 
 ##   8 & Red fox &  &  &  &  &        \\ 
 ##   9 & (Intercept) & 0.03 & 7.37e-03 & (0.02, 0.05) & -14.95 & $<$ .001 \\ 
 ##   10 & time.deploy & 1.00 & 0.07 & (0.88, 1.14) & -0.02 & 0.985  \\ 
@@ -3034,15 +3065,15 @@ m_compare
 ## 
 ## Name    |    Model |      AIC |      BIC | R2 (cond.) | R2 (marg.) |   ICC |  RMSE | Performance-Score
 ## ------------------------------------------------------------------------------------------------------
-## m_gaup  | glmerMod |  745.849 |  806.907 |      0.348 |      0.027 | 0.330 | 0.065 |            80.00%
-## m_hjort | glmerMod | 1821.564 | 1882.623 |      0.480 |      0.007 | 0.476 | 0.119 |            76.99%
-## m_maar  | glmerMod | 1851.145 | 1912.203 |      0.259 |      0.043 | 0.225 | 0.122 |            67.75%
-## m_ekorn | glmerMod | 2964.184 | 3025.242 |      0.399 |      0.008 | 0.394 | 0.159 |            61.05%
-## m_elg   | glmerMod | 3024.207 | 3085.265 |      0.256 |      0.003 | 0.254 | 0.148 |            45.86%
-## m_grvl  | glmerMod | 4756.822 | 4817.880 |      0.367 |      0.006 | 0.363 | 0.210 |            44.99%
-## m_hare  | glmerMod | 4968.157 | 5029.215 |      0.349 |  8.828e-04 | 0.349 | 0.222 |            39.64%
-## m_raa   | glmerMod | 7720.524 | 7781.583 |      0.359 |      0.002 | 0.357 | 0.301 |            22.38%
-## m_rev   | glmerMod | 5740.112 | 5801.171 |      0.135 |  6.001e-04 | 0.134 | 0.221 |            15.12%
+## m_ekorn | glmerMod | 2965.187 | 3026.245 |      0.428 |      0.008 | 0.423 | 0.159 |            70.32%
+## m_gaup  | glmerMod |  686.228 |  739.944 |      0.183 |      0.060 | 0.132 | 0.103 |            68.88%
+## m_maar  | glmerMod | 1810.358 | 1869.513 |      0.223 |      0.052 | 0.180 | 0.138 |            63.61%
+## m_grvl  | glmerMod | 4728.274 | 4788.590 |      0.354 |      0.005 | 0.351 | 0.220 |            47.87%
+## m_hjort | glmerMod | 1743.432 | 1798.645 |      0.177 |      0.011 | 0.168 | 0.172 |            46.48%
+## m_elg   | glmerMod | 2956.300 | 3015.409 |      0.164 |      0.003 | 0.161 | 0.167 |            37.74%
+## m_hare  | glmerMod | 4925.041 | 4984.792 |      0.275 |      0.002 | 0.273 | 0.241 |            35.42%
+## m_raa   | glmerMod | 7685.618 | 7745.758 |      0.293 |      0.002 | 0.291 | 0.319 |            18.24%
+## m_rev   | glmerMod | 5740.112 | 5801.171 |      0.146 |  6.490e-04 | 0.145 | 0.221 |            17.61%
 ```
 
 ```r
@@ -3098,7 +3129,9 @@ singu %>% unique() # FALSE
 
 ```r
 # sp ="raadyr"
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+time_sp <- filter(time.dep4, species %in% sp,
+                             loc %in% n_loc) #.dep4 = trimmed data
 # time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
@@ -3109,6 +3142,7 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
+# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
@@ -3201,7 +3235,7 @@ p_grid <- cowplot::plot_grid(p_sp1,
                    rel_heights = c(3,2),
                    labels="auto"
                    #align = "h"
-) 
+) + labs(title = paste0(sp, " present at ",n_loc," sites."))
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
        #  hjust = 1, halign = 1, valign = 0)
 ```
@@ -3260,26 +3294,26 @@ sessionInfo()
 ##  [5] rio_0.5.26         ggridges_0.5.3     sjlabelled_1.1.7   estimability_1.3  
 ##  [9] fs_1.5.0           rstudioapi_0.13    ggpubr_0.4.0       farver_2.1.0      
 ## [13] fansi_0.4.2        mvtnorm_1.1-1      lubridate_1.7.10   xml2_1.3.2        
-## [17] splines_4.0.4      knitr_1.31         sjmisc_2.8.6       effects_4.2-0     
-## [21] jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.5        dbplyr_2.1.0      
-## [25] effectsize_0.4.3-1 compiler_4.0.4     httr_1.4.2         sjstats_0.18.1    
-## [29] emmeans_1.5.4      backports_1.2.1    assertthat_0.2.1   survey_4.0        
-## [33] cli_2.3.1          htmltools_0.5.1.1  tools_4.0.4        coda_0.19-4       
-## [37] gtable_0.3.0       glue_1.4.2         reshape2_1.4.4     Rcpp_1.0.6        
-## [41] carData_3.0-4      cellranger_1.1.0   jquerylib_0.1.3    vctrs_0.3.6       
-## [45] nlme_3.1-152       insight_0.13.1.1   xfun_0.22          openxlsx_4.2.3    
-## [49] rvest_1.0.0        lifecycle_1.0.0    statmod_1.4.35     rstatix_0.7.0     
-## [53] MASS_7.3-53.1      scales_1.1.1       hms_1.0.0          RColorBrewer_1.1-2
-## [57] yaml_2.2.1         curl_4.3           sass_0.3.1         stringi_1.5.3     
-## [61] highr_0.8          bayestestR_0.8.3.1 boot_1.3-27        zip_2.1.1         
-## [65] rlang_0.4.10       pkgconfig_2.0.3    evaluate_0.14      lattice_0.20-41   
-## [69] labeling_0.4.2     tidyselect_1.1.0   plyr_1.8.6         magrittr_2.0.1    
-## [73] R6_2.5.0           generics_0.1.0     DBI_1.1.1          pillar_1.5.1      
-## [77] haven_2.3.1        foreign_0.8-81     withr_2.4.1        survival_3.2-7    
-## [81] abind_1.4-5        nnet_7.3-15        modelr_0.1.8       crayon_1.4.1      
-## [85] car_3.0-10         utf8_1.1.4         rmarkdown_2.7.3    grid_4.0.4        
-## [89] readxl_1.3.1       data.table_1.14.0  reprex_1.0.0       digest_0.6.27     
-## [93] munsell_0.5.0      bslib_0.2.4.9002   mitools_2.4
+## [17] codetools_0.2-18   splines_4.0.4      knitr_1.31         sjmisc_2.8.6      
+## [21] effects_4.2-0      jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.5       
+## [25] dbplyr_2.1.0       effectsize_0.4.3-1 compiler_4.0.4     httr_1.4.2        
+## [29] sjstats_0.18.1     emmeans_1.5.4      backports_1.2.1    assertthat_0.2.1  
+## [33] survey_4.0         cli_2.3.1          htmltools_0.5.1.1  tools_4.0.4       
+## [37] coda_0.19-4        gtable_0.3.0       glue_1.4.2         reshape2_1.4.4    
+## [41] Rcpp_1.0.6         carData_3.0-4      cellranger_1.1.0   jquerylib_0.1.3   
+## [45] vctrs_0.3.6        nlme_3.1-152       insight_0.13.1.1   xfun_0.22         
+## [49] openxlsx_4.2.3     rvest_1.0.0        lifecycle_1.0.0    statmod_1.4.35    
+## [53] rstatix_0.7.0      MASS_7.3-53.1      scales_1.1.1       hms_1.0.0         
+## [57] RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3           sass_0.3.1        
+## [61] stringi_1.5.3      highr_0.8          bayestestR_0.8.3.1 boot_1.3-27       
+## [65] zip_2.1.1          rlang_0.4.10       pkgconfig_2.0.3    evaluate_0.14     
+## [69] lattice_0.20-41    labeling_0.4.2     tidyselect_1.1.0   plyr_1.8.6        
+## [73] magrittr_2.0.1     R6_2.5.0           generics_0.1.0     DBI_1.1.1         
+## [77] pillar_1.5.1       haven_2.3.1        foreign_0.8-81     withr_2.4.1       
+## [81] survival_3.2-7     abind_1.4-5        nnet_7.3-15        modelr_0.1.8      
+## [85] crayon_1.4.1       car_3.0-10         utf8_1.1.4         rmarkdown_2.7.3   
+## [89] grid_4.0.4         readxl_1.3.1       data.table_1.14.0  reprex_1.0.0      
+## [93] digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002   mitools_2.4
 ```
 
 ```r
