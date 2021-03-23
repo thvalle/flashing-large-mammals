@@ -5,8 +5,6 @@
 
 \include{tex/title}
 
-%Det finnes diverse gode interaktive tegneprogrammer, for eksempel
-%AdobeIllustrator, Inkscape, GIMP og paint.net, samt et meget godt deklarativt tegne-program:MetaPost.
 
 %\includeonly{tex/intro, tex/method, tex/results}
 \begin{document}
@@ -36,6 +34,8 @@
 % -- conclusion --
 %\include{tex/conclusion}
 
+
+
 % -- appendix --
 %\appendix
 %\section*{Appendices}
@@ -48,8 +48,6 @@
 %\input{tex/sessinfo.tex}
 
 %\subsection{\\Another Appendix}
-
-
 
 %\include{tex/appendix} %maybe forget about this one
 

@@ -2,13 +2,6 @@
 
 
 \section{Study area} % flyttet først etter AMkomm
-%mogleg å kjøre ein fin overgang fra intro til study area? Study area valt pga dårlige snøforhold i nyere tid -> vanskelig å gjere spor-tellinger -> denne delen av landet har starta med CT (\cite{Odden2015})
-
-
-The mean annual temperatures ranges from 2-6 \celsius , precipitation lies between 700-1500mm and growing season length lies between 170 - 190 days (\cite{Moen1999}).
-Topography is predominantly flat towards the south, and more rugged and elevated towards the north. The landscape is a mosaic of forest and agricultural areas, divided with a wide network of gravel roads.
-The area is situated in the southern boreal and the boreonemoral zones. %Må finne oppdaterte data (frå Norges vassdrags- og energidirektorat, 2019?)
-Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) make up the dominating boreal coniferous forests, with frequent presence of silver birch (\textit{Betula pendula}) and downy birch (\textit{Betula pubescens}), then aspen (\textit{Populous tremula}), alder (\textit{Alnus incana}) and black alder (\textit{Alnus glutinosa}).
 
 
 %https://klimaservicesenter.no/faces/desktop/article.xhtml?uri=klimaservicesenteret/klimaprofiler/klimaprofil-oslo-og-akershus
@@ -17,25 +10,25 @@ The study area (59.36-60.45° N, 9.31-11.13° E) extends over much of the southe
 The climate has a continental character due to rain shadows of the mountain ridges from the west. 
 
 
-\section{Study species} %Usikker på om eg skal ha med
-%\subsubsection{Rev}  ?
+\begin{figure}
+\centering
+%\includegraphics[scale=•]{•} %TODO
+	\label{fig:map}
+	\caption[Map of study area]
+	{Map of study area %\par \small
+	60 sites in Southeastern Norway were included in the survey. Point colouration represents camera model, and white dots represent sites that had periods with an additional white LED camera trap (CT).}
+\end{figure}
 
-%We also collated information on average body and home range sizes for a subset of species surveyed in the reviewed studies in order to better quantify the functional diversity of wildlife being sampled by CTs and to evaluate the degree to which CT methodologies were tailored to focal species. Burton 2015
-
-The species I'll focus on in this thesis are the species that most frequently was observed \emph{(>50 events)}, excluding farmed animals (e.g. cattle), humans and dogs, and grouped categories of animals (e.g. birds).
-%Although decisions on camera placement (height and angle) were made with the aim on photo capturing lynx, I have also included smaller species in the analysis.
-
-That left nine species, namely roe deer (\textit{Capreolus capreolus}), red fox (\textit{Vulpes vulpes}), badger (\textit{Meles meles}), moose (\textit{Alces alces}), red deer (\textit{Cervus elaphus}), red squirrel (\textit{Sqiurus vulgaris}), hare (\textit{Lepus timidus}), European pine marten (\textit{Martes martes}) and lynx. 
-
+The mean annual temperatures ranges from 2-6 \celsius , precipitation lies between 700-1500mm and growing season length lies between 170 - 190 days (\cite{Moen1999}).
+Topography is predominantly flat towards the south, and more rugged and elevated towards the north. The landscape is a mosaic of forest and agricultural areas, divided with a wide network of gravel roads.
+The area is situated in the southern boreal and the boreonemoral zones. %Må finne oppdaterte data (frå Norges vassdrags- og energidirektorat, 2019?)
+Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) make up the dominating boreal coniferous forests, with frequent presence of silver birch (\textit{Betula pendula}) and downy birch (\textit{Betula pubescens}), then aspen (\textit{Populous tremula}), alder (\textit{Alnus incana}) and black alder (\textit{Alnus glutinosa}).
 
 
 
 \section{Study design} 
 
-
-The Norwegian Institute of Nature Research (NINA) started with CTs to substitute snow track surveys of lynx family groups, after several years of varying snow season length in south eastern Norway (\cite{Odden2015}). The surveys are integrated in a coordinated Scandinavian science project on lynx, called Scandlynx. % Beddari siterte SCANDLYNX2017  
-
-I was given access to CTs used in the Scandlynx project, and chose 60 sites to get a substantial amount of data, while doing a feasible amount of field work besides my master courses at the university.
+I was given access to CTs used in the Scandlynx project, and chose 60 sites to get a substantial amount of data.
 For logistical reasons, I chose the sites closest to Oslo which weren't already equipped with white LED flashes. 
 Instead, these CTs were equipped with infra-red flashes, and I will refer to them as the \emph{IR CTs}.
 
@@ -49,36 +42,36 @@ The installation of the cameras did not follow a strict protocol, nor were their
     \begin{center}
     	\includegraphics[scale=0.4]{./img/experiment_setup.jpg} %insert figure of groups     
     \end{center}
-\caption[Experiment setup]
+\caption[The Experimental setup]
     	{Experiment setup %\par \small
-    	 I chose 60 sites with preinstalled Infrared Camera Traps (IR CTs) for my study, and divided them into three groups, where the first group remained unchanged (control group), and the two other alternated on having additional white LED CTs present (treatment groups). Four sites were removed from the analysis due to large gaps in the data, etc.}
+    	 60 sites with preinstalled Infrared Camera Traps (IR CTs) that was divided into three groups, where the first group remained unchanged (control group), and the two other alternated on having additional white LED CTs present or not (treatment groups).}
     \label{fig:exp_set}
 \end{figure} 
 
 
 I divided the sites randomly into three groups of 20 sites.
-The first group remained unchanged as a control, and the remaining two groups (hereby referred to as the \emph{treatment groups}) were equipped with an additional white LED camera (hereby referred to as the \emph{wLED CTs}) in alternating 3 month-periods, as illustrated in figure\vref{fig:exp_set}.
-Periods when an additional wLED CT was present, I will refer to as \emph{wLED periods}.
-Periods when the wLED was absent, I will refer to as \emph{IR periods}.
+The first group remained unchanged as a control, and the remaining two groups (hereby referred to as the \emph{treatment groups}) were equipped with an additional white LED camera (hereby referred to as the \emph{white LED CTs}) in alternating 3 month-periods, as illustrated in figure\vref{fig:exp_set}.
+Periods when an additional white LED CT was present, I will refer to as \emph{white LED periods}.
+Periods when the white LED was absent, I will refer to as \emph{IR periods}.
 All periods from the control group, I will refer to as \emph{control periods}.
 Note that control periods also are periods with only IR CTs present, but they differ from the IR periods in that there never was a white LED present at these sites.
 
 
 %After approximately three months, I moved the LED CTs to the other treatment group. The periods were marked as LED\_1, LED\_2 for first and second LED period, and IR\_1, IR\_2 for first and second IR period as seen in figure \vref{fig:timeseries}.
-I set up all wLED CTs above the IR CTs already in place (installation examples in figure \ref{fig:cam_ex_main}), using an electric drill. 
-I used short logs to adjust the angle of the wLED CTs, aligning it to the IR CTs field of view.
+I set up all white LED CTs above the IR CTs already in place (installation examples in figure \ref{fig:cam_ex_main}), using an electric drill. 
+I used short logs to adjust the angle of the white LED CTs, aligning it to the IR CTs field of view.
 Vegetation obstructing the view of any camera was removed at setup, or when noticed during a later visitation (e.g. tall grass during summer).
 
  
-At one site the IR camera had been installed so far above ground level that I chose to position the wLED CT below the IR CT. %Atle fjerna kryssref til bildet
+At one site the IR camera had been installed so far above ground level that I chose to position the white LED CT below the IR CT. %Atle fjerna kryssref til bildet
 
-The camera boxes containing the wLED CTs remained at each site untill the end of the survey. Note that the second treatment group had no extra boxes  before the start of their first wLED period in May 2019.   
+The camera boxes containing the white LED CTs remained at each site untill the end of the survey. Note that the second treatment group had no extra boxes  before the start of their first white LED period in May 2019.   
 
 
 \input{tex/fig/met1.tex}
 
 
-I visited sites of the treatment groups at least once every three months in order to move the wLED cameras.
+I visited sites of the treatment groups at least once every three months in order to move the white LED cameras.
 For logistical reasons I visited sites of the control group less often.
 However, as the cameras were part of other, ongoing projects, they were occasionally visited by workers from NINA to retreive the Secure Digital memory cards (hereby SD Cards) for data. %write in full on first mention (-Atle)
 This was mostly the case for sites close to, and south of, Oslo, or rather, the cameras not normally operated by local volunteers.
@@ -88,14 +81,26 @@ This was mostly the case for sites close to, and south of, Oslo, or rather, the 
 
 %We quantified the degree of consistency in implementing and reporting features of CT protocols and study design that might affect detectability and sampling error (e.g. camera type and settings, spatial and temporal sampling effort, use of attractants; Table S1). These details are fundamental to interpreting results of CT studies and assessing their reliability, repeatability and suitability for broader comparison or synthesis (Meek et al. 2014a)
 
-%TODO Details of camera trap orientation, use of lures, and performance settings are also critical elements of camera trapping methodology. The height in relation to the target, the direction the camera is facing in relation to expected animal travel and path of the sun as well as horizontal and vertical alignment may all influence the results of camera trap studies. Providing clear descriptions of exactly how cameras were placed is fundamental to understanding and interpreting the results of research. (Meek etal 2014)
 
 
 
 \section{Data Collection} 
 
 
-%\input{tex/tab/cam_mod.tex}
+Five different models of RECONYX™ (address: 3828 Creekside Ln, Ste 2, Holmen, WI 54636, USA, www.reconyx.com) cameras were used, 
+and one model of BROWNING™ (address: One Browning Place, Morgan, UT 84050, USA, www.browningtrailcameras.com), details in table \ref{tab:cam_mod} and \ref{tab:cam_set}.
+
+
+
+\input{tex/tab/cam_mod.tex}
+
+
+Cameras were operating 24 hours per day. The RECONYX™ cameras were set to take one time lapse photo per day in order to verify that the cameras had been operational.
+They were set to take 3 pictures per series, as fast as possible using \emph{rapidfire}, and retrigger immediately using \emph{no delay}.
+The BROWNING™ cameras were also set to rapidfire, but to 8 photos per trigger, which made the memory cards more vulnerable to filling up before being collected. This happened in some areas with sheep and/or cattle, and sometimes due to triggering by vegetation.
+Therefore, the BROWNING™ cameras tended to have more gaps of inoperable days.
+Lacking time lapse photos, the number of active camera days were confounded.
+To approach the true number of active days, I assumed all BROWNING™ cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo.
 
 
 
@@ -106,9 +111,6 @@ there was a correlation between latitude and camera type.
 % Assumptions: chance of detection & sp validation BROWNING > RECONYX, operational days BROWNING < RECONYX
 
 
-\begin{figure}
-	\label{fig:map}
-\end{figure}
 
 %* Number and spacing of CTs |Hofmeester 2017 
 %Mention in map figure text
@@ -125,25 +127,25 @@ there was a correlation between latitude and camera type.
 All SD cards were delivered to NINA for data processing.
 Firstly, a facial recognition algorithm (FRA) was used to sort all the pictures. %artificial intelligence software (AI)
 Afterwards, a human sorter checks the softwares' output, confirming all the correct decisions (i.e. species detections) and correcting all the wrong ones. 
-Consequently, the rate of correctly identified species has gone up as the FRA sometimes detect animals that aren't easily noticed by human sorters (pers.comm. John Odden). 
-NINA's goal is to fully automate this identification process, which is a request from The Norwegian Data Protection Authority in relation to usage of cameras in densely crowded areas (e.g. parks) (pers.comm. John Odden).
+Consequently, the rate of correctly identified species has gone up as the FRA sometimes detect animals that aren't easily noticed by human sorters (John Odden pers. comm.). 
+NINA's goal is to fully automate this identification process, which is a request from The Norwegian Data Protection Authority in relation to usage of cameras in densely crowded areas (e.g. parks) (John Odden pers. comm.).
 
 %Nei, vi har ikke publisert artikkel på gjenkjenningsalgoritmen. Du har jo vært med på prosessen sjøl, så jeg veit ikke om du egentlig trenger referanse her, men du kan sette inn John O som pers med og merke det, så kan han eller jeg endre det slik vi mener det bør være når vi leser gjennom oppgava di..
-The wLED CTs were considered as external flashes, and so, only the pictures from the preinstalled IR CTs were sorted for species identification.
+The white LED CTs were considered as external flashes, and so, only the pictures from the preinstalled IR CTs were sorted for species identification.
 NINA provided me with a data frame containing time stamps for every triggering of each IR CT, including all meta data from the CTs, coupled with predicted species (FRA output, with a confidence number), verified species (by human sorters), number of animals and distance from camera.
 
 Thus, if a moose ruminated in front of a camera for 30 minutes, the data frame would include several detections in sequence.
 In order to remove autocorrelation in the observations, I defined an event to be any sighting of a species that occured more than 20 minutes after the previous sighting of the same species.
 Number of individuals was not taken into account.
-My predictor variable of interest was the three different types of periods, namely IR, wLED and Control periods.
+My predictor variable of interest was the three different types of periods, namely IR, white LED and Control periods.
 
-I extracted metadata from all pictures taken by the wLED CTs and used that to define the duration of each wLED period.
-If a wLED CT stopped working (eg. due to full SD card or empty batteries) before the day I came to move it, the site would have already entered its next IR period.
+I extracted metadata from all pictures taken by the white LED CTs and used that to define the duration of each white LED period.
+If a white LED CT stopped working (eg. due to full SD card or empty batteries) before the day I came to move it, the site would have already entered its next IR period.
 This happened a few times, which can be seen as the times a light blue period starts outside of the shaded areas in figure \ref{fig:timeseries}.
-If an IR CT stopped working during a wLED period, that period represented a GAP even though the wLED CT still functioned. Thus, the site, and it's inhabitant animals, would still experience the effect of a white flash up until the start of the IR period.
-I never experienced that both the IR and the wLED CTs of a site had stopped working at the same time.
+If an IR CT stopped working during a white LED period, that period represented a GAP even though the white LED CT still functioned. Thus, the site, and it's inhabitant animals, would still experience the effect of a white flash up until the start of the IR period.
+I never experienced that both the IR and the white LED CTs of a site had stopped working at the same time.
 
-When modelling the detection rates I needed periods of similar lengths to each other. Therefore, I divided the control group-cameras into four periods of similar lengths to that of the IR- and wLED-periods (see figure \ref{fig:timeseries}). 
+When modelling the detection rates I needed periods of similar lengths to each other. Therefore, I divided the control group-cameras into four periods of similar lengths to that of the IR- and white LED-periods (see figure \ref{fig:timeseries}). 
 %Describing in brief how coding is undertaken is useful for readers to understand the methods used in relation to the results.(Meek etal 2014)
 
 
@@ -156,8 +158,8 @@ In total, 4 sites were removed before the analysis due to technical faults, or a
 \begin{figure}
 		\centering
 		\includegraphics[scale=.8]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}	
-\caption[Active camera days]
-{Active camera days %\par \small 
+\caption[An overview of active camera days]
+{An overview of active camera days for each camera %\par \small 
 Colours indicate the different periods for each site. White spaces indicate gaps where the IR CTs were inactive. Control camera periods were defined in similar lengths to that of the treatment group during analysis. As a result, the first day of control periods are often set at dates far from when I actually visited the site. Shaded areas represent my field work periods. \label{fig:timeseries}}
 \end{figure}
 
@@ -189,20 +191,22 @@ The control group’s “day 0” of time since deployment were set at points re
 I trimmed the period lengths down to a reduced maximum length, based on the median length of the IR and white LED periods, to enhance meaningful comparison.
 Thus, any period exceeding the shortest median length, was trimmed down, as visualized in figure \ref{fig:median_period}.
 Finally, due to large eigenvalues in the fixed effects, the model failed to converge, and an error message prompted me to rescale variables.
-Therefore I divided the time since deployment-variable by ten, which solved the error. Consequently, the time axis is shown in days/10, which means that 8 corresponds to 80 days.
+Therefore I divided the time since deployment-variable by ten, which solved the convergence issue.
+Consequently, the time axis is shown in days/10, which means that 8 corresponds to 80 days.
 
 
 \begin{figure}
 	\centering
 	\includegraphics[scale=.8]{../R/glmm_sp_files/figure-html/period-length-wControl-1.png}
 	\caption[Period lengths]
-	{Period lengths \par \small 
+	{Period lengths %\par \small 
 	Vertical line represents the median IR period length, which was shorter than the median of the other groups. Data superceding the median were trimmed away for the GLMM. \label{fig:median_period}}
 \end{figure}
 
 %AMkomm: til analyse
-If there were any effect of the white LED, the IR period should show a regression to the norm, ie. counteracting the trend during the wLED periods. Thus, if the wLED had a negative slope along the time axis, the IR should have a positive slope.
-Further, the detection rate at the start of each period, should correspond somewhat to the detection rate at the end of the previous period. Still, that pattern could be skewed to some extent due to my visitation of each location at the start of all IR and wLED periods.
+If there were any effect of the white LED, the IR period should show a regression to the norm, ie. counteracting the trend during the white LED periods.
+Thus, if the white LED had a negative slope along the time axis, the IR should have a positive slope.
+Further, the detection rate at the start of each period, should correspond somewhat to the detection rate at the end of the previous period. Still, that pattern could be skewed to some extent due to my visitation of each location at the start of all IR and white LED periods.
 
 
 
