@@ -243,7 +243,7 @@
       \field{labeltitlesource}{title}
       \field{abstract}{The lynx population in Scandinavia has been monitored since the 1990's using snow-tracking to detect the presence of family groups. Parts of Norway have experienced winters with limited snow cover in recent years, creating a need to find alternatives to our current monitoring meth- ods. This report summarize experiences from a pilot project testing camera traps for monitoring lynx in 3 study areas in southeastern Norway. The goal has been to test if camera traps increase the number of observations of family groups, and if we can use individual recognition from im- ages to calculate the density of lynx using spatial capture-recapture methods. Although camera traps are a standard method for lynx monitoring in many countries, there is a need to evaluate their suitability in Norway where we need to monitor very large areas with very low density lynx populations. Camera traps were deployed at 297 localities in the 3 study areas, in parts of Oslo, Akershus and {Ø}stfold Counties (Region 4, 2010-2015), Vestfold County with adjoining areas of Buskerud and Telemark (Region 2, 2012-2015) and Oppland County (Region 3, 2014-2015). All fieldwork was conducted in collaboration with the Norwegian Hunters and Anglers Association in Oppland and Akershus, with assistance from students and volunteers. We photographed lynx 573 times in 112 locations during 120 453 camera-days. During the same period, we observed other species 42 435 times. In all three areas cameras increased the num- ber of observations of family groups. Fourteen of 18 family groups detected by the public and reported to the National Large Predator Monitoring Program (Rovdata) within the study areas during all study winters had at least one observation from camera-traps. We compared estimates of the number of family groups made by the traditional methods (lynx tracks in snow and grouping by distance criteria, AK) within the study areas with estimates based on data from camera traps. Estimates based on AK were 23 family groups for all years and all areas combined, and corre- sponding estimates solely based on data from camera traps were for 20 family groups. We estimated densities of lynx in Regions 4 and 2 using spatial capture-recapture methods, and in both areas lynx densities decreased during the study period. In Region 2 densities decreased from 2.1 (±0.7) lynx/1000 km2 in 2012/13 to 1.2 (±0.4) in 2014/15. In Region 4 lynx densities decreased from 2.0 (±0.5) and 2.9 (±1.5) lynx/1000 km2 the first 2 years to 1.3 (±0.4), 0.6 (±0.1) and 0.4 (±0.2) lynx/1000 km2 the last 3 winters. We followed nine lynx with GPS collars within these study areas, and all marked lynx were cap- tured by camera traps. Female lynx were photographed on average 10 times per year, while male lynx on average were photographed 27 times per year. We demonstrate that camera traps can be a useful supplement to the current snow-based mon- itoring of lynx family groups in Scandinavia. A more intensive system of camera traps may also provide estimates of lynx densities with a measure of the precision in the estimates. Our experi- ence here is also that the involvement of local people in the operation of the camera traps may reduce conflicts. We need to further develop camera traps as a method to be used in long-term studies of demographic parameters of lynx, behavioral studies, habitat selection, effects of hu- man disturbance and interactions with other species. It is also important to evaluate the potential of camera traps as a tool to monitor multiple species in forest ecosystems. John}
       \field{isbn}{9788242628466}
-      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på{Ø}stlandet - NINA Rapport 1216}}
+      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på {Ø}stlandet - NINA Rapport 1216}}
       \field{type}{techreport}
       \field{year}{2015}
       \field{pages}{54}
@@ -255,30 +255,6 @@
       \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
       \endverb
       \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
-    \endentry
-    \entry{Trailcampro2014}{misc}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=18593226fa3a96788e7ec778b3ae1567}{%
-           family={Trailcampro},
-           family_i={T\bibinitperiod}}}%
-      }
-      \strng{namehash}{18593226fa3a96788e7ec778b3ae1567}
-      \strng{fullhash}{18593226fa3a96788e7ec778b3ae1567}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2014}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Trailcampro.com}
-      \field{title}{{Trigger speed shootout}}
-      \field{urlday}{15}
-      \field{urlmonth}{01}
-      \field{urlyear}{2021}
-      \field{year}{2014}
-      \verb{url}
-      \verb https://www.trailcampro.com/pages/trigger-speed-shootout-archive
-      \endverb
     \endentry
     \entry{RCoreTeam2020}{manual}{}
       \name{author}{1}{}{%
@@ -514,81 +490,6 @@
       \range{pages}{48}
       \verb{doi}
       \verb 10.18637/jss.v067.i01
-      \endverb
-    \endentry
-    \entry{survival-book}{book}{}
-      \name{author}{2}{}{%
-        {{uniquename=0,hash=4f6c14a2026dbc26a9ae0576424ab726}{%
-           family={{Terry\bibnamedelimb M.\bibnamedelimi Therneau}},
-           family_i={T\bibinitperiod}}}%
-        {{uniquename=0,hash=2b7569d40a223378d1db79c83cf72626}{%
-           family={{Patricia\bibnamedelimb M.\bibnamedelimi Grambsch}},
-           family_i={P\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {New York}%
-      }
-      \list{publisher}{1}{%
-        {Springer}%
-      }
-      \strng{namehash}{d7f8cb5bfa3c9735ea0dd996da41e4c5}
-      \strng{fullhash}{d7f8cb5bfa3c9735ea0dd996da41e4c5}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2000}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{0-387-98784-3}
-      \field{title}{{Modeling Survival Data: Extending the {C}ox Model}}
-      \field{year}{2000}
-    \endentry
-    \entry{survival-package}{manual}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
-           family={Therneau},
-           family_i={T\bibinitperiod},
-           given={Terry\bibnamedelima M},
-           given_i={T\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
-      }
-      \strng{namehash}{74cea5e05bac64f6e1784e2a50d0f063}
-      \strng{fullhash}{74cea5e05bac64f6e1784e2a50d0f063}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{extrayear}{1}
-      \field{labelyear}{2020}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{annotation}{R package version 3.2-7}
-      \field{title}{{A Package for Survival Analysis in R}}
-      \field{year}{2020}
-      \verb{url}
-      \verb https://cran.r-project.org/package=survival
-      \endverb
-    \endentry
-    \entry{coxme-package}{manual}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=74cea5e05bac64f6e1784e2a50d0f063}{%
-           family={Therneau},
-           family_i={T\bibinitperiod},
-           given={Terry\bibnamedelima M},
-           given_i={T\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
-      }
-      \strng{namehash}{74cea5e05bac64f6e1784e2a50d0f063}
-      \strng{fullhash}{74cea5e05bac64f6e1784e2a50d0f063}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{extrayear}{2}
-      \field{labelyear}{2020}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{annotation}{R package version 2.2-16}
-      \field{title}{{coxme: Mixed Effects Cox Models}}
-      \field{year}{2020}
-      \verb{url}
-      \verb https://cran.r-project.org/package=coxme
       \endverb
     \endentry
   \endsortlist

@@ -10,14 +10,9 @@
 
 
 
+%\section{All species} %AMkomm: Title needs to say something more
 
-
-\section{GLMM}
-
-
-\subsection{All species}
-
-As the control-group stayed unchanged through the whole study period, and was visited less than the other cameras, I expected there to be no trend over time (i.e. time.deploy $\approx 0$ in table \ref{tab:param}).
+As the control-group (Intercept in table \ref{tab:param}) stayed unchanged through the whole study period, and was visited less than the other cameras, I expected there to be no trend over time (i.e. time.deploy $\approx 0$ in table \ref{tab:param}).
 Any fluctuations in detection rates due to weekly (and ultimately seasonal) changes should be controlled for by the random effect-term for week of the year, leaving the control group as a representation of the baseline detection rate.
 This held true for all the species in my analysis.
 
@@ -32,13 +27,15 @@ Still, as time since deployment = 0 corresponds to the day of my visitation, my 
 
 The main effect of LED was positive for most species, although none responded significantly (table \ref{tab:param}).
 
+\begin{table}[ht]
+\caption[Model parameters]
+{\label{tab:param} Model parameters \par \small Results of generalised linear mixed effect models on detection rate of species at 56 different locations in south-eastern Norway, with three different treatment levels; periods from sites unchanged through the the whole study period (Intercept), period with only IR camera (IR) and period with additional white LED camera (LED). Random effects are location ID and week of year. %Standardised parameters were obtained by fitting the model on a standardised version of the dataset.
+95\% Confidence Intervals and p-values were computed using the Wald approximation.}
 
 \input{tex/tab/parameters2.tex}
 	%Caption outside the .tex-file or else it would be deleted every time I update the parameter-table
-\caption[Standardised model parameters]%
-{\label{tab:param} Standardised model parameters \par \small Results of generalised linear mixed effect models on detection rate of species at 56 different locations in south-eastern Norway, with three different treatment levels; period with only IR camera (flash[IR]), period with additional white LED camera (flash[LED]) and site unchanged through the whole study period (flash[Control]). Random effects are location ID and week of year. Standardised parameters were obtained by fitting the model on a standardised version of the dataset. 95\% Confidence Intervals and p-values were computed using the Wald approximation.}
 
-\end{table} % må inn og fjerne end{table} kvar gong tabellen oppdaterest!
+\end{table} % må inn og fjerne end{table} (vertfall \begin{table}) kvar gong tabellen oppdaterest!
 
  
 %\input{tex/fig/res1.tex}
@@ -49,13 +46,14 @@ The main effect of LED was positive for most species, although none responded si
 
 \clearpage %to force the insertion of parameters table
 
-\subsection{Roe deer}
+\section{Roe deer}
 
 \begin{figure}
 \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/parameters-1.png}
-\caption[Roe deer]%
-{Roe deer \par \small a) The predicted detection rate of roe deer for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
+\caption[Roe deer]
+{Roe deer %\par \small
+ a) The predicted detection rate of roe deer for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total roe deer detections per hour of the day, and density curves show the overall pattern for each group.\\
 d) LED-CT photograph of a roe deer. The deer passed the camera repeatedly and often stopped in front of the flashing light}\label{fig:raadyr}
@@ -65,7 +63,7 @@ d) LED-CT photograph of a roe deer. The deer passed the camera repeatedly and of
 For roe deer, the model explaining variation in detection rate has a substantial explanatory power (conditional R2 = 0.45), but the part related to the fixed effects alone (marginal R2) is just 0.002.
 In other words, most of the explained variation in detection rate is due to seasonal changes and variation between the different camera sites captured in the random terms.
 
-The main effect of the white LED periods were non-significantly positive (flash[LED] in table \ref{tab:param}) compared to the control-group (Intercept).
+The main effect of the white LED periods were non-significantly positive compared to the control-group (Intercept).
 The same is true for the IR periods, although to a slightly lower extent.
 However, along the time since deployment-axis (time.deploy $\ast$ flash [LED]) there was a negative effect, to the extent that after two months the mean detection rate sank below that of the IR periods (see figure \ref{fig:raadyr}a).
 Nevertheless, the confidence intervals (CI) of both white LED and IR periods almost completely overlap, and hence, are not significantly different.
@@ -80,13 +78,14 @@ However, the increase could also result from inhereting a slightly higher detect
 
 
 \newpage
-\subsection{Red fox}
+\section{Red fox}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/rev2-1.png}
-\caption[Red fox]%
-{Red fox \par \small a) The predicted detection rate of red foxes for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
+\caption[Red fox]
+{Red fox \par \small 
+a) The predicted detection rate of red foxes for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total fox detections per hour of the day, and density curves show the overall pattern for each group.\\
 d) LED-CT photograph of a red fox. The fox stopped in front of the flashing camera and waited for a following individual before they continued.}\label{fig:rev}
@@ -98,17 +97,37 @@ For red fox, the model explaining variation in detection rate has a moderate exp
 
 The main effect of the white LED periods were non-significantly positive (flash[LED] in table \ref{tab:param}) compared to the IR- and control-periods (flash[IR];Intercept) .
 However, along the time since deployment-axis (time.deploy $\ast$ flash [LED]) there was a negative effect, to the extent that after two months the mean detection rate sank below that of the IR periods (see figure \ref{fig:raadyr}a).
-Nevertheless, the confidence intervals (CI) of both white LED and IR periods almost completely overlap, and hence, are not significantly different.
+Nevertheless, CI of both white LED and IR periods almost completely overlap, and hence, are not significantly different.
 
 
 \newpage
-\subsection{Badger}
+\section{Badger}
+
+
+\begin{figure}
+		  \centering
+	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/gaupe2-1.png}
+\caption[Lynx]
+{Lynx \par \small 
+a) The predicted detection rate of lynx for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
+b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
+c) Bars represent the raw count of total lynx detections per hour of the day, and density curves show the overall pattern for each group.\\ 
+d) LED-CT photograph of a lynx. DESCRIPT}\label{fig:gaupe}
+\end{figure}
+
+
+
+
+
+\newpage
+\section{Hare}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/grevling2-1.png}
-\caption[Badger]%
-{Badger \par \small a) The predicted detection rate of badgers for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
+\caption[Badger]
+{Badger \par \small 
+a) The predicted detection rate of badgers for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total badger detections per hour of the day, and density curves show the overall pattern for each group.\\ 
 d) LED-CT photograph of a badger. DESCRIPT}\label{fig:grevling}
@@ -120,13 +139,15 @@ For badger, the model explaining variation in detection rate has a substantial e
 
 
 \newpage
-\subsection{Moose}
+\section{Red squirrel}
+\section{Moose}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/elg2-1.png}
-\caption[Moose]%
-{Moose \par \small a) The predicted detection rate of moose for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
+\caption[Moose]
+{Moose \par \small 
+a) The predicted detection rate of moose for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\
 c) Bars represent the raw count of total detections per hour of the day, and density curves show the overall pattern for each group\\
 d) LED-CT photograph of a Moose. DESCRIPT}\label{fig:elg}
@@ -134,13 +155,14 @@ d) LED-CT photograph of a Moose. DESCRIPT}\label{fig:elg}
 
 
 \newpage
-\subsection{Red deer}
+\section{Red deer}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/hjort2-1.png}
-\caption[Red deer]%
-{Red deer \par \small a) The predicted detection rate of red deer for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
+\caption[Red deer]
+{Red deer \par \small 
+a) The predicted detection rate of red deer for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total Red deer detections per hour of the day, and density curves show the overall pattern for each group.\\ 
 d) LED-CT photograph of a red deer. DESCRIPT}\label{fig:hjort}
@@ -149,30 +171,13 @@ d) LED-CT photograph of a red deer. DESCRIPT}\label{fig:hjort}
 
 
 \newpage
-\subsection{Lynx}
-
-\begin{figure}
-		  \centering
-	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/gaupe2-1.png}
-\caption[Lynx]%
-{Lynx \par \small a) The predicted detection rate of lynx for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
-b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
-c) Bars represent the raw count of total lynx detections per hour of the day, and density curves show the overall pattern for each group.\\ 
-d) LED-CT photograph of a lynx. DESCRIPT}\label{fig:gaupe}
-\end{figure}
-
-
-
-
-
-\newpage
-\subsection{Hare}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/hare2-1.png}
-\caption[Hare]%
-{Hare \par \small a) The predicted detection rate of hares for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
+\caption[Hare]
+{Hare \par \small 
+a) The predicted detection rate of hares for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total hare detections per hour of the day, and density curves show the overall pattern for each group.\\ 
 d) LED-CT photograph of a hare. DESCRIPT}\label{fig:hare}
@@ -184,13 +189,14 @@ d) LED-CT photograph of a hare. DESCRIPT}\label{fig:hare}
 
 
 \newpage
-\subsection{Pine marten}
+\section{Pine marten}
 
 \begin{figure}
 		  \centering
 	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/maar2-1.png}
-\caption[Pine marten]%
-{Pine marten \par \small a) The predicted detection rate of pine martens for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
+\caption[Pine marten]
+{Pine marten \par \small 
+a) The predicted detection rate of pine martens for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
 b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
 c) Bars represent the raw count of total pine marten detections per hour of the day, and density curves show the overall pattern for each group.\\ 
 d) LED-CT photograph of a pine marten. DESCRIPT}\label{fig:maar}
@@ -202,28 +208,7 @@ d) LED-CT photograph of a pine marten. DESCRIPT}\label{fig:maar}
 
 
 \newpage
-\subsection{Red squirrel}
-
-\begin{figure}
-		  \centering
-	\includegraphics[scale=.9]{../R/glmm_sp_files/figure-html/ekorn2-1.png}
-\caption[Red squirrel]%
-{Red squirrel \par \small a) The predicted detection rate of squirrels for each level of the flash-variable. Confidence intervals (CI) represented by dotted lines.\\ 
-b) Model parameters presented in an equivalence test. ROPE is set to $\pm$0.1 Log-Mean, $CI =1 - 2\times \alpha$.\\ 
-c) Bars represent the raw count of total squirrel detections per hour of the day, and density curves show the overall pattern for each group.\\ 
-d) LED-CT photograph of a squirrel. DESCRIPT}\label{fig:s}
-\end{figure}
-
-The model for red squirrel failed to converge, and therefore the p-values should be disregarded. 
-
-Still, it is interesting to see the IR and LED-slopes crossing each other. Looking at the density plot, one would not expect that most squirrels were flashed by the white LED particularly often, as most detections are during the day.
-
-
-
-%\subsection{CPH mixed effect}
-%n.obs ~ time.deploy + flash*species + random.eff
-
-
+\section{Lynx}
 
 
 
