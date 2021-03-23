@@ -19,22 +19,87 @@ Continuing untill the least significant test gets an $\alpha / 1$ (i.e. retains 
  
  
  
- 
-%%%%
-%%%%%
-%%%%%! Assumptions and validity !
-%%%%%
-%%%%%The Poisson distribution is an appropriate model if the following assumptions are true:[4]
-%%%%%
-%%%%%*    k is the number of times an event occurs in an interval and k can take values 0, 1, 2, ....
-%%%%%    The occurrence of one event does not affect the probability that a second event will occur. That is, events occur independently.
-%%%%%*    The average rate at which events occur is independent of any occurrences. For simplicity, this is usually assumed to be constant, but may in practice vary with time.
-%%%%%*    Two events cannot occur at exactly the same instant; instead, at each very small sub-interval exactly one event either occurs or does not occur.
-%%%%%
-%%%%%If these conditions are true, then k is a Poisson random variable, and the distribution of k is a Poisson distribution.
-%%%%
-%%%%%
-%%%%%"Note that the random estimate means are closer to the overall mean, reflecting that the model assumes each subject's mean is closer to the overall average than it actually is --- a fundamental "assumption" of a multilevel model."  - Pierce Edmiston 2014 (Visualizing lmer model random effects, November 1 2014, accessed 16.02.2021) 
-%%%%
-%%%%
-%%%%
+! Assumptions and validity !
+
+The Poisson distribution is an appropriate model if the following assumptions are true:[4]
+
+*    k is the number of times an event occurs in an interval and k can take values 0, 1, 2, ....
+    The occurrence of one event does not affect the probability that a second event will occur. That is, events occur independently.
+*    The average rate at which events occur is independent of any occurrences. For simplicity, this is usually assumed to be constant, but may in practice vary with time.
+*    Two events cannot occur at exactly the same instant; instead, at each very small sub-interval exactly one event either occurs or does not occur.
+
+If these conditions are true, then k is a Poisson random variable, and the distribution of k is a Poisson distribution.
+
+"Note that the random estimate means are closer to the overall mean, reflecting that the model assumes each subject's mean is closer to the overall average than it actually is --- a fundamental "assumption" of a multilevel model."  - Pierce Edmiston 2014 (Visualizing lmer model random effects, November 1 2014, accessed 16.02.2021) 
+
+
+
+
+
+
+
+
+
+%	\subsection*{Cox Proportional Hazards}
+%%What I am in truth testing is each camera's chance of contracting a roe deer disease, or fox disease, and how that chance changes when "treated" with a white LED flash.
+%
+%
+%However, the way I set up the GLMMs, it only takes into account whether a flash was present or not. It can't tell if the flash actually went off, or how many times it did.
+%The time stamps from the white flash cameras were used to verify whether an animal was in fact flashed or not, which I then used as my main predictor in the modelling. 
+%
+%Therefore I set up a new column in my dataset, that told if the flash went off in synchrony with the IR camera or not (category yes/no).
+%I then used the flashed-column to set up a time to event-analysis.
+%Also called Survival analysis, time to event-analyses compares groups' risk of experiencing an event, and was first developed for use in medicinal studies, e.g. cancer risk studies (\cite{survival-book} ).
+%
+%The difference between the groups is called the hazard \emph{ratio}, and is \emph{assumed to be proportional} over time. That is, if after 2 days, the hazard of detecting a fox (i.e. experiencing an event) for the IR-group is twice as large compared to the white LED-group, it should remain twice as large after 25 days as well. Or in other words, the IR-group should detect twice as many foxes as the white LED-group in general.
+%
+%
+%The Cox proportional hazards regression model (CPH model) (Cox, 1972), is a popular development of the time to event-analysis because it allows for more than one predictor. I used the R package Survival (\cite{survival-package}) and the function coxme from the R package coxme \cite{coxme-package} to perform a CPH with mixed effects (fixed and random effects). 
+%Again, location ID and week of the year were used as random effects to account for differences between the camera sites and seasonal changes during the study period.
+%
+%
+%As fixed effect I used the category for verified flash (yes/no).
+%If a species was flashed, it went into the "flashed"-group, and time to next detection was recorded. 
+%If the species didn't reappear it was "censored" from the model. Rather than saying that the species never reappeared (ie. time to event $= \infty$), the model assumes that had the study gone on longer there would eventually be an event. Conversely, in a cancer study, were death is the event, the survival of a patient during the study period wouldn't signify immortality, but rather that the study was ended too soon to record the event.
+%
+%
+%In survival-analyses the time-variable is part of the outcome of the model. Event (i.e. detection) and time is joined as a Surv-object by the Surv function from the Survival package. 
+%
+
+%Both these models told me something about the fallacy of $H_0$, whether I could reject it, or fail to reject it.
+
+
+
+
+
+
+
+%	\subsection*{P-tests and assumptions}
+
+%For both the GLMM and the CPH mixed effect model, I used the Wald test as significance test, with xyz distribution over df degrees of freedom. osvosv. 
+
+
+%Attention devoted to model assumptions! Viktig i Burton 2015
+%The R package performance (cite) was used to check assumptions for GLMM, and ggeffects (cite) was used to visualize the results. 
+
+%R package Survminer was used to visualize the results of the time to event analyses.
+%The Schoenfeld test was used to check for the CPH's assumption of proportional hazards. 
+
+
+
+%\subsection{AIC old}
+
+%If you are using AIC model selection in your research, you can state this in your methods section. Report that you used AIC model selection, briefly explain the best-fit model you found, and state the AIC weight of the model.
+
+%For each species, I used the Akaike Information Criterion (AIC) to select the best models excluding the flashed-predictor.
+%Then, I added the flashed-predictor to each species top model, to see whether this effect could account for any remaining variation.
+%
+%
+%Example: 
+%
+%We used AIC model selection to distinguish among a set of possible models describing the relationship between age, sex, sweetened beverage consumption, and body mass index.
+%The best-fit model, carrying 97\% of the cumulative model weight, included every parameter with no interaction effects.
+
+%After finding the best-fit model you can go ahead and run the model and evaluate the results. The output of your model evaluation can be reported in the results section of your paper.
+
+

@@ -1,0 +1,19 @@
+In this study I have attempted to quantify any meaningful deviation from a normal detection rate when using a white LED flash CT.
+Any meaningful deviation would be one that is large enough to throw a density estimation off target.
+
+Let's consider a capture-recapture study of a naturally marked species. The first time an individual passes a camera it is flashed by a white LED light, is startled, and shy away from the area.
+It may still reside in the area, but anytime it gets close to the CT site, it circumvents the area, and we fail to redetect it.
+The same bias could emerge in another way, as well.
+What if a white LED CT is constantly triggered by vegetation, and flashes the trail repeatedly during the night.
+Individuals of species A could get frightened and shy away from the site in general, or they could simply walk behind the camera angle, and remain undetected.
+As a result, we would underestimate the density of species A. Conversely, species B might be attracted to the flashing light and approach the CT to inspect it. We could end up overestimating the density of species B.
+
+What if a species had a large variation in "confidence", and some individuals were much more curious and bold than the rest, which in turn were shy.
+The area could contain many individuals, but the bold and curious would be the only individuals showing up on our cameras. As a result, we could end up assuming that the bold and curious individuals had a larger distribution, or that the species in general were bold and curious, or that the bold and curious were dominant.
+
+In my study, there were almost the same number of detected badgers as there were detected red foxes. In total, there were a bit more detections of badgers than of foxes. However, looking at the density plots of each species, badger detections were slightly higher on IR periods, than LED periods. For foxes the pattern was opposite, although to a small degree.
+IR periods had more active days, than white LED did.
+Looking at the ggeffects plot, badgers show a remarkably identical detection rate for both IR and LED periods, whilst the fox has a marked increase in detections per day, especially early in each period. Could this represent an attractant effect on the fox?
+
+
+
