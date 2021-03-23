@@ -372,7 +372,7 @@ p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 va_r <- insight::get_variance(m_sp)
 ```
 
-```{r density}
+```{r density, eval=FALSE}
 # trying to include total counts in labels:
 c <- obs %>% filter(species %in% sp) %>% 
   group_by(flash) %>% 
@@ -485,7 +485,22 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
-
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
 
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,

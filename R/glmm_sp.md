@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "22 mars, 2021"
+date: "23 mars, 2021"
 output:
   html_document:
     toc: true
@@ -123,6 +123,10 @@ theme_set(ggpubr::theme_classic2())
 ##   dfbetas.influence.merMod        lme4
 ```
 
+```r
+sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
+```
+
 ## Purpose
 
 Modelling detection rates of the nine most common wild animals in my dataset, producing the plots I am going to use in my thesis
@@ -144,11 +148,9 @@ The model formula I will use is $n \sim \ time.deploy\ * flash $ for each specie
 
 
 ```r
-sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
-#  filter(species %in% sp) %>% #filtering out species
-  # including Control as part of the flash-column, since it differs from flash=0
+# including Control as part of the flash-column, since it differs from flash=0
   mutate(flash = factor(
         ifelse(period %in% ctrl, "Control", flash)),
         week = lubridate::isoweek(date),
@@ -334,14 +336,7 @@ _Lastly, performing the filter:_
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
 # time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 1 weeks (84=12*7(1w))
 
-time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
-```
-
-```
-## [1] FALSE
-```
-
-```r
+# time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
 ```
 
@@ -376,7 +371,6 @@ summary(time.dep4) #
 
 
 ```r
-sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_eng <- c("Roe deer", "Red fox", "Badger", "Hare", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
 sp_eng <- sp_eng[9:1] # reverse order
 sp_count <- time.dep4 %>% group_by(species, flash) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
@@ -490,29 +484,96 @@ p_days
 
 ![](glmm_sp_files/figure-html/active-days-3.png)<!-- -->
 
-```r
- active_p %>% mutate(period = fct_rev(period)) %>% 
-ggplot(aes(flash,value,fill=flash,col=period)) +
-  geom_col(aes(group=variable),position = "dodge") +
-  scale_fill_bluebrown(reverse = T) + #flash fill colours
-  scale_color_grey(start = 0, end = 0) + #black surrounding colour
-  labs(x= "Period group", y= "Active camera trapping days") +
-  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
-  theme(legend.position = "none", axis.title.x = element_blank())
-```
-
-![](glmm_sp_files/figure-html/active-days-4.png)<!-- -->
-
 
 
 ```r
-plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
-                                       sec.axis = dup_axis(name = element_blank())) ,
-          p_days + scale_y_continuous(#n.breaks = 7,
-                                       sec.axis = dup_axis(name = element_blank()) ),
+plot_grid(p_count +
+            scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
+                               sec.axis = dup_axis(name = element_blank())) ,
+          p_days + 
+            scale_y_continuous(#n.breaks = 7,
+                               sec.axis = dup_axis(name = element_blank()) ),
           nrow = 2,
           rel_heights = c(2,3))
 ```
+
+# Yearly activity
+
+
+```r
+sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
+sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
+sp_ruminata <- c("raadyr", "elg", "hjort","hare", "ekorn")
+# sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+
+obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
+  mutate(flash = fct_shift(flash,-1), #reordering flash-factor
+         week = lubridate::isoweek(date),
+         month = lubridate::month(date),
+         year = lubridate::year(date))
+obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
+obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
+# obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_freqpoly(aes(#y=..density..,#*20*count, #scaling density with the count
+                   col=species, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  theme(legend.position = "top") #legend placement
+```
+
+```
+## Warning: Ignoring unknown parameters: bw
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](glmm_sp_files/figure-html/year-activity-1.png)<!-- -->
+
+```r
+# obs_avg <- obs_activity %>% 
+#   group_by(species) %>% summarise(week = max(week),
+#                                   count = median(count, na.rm = T))
+obs_activity %>% group_by(species, year, week, order) %>% 
+  summarise(count = n()) %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_smooth(aes(y=count,col=species),se = FALSE) +
+  # scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  # scale_y_continuous(n.breaks = 6) + # n y-ticks
+  facet_wrap(~order, nrow = 3) +
+  ggrepel::geom_label_repel(aes(y = median(count),label = species)) +
+  theme(legend.position = "none") #legend placement
+```
+
+```
+## `summarise()` has grouped output by 'species', 'year', 'week'. You can override using the `.groups` argument.
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+```
+## Warning: ggrepel: 202 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps
+```
+
+```
+## Warning: ggrepel: 280 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps
+```
+
+![](glmm_sp_files/figure-html/year-activity-2.png)<!-- -->
+
+```r
+        # legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        # legend.box.just = "right")+ 
+```
+
 
 
 
@@ -705,6 +766,20 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 # overlapPlot(x0,x1)
 # 
 # overlap::sunTime()
+
+
+#yearly activity
+
+obs_activity %>% filter(species %in% sp) %>% 
+  # summarise(count = n()) %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_freqpoly() +
+  # scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  # scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "none") #legend placement
+        # legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        # legend.box.just = "right")
 ```
 
 
@@ -714,6 +789,15 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 ```r
 library(cowplot) # to make grid-plots
 library(magick)
+```
+
+```
+## Linking to ImageMagick 6.9.11.57
+## Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
+## Disabled features: fontconfig, x11
+```
+
+```r
 # ggpredict
 p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
                colors = c("black","#e41a1c","#377eb8")) +
@@ -769,6 +853,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -839,6 +940,7 @@ as.report_table(r_sp)
 ## Sigma                      |             |                |       |     |        |            |                   |     1.00
 ```
 
+Finally, storing all objects as species specific objects, for summary stuff at the end of the document.
 
 
 ```r
@@ -1034,6 +1136,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1081,7 +1200,10 @@ para_rev = para_sp
 
 
 ```r
-knitr::knit_exit() # to exit knitting process here instead of at the document end
+knitr::knit_exit()
+# Exita knitting process here instead of at the document end
+# Perfect for doing a test run, checking if the code works for at least two different species
+# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
 ```
 
 
@@ -1264,6 +1386,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1480,6 +1619,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1695,6 +1851,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1911,6 +2084,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2132,6 +2322,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2352,6 +2559,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2569,6 +2793,23 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2671,7 +2912,7 @@ xtable(para_all) # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Mon Mar 22 18:04:32 2021
+## % Tue Mar 23 10:17:47 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2980,7 +3221,22 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
-
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
 
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
@@ -3061,9 +3317,9 @@ sessionInfo()
 ##  [1] minqa_1.2.4        colorspace_2.0-0   ggsignif_0.6.1     ellipsis_0.3.1    
 ##  [5] rio_0.5.26         ggridges_0.5.3     sjlabelled_1.1.7   estimability_1.3  
 ##  [9] fs_1.5.0           rstudioapi_0.13    ggpubr_0.4.0       farver_2.1.0      
-## [13] fansi_0.4.2        mvtnorm_1.1-1      lubridate_1.7.10   xml2_1.3.2        
-## [17] codetools_0.2-18   splines_4.0.4      knitr_1.31         sjmisc_2.8.6      
-## [21] effects_4.2-0      jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.5       
+## [13] ggrepel_0.9.1      fansi_0.4.2        mvtnorm_1.1-1      lubridate_1.7.10  
+## [17] xml2_1.3.2         splines_4.0.4      knitr_1.31         effects_4.2-0     
+## [21] sjmisc_2.8.6       jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.5       
 ## [25] dbplyr_2.1.0       effectsize_0.4.3-1 compiler_4.0.4     httr_1.4.2        
 ## [29] sjstats_0.18.1     emmeans_1.5.4      backports_1.2.1    assertthat_0.2.1  
 ## [33] survey_4.0         cli_2.3.1          htmltools_0.5.1.1  tools_4.0.4       
@@ -3078,10 +3334,11 @@ sessionInfo()
 ## [69] lattice_0.20-41    labeling_0.4.2     tidyselect_1.1.0   plyr_1.8.6        
 ## [73] magrittr_2.0.1     R6_2.5.0           generics_0.1.0     DBI_1.1.1         
 ## [77] pillar_1.5.1       haven_2.3.1        foreign_0.8-81     withr_2.4.1       
-## [81] survival_3.2-7     abind_1.4-5        nnet_7.3-15        modelr_0.1.8      
-## [85] crayon_1.4.1       car_3.0-10         utf8_1.1.4         rmarkdown_2.7.3   
-## [89] grid_4.0.4         readxl_1.3.1       data.table_1.14.0  reprex_1.0.0      
-## [93] digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002   mitools_2.4
+## [81] mgcv_1.8-34        survival_3.2-7     nnet_7.3-15        abind_1.4-5       
+## [85] modelr_0.1.8       crayon_1.4.1       car_3.0-10         utf8_1.1.4        
+## [89] rmarkdown_2.7.3    grid_4.0.4         readxl_1.3.1       data.table_1.14.0 
+## [93] reprex_1.0.0       digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002  
+## [97] mitools_2.4
 ```
 
 ```r
