@@ -31,14 +31,15 @@ obs      <- readRDS("Observations_prepared1.rds") %>%
 obs <- obs %>% 
   mutate(species = validated_species,
          Hour = as.numeric(format(obs$datetime, "%H")), # for density-plots
-         flash = factor(obs$flash, labels = c("IR", "LED","Control"))) # --||--
+         flash = factor(obs$flash, labels = c("IR", "wLED","Control"))) # --||--
 # Set global plot theme
 theme_set(ggpubr::theme_classic2())
+sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 ```
 
 ## Purpose
 
-Remaking glmm_sp in a modular fashion, so that changes in the script of one model affects all the rest.
+Modelling detection rates of the nine most common wild animals in my dataset, producing the plots I am going to use in my thesis
 
 # About the model
 
@@ -56,19 +57,17 @@ about the differences of `lmer` and `glmer`-functions:
 The model formula I will use is $n \sim \ time.deploy\ * flash $ for each species, and my $\alpha = 0.05$.
 
 ```{r timedep2}
-sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
-#  filter(species %in% sp) %>% #filtering out species
-  # including Control as part of the flash-column, since it differs from flash=0
+# including Control as part of the flash-column, since it differs from flash=0
   mutate(flash = factor(
         ifelse(period %in% ctrl, "Control", flash)),
         week = lubridate::isoweek(date),
         period = factor(period))
 time.dep2 <- time.dep2 %>% 
    mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
-levels(time.dep2$flash) <- c("Control", "IR", "LED")
-levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
+levels(time.dep2$flash) <- c("Control", "IR", "wLED")
+levels(time.dep2$period) <- c("IR_1", "IR_2", "wLED_1", "wLED_2", "Control_1", "Control_2", "Control_3", "Control_4")
 ```
 
 ```{r IR-control, eval=FALSE}
@@ -79,10 +78,7 @@ levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Co
 ```
 
 
-Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
-
-First I'll filter out any periods shorter than 4 days ( _as of 18.02.2021, only 1 period_ ). 
-Then I'll cut the duration of all periods overextending the smallest median.
+Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by my supervisor Neri Thorsen, I will calculate the median for the different types of periods, and use the smallest median to shorten all periods overextending that value.
 
 
 ```{r period-median, message=FALSE}
@@ -91,17 +87,17 @@ time.period <- time.dep2 %>% group_by(loc, period, flash) %>%
   summarise(period_length = max(time.deploy))
 
 # checking shortest periods
-time.period %>% arrange(period_length) # 1 period (LED) is 0 days
+time.period %>% arrange(period_length) # 1 period (wLED) is 0 days
 
 # then merge lengths and filter out period of 0 days
 time.dep3 <- time.dep2 %>% left_join(time.period) %>% 
   filter(period_length > 0)
 
 # find median length 
-time.period %>% filter(flash == "LED") %>%  
+time.period %>% filter(flash == "wLED") %>%  
   summary() # median period length 85 days, mean: 84
 time.period %>% filter(flash == "IR") %>%  
-  summary() # median period length 78 days, mean: 89
+  summary() # median period length 84 days, mean: 89
 time.period %>% filter(flash == "Control") %>%  
   summary() # median period length 89 days, mean: 93
 
@@ -109,7 +105,7 @@ time.period %>% filter(flash == "Control") %>%
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
 #extracting median and multiplying by 10, to use in the correctly scaled plot
-hh <-       h$period_length[h$flash == "LED"]      %>%  median()       #  white LED
+hh <-       h$period_length[h$flash == "wLED"]      %>%  median()       #  white LED
 hh <- c(hh, h$period_length[h$flash == "IR" ]      %>%  median())      # +  IR
 hh <- c(hh, h$period_length[h$flash == "Control" ] %>%  median()) * 10 # +  Control
 # smallest median 
@@ -118,13 +114,13 @@ h # 84 shortest median (IR)
 ```
 
 
-With the updated dataset, the IR median has shifted to 84 days, white LED to 85. 84 is the new trimming value.
+The IR median is 84 days, white LED is 84,5 and control is 89. 84 is trimming value.
 
 
 
-```{r period-length, message=FALSE}
+```{r period-length, message=FALSE, eval=FALSE}
 # plot periods with median as intercept
-p_td <- time.dep3 %>% filter(!period %in% ctrl) %>% 
+p_td <- time.dep3 %>% filter(!period %in% ctrl) %>% #removing ctrl-periods
   ggplot(aes(loc, 10*time.deploy, colour = period, ))  +
   geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
   coord_flip() + 
@@ -143,11 +139,6 @@ p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
 # geom_text(aes(25, h, label = "median", vjust = -1), nudge_y = 10, show.legend = F)
 ```
 
-There was an overweight of IR-periods extending past the median line.
-
-
-
-
 
 ```{r period-length-wControl, message=FALSE, warning=FALSE}
 # remake plot with Control-group data, faceted
@@ -160,7 +151,7 @@ p_td2 <- time.dep3 %>%
   scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150, 200))) +
   facet_grid(rows = "flash", scales = "free_y") +
   labs(#title = "Period lengths per camera",
-       x = "Location", y = "Time since deployment") # 
+       x = "Location", y = "Days since deployment") # 
   
 
 p_td2 + #ggpubr::theme_classic2() +
@@ -179,14 +170,13 @@ _Lastly, performing the filter:_
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) # h is normal scale, must be rescaled by /10
 # time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy / .7) # scaled by 1 weeks (84=12*7(1w))
 
-time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
+# time.dep4$loc %>% unique() %>% is.na() %>% any() # no NAs in loc
 summary(time.dep4) #            
 ```
 
 # Counts of species
 
 ```{r events}
-sp_focus <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
 sp_eng <- c("Roe deer", "Red fox", "Badger", "Hare", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
 sp_eng <- sp_eng[9:1] # reverse order
 sp_count <- time.dep4 %>% group_by(species, flash) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
@@ -262,46 +252,84 @@ ggplot(aes(flash,value,fill=flash,col=period)) +
   theme(legend.position = "none", axis.title.x = element_blank())
 p_days
 
- active_p %>% mutate(period = fct_rev(period)) %>% 
-ggplot(aes(flash,value,fill=flash,col=period)) +
-  geom_col(aes(group=variable),position = "dodge") +
-  scale_fill_bluebrown(reverse = T) + #flash fill colours
-  scale_color_grey(start = 0, end = 0) + #black surrounding colour
-  labs(x= "Period group", y= "Active camera trapping days") +
-  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
-  theme(legend.position = "none", axis.title.x = element_blank())
 ```
 
 
 ```{r days-count, eval=FALSE}
-plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
-                                       sec.axis = dup_axis(name = element_blank())) ,
-          p_days + scale_y_continuous(#n.breaks = 7,
-                                       sec.axis = dup_axis(name = element_blank()) ),
+plot_grid(p_count +
+            scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
+                               sec.axis = dup_axis(name = element_blank())) ,
+          p_days + 
+            scale_y_continuous(#n.breaks = 7,
+                               sec.axis = dup_axis(name = element_blank()) ),
           nrow = 2,
           rel_heights = c(2,3))
 ```
+
+# Yearly activity
+
+```{r year-activity}
+sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
+sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
+sp_ruminata <- c("raadyr", "elg", "hjort","hare", "ekorn")
+# sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+
+obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
+  mutate(flash = fct_shift(flash,-1), #reordering flash-factor
+         week = lubridate::isoweek(date),
+         month = lubridate::month(date),
+         year = lubridate::year(date))
+obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
+obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
+# obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_freqpoly(aes(#y=..density..,#*20*count, #scaling density with the count
+                   col=species, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  theme(legend.position = "top") #legend placement
+# obs_avg <- obs_activity %>% 
+#   group_by(species) %>% summarise(week = max(week),
+#                                   count = median(count, na.rm = T))
+obs_activity %>% group_by(species, year, week, order) %>% 
+  summarise(count = n()) %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_smooth(aes(y=count,col=species),se = FALSE) +
+  # scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  # scale_y_continuous(n.breaks = 6) + # n y-ticks
+  facet_wrap(~order, nrow = 3) +
+  ggrepel::geom_label_repel(aes(y = median(count),label = species)) +
+  theme(legend.position = "none") #legend placement
+        # legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        # legend.box.just = "right")+ 
+
+
+```
+
 
 
 
 # Modelling
 
-
-## Roe deer
-
+The following code chunks are written in a modular fashion, so that everything will be done identically for each species. Any changes made will affect all species.
 
 ```{r sp, eval=FALSE}
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -309,113 +337,118 @@ assumpt <- performance::check_model(m_sp) # check assumptions
 ```
 
 
-The response variable is a summary of number of events per day. Most days had no roe deer.
-In the performance-test for model assumptions _it is clear that some assumptions aren't met._
 
-#### Negative
-In the non-normality of resiudals-plot, the residuals skew off from the line when moving towards positive quantiles.
-There is _not_ a homogeneity of variance. _Maybe this could be fixed by centering the n.obs-column?_
-
-There appeares to be five influential observations in the Cook's distance-plot, maybe more, as the warning from ggrepel refers to 93 unlabeled data points due to overlaps.
-
-#### Positive
-Although the model has an interaction term between flash and time since deployment, the multicollinearity between them is low!
-My random effects follows a normal distribution.
-
-#### Concluding
-I am not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
 
 ```{r sp-report, eval=FALSE}
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
-### Model interpretation
-The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera.
 
-> I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. Chances are I've scared animals other times as well, but haven't noticed it.
+## Roe deer
 
-The effect of _Time since deployment_ is non-significant, and $\beta = 0.008$.
-That means there is no difference on the baseline detection rate for an IR camera over time (after controlling for seasonal changes). 
-
-For white LED flash  $\beta = 0.170$, meaning that the intercept is slightly higher than for IR, but the difference is non-significant ($p = 0.18$).
-However, the detection rate is slightly decreasing the longer the white LED stays, which differs from the IR, _
-but the effect is non-significant_ ($p = 0.23$).
-
-#### Hypothesising
-If there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods often start after a flash period.
-
-Remembering my study design, 20 cameras start with white LED, 20 with IR. _Intercept should be equal_ (1st period).
-2nd period; white LED moved, new LED CTs (same intercept), new IR CTs (hypothetical lower intercept due to flash effect).
-3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept).
-4th period;  - -  ||  - -  , new LED CTs (- - | | - - ), new IR CTs (   -  -  |  |  -  -  ).
-
-Which sums up to 3 IR periods where detection rates could start lower than that of white LED. And over time the lack of white LED flash in the new IR sites would account for an _increase_ in detection rates.
-
-The effect would of course vary because some locations experienced _gaps_ due to full SD cards or empty batteries.
-<!--_Maybe, after my thesis, I could try to pry out these differences-->
-
--------------------------------------
-
-#### Update!
-
-After uptaded data from Neri; the effect of flash is now deemed significant!
-Still the same pattern with higher intercept and a negative slope along the time axis, which further supports my hypothesising above.
-The interaction with time since deployment is, however, still non-significant.
-_Now I want to look at a model including the Control-group._
+In the following chunk, knitr will call the code chunks referenced in the 'ref.label' command. The same effect can be achieved by calling the code chunk name inside '<< >>'.
 
 `r sp = "raadyr"`
-```{r raadyr, ref.label='sp'}
-# filter species
+```{r raadyr, ref.label=c('sp','sp-report'), cache=TRUE}
 #<<sp>>
-```
-
-
-
-
-There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
-
-The homogeneity of variance is still off. It deems on me more and more that this is due to these extreme count-values that is close to time.deploy = 0. _Will it disappear if I divide by the standard deviation?_
-
-The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
-
-
-```{r raadyr-report, ref.label='sp-report'}
 #<<sp-report>>
-
-assumpt
 ```
 
 
-
-
-
-The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
-Looking at the plot, the confidence interval tells us all we need to know, as they almost completely overlap.
-The groups are almost identical. The slope of the control group is actually steeper than that of white LED (although only minisculy).
-Further, the trend over time with the control-group __should__ be due to chance, _as time.deploy = 0 is seldom the actual day I visited the cameras_. They were visited less often in general, and the breaks leading to time.deploy = 0 are set manually by me, to make period lengths that are similar to those of the IR and white LED group.
-
-### Some parameter-plots from see and effectsize
-
-The CI-plots of effectsize will be included in some form in my thesis. For the equivalence-plot I'm not to sure if I'll use it, but the interpretation is neat with that method. From the bayesian statistics, if a predictor is completely covered by the ROPE-area you can accept the null hypothesis. This is not possible in a frequentist perspective (as my models are), but one could claim _practical equivalence_ if the effect is non-significant AND completely inside the ROPE-interval. Explanations from [Equivalence vignette](https://easystats.github.io/parameters/reference/equivalence_test.lm.html):
-
->"classic" - The TOST rule (Lakens 2017)
-This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lakens 2017). Following this rule, practical equivalence of an effect (i.e. H0) is rejected, when the coefficient is statistically significant and the narrow confidence intervals (i.e. 1-2*alpha) include or exceed the ROPE boundaries. Practical equivalence is assumed (i.e. H0 accepted) when the narrow confidence intervals are completely inside the ROPE, no matter if the effect is statistically significant or not. Else, the decision whether to accept or reject H0 is undecided.
->"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
-The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
-
-## Roe deer plot
+### Plots
 
 ```{r, eval=FALSE}
-# just a shortcut for editing
+# just a shortcut for when editing
+## I still haven't found out how to make knitr calling other chunks
+## without actually knitting (which is timeconsuming).
 sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
+# m_sp <- readRDS("m_grevling.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 va_r <- insight::get_variance(m_sp)
 ```
+
+```{r density}
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("wLED \   (",c[2,2],")")
+
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
+
+
+# Trying to map activity patterns to before and after sunrise/sunset
+
+# library(overlap)
+# obs$hour <- as.numeric(format(obs$datetime, "%H")) # setting up time cols 
+# obs$mins <- as.numeric(format(obs$datetime, "%M")) # in a way that overlap
+# obs$rad <- ((obs$hour * 60 + obs$mins)/(24 * 60)) * 2 * pi  # understands
+# 
+# overlap_flash <- function(x, colour = c("black", "blue", "brown"), rug = FALSE, main = str_to_title(x), ...) {
+#   x0 <- obs[obs$species %in% x & obs$flash == "IR", ]$rad
+#   x1 <- obs[obs$species %in% x & obs$flash == "LED", ]$rad
+#   x2 <- obs[obs$species %in% x & obs$flash == "Control", ]$rad
+#   overlapPlot(x2, x1, x0, linecol = rep(colour, 3), rug = rug, main = main, 
+#               linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey", ...)
+#   x.est <- round(overlapEst(x1, x0, type = "Dhat4"), 2)
+#   n0 <- length(x0)
+#   n1 <- length(x1)
+#   legend("top", legend = str_c("Dhat4", x.est, sep = " = "), bty = "n")
+# #  legend("bottomleft", legend = c(str_c("LED n", n1, sep = " = "), str_c("    IR n", n0, sep = " = ")),
+# #         col = colour, lty = c(1, 2), lwd = 2, bty = "7")
+# }
+# 
+# overlap_flash("rev", rug=T)
+# obs$species
+# 
+#   x0 <- obs[obs$species %in% sp & obs$flash == "IR", ]$rad
+#   x1 <- obs[obs$species %in% sp & obs$flash == "LED", ]$rad
+#   x2 <- obs[obs$species %in% sp & obs$flash == "Control", ]$rad
+# overlapPlot(x0,x1)
+# 
+# overlap::sunTime()
+
+
+#yearly activity
+
+obs_activity %>% filter(species %in% sp) %>% 
+  # summarise(count = n()) %>% 
+ggplot(aes(week)) +
+  #geom_bar(col="black", fill="white") +
+  geom_freqpoly() +
+  # scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  # scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "none") #legend placement
+        # legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        # legend.box.just = "right")
+
+```
+
+
 
 
 ```{r parameters}
@@ -438,7 +471,7 @@ result <- equivalence_test(m_sp)
 result
 
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -452,32 +485,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
-
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
 
 
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
@@ -514,9 +521,10 @@ summary(r_sp)
 as.report_table(r_sp)
 ```
 
+Finally, storing all objects as species specific objects, for summary stuff at the end of the document.
 
 ```{r raadyr-objects}
-# Storing species-specific objects for later
+# Storing species-specific objects for later, as shortcuts
 # Model
 m_raa    = m_sp
 # ggpredict 
@@ -527,22 +535,21 @@ r_raa    = r_sp
 para_raa = para_sp
 ```
 
+__Chunk order:__
 
-sp
-sp-report
-sp-report2
-parameters
+1. sp
+1. sp-report
+1. sp-report2
+1. parameters
+1. objects
 
-objects
-
-
-#### Skrivestopp
-
--------------------------------------------------------------
 
 ## Red Fox
 
-`r sp = "rev"`
+`r sp = "rev"` 
+This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
+
+Now, sp contains `r sp`.
 
 ```{r rev, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -565,13 +572,17 @@ para_rev = para_sp
 
 
 ```{r knit-exit, eval=FALSE}
-knitr::knit_exit() # to exit knitting process here instead of at the document end
+knitr::knit_exit()
+# Exita knitting process here instead of at the document end
+# Perfect for doing a test run, checking if the code works for at least two different species
+# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
 ```
 
 
 ## Badger
 
 `r sp = "grevling"`
+Now, sp contains `r sp`.
 
 ```{r grevling, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -597,6 +608,7 @@ para_grvl = para_sp
 ## Moose
 
 `r sp = "elg"`
+Now, sp contains `r sp`.
 
 ```{r elg, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -621,6 +633,7 @@ para_elg = para_sp
 ## Red deer
 
 `r sp = "hjort"`
+Now, sp contains `r sp`.
 
 ```{r hjort, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -646,6 +659,7 @@ para_hjort = para_sp
 ## Lynx
 
 `r sp = "gaupe"`
+Now, sp contains `r sp`.
 
 ```{r gaupe, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -671,11 +685,12 @@ para_gaup = para_sp
 # Small species
 
 Added late, because I was unsure about whether it made sense to include them or not.
-After having learned about the random effects, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
+After having learned about random effects in mixed effect models, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
 
 ## Hare
 
 `r sp = "hare"`
+Now, sp contains `r sp`.
 
 ```{r hare, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -701,6 +716,8 @@ para_hare = para_sp
 ## Red squirrel
 
 `r sp = "ekorn"`
+Now, sp contains `r sp`.
+
 ```{r ekorn1}
 time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
 # Model
@@ -743,6 +760,7 @@ para_ekorn = para_sp
 ## European Pine marten
 
 `r sp = "maar"`
+Now, sp contains `r sp`.
 
 ```{r maar, ref.label=c('sp','sp-report'), cache=TRUE}
 ```
@@ -773,6 +791,8 @@ para_maar = para_sp
 
 ## Parameter-table
 
+Making parameter-tables to include in my thesis. The first one contains standardized parameters, but since that differs from the format they are presented in the equivalence test, I will using the second one, which is not standardized
+
 ```{r model-report}
 library(xtable)  # To make a latex-table for the thesis
 para_raa  <- para_raa %>% 
@@ -798,7 +818,7 @@ xtable(para_all) # output in Rmd
 ```
 
 
-```{r model-report2}
+```{r model-report2-setup, eval=FALSE}
 library(xtable)  # To make a latex-table for the thesis
 m_raa  <- readRDS("m_raadyr.rds")    
 m_rev  <- readRDS("m_rev.rds") 
@@ -808,10 +828,14 @@ m_hjort<- readRDS("m_hjort.rds")
 m_gaup <- readRDS("m_gaupe.rds")
 m_hare <- readRDS("m_hare.rds")
 m_maar <- readRDS("m_maar.rds")
-m_ekorn<- readRDS("m_ekorn.rds") 
-# gather all models
-m_all <- list(m_raa, m_rev ,m_grvl, m_elg, m_hjort, m_gaup, m_hare, m_maar, m_ekorn)
+m_ekorn<- readRDS("m_ekorn.rds")
+```
 
+
+```{r model-report2}
+# gather all models
+m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
+#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 # not standardized
 para_all2 <- bind_rows(
 model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",            rep("",5)), .before = 1),
@@ -826,7 +850,7 @@ model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",        rep(
 ) %>% 
  insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
-para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","LED", "TimeDeploy * IR", "TimeDeploy * LED"), times=9)
+para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","wLED", "TimeDeploy * IR", "TimeDeploy * wLED"), times=9)
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters2.tex")
@@ -834,8 +858,8 @@ print(xtable(para_all2, type = "latex"), include.rownames = F,
 
 ## Joint forest-plots
 
-Plots divided into size-based groups of three x three species.
-Thus, ungulates are one group, the largest carnivores are one, and the smallest three form the most mixed group of hare, squirrel and pine marten 
+Plots divided into size-based groups.
+Unlikely to be included in the thesis.
 
 ```{r mod-plot}
 p_mds1<- sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, spacing = .8,
@@ -844,9 +868,6 @@ p_mds1<- sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, spacing = .8,
 p_mds2 <- sjPlot::plot_models(m_hare, m_maar,m_ekorn,m_gaup, spacing = .8,
                     legend.title = "Species",
                     m.labels = c("Hare","Pine marten","Red squirrel","Lynx"))
-p_mds1;p_mds2
-saveRDS(p_mds1, "pmds1.rds")
-saveRDS(p_mds2, "pmds2.rds")
 ```
 
 
@@ -864,11 +885,14 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
 # which is because they are different subsets of each other
 ```
 
+## Model assumptions
+The following section includes a lot of citing from other sources, mainly to help future me understand everything anew, and to get some pointers on where to read further.
 
 ```{r mod-checks, eval=FALSE}
 overd <- list()
 zeroi <- list()
 singu <- list()
+
 for (i in 1:9) {
 overd[[i]] <- check_overdispersion(m_all[[i]])
 zeroi[[i]] <-  check_zeroinflation(m_all[[i]])
@@ -878,15 +902,39 @@ singu[[i]] <- check_singularity(m_all[[i]])
 overd # No overdispersion detected
 zeroi # Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
 singu %>% unique() # FALSE
-
+#citation("performance")
+performance::check_autocorrelation(m_raa)
 ```
 
+Using the performance-package from easystats (Lüdecke, Makowski, Waggoner & Patil (2020)), no overdispersion was detected.
+>Overdispersion occurs when the observed variance is higher than the variance of a theoretical model. For Poisson models, variance increases with the mean, thus, variance usually (roughly) equals the mean value. If the variance is much higher, the data are "overdispersed". (performance::check_singularity, R help file)
+
+Dispersion ratios lied between 0.65 (squirrel) and 0.94 (pine marten).
+>If the dispersion ratio is close to one, a Poisson model fits well to the data. Dispersion ratios larger than one indicate overdispersion, thus a negative binomial model or similar might fit better to the data. A p-value < .05 indicates overdispersion.
+
+The R documentation also states that Poisson model's overdispersion test is based on the code from _Gelman and Hill (2007), page 115._ 
+And that the function for mixed models only returns _approximate_ estimates, which is probably inaccurate for zer-inflated mixed models (fitted with glmmTMB). The documentations doesn't mention poisson mixed models specifically, but as no models were zero-inflated, I will assume the dispersion ratios are fine.
+
+>If the amount of observed zeros is larger than the amount of predicted zeros, the model is underfitting zeros, which indicates a zero-inflation in the data. In such cases, it is recommended to use negative binomial or zero-inflated models. (performance::check_zeroinflation, R help file)
+
+No models were zero-inflated, nor singular.
+>If a model is "singular", this means that some dimensions of the variance-covariance matrix have been estimated as exactly zero. This often occurs for mixed models with complex random effects structures. (performance::check_singularity, R help file)
+
+In other words, there weren't more zeros than predicted and my random effects structure wasn't overly complicated.
 
 
 
 
+### Assumptions of Poisson regression 
+(from https://www.statology.org/poisson-regression/, accessed 22.03.2021)
 
+__Assumption 1:__ The response variable consists of count data. In traditional linear regression, the response variable consists of continuous data. To use Poisson regression, however, our response variable needs to consists of count data that include integers of 0 or greater (e.g. 0, 1, 2, 14, 34, 49, 200, etc.). Our response variable cannot contain negative values.
 
+__Assumption 2:__ Observations are independent. Each observation in the dataset should be independent of one another. This means that one observation should not be able to provide any information about a different observation.
+
+__Assumption 3:__ The distribution of counts follows a Poisson distribution. As a result, the observed and expected counts should be similar. One simple way to test for this is to plot the expected and observed counts and see if they are similar.
+
+__Assumption 4:__ The mean and variance of the model are equal. This is a result of the assumption that the distribution of counts follows a Poisson distribution. For a Poisson distribution the variance has the same value as the mean. If this assumption is satisfied, then you have equidispersion. However, this assumption is often violated as overdispersion is a common problem.
 
 
 

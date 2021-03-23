@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "19 mars, 2021"
+date: "22 mars, 2021"
 output:
   html_document:
     toc: true
@@ -83,6 +83,10 @@ library(sjPlot)      # parameters + sjPlot probably does a similar and better jo
 ```
 
 ```
+## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
+```
+
+```
 ## 
 ## Attaching package: 'sjPlot'
 ```
@@ -105,7 +109,7 @@ obs      <- readRDS("Observations_prepared1.rds") %>%
 obs <- obs %>% 
   mutate(species = validated_species,
          Hour = as.numeric(format(obs$datetime, "%H")), # for density-plots
-         flash = factor(obs$flash, labels = c("IR", "LED","Control"))) # --||--
+         flash = factor(obs$flash, labels = c("IR", "wLED","Control"))) # --||--
 # Set global plot theme
 theme_set(ggpubr::theme_classic2())
 ```
@@ -121,7 +125,7 @@ theme_set(ggpubr::theme_classic2())
 
 ## Purpose
 
-Remaking glmm_sp in a modular fashion, so that changes in the script of one model affects all the rest.
+Modelling detection rates of the nine most common wild animals in my dataset, producing the plots I am going to use in my thesis
 
 # About the model
 
@@ -140,7 +144,7 @@ The model formula I will use is $n \sim \ time.deploy\ * flash $ for each specie
 
 
 ```r
-sp <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
+sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 time.dep2 <- time.dep %>% 
   rename(species = validated_species) %>%  #shortening name
 #  filter(species %in% sp) %>% #filtering out species
@@ -151,8 +155,8 @@ time.dep2 <- time.dep %>%
         period = factor(period))
 time.dep2 <- time.dep2 %>% 
    mutate(flash = fct_relevel(flash, "Control","0","1")) # relevel to make Control the model intercept
-levels(time.dep2$flash) <- c("Control", "IR", "LED")
-levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Control_2", "Control_3", "Control_4")
+levels(time.dep2$flash) <- c("Control", "IR", "wLED")
+levels(time.dep2$period) <- c("IR_1", "IR_2", "wLED_1", "wLED_2", "Control_1", "Control_2", "Control_3", "Control_4")
 ```
 
 
@@ -164,10 +168,7 @@ levels(time.dep2$period) <- c("IR_1", "IR_2", "LED_1", "LED_2", "Control_1", "Co
 ```
 
 
-Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by Neri, I will calculate the median for white LED-periods and IR-periods, and use the smallest median to shorten all periods overextending that value.
-
-First I'll filter out any periods shorter than 4 days ( _as of 18.02.2021, only 1 period_ ). 
-Then I'll cut the duration of all periods overextending the smallest median.
+Not all periods have identical length. Hence, I need to set a maximum length for my period durations. As proposed by my supervisor Neri Thorsen, I will calculate the median for the different types of periods, and use the smallest median to shorten all periods overextending that value.
 
 
 
@@ -177,7 +178,7 @@ time.period <- time.dep2 %>% group_by(loc, period, flash) %>%
   summarise(period_length = max(time.deploy))
 
 # checking shortest periods
-time.period %>% arrange(period_length) # 1 period (LED) is 0 days
+time.period %>% arrange(period_length) # 1 period (wLED) is 0 days
 ```
 
 ```
@@ -185,14 +186,14 @@ time.period %>% arrange(period_length) # 1 period (LED) is 0 days
 ## # Groups:   loc, period [211]
 ##    loc   period    flash   period_length
 ##    <fct> <fct>     <fct>           <dbl>
-##  1 829   LED_1     LED               0  
-##  2 925   LED_1     LED               0.8
-##  3 850   LED_2     LED               0.9
+##  1 829   wLED_1    wLED              0  
+##  2 925   wLED_1    wLED              0.8
+##  3 850   wLED_2    wLED              0.9
 ##  4 664   Control_2 Control           1.1
 ##  5 829   IR_2      IR                1.2
 ##  6 855   Control_3 Control           1.8
 ##  7 840   IR_1      IR                2.6
-##  8 953   LED_2     LED               2.6
+##  8 953   wLED_2    wLED              2.6
 ##  9 258   Control_1 Control           2.7
 ## 10 942   IR_1      IR                2.7
 ## # ... with 201 more rows
@@ -204,15 +205,15 @@ time.dep3 <- time.dep2 %>% left_join(time.period) %>%
   filter(period_length > 0)
 
 # find median length 
-time.period %>% filter(flash == "LED") %>%  
+time.period %>% filter(flash == "wLED") %>%  
   summary() # median period length 85 days, mean: 84
 ```
 
 ```
 ##       loc           period       flash    period_length   
-##  15     : 2   LED_1    :37   Control: 0   Min.   : 0.000  
-##  127    : 2   LED_2    :32   IR     : 0   1st Qu.: 6.500  
-##  193    : 2   IR_1     : 0   LED    :69   Median : 8.450  
+##  15     : 2   wLED_1   :37   Control: 0   Min.   : 0.000  
+##  127    : 2   wLED_2   :32   IR     : 0   1st Qu.: 6.500  
+##  193    : 2   IR_1     : 0   wLED   :69   Median : 8.450  
 ##  231    : 2   IR_2     : 0                Mean   : 8.285  
 ##  257    : 2   Control_1: 0                3rd Qu.:11.000  
 ##  455    : 2   Control_2: 0                Max.   :13.200  
@@ -221,15 +222,15 @@ time.period %>% filter(flash == "LED") %>%
 
 ```r
 time.period %>% filter(flash == "IR") %>%  
-  summary() # median period length 78 days, mean: 89
+  summary() # median period length 84 days, mean: 89
 ```
 
 ```
 ##       loc           period       flash    period_length   
 ##  15     : 2   IR_1     :35   Control: 0   Min.   : 1.200  
 ##  127    : 2   IR_2     :35   IR     :70   1st Qu.: 6.600  
-##  193    : 2   LED_1    : 0   LED    : 0   Median : 8.400  
-##  231    : 2   LED_2    : 0                Mean   : 9.423  
+##  193    : 2   wLED_1   : 0   wLED   : 0   Median : 8.400  
+##  231    : 2   wLED_2   : 0                Mean   : 9.423  
 ##  257    : 2   Control_1: 0                3rd Qu.:12.500  
 ##  455    : 2   Control_2: 0                Max.   :19.600  
 ##  (Other):58   (Other)  : 0                NA's   :1
@@ -244,7 +245,7 @@ time.period %>% filter(flash == "Control") %>%
 ##       loc           period       flash    period_length   
 ##  258    : 4   Control_4:19   Control:72   Min.   : 1.100  
 ##  494    : 4   Control_1:18   IR     : 0   1st Qu.: 8.200  
-##  535    : 4   Control_3:18   LED    : 0   Median : 8.900  
+##  535    : 4   Control_3:18   wLED   : 0   Median : 8.900  
 ##  638    : 4   Control_2:17                Mean   : 8.819  
 ##  662    : 4   IR_1     : 0                3rd Qu.:10.300  
 ##  664    : 4   IR_2     : 0                Max.   :12.800  
@@ -256,7 +257,7 @@ time.period %>% filter(flash == "Control") %>%
 h <- time.dep3 %>% group_by(loc, period, period_length, flash)%>% nest() %>% 
   select(!data) 
 #extracting median and multiplying by 10, to use in the correctly scaled plot
-hh <-       h$period_length[h$flash == "LED"]      %>%  median()       #  white LED
+hh <-       h$period_length[h$flash == "wLED"]      %>%  median()       #  white LED
 hh <- c(hh, h$period_length[h$flash == "IR" ]      %>%  median())      # +  IR
 hh <- c(hh, h$period_length[h$flash == "Control" ] %>%  median()) * 10 # +  Control
 # smallest median 
@@ -269,14 +270,14 @@ h # 84 shortest median (IR)
 ```
 
 
-With the updated dataset, the IR median has shifted to 84 days, white LED to 85. 84 is the new trimming value.
+The IR median is 84 days, white LED is 84,5 and control is 89. 84 is trimming value.
 
 
 
 
 ```r
 # plot periods with median as intercept
-p_td <- time.dep3 %>% filter(!period %in% ctrl) %>% 
+p_td <- time.dep3 %>% filter(!period %in% ctrl) %>% #removing ctrl-periods
   ggplot(aes(loc, 10*time.deploy, colour = period, ))  +
   geom_line(aes(linetype = flash),position = position_dodge(width = 1), lineend = "square") +
   coord_flip() + 
@@ -289,21 +290,11 @@ p_td + geom_hline(aes(yintercept = h), linetype = "dashed",  alpha =.5) +
   #annotate(geom = "text",x=4, y=h+8.6, label = "- median", size = 3, alpha =.7) +
   scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150))) +
   scale_color_brewer(palette = "Spectral")
-```
-
-![](glmm_sp_files/figure-html/period-length-1.png)<!-- -->
-
-```r
 # failed attempts that could inspire a better plot later
 # p_td + geom_hline(aes(yintercept = h))+ # using median days as intercept 
 #        scale_y_continuous(breaks = sort(c(ggplot_build(p_td)$layout$panel_ranges[[1]]$y.major_source, h)))
 # geom_text(aes(25, h, label = "median", vjust = -1), nudge_y = 10, show.legend = F)
 ```
-
-There was an overweight of IR-periods extending past the median line.
-
-
-
 
 
 
@@ -318,7 +309,7 @@ p_td2 <- time.dep3 %>%
   scale_y_continuous(breaks = sort(c(0, 50, h, 100, 150, 200))) +
   facet_grid(rows = "flash", scales = "free_y") +
   labs(#title = "Period lengths per camera",
-       x = "Location", y = "Time since deployment") # 
+       x = "Location", y = "Days since deployment") # 
   
 
 p_td2 + #ggpubr::theme_classic2() +
@@ -358,16 +349,16 @@ summary(time.dep4) #
 ##       loc              date              species              flash       
 ##  494    : 10050   Min.   :2019-01-15   Length:457470      Control:157770  
 ##  818    : 10050   1st Qu.:2019-04-25   Class :character   IR     :153360  
-##  830    : 10050   Median :2019-07-29   Mode  :character   LED    :146340  
+##  830    : 10050   Median :2019-07-29   Mode  :character   wLED   :146340  
 ##  861    : 10050   Mean   :2019-07-22                                      
 ##  863    : 10050   3rd Qu.:2019-10-14                                      
 ##  864    : 10050   Max.   :2020-02-26                                      
 ##  (Other):397170                                                           
 ##        period       time.deploy        n.obs              month       
 ##  IR_2     :80160   Min.   :0.000   Min.   : 0.00000   08     : 45780  
-##  LED_1    :77040   1st Qu.:1.800   1st Qu.: 0.00000   09     : 44460  
+##  wLED_1   :77040   1st Qu.:1.800   1st Qu.: 0.00000   09     : 44460  
 ##  IR_1     :73200   Median :3.800   Median : 0.00000   06     : 43440  
-##  LED_2    :69300   Mean   :3.881   Mean   : 0.03715   03     : 42780  
+##  wLED_2   :69300   Mean   :3.881   Mean   : 0.03715   03     : 42780  
 ##  Control_4:40500   3rd Qu.:5.900   3rd Qu.: 0.00000   07     : 41850  
 ##  Control_3:39270   Max.   :8.300   Max.   :25.00000   10     : 41460  
 ##  (Other)  :78000                                      (Other):197700  
@@ -385,7 +376,7 @@ summary(time.dep4) #
 
 
 ```r
-sp_focus <- c("raadyr", "rev", "hjort", "grevling", "elg", "gaupe", "ekorn", "hare", "maar")
+sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_eng <- c("Roe deer", "Red fox", "Badger", "Hare", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
 sp_eng <- sp_eng[9:1] # reverse order
 sp_count <- time.dep4 %>% group_by(species, flash) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
@@ -527,23 +518,24 @@ plot_grid(p_count + scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300)
 
 # Modelling
 
-
-## Roe deer
-
+The following code chunks are written in a modular fashion, so that everything will be done identically for each species. Any changes made will affect all species.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -551,97 +543,43 @@ assumpt <- performance::check_model(m_sp) # check assumptions
 ```
 
 
-The response variable is a summary of number of events per day. Most days had no roe deer.
-In the performance-test for model assumptions _it is clear that some assumptions aren't met._
 
-#### Negative
-In the non-normality of resiudals-plot, the residuals skew off from the line when moving towards positive quantiles.
-There is _not_ a homogeneity of variance. _Maybe this could be fixed by centering the n.obs-column?_
-
-There appeares to be five influential observations in the Cook's distance-plot, maybe more, as the warning from ggrepel refers to 93 unlabeled data points due to overlaps.
-
-#### Positive
-Although the model has an interaction term between flash and time since deployment, the multicollinearity between them is low!
-My random effects follows a normal distribution.
-
-#### Concluding
-I am not sure about how to make up for breaking these assumptions. For now, I will go on completing models for the rest of the species.
 
 
 ```r
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
-### Model interpretation
-The intercept-value is considered significantly negative, which is to say that there were a low chance of detecting any roe deer at an IR-camera the same day I visited the camera.
 
-> I saw a roe deer about to walk by a CT when I came to inspect it. The roe deer saw me and fled, right before it was detected by the camera. Chances are I've scared animals other times as well, but haven't noticed it.
+## Roe deer
 
-The effect of _Time since deployment_ is non-significant, and $\beta = 0.008$.
-That means there is no difference on the baseline detection rate for an IR camera over time (after controlling for seasonal changes). 
-
-For white LED flash  $\beta = 0.170$, meaning that the intercept is slightly higher than for IR, but the difference is non-significant ($p = 0.18$).
-However, the detection rate is slightly decreasing the longer the white LED stays, which differs from the IR, _
-but the effect is non-significant_ ($p = 0.23$).
-
-#### Hypothesising
-If there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods often start after a flash period.
-
-Remembering my study design, 20 cameras start with white LED, 20 with IR. _Intercept should be equal_ (1st period).
-2nd period; white LED moved, new LED CTs (same intercept), new IR CTs (hypothetical lower intercept due to flash effect).
-3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept).
-4th period;  - -  ||  - -  , new LED CTs (- - | | - - ), new IR CTs (   -  -  |  |  -  -  ).
-
-Which sums up to 3 IR periods where detection rates could start lower than that of white LED. And over time the lack of white LED flash in the new IR sites would account for an _increase_ in detection rates.
-
-The effect would of course vary because some locations experienced _gaps_ due to full SD cards or empty batteries.
-<!--_Maybe, after my thesis, I could try to pry out these differences-->
-
--------------------------------------
-
-#### Update!
-
-After uptaded data from Neri; the effect of flash is now deemed significant!
-Still the same pattern with higher intercept and a negative slope along the time axis, which further supports my hypothesising above.
-The interaction with time since deployment is, however, still non-significant.
-_Now I want to look at a model including the Control-group._
+In the following chunk, knitr will call the code chunks referenced in the 'ref.label' command. The same effect can be achieved by calling the code chunk name inside '<< >>'.
 
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
 # va_r <- insight::get_variance(m_sp)
-```
-
-
-
-
-There are a couple of extreme counts in the Control-group, even after having filtered away all observations with less than a 15 min interval for each species (ie. setting 15 min margin as definition of an event). These extreme counts are skewed to the left which probably will affect the intercept of control quite a bit, but probably won't deem the intercept-value as significant (as these extreme values are outliers).
-
-The homogeneity of variance is still off. It deems on me more and more that this is due to these extreme count-values that is close to time.deploy = 0. _Will it disappear if I divide by the standard deviation?_
-
-The multicollinearity is moderate for the interaction term of time.deploy and flash when the control group is included. Still, the change is small (in my layman eyes), with a increase in bar height from ~ 4 to ~ 6.
-
-
-
-```r
 # Summary, report, model
 summary(m_sp)
 ```
@@ -667,13 +605,13 @@ summary(m_sp)
 ## Number of obs: 13597, groups:  week, 52; loc, 47
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -2.845002   0.375683  -7.573 3.65e-14 ***
-## time.deploy          -0.050346   0.022439  -2.244   0.0249 *  
-## flashIR              -0.258452   0.439949  -0.587   0.5569    
-## flashLED             -0.133521   0.438404  -0.305   0.7607    
-## time.deploy:flashIR   0.020254   0.028440   0.712   0.4764    
-## time.deploy:flashLED  0.003374   0.027095   0.125   0.9009    
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -2.845002   0.375683  -7.573 3.65e-14 ***
+## time.deploy           -0.050346   0.022439  -2.244   0.0249 *  
+## flashIR               -0.258452   0.439949  -0.587   0.5569    
+## flashwLED             -0.133521   0.438404  -0.305   0.7607    
+## time.deploy:flashIR    0.020254   0.028440   0.712   0.4764    
+## time.deploy:flashwLED  0.003374   0.027095   0.125   0.9009    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -681,60 +619,101 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.233                            
 ## flashIR     -0.801  0.146                     
-## flashLED    -0.804  0.151  0.958              
+## flashwLED   -0.804  0.151  0.958              
 ## tm.dply:fIR  0.125 -0.556 -0.239 -0.101       
 ## tm.dply:LED  0.143 -0.627 -0.111 -0.228  0.435
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
 
-
-
-
-The control intercept is almost on top of the IR-intercept, but it has a more negative trend than the IR-group. After I got updated data and performed the event-filter, the slope of IR changed to a negative trend over time, as well, "removing" any significance from the flash terms. The important thing to note, then, is how small the p-values was, and how easily they turned non-significant.
-Looking at the plot, the confidence interval tells us all we need to know, as they almost completely overlap.
-The groups are almost identical. The slope of the control group is actually steeper than that of white LED (although only minisculy).
-Further, the trend over time with the control-group __should__ be due to chance, _as time.deploy = 0 is seldom the actual day I visited the cameras_. They were visited less often in general, and the breaks leading to time.deploy = 0 are set manually by me, to make period lengths that are similar to those of the IR and white LED group.
-
-### Some parameter-plots from see and effectsize
-
-The CI-plots of effectsize will be included in some form in my thesis. For the equivalence-plot I'm not to sure if I'll use it, but the interpretation is neat with that method. From the bayesian statistics, if a predictor is completely covered by the ROPE-area you can accept the null hypothesis. This is not possible in a frequentist perspective (as my models are), but one could claim _practical equivalence_ if the effect is non-significant AND completely inside the ROPE-interval. Explanations from [Equivalence vignette](https://easystats.github.io/parameters/reference/equivalence_test.lm.html):
-
->"classic" - The TOST rule (Lakens 2017)
-This rule follows the “TOST rule”, i.e. a two one-sided test procedure (Lakens 2017). Following this rule, practical equivalence of an effect (i.e. H0) is rejected, when the coefficient is statistically significant and the narrow confidence intervals (i.e. 1-2*alpha) include or exceed the ROPE boundaries. Practical equivalence is assumed (i.e. H0 accepted) when the narrow confidence intervals are completely inside the ROPE, no matter if the effect is statistically significant or not. Else, the decision whether to accept or reject H0 is undecided.
->"cet" - Conditional Equivalence Testing (Campbell/Gustafson 2018)
-The Conditional Equivalence Testing as described by Campbell and Gustafson 2018. According to this rule, practical equivalence is rejected when the coefficient is statistically significant. When the effect is not significant and the narrow confidence intervals are completely inside the ROPE, we accept H0, else it is undecided
-
-## Roe deer plot
+### Plots
 
 
 ```r
-# just a shortcut for editing
+# just a shortcut for when editing
+## I still haven't found out how to make knitr calling other chunks
+## without actually knitting (which is timeconsuming).
 sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
+# m_sp <- readRDS("m_grevling.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 va_r <- insight::get_variance(m_sp)
 ```
+
+
+```r
+# trying to include total counts in labels:
+c <- obs %>% filter(species %in% sp) %>% 
+  group_by(flash) %>% 
+  summarise(count = n())
+lab_ctrl <- paste0("Control (",c[3,2],")")
+lab_IR   <- paste0("IR \    (",c[1,2],")")
+lab_LED  <- paste0("wLED \   (",c[2,2],")")
+
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=flash, alpha=.1),
+               show.legend = c(alpha = F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right")+ 
+  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+                    #labels=c(lab_ctrl, lab_IR, lab_LED)
+                    )
+
+
+
+# Trying to map activity patterns to before and after sunrise/sunset
+
+# library(overlap)
+# obs$hour <- as.numeric(format(obs$datetime, "%H")) # setting up time cols 
+# obs$mins <- as.numeric(format(obs$datetime, "%M")) # in a way that overlap
+# obs$rad <- ((obs$hour * 60 + obs$mins)/(24 * 60)) * 2 * pi  # understands
+# 
+# overlap_flash <- function(x, colour = c("black", "blue", "brown"), rug = FALSE, main = str_to_title(x), ...) {
+#   x0 <- obs[obs$species %in% x & obs$flash == "IR", ]$rad
+#   x1 <- obs[obs$species %in% x & obs$flash == "LED", ]$rad
+#   x2 <- obs[obs$species %in% x & obs$flash == "Control", ]$rad
+#   overlapPlot(x2, x1, x0, linecol = rep(colour, 3), rug = rug, main = main, 
+#               linewidth = c(2, 2), olapcol = "darkgrey", extend = "lightgrey", ...)
+#   x.est <- round(overlapEst(x1, x0, type = "Dhat4"), 2)
+#   n0 <- length(x0)
+#   n1 <- length(x1)
+#   legend("top", legend = str_c("Dhat4", x.est, sep = " = "), bty = "n")
+# #  legend("bottomleft", legend = c(str_c("LED n", n1, sep = " = "), str_c("    IR n", n0, sep = " = ")),
+# #         col = colour, lty = c(1, 2), lwd = 2, bty = "7")
+# }
+# 
+# overlap_flash("rev", rug=T)
+# obs$species
+# 
+#   x0 <- obs[obs$species %in% sp & obs$flash == "IR", ]$rad
+#   x1 <- obs[obs$species %in% sp & obs$flash == "LED", ]$rad
+#   x2 <- obs[obs$species %in% sp & obs$flash == "Control", ]$rad
+# overlapPlot(x0,x1)
+# 
+# overlap::sunTime()
+```
+
+
 
 
 
 ```r
 library(cowplot) # to make grid-plots
 library(magick)
-```
-
-```
-## Linking to ImageMagick 6.9.11.57
-## Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
-## Disabled features: fontconfig, x11
-```
-
-```r
 # ggpredict
 p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
                colors = c("black","#e41a1c","#377eb8")) +
@@ -757,18 +736,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-3.46 -2.23]
-##                time.deploy  Accepted    100.00 % [-0.09 -0.01]
-##                 flash [IR] Undecided     13.82 % [-0.98  0.47]
-##                flash [LED] Undecided     13.87 % [-0.85  0.59]
-##   time.deploy * flash [IR]  Accepted    100.00 % [-0.03  0.07]
-##  time.deploy * flash [LED]  Accepted    100.00 % [-0.04  0.05]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-3.46 -2.23]
+##                 time.deploy  Accepted    100.00 % [-0.09 -0.01]
+##                  flash [IR] Undecided     13.82 % [-0.98  0.47]
+##                flash [wLED] Undecided     13.87 % [-0.85  0.59]
+##    time.deploy * flash [IR]  Accepted    100.00 % [-0.03  0.07]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.04  0.05]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -790,33 +769,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -861,9 +813,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is significantly negative (beta = -0.05, 95% CI [-0.09, -6.37e-03], p < .05, Std. beta = -0.12)
 ##   - The effect of flash [IR] is non-significantly negative (beta = -0.26, 95% CI [-1.12, 0.60], p = 0.557, Std. beta = -0.18)
-##   - The effect of flash [LED] is non-significantly negative (beta = -0.13, 95% CI [-0.99, 0.73], p = 0.761, Std. beta = -0.12)
+##   - The effect of flash [wLED] is non-significantly negative (beta = -0.13, 95% CI [-0.99, 0.73], p = 0.761, Std. beta = -0.12)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.02, 95% CI [-0.04, 0.08], p = 0.476, Std. beta = 0.05)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 3.37e-03, 95% CI [-0.05, 0.06], p = 0.901, Std. beta = 7.96e-03)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 3.37e-03, 95% CI [-0.05, 0.06], p = 0.901, Std. beta = 7.96e-03)
 ```
 
 ```r
@@ -871,26 +823,26 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -2.85 | [-3.58, -2.11] | -7.57 | Inf | < .001 |      -3.04 |    [-3.76, -2.32] |         
-## time.deploy               |       -0.05 | [-0.09, -0.01] | -2.24 | Inf | 0.025  |      -0.12 |    [-0.22, -0.02] |         
-## flash [IR]                |       -0.26 | [-1.12,  0.60] | -0.59 | Inf | 0.557  |      -0.18 |    [-1.02,  0.66] |         
-## flash [LED]               |       -0.13 | [-0.99,  0.73] | -0.30 | Inf | 0.761  |      -0.12 |    [-0.96,  0.72] |         
-## time.deploy * flash [IR]  |        0.02 | [-0.04,  0.08] |  0.71 | Inf | 0.476  |       0.05 |    [-0.08,  0.18] |         
-## time.deploy * flash [LED] |    3.37e-03 | [-0.05,  0.06] |  0.12 | Inf | 0.901  |   7.96e-03 |    [-0.12,  0.13] |         
-##                           |             |                |       |     |        |            |                   |         
-## AIC                       |             |                |       |     |        |            |                   |  7685.62
-## BIC                       |             |                |       |     |        |            |                   |  7745.76
-## R2 (conditional)          |             |                |       |     |        |            |                   |     0.38
-## R2 (marginal)             |             |                |       |     |        |            |                   | 2.97e-03
-## Sigma                     |             |                |       |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## ----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -2.85 | [-3.58, -2.11] | -7.57 | Inf | < .001 |      -3.04 |    [-3.76, -2.32] |         
+## time.deploy                |       -0.05 | [-0.09, -0.01] | -2.24 | Inf | 0.025  |      -0.12 |    [-0.22, -0.02] |         
+## flash [IR]                 |       -0.26 | [-1.12,  0.60] | -0.59 | Inf | 0.557  |      -0.18 |    [-1.02,  0.66] |         
+## flash [wLED]               |       -0.13 | [-0.99,  0.73] | -0.30 | Inf | 0.761  |      -0.12 |    [-0.96,  0.72] |         
+## time.deploy * flash [IR]   |        0.02 | [-0.04,  0.08] |  0.71 | Inf | 0.476  |       0.05 |    [-0.08,  0.18] |         
+## time.deploy * flash [wLED] |    3.37e-03 | [-0.05,  0.06] |  0.12 | Inf | 0.901  |   7.96e-03 |    [-0.12,  0.13] |         
+##                            |             |                |       |     |        |            |                   |         
+## AIC                        |             |                |       |     |        |            |                   |  7685.62
+## BIC                        |             |                |       |     |        |            |                   |  7745.76
+## R2 (conditional)           |             |                |       |     |        |            |                   |     0.38
+## R2 (marginal)              |             |                |       |     |        |            |                   | 2.97e-03
+## Sigma                      |             |                |       |     |        |            |                   |     1.00
 ```
 
 
 
 ```r
-# Storing species-specific objects for later
+# Storing species-specific objects for later, as shortcuts
 # Model
 m_raa    = m_sp
 # ggpredict 
@@ -901,36 +853,38 @@ r_raa    = r_sp
 para_raa = para_sp
 ```
 
+__Chunk order:__
 
-sp
-sp-report
-sp-report2
-parameters
+1. sp
+1. sp-report
+1. sp-report2
+1. parameters
+1. objects
 
-objects
-
-
-#### Skrivestopp
-
--------------------------------------------------------------
 
 ## Red Fox
 
+ 
+This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
 
+Now, sp contains rev.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -960,13 +914,13 @@ summary(m_sp)
 ## Number of obs: 15249, groups:  loc, 53; week, 52
 ## 
 ## Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -3.4391866  0.2565890 -13.403   <2e-16 ***
-## time.deploy          -0.0005472  0.0282401  -0.019    0.985    
-## flashIR               0.0294434  0.3151412   0.093    0.926    
-## flashLED              0.1764789  0.3136447   0.563    0.574    
-## time.deploy:flashIR  -0.0024082  0.0378228  -0.064    0.949    
-## time.deploy:flashLED -0.0111628  0.0370606  -0.301    0.763    
+##                         Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.4391866  0.2565890 -13.403   <2e-16 ***
+## time.deploy           -0.0005472  0.0282401  -0.019    0.985    
+## flashIR                0.0294434  0.3151412   0.093    0.926    
+## flashwLED              0.1764789  0.3136447   0.563    0.574    
+## time.deploy:flashIR   -0.0024082  0.0378228  -0.064    0.949    
+## time.deploy:flashwLED -0.0111628  0.0370606  -0.301    0.763    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -974,14 +928,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.442                            
 ## flashIR     -0.776  0.326                     
-## flashLED    -0.782  0.335  0.860              
+## flashwLED   -0.782  0.335  0.860              
 ## tm.dply:fIR  0.289 -0.653 -0.472 -0.244       
 ## tm.dply:LED  0.302 -0.682 -0.248 -0.467  0.504
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 ### Plot
@@ -996,9 +950,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly negative (beta = -5.47e-04, 95% CI [-0.06, 0.05], p = 0.985, Std. beta = -1.29e-03)
 ##   - The effect of flash [IR] is non-significantly positive (beta = 0.03, 95% CI [-0.59, 0.65], p = 0.926, Std. beta = 0.02)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.18, 95% CI [-0.44, 0.79], p = 0.574, Std. beta = 0.13)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.18, 95% CI [-0.44, 0.79], p = 0.574, Std. beta = 0.13)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -2.41e-03, 95% CI [-0.08, 0.07], p = 0.949, Std. beta = -5.69e-03)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.06], p = 0.763, Std. beta = -0.03)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.06], p = 0.763, Std. beta = -0.03)
 ```
 
 ```r
@@ -1006,20 +960,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -3.44 | [-3.94, -2.94] | -13.40 | Inf | < .001 |      -3.44 |    [-3.89, -2.99] |         
-## time.deploy               |   -5.47e-04 | [-0.06,  0.05] |  -0.02 | Inf | 0.985  |  -1.29e-03 |    [-0.13,  0.13] |         
-## flash [IR]                |        0.03 | [-0.59,  0.65] |   0.09 | Inf | 0.926  |       0.02 |    [-0.52,  0.56] |         
-## flash [LED]               |        0.18 | [-0.44,  0.79] |   0.56 | Inf | 0.574  |       0.13 |    [-0.41,  0.68] |         
-## time.deploy * flash [IR]  |   -2.41e-03 | [-0.08,  0.07] |  -0.06 | Inf | 0.949  |  -5.69e-03 |    [-0.18,  0.17] |         
-## time.deploy * flash [LED] |       -0.01 | [-0.08,  0.06] |  -0.30 | Inf | 0.763  |      -0.03 |    [-0.20,  0.15] |         
-##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  5740.11
-## BIC                       |             |                |        |     |        |            |                   |  5801.17
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.19
-## R2 (marginal)             |             |                |        |     |        |            |                   | 8.63e-04
-## Sigma                     |             |                |        |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.44 | [-3.94, -2.94] | -13.40 | Inf | < .001 |      -3.44 |    [-3.89, -2.99] |         
+## time.deploy                |   -5.47e-04 | [-0.06,  0.05] |  -0.02 | Inf | 0.985  |  -1.29e-03 |    [-0.13,  0.13] |         
+## flash [IR]                 |        0.03 | [-0.59,  0.65] |   0.09 | Inf | 0.926  |       0.02 |    [-0.52,  0.56] |         
+## flash [wLED]               |        0.18 | [-0.44,  0.79] |   0.56 | Inf | 0.574  |       0.13 |    [-0.41,  0.68] |         
+## time.deploy * flash [IR]   |   -2.41e-03 | [-0.08,  0.07] |  -0.06 | Inf | 0.949  |  -5.69e-03 |    [-0.18,  0.17] |         
+## time.deploy * flash [wLED] |       -0.01 | [-0.08,  0.06] |  -0.30 | Inf | 0.763  |      -0.03 |    [-0.20,  0.15] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  5740.11
+## BIC                        |             |                |        |     |        |            |                   |  5801.17
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.19
+## R2 (marginal)              |             |                |        |     |        |            |                   | 8.63e-04
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -1047,18 +1001,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-3.86 -3.02]
-##                time.deploy  Accepted    100.00 % [-0.05  0.05]
-##                 flash [IR] Undecided     19.29 % [-0.49  0.55]
-##                flash [LED] Undecided     19.38 % [-0.34  0.69]
-##   time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.06]
-##  time.deploy * flash [LED]  Accepted    100.00 % [-0.07  0.05]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-3.86 -3.02]
+##                 time.deploy  Accepted    100.00 % [-0.05  0.05]
+##                  flash [IR] Undecided     19.29 % [-0.49  0.55]
+##                flash [wLED] Undecided     19.38 % [-0.34  0.69]
+##    time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.06]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.05]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -1080,33 +1034,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1161,20 +1088,24 @@ knitr::knit_exit() # to exit knitting process here instead of at the document en
 ## Badger
 
 
+Now, sp contains grevling.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -1204,13 +1135,13 @@ summary(m_sp)
 ## Number of obs: 13898, groups:  week, 52; loc, 48
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -4.489893   0.370455 -12.120   <2e-16 ***
-## time.deploy           0.063753   0.034385   1.854   0.0637 .  
-## flashIR               0.171324   0.386347   0.443   0.6574    
-## flashLED              0.244428   0.382821   0.638   0.5232    
-## time.deploy:flashIR   0.011448   0.041787   0.274   0.7841    
-## time.deploy:flashLED  0.004346   0.040130   0.108   0.9138    
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -4.489893   0.370455 -12.120   <2e-16 ***
+## time.deploy            0.063753   0.034385   1.854   0.0637 .  
+## flashIR                0.171324   0.386347   0.443   0.6574    
+## flashwLED              0.244428   0.382821   0.638   0.5232    
+## time.deploy:flashIR    0.011448   0.041787   0.274   0.7841    
+## time.deploy:flashwLED  0.004346   0.040130   0.108   0.9138    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1218,14 +1149,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.416                            
 ## flashIR     -0.685  0.340                     
-## flashLED    -0.694  0.351  0.882              
+## flashwLED   -0.694  0.351  0.882              
 ## tm.dply:fIR  0.269 -0.638 -0.480 -0.266       
 ## tm.dply:LED  0.294 -0.693 -0.277 -0.471  0.537
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 ```
 
 ```
@@ -1249,9 +1180,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly positive (beta = 0.06, 95% CI [-3.64e-03, 0.13], p = 0.064, Std. beta = 0.15)
 ##   - The effect of flash [IR] is non-significantly positive (beta = 0.17, 95% CI [-0.59, 0.93], p = 0.657, Std. beta = 0.22)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.24, 95% CI [-0.51, 0.99], p = 0.523, Std. beta = 0.26)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.24, 95% CI [-0.51, 0.99], p = 0.523, Std. beta = 0.26)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.01, 95% CI [-0.07, 0.09], p = 0.784, Std. beta = 0.03)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 4.35e-03, 95% CI [-0.07, 0.08], p = 0.914, Std. beta = 0.01)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 4.35e-03, 95% CI [-0.07, 0.08], p = 0.914, Std. beta = 0.01)
 ```
 
 ```r
@@ -1259,20 +1190,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.49 | [-5.22, -3.76] | -12.12 | Inf | < .001 |      -4.24 |    [-4.90, -3.58] |         
-## time.deploy               |        0.06 | [ 0.00,  0.13] |   1.85 | Inf | 0.064  |       0.15 |    [-0.01,  0.31] |         
-## flash [IR]                |        0.17 | [-0.59,  0.93] |   0.44 | Inf | 0.657  |       0.22 |    [-0.45,  0.88] |         
-## flash [LED]               |        0.24 | [-0.51,  0.99] |   0.64 | Inf | 0.523  |       0.26 |    [-0.40,  0.93] |         
-## time.deploy * flash [IR]  |        0.01 | [-0.07,  0.09] |   0.27 | Inf | 0.784  |       0.03 |    [-0.17,  0.22] |         
-## time.deploy * flash [LED] |    4.35e-03 | [-0.07,  0.08] |   0.11 | Inf | 0.914  |       0.01 |    [-0.18,  0.20] |         
-##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  4728.27
-## BIC                       |             |                |        |     |        |            |                   |  4788.59
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.39
-## R2 (marginal)             |             |                |        |     |        |            |                   | 5.65e-03
-## Sigma                     |             |                |        |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -4.49 | [-5.22, -3.76] | -12.12 | Inf | < .001 |      -4.24 |    [-4.90, -3.58] |         
+## time.deploy                |        0.06 | [ 0.00,  0.13] |   1.85 | Inf | 0.064  |       0.15 |    [-0.01,  0.31] |         
+## flash [IR]                 |        0.17 | [-0.59,  0.93] |   0.44 | Inf | 0.657  |       0.22 |    [-0.45,  0.88] |         
+## flash [wLED]               |        0.24 | [-0.51,  0.99] |   0.64 | Inf | 0.523  |       0.26 |    [-0.40,  0.93] |         
+## time.deploy * flash [IR]   |        0.01 | [-0.07,  0.09] |   0.27 | Inf | 0.784  |       0.03 |    [-0.17,  0.22] |         
+## time.deploy * flash [wLED] |    4.35e-03 | [-0.07,  0.08] |   0.11 | Inf | 0.914  |       0.01 |    [-0.18,  0.20] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  4728.27
+## BIC                        |             |                |        |     |        |            |                   |  4788.59
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.39
+## R2 (marginal)              |             |                |        |     |        |            |                   | 5.65e-03
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -1300,18 +1231,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-5.10 -3.88]
-##                time.deploy  Rejected     82.04 % [ 0.01  0.12]
-##                 flash [IR] Undecided     15.74 % [-0.46  0.81]
-##                flash [LED] Undecided     15.88 % [-0.39  0.87]
-##   time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.08]
-##  time.deploy * flash [LED]  Accepted    100.00 % [-0.06  0.07]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-5.10 -3.88]
+##                 time.deploy  Rejected     82.04 % [ 0.01  0.12]
+##                  flash [IR] Undecided     15.74 % [-0.46  0.81]
+##                flash [wLED] Undecided     15.88 % [-0.39  0.87]
+##    time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.08]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.06  0.07]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -1333,33 +1264,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1408,20 +1312,24 @@ para_grvl = para_sp
 ## Moose
 
 
+Now, sp contains elg.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -1451,13 +1359,13 @@ summary(m_sp)
 ## Number of obs: 11951, groups:  week, 52; loc, 41
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -4.153451   0.302125 -13.747   <2e-16 ***
-## time.deploy           0.006304   0.045516   0.138    0.890    
-## flashIR              -0.081991   0.349354  -0.235    0.814    
-## flashLED              0.301856   0.338919   0.891    0.373    
-## time.deploy:flashIR   0.050860   0.059004   0.862    0.389    
-## time.deploy:flashLED -0.006982   0.056859  -0.123    0.902    
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -4.153451   0.302125 -13.747   <2e-16 ***
+## time.deploy            0.006304   0.045516   0.138    0.890    
+## flashIR               -0.081991   0.349354  -0.235    0.814    
+## flashwLED              0.301856   0.338919   0.891    0.373    
+## time.deploy:flashIR    0.050860   0.059004   0.862    0.389    
+## time.deploy:flashwLED -0.006982   0.056859  -0.123    0.902    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1465,14 +1373,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.626                            
 ## flashIR     -0.680  0.462                     
-## flashLED    -0.712  0.485  0.746              
+## flashwLED   -0.712  0.485  0.746              
 ## tm.dply:fIR  0.372 -0.629 -0.670 -0.357       
 ## tm.dply:LED  0.431 -0.703 -0.384 -0.655  0.529
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -1488,9 +1396,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly positive (beta = 6.30e-03, 95% CI [-0.08, 0.10], p = 0.890, Std. beta = 0.01)
 ##   - The effect of flash [IR] is non-significantly negative (beta = -0.08, 95% CI [-0.77, 0.60], p = 0.814, Std. beta = 0.12)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.30, 95% CI [-0.36, 0.97], p = 0.373, Std. beta = 0.27)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.30, 95% CI [-0.36, 0.97], p = 0.373, Std. beta = 0.27)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.06, 0.17], p = 0.389, Std. beta = 0.12)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -6.98e-03, 95% CI [-0.12, 0.10], p = 0.902, Std. beta = -0.02)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -6.98e-03, 95% CI [-0.12, 0.10], p = 0.902, Std. beta = -0.02)
 ```
 
 ```r
@@ -1498,20 +1406,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.15 | [-4.75, -3.56] | -13.75 | Inf | < .001 |      -4.13 |    [-4.59, -3.67] |         
-## time.deploy               |    6.30e-03 | [-0.08,  0.10] |   0.14 | Inf | 0.890  |       0.01 |    [-0.20,  0.23] |         
-## flash [IR]                |       -0.08 | [-0.77,  0.60] |  -0.23 | Inf | 0.814  |       0.12 |    [-0.39,  0.62] |         
-## flash [LED]               |        0.30 | [-0.36,  0.97] |   0.89 | Inf | 0.373  |       0.27 |    [-0.23,  0.78] |         
-## time.deploy * flash [IR]  |        0.05 | [-0.06,  0.17] |   0.86 | Inf | 0.389  |       0.12 |    [-0.15,  0.39] |         
-## time.deploy * flash [LED] |   -6.98e-03 | [-0.12,  0.10] |  -0.12 | Inf | 0.902  |      -0.02 |    [-0.28,  0.25] |         
-##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  2956.30
-## BIC                       |             |                |        |     |        |            |                   |  3015.41
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.19
-## R2 (marginal)             |             |                |        |     |        |            |                   | 3.72e-03
-## Sigma                     |             |                |        |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -4.15 | [-4.75, -3.56] | -13.75 | Inf | < .001 |      -4.13 |    [-4.59, -3.67] |         
+## time.deploy                |    6.30e-03 | [-0.08,  0.10] |   0.14 | Inf | 0.890  |       0.01 |    [-0.20,  0.23] |         
+## flash [IR]                 |       -0.08 | [-0.77,  0.60] |  -0.23 | Inf | 0.814  |       0.12 |    [-0.39,  0.62] |         
+## flash [wLED]               |        0.30 | [-0.36,  0.97] |   0.89 | Inf | 0.373  |       0.27 |    [-0.23,  0.78] |         
+## time.deploy * flash [IR]   |        0.05 | [-0.06,  0.17] |   0.86 | Inf | 0.389  |       0.12 |    [-0.15,  0.39] |         
+## time.deploy * flash [wLED] |   -6.98e-03 | [-0.12,  0.10] |  -0.12 | Inf | 0.902  |      -0.02 |    [-0.28,  0.25] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  2956.30
+## BIC                        |             |                |        |     |        |            |                   |  3015.41
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.19
+## R2 (marginal)              |             |                |        |     |        |            |                   | 3.72e-03
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -1539,18 +1447,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-4.65 -3.66]
-##                time.deploy  Accepted    100.00 % [-0.07  0.08]
-##                 flash [IR] Undecided     17.40 % [-0.66  0.49]
-##                flash [LED] Undecided     17.94 % [-0.26  0.86]
-##   time.deploy * flash [IR] Undecided     75.32 % [-0.05  0.15]
-##  time.deploy * flash [LED] Undecided     99.73 % [-0.10  0.09]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-4.65 -3.66]
+##                 time.deploy  Accepted    100.00 % [-0.07  0.08]
+##                  flash [IR] Undecided     17.40 % [-0.66  0.49]
+##                flash [wLED] Undecided     17.94 % [-0.26  0.86]
+##    time.deploy * flash [IR] Undecided     75.32 % [-0.05  0.15]
+##  time.deploy * flash [wLED] Undecided     99.73 % [-0.10  0.09]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -1572,33 +1480,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1646,20 +1527,24 @@ para_elg = para_sp
 ## Red deer
 
 
+Now, sp contains hjort.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -1689,13 +1574,13 @@ summary(m_sp)
 ## Number of obs: 7344, groups:  week, 52; loc, 26
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -3.891154   0.407582  -9.547  < 2e-16 ***
-## time.deploy          -0.094938   0.058353  -1.627  0.10374    
-## flashIR              -0.009873   0.498299  -0.020  0.98419    
-## flashLED             -0.687348   0.526986  -1.304  0.19213    
-## time.deploy:flashIR   0.061810   0.076779   0.805  0.42080    
-## time.deploy:flashLED  0.231225   0.078062   2.962  0.00306 ** 
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.891154   0.407582  -9.547  < 2e-16 ***
+## time.deploy           -0.094938   0.058353  -1.627  0.10374    
+## flashIR               -0.009873   0.498299  -0.020  0.98419    
+## flashwLED             -0.687348   0.526986  -1.304  0.19213    
+## time.deploy:flashIR    0.061810   0.076779   0.805  0.42080    
+## time.deploy:flashwLED  0.231225   0.078062   2.962  0.00306 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1703,14 +1588,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.509                            
 ## flashIR     -0.759  0.386                     
-## flashLED    -0.738  0.388  0.767              
+## flashwLED   -0.738  0.388  0.767              
 ## tm.dply:fIR  0.344 -0.687 -0.555 -0.289       
 ## tm.dply:LED  0.373 -0.713 -0.302 -0.609  0.531
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -1726,9 +1611,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly negative (beta = -0.09, 95% CI [-0.21, 0.02], p = 0.104, Std. beta = -0.22)
 ##   - The effect of flash [IR] is non-significantly negative (beta = -9.87e-03, 95% CI [-0.99, 0.97], p = 0.984, Std. beta = 0.23)
-##   - The effect of flash [LED] is non-significantly negative (beta = -0.69, 95% CI [-1.72, 0.35], p = 0.192, Std. beta = 0.21)
+##   - The effect of flash [wLED] is non-significantly negative (beta = -0.69, 95% CI [-1.72, 0.35], p = 0.192, Std. beta = 0.21)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.06, 95% CI [-0.09, 0.21], p = 0.421, Std. beta = 0.15)
-##   - The interaction effect of flash [LED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.08, 0.38], p < .01, Std. beta = 0.55)
+##   - The interaction effect of flash [wLED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.08, 0.38], p < .01, Std. beta = 0.55)
 ```
 
 ```r
@@ -1736,20 +1621,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
-## --------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -3.89 | [-4.69, -3.09] | -9.55 | Inf | < .001 |      -4.26 |    [-4.95, -3.57] |        
-## time.deploy               |       -0.09 | [-0.21,  0.02] | -1.63 | Inf | 0.104  |      -0.22 |    [-0.50,  0.05] |        
-## flash [IR]                |   -9.87e-03 | [-0.99,  0.97] | -0.02 | Inf | 0.984  |       0.23 |    [-0.58,  1.04] |        
-## flash [LED]               |       -0.69 | [-1.72,  0.35] | -1.30 | Inf | 0.192  |       0.21 |    [-0.61,  1.03] |        
-## time.deploy * flash [IR]  |        0.06 | [-0.09,  0.21] |  0.81 | Inf | 0.421  |       0.15 |    [-0.21,  0.50] |        
-## time.deploy * flash [LED] |        0.23 | [ 0.08,  0.38] |  2.96 | Inf | 0.003  |       0.55 |    [ 0.19,  0.91] |        
-##                           |             |                |       |     |        |            |                   |        
-## AIC                       |             |                |       |     |        |            |                   | 1743.43
-## BIC                       |             |                |       |     |        |            |                   | 1798.64
-## R2 (conditional)          |             |                |       |     |        |            |                   |    0.20
-## R2 (marginal)             |             |                |       |     |        |            |                   |    0.01
-## Sigma                     |             |                |       |     |        |            |                   |    1.00
+## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
+## ---------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.89 | [-4.69, -3.09] | -9.55 | Inf | < .001 |      -4.26 |    [-4.95, -3.57] |        
+## time.deploy                |       -0.09 | [-0.21,  0.02] | -1.63 | Inf | 0.104  |      -0.22 |    [-0.50,  0.05] |        
+## flash [IR]                 |   -9.87e-03 | [-0.99,  0.97] | -0.02 | Inf | 0.984  |       0.23 |    [-0.58,  1.04] |        
+## flash [wLED]               |       -0.69 | [-1.72,  0.35] | -1.30 | Inf | 0.192  |       0.21 |    [-0.61,  1.03] |        
+## time.deploy * flash [IR]   |        0.06 | [-0.09,  0.21] |  0.81 | Inf | 0.421  |       0.15 |    [-0.21,  0.50] |        
+## time.deploy * flash [wLED] |        0.23 | [ 0.08,  0.38] |  2.96 | Inf | 0.003  |       0.55 |    [ 0.19,  0.91] |        
+##                            |             |                |       |     |        |            |                   |        
+## AIC                        |             |                |       |     |        |            |                   | 1743.43
+## BIC                        |             |                |       |     |        |            |                   | 1798.64
+## R2 (conditional)           |             |                |       |     |        |            |                   |    0.20
+## R2 (marginal)              |             |                |       |     |        |            |                   |    0.01
+## Sigma                      |             |                |       |     |        |            |                   |    1.00
 ```
 
 ```r
@@ -1777,18 +1662,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-4.56 -3.22]
-##                time.deploy Undecided     52.64 % [-0.19  0.00]
-##                 flash [IR] Undecided     12.20 % [-0.83  0.81]
-##                flash [LED] Undecided     11.54 % [-1.55  0.18]
-##   time.deploy * flash [IR] Undecided     65.12 % [-0.06  0.19]
-##  time.deploy * flash [LED]  Rejected      0.00 % [ 0.10  0.36]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-4.56 -3.22]
+##                 time.deploy Undecided     52.64 % [-0.19  0.00]
+##                  flash [IR] Undecided     12.20 % [-0.83  0.81]
+##                flash [wLED] Undecided     11.54 % [-1.55  0.18]
+##    time.deploy * flash [IR] Undecided     65.12 % [-0.06  0.19]
+##  time.deploy * flash [wLED]  Rejected      0.00 % [ 0.10  0.36]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -1810,33 +1695,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -1885,20 +1743,24 @@ para_hjort = para_sp
 ## Lynx
 
 
+Now, sp contains gaupe.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -1928,13 +1790,13 @@ summary(m_sp)
 ## Number of obs: 6091, groups:  week, 52; loc, 22
 ## 
 ## Fixed effects:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -4.8175     0.5848  -8.237   <2e-16 ***
-## time.deploy           -0.2199     0.1389  -1.583    0.113    
-## flashIR               -0.2004     0.7205  -0.278    0.781    
-## flashLED               0.1454     0.7163   0.203    0.839    
-## time.deploy:flashIR    0.2484     0.1626   1.528    0.127    
-## time.deploy:flashLED   0.2577     0.1622   1.589    0.112    
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)            -4.8175     0.5848  -8.237   <2e-16 ***
+## time.deploy            -0.2199     0.1389  -1.583    0.113    
+## flashIR                -0.2004     0.7205  -0.278    0.781    
+## flashwLED               0.1454     0.7163   0.203    0.839    
+## time.deploy:flashIR     0.2484     0.1626   1.528    0.127    
+## time.deploy:flashwLED   0.2577     0.1622   1.589    0.112    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1942,14 +1804,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.688                            
 ## flashIR     -0.750  0.545                     
-## flashLED    -0.775  0.564  0.703              
+## flashwLED   -0.775  0.564  0.703              
 ## tm.dply:fIR  0.573 -0.837 -0.717 -0.478       
 ## tm.dply:LED  0.587 -0.855 -0.478 -0.724  0.727
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -1965,9 +1827,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly negative (beta = -0.22, 95% CI [-0.49, 0.05], p = 0.113, Std. beta = -0.52)
 ##   - The effect of flash [IR] is non-significantly negative (beta = -0.20, 95% CI [-1.61, 1.21], p = 0.781, Std. beta = 0.76)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.15, 95% CI [-1.26, 1.55], p = 0.839, Std. beta = 1.15)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.15, 95% CI [-1.26, 1.55], p = 0.839, Std. beta = 1.15)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.25, 95% CI [-0.07, 0.57], p = 0.127, Std. beta = 0.59)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.26, 95% CI [-0.06, 0.58], p = 0.112, Std. beta = 0.61)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 0.26, 95% CI [-0.06, 0.58], p = 0.112, Std. beta = 0.61)
 ```
 
 ```r
@@ -1975,20 +1837,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
-## -------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -4.82 | [-5.96, -3.67] | -8.24 | Inf | < .001 |      -5.67 |    [-6.54, -4.80] |       
-## time.deploy               |       -0.22 | [-0.49,  0.05] | -1.58 | Inf | 0.113  |      -0.52 |    [-1.17,  0.12] |       
-## flash [IR]                |       -0.20 | [-1.61,  1.21] | -0.28 | Inf | 0.781  |       0.76 |    [-0.25,  1.77] |       
-## flash [LED]               |        0.15 | [-1.26,  1.55] |  0.20 | Inf | 0.839  |       1.15 |    [ 0.15,  2.14] |       
-## time.deploy * flash [IR]  |        0.25 | [-0.07,  0.57] |  1.53 | Inf | 0.127  |       0.59 |    [-0.17,  1.35] |       
-## time.deploy * flash [LED] |        0.26 | [-0.06,  0.58] |  1.59 | Inf | 0.112  |       0.61 |    [-0.14,  1.37] |       
-##                           |             |                |       |     |        |            |                   |       
-## AIC                       |             |                |       |     |        |            |                   | 686.23
-## BIC                       |             |                |       |     |        |            |                   | 739.94
-## R2 (conditional)          |             |                |       |     |        |            |                   |   0.18
-## R2 (marginal)             |             |                |       |     |        |            |                   |   0.06
-## Sigma                     |             |                |       |     |        |            |                   |   1.00
+## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
+## --------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -4.82 | [-5.96, -3.67] | -8.24 | Inf | < .001 |      -5.67 |    [-6.54, -4.80] |       
+## time.deploy                |       -0.22 | [-0.49,  0.05] | -1.58 | Inf | 0.113  |      -0.52 |    [-1.17,  0.12] |       
+## flash [IR]                 |       -0.20 | [-1.61,  1.21] | -0.28 | Inf | 0.781  |       0.76 |    [-0.25,  1.77] |       
+## flash [wLED]               |        0.15 | [-1.26,  1.55] |  0.20 | Inf | 0.839  |       1.15 |    [ 0.15,  2.14] |       
+## time.deploy * flash [IR]   |        0.25 | [-0.07,  0.57] |  1.53 | Inf | 0.127  |       0.59 |    [-0.17,  1.35] |       
+## time.deploy * flash [wLED] |        0.26 | [-0.06,  0.58] |  1.59 | Inf | 0.112  |       0.61 |    [-0.14,  1.37] |       
+##                            |             |                |       |     |        |            |                   |       
+## AIC                        |             |                |       |     |        |            |                   | 686.23
+## BIC                        |             |                |       |     |        |            |                   | 739.94
+## R2 (conditional)           |             |                |       |     |        |            |                   |   0.18
+## R2 (marginal)              |             |                |       |     |        |            |                   |   0.06
+## Sigma                      |             |                |       |     |        |            |                   |   1.00
 ```
 
 ```r
@@ -2016,18 +1878,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-5.78 -3.86]
-##                time.deploy Undecided     23.76 % [-0.45  0.01]
-##                 flash [IR] Undecided      8.44 % [-1.39  0.98]
-##                flash [LED] Undecided      8.49 % [-1.03  1.32]
-##   time.deploy * flash [IR] Undecided     22.25 % [-0.02  0.52]
-##  time.deploy * flash [LED] Undecided     20.45 % [-0.01  0.52]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-5.78 -3.86]
+##                 time.deploy Undecided     23.76 % [-0.45  0.01]
+##                  flash [IR] Undecided      8.44 % [-1.39  0.98]
+##                flash [wLED] Undecided      8.49 % [-1.03  1.32]
+##    time.deploy * flash [IR] Undecided     22.25 % [-0.02  0.52]
+##  time.deploy * flash [wLED] Undecided     20.45 % [-0.01  0.52]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -2049,33 +1911,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2124,25 +1959,29 @@ para_gaup = para_sp
 # Small species
 
 Added late, because I was unsure about whether it made sense to include them or not.
-After having learned about the random effects, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
+After having learned about random effects in mixed effect models, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
 
 ## Hare
 
 
+Now, sp contains hare.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -2172,13 +2011,13 @@ summary(m_sp)
 ## Number of obs: 12949, groups:  week, 52; loc, 45
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -3.906298   0.356946 -10.944   <2e-16 ***
-## time.deploy           0.035417   0.031660   1.119    0.263    
-## flashIR               0.382756   0.420738   0.910    0.363    
-## flashLED              0.249284   0.422826   0.590    0.555    
-## time.deploy:flashIR  -0.050236   0.039998  -1.256    0.209    
-## time.deploy:flashLED  0.001273   0.041318   0.031    0.975    
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.906298   0.356946 -10.944   <2e-16 ***
+## time.deploy            0.035417   0.031660   1.119    0.263    
+## flashIR                0.382756   0.420738   0.910    0.363    
+## flashwLED              0.249284   0.422826   0.590    0.555    
+## time.deploy:flashIR   -0.050236   0.039998  -1.256    0.209    
+## time.deploy:flashwLED  0.001273   0.041318   0.031    0.975    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -2186,14 +2025,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.378                            
 ## flashIR     -0.759  0.268                     
-## flashLED    -0.760  0.288  0.906              
+## flashwLED   -0.760  0.288  0.906              
 ## tm.dply:fIR  0.243 -0.622 -0.395 -0.216       
 ## tm.dply:LED  0.250 -0.655 -0.225 -0.410  0.510
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -2209,9 +2048,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.03, 0.10], p = 0.263, Std. beta = 0.08)
 ##   - The effect of flash [IR] is non-significantly positive (beta = 0.38, 95% CI [-0.44, 1.21], p = 0.363, Std. beta = 0.19)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.25, 95% CI [-0.58, 1.08], p = 0.555, Std. beta = 0.25)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.25, 95% CI [-0.58, 1.08], p = 0.555, Std. beta = 0.25)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.13, 0.03], p = 0.209, Std. beta = -0.12)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.08, 0.08], p = 0.975, Std. beta = 3.03e-03)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.08, 0.08], p = 0.975, Std. beta = 3.03e-03)
 ```
 
 ```r
@@ -2219,20 +2058,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -3.91 | [-4.61, -3.21] | -10.94 | Inf | < .001 |      -3.77 |    [-4.42, -3.12] |         
-## time.deploy               |        0.04 | [-0.03,  0.10] |   1.12 | Inf | 0.263  |       0.08 |    [-0.06,  0.23] |         
-## flash [IR]                |        0.38 | [-0.44,  1.21] |   0.91 | Inf | 0.363  |       0.19 |    [-0.57,  0.95] |         
-## flash [LED]               |        0.25 | [-0.58,  1.08] |   0.59 | Inf | 0.555  |       0.25 |    [-0.50,  1.01] |         
-## time.deploy * flash [IR]  |       -0.05 | [-0.13,  0.03] |  -1.26 | Inf | 0.209  |      -0.12 |    [-0.30,  0.07] |         
-## time.deploy * flash [LED] |    1.27e-03 | [-0.08,  0.08] |   0.03 | Inf | 0.975  |   3.03e-03 |    [-0.19,  0.19] |         
-##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  4925.04
-## BIC                       |             |                |        |     |        |            |                   |  4984.79
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.33
-## R2 (marginal)             |             |                |        |     |        |            |                   | 3.02e-03
-## Sigma                     |             |                |        |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.91 | [-4.61, -3.21] | -10.94 | Inf | < .001 |      -3.77 |    [-4.42, -3.12] |         
+## time.deploy                |        0.04 | [-0.03,  0.10] |   1.12 | Inf | 0.263  |       0.08 |    [-0.06,  0.23] |         
+## flash [IR]                 |        0.38 | [-0.44,  1.21] |   0.91 | Inf | 0.363  |       0.19 |    [-0.57,  0.95] |         
+## flash [wLED]               |        0.25 | [-0.58,  1.08] |   0.59 | Inf | 0.555  |       0.25 |    [-0.50,  1.01] |         
+## time.deploy * flash [IR]   |       -0.05 | [-0.13,  0.03] |  -1.26 | Inf | 0.209  |      -0.12 |    [-0.30,  0.07] |         
+## time.deploy * flash [wLED] |    1.27e-03 | [-0.08,  0.08] |   0.03 | Inf | 0.975  |   3.03e-03 |    [-0.19,  0.19] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  4925.04
+## BIC                        |             |                |        |     |        |            |                   |  4984.79
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.33
+## R2 (marginal)              |             |                |        |     |        |            |                   | 3.02e-03
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -2260,18 +2099,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-4.49 -3.32]
-##                time.deploy  Accepted    100.00 % [-0.02  0.09]
-##                 flash [IR] Undecided     14.45 % [-0.31  1.07]
-##                flash [LED] Undecided     14.38 % [-0.45  0.94]
-##   time.deploy * flash [IR] Undecided     87.82 % [-0.12  0.02]
-##  time.deploy * flash [LED]  Accepted    100.00 % [-0.07  0.07]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-4.49 -3.32]
+##                 time.deploy  Accepted    100.00 % [-0.02  0.09]
+##                  flash [IR] Undecided     14.45 % [-0.31  1.07]
+##                flash [wLED] Undecided     14.38 % [-0.45  0.94]
+##    time.deploy * flash [IR] Undecided     87.82 % [-0.12  0.02]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.07]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -2293,33 +2132,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2367,6 +2179,8 @@ para_hare = para_sp
 
 ## Red squirrel
 
+
+Now, sp contains ekorn.
 
 
 ```r
@@ -2417,13 +2231,13 @@ summary(m_sp)
 ## Number of obs: 15249, groups:  loc, 53; week, 52
 ## 
 ## Fixed effects:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -5.41726    0.51635 -10.491  < 2e-16 ***
-## time.deploy           0.08142    0.05059   1.609  0.10757    
-## flashIR               0.82010    0.60332   1.359  0.17405    
-## flashLED              0.50022    0.60747   0.823  0.41026    
-## time.deploy:flashIR  -0.17665    0.06337  -2.787  0.00531 ** 
-## time.deploy:flashLED -0.01604    0.06216  -0.258  0.79639    
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -5.41726    0.51635 -10.491  < 2e-16 ***
+## time.deploy            0.08142    0.05059   1.609  0.10757    
+## flashIR                0.82010    0.60332   1.359  0.17405    
+## flashwLED              0.50022    0.60747   0.823  0.41026    
+## time.deploy:flashIR   -0.17665    0.06337  -2.787  0.00531 ** 
+## time.deploy:flashwLED -0.01604    0.06216  -0.258  0.79639    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -2431,14 +2245,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.457                            
 ## flashIR     -0.801  0.371                     
-## flashLED    -0.788  0.355  0.925              
+## flashwLED   -0.788  0.355  0.925              
 ## tm.dply:fIR  0.339 -0.745 -0.435 -0.291       
 ## tm.dply:LED  0.326 -0.719 -0.307 -0.456  0.588
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -2454,9 +2268,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly positive (beta = 0.08, 95% CI [-0.02, 0.18], p = 0.108, Std. beta = 0.19)
 ##   - The effect of flash [IR] is non-significantly positive (beta = 0.82, 95% CI [-0.36, 2.00], p = 0.174, Std. beta = 0.13)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.50, 95% CI [-0.69, 1.69], p = 0.410, Std. beta = 0.44)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.50, 95% CI [-0.69, 1.69], p = 0.410, Std. beta = 0.44)
 ##   - The interaction effect of flash [IR] on time.deploy is significantly negative (beta = -0.18, 95% CI [-0.30, -0.05], p < .01, Std. beta = -0.42)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.14, 0.11], p = 0.796, Std. beta = -0.04)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.14, 0.11], p = 0.796, Std. beta = -0.04)
 ```
 
 ```r
@@ -2464,20 +2278,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## ----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -5.42 | [-6.43, -4.41] | -10.49 | Inf | < .001 |      -5.10 |    [-6.00, -4.20] |         
-## time.deploy               |        0.08 | [-0.02,  0.18] |   1.61 | Inf | 0.108  |       0.19 |    [-0.04,  0.43] |         
-## flash [IR]                |        0.82 | [-0.36,  2.00] |   1.36 | Inf | 0.174  |       0.13 |    [-0.93,  1.20] |         
-## flash [LED]               |        0.50 | [-0.69,  1.69] |   0.82 | Inf | 0.410  |       0.44 |    [-0.62,  1.50] |         
-## time.deploy * flash [IR]  |       -0.18 | [-0.30, -0.05] |  -2.79 | Inf | 0.005  |      -0.42 |    [-0.71, -0.12] |         
-## time.deploy * flash [LED] |       -0.02 | [-0.14,  0.11] |  -0.26 | Inf | 0.796  |      -0.04 |    [-0.33,  0.25] |         
-##                           |             |                |        |     |        |            |                   |         
-## AIC                       |             |                |        |     |        |            |                   |  2965.19
-## BIC                       |             |                |        |     |        |            |                   |  3026.25
-## R2 (conditional)          |             |                |        |     |        |            |                   |     0.41
-## R2 (marginal)             |             |                |        |     |        |            |                   | 8.18e-03
-## Sigma                     |             |                |        |     |        |            |                   |     1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -5.42 | [-6.43, -4.41] | -10.49 | Inf | < .001 |      -5.10 |    [-6.00, -4.20] |         
+## time.deploy                |        0.08 | [-0.02,  0.18] |   1.61 | Inf | 0.108  |       0.19 |    [-0.04,  0.43] |         
+## flash [IR]                 |        0.82 | [-0.36,  2.00] |   1.36 | Inf | 0.174  |       0.13 |    [-0.93,  1.20] |         
+## flash [wLED]               |        0.50 | [-0.69,  1.69] |   0.82 | Inf | 0.410  |       0.44 |    [-0.62,  1.50] |         
+## time.deploy * flash [IR]   |       -0.18 | [-0.30, -0.05] |  -2.79 | Inf | 0.005  |      -0.42 |    [-0.71, -0.12] |         
+## time.deploy * flash [wLED] |       -0.02 | [-0.14,  0.11] |  -0.26 | Inf | 0.796  |      -0.04 |    [-0.33,  0.25] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  2965.19
+## BIC                        |             |                |        |     |        |            |                   |  3026.25
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.41
+## R2 (marginal)              |             |                |        |     |        |            |                   | 8.18e-03
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
@@ -2505,18 +2319,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-6.27 -4.57]
-##                time.deploy Undecided     61.17 % [-0.00  0.16]
-##                 flash [IR] Undecided     10.08 % [-0.17  1.81]
-##                flash [LED] Undecided     10.01 % [-0.50  1.50]
-##   time.deploy * flash [IR]  Rejected     13.23 % [-0.28 -0.07]
-##  time.deploy * flash [LED] Undecided     91.06 % [-0.12  0.09]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-6.27 -4.57]
+##                 time.deploy Undecided     61.17 % [-0.00  0.16]
+##                  flash [IR] Undecided     10.08 % [-0.17  1.81]
+##                flash [wLED] Undecided     10.01 % [-0.50  1.50]
+##    time.deploy * flash [IR]  Rejected     13.23 % [-0.28 -0.07]
+##  time.deploy * flash [wLED] Undecided     91.06 % [-0.12  0.09]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -2538,33 +2352,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2614,20 +2401,24 @@ para_ekorn = para_sp
 ## European Pine marten
 
 
+Now, sp contains maar.
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -2657,13 +2448,13 @@ summary(m_sp)
 ## Number of obs: 12021, groups:  week, 52; loc, 42
 ## 
 ## Fixed effects:
-##                      Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)          -5.95070    0.54365 -10.946  < 2e-16 ***
-## time.deploy           0.09221    0.09492   0.972  0.33130    
-## flashIR               1.68930    0.57922   2.917  0.00354 ** 
-## flashLED              0.76081    0.60660   1.254  0.20976    
-## time.deploy:flashIR  -0.11214    0.10513  -1.067  0.28612    
-## time.deploy:flashLED  0.03203    0.10845   0.295  0.76776    
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -5.95070    0.54365 -10.946  < 2e-16 ***
+## time.deploy            0.09221    0.09492   0.972  0.33130    
+## flashIR                1.68930    0.57922   2.917  0.00354 ** 
+## flashwLED              0.76081    0.60660   1.254  0.20976    
+## time.deploy:flashIR   -0.11214    0.10513  -1.067  0.28612    
+## time.deploy:flashwLED  0.03203    0.10845   0.295  0.76776    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -2671,14 +2462,14 @@ summary(m_sp)
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
 ## time.deploy -0.809                            
 ## flashIR     -0.860  0.731                     
-## flashLED    -0.821  0.700  0.842              
+## flashwLED   -0.821  0.700  0.842              
 ## tm.dply:fIR  0.684 -0.853 -0.799 -0.631       
 ## tm.dply:LED  0.666 -0.832 -0.639 -0.815  0.753
 ```
 
 ```r
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -2694,9 +2485,9 @@ summary(r_sp)
 ## 
 ##   - The effect of time.deploy is non-significantly positive (beta = 0.09, 95% CI [-0.09, 0.28], p = 0.331, Std. beta = 0.22)
 ##   - The effect of flash [IR] is significantly positive (beta = 1.69, 95% CI [0.55, 2.82], p < .01, Std. beta = 1.25)
-##   - The effect of flash [LED] is non-significantly positive (beta = 0.76, 95% CI [-0.43, 1.95], p = 0.210, Std. beta = 0.89)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.76, 95% CI [-0.43, 1.95], p = 0.210, Std. beta = 0.89)
 ##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.11, 95% CI [-0.32, 0.09], p = 0.286, Std. beta = -0.26)
-##   - The interaction effect of flash [LED] on time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.18, 0.24], p = 0.768, Std. beta = 0.08)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 0.03, 95% CI [-0.18, 0.24], p = 0.768, Std. beta = 0.08)
 ```
 
 ```r
@@ -2704,20 +2495,20 @@ as.report_table(r_sp)
 ```
 
 ```
-## Parameter                 | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
-## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)               |       -5.95 | [-7.02, -4.89] | -10.95 | Inf | < .001 |      -5.59 |    [-6.23, -4.95] |        
-## time.deploy               |        0.09 | [-0.09,  0.28] |   0.97 | Inf | 0.331  |       0.22 |    [-0.22,  0.66] |        
-## flash [IR]                |        1.69 | [ 0.55,  2.82] |   2.92 | Inf | 0.004  |       1.25 |    [ 0.56,  1.95] |        
-## flash [LED]               |        0.76 | [-0.43,  1.95] |   1.25 | Inf | 0.210  |       0.89 |    [ 0.18,  1.59] |        
-## time.deploy * flash [IR]  |       -0.11 | [-0.32,  0.09] |  -1.07 | Inf | 0.286  |      -0.26 |    [-0.75,  0.22] |        
-## time.deploy * flash [LED] |        0.03 | [-0.18,  0.24] |   0.30 | Inf | 0.768  |       0.08 |    [-0.43,  0.58] |        
-##                           |             |                |        |     |        |            |                   |        
-## AIC                       |             |                |        |     |        |            |                   | 1810.36
-## BIC                       |             |                |        |     |        |            |                   | 1869.51
-## R2 (conditional)          |             |                |        |     |        |            |                   |    0.22
-## R2 (marginal)             |             |                |        |     |        |            |                   |    0.05
-## Sigma                     |             |                |        |     |        |            |                   |    1.00
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
+## ----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -5.95 | [-7.02, -4.89] | -10.95 | Inf | < .001 |      -5.59 |    [-6.23, -4.95] |        
+## time.deploy                |        0.09 | [-0.09,  0.28] |   0.97 | Inf | 0.331  |       0.22 |    [-0.22,  0.66] |        
+## flash [IR]                 |        1.69 | [ 0.55,  2.82] |   2.92 | Inf | 0.004  |       1.25 |    [ 0.56,  1.95] |        
+## flash [wLED]               |        0.76 | [-0.43,  1.95] |   1.25 | Inf | 0.210  |       0.89 |    [ 0.18,  1.59] |        
+## time.deploy * flash [IR]   |       -0.11 | [-0.32,  0.09] |  -1.07 | Inf | 0.286  |      -0.26 |    [-0.75,  0.22] |        
+## time.deploy * flash [wLED] |        0.03 | [-0.18,  0.24] |   0.30 | Inf | 0.768  |       0.08 |    [-0.43,  0.58] |        
+##                            |             |                |        |     |        |            |                   |        
+## AIC                        |             |                |        |     |        |            |                   | 1810.36
+## BIC                        |             |                |        |     |        |            |                   | 1869.51
+## R2 (conditional)           |             |                |        |     |        |            |                   |    0.22
+## R2 (marginal)              |             |                |        |     |        |            |                   |    0.05
+## Sigma                      |             |                |        |     |        |            |                   |    1.00
 ```
 
 ```r
@@ -2745,18 +2536,18 @@ result
 ## 
 ##   ROPE: [-0.10 0.10]
 ## 
-##                  Parameter        H0 inside ROPE        90% CI
-##                (Intercept)  Rejected      0.00 % [-6.84 -5.06]
-##                time.deploy Undecided     52.49 % [-0.06  0.25]
-##                 flash [IR]  Rejected      0.00 % [ 0.74  2.64]
-##                flash [LED] Undecided     10.02 % [-0.24  1.76]
-##   time.deploy * flash [IR] Undecided     46.49 % [-0.29  0.06]
-##  time.deploy * flash [LED] Undecided     56.06 % [-0.15  0.21]
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-6.84 -5.06]
+##                 time.deploy Undecided     52.49 % [-0.06  0.25]
+##                  flash [IR]  Rejected      0.00 % [ 0.74  2.64]
+##                flash [wLED] Undecided     10.02 % [-0.24  1.76]
+##    time.deploy * flash [IR] Undecided     46.49 % [-0.29  0.06]
+##  time.deploy * flash [wLED] Undecided     56.06 % [-0.15  0.21]
 ```
 
 ```r
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -2778,33 +2569,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
-
-
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
 #                    #nrow = 2,
 #                    # rel_widths = c(3,4,6,1),
@@ -2858,6 +2622,8 @@ para_maar = para_sp
 
 ## Parameter-table
 
+Making parameter-tables to include in my thesis. The first one contains standardized parameters, but since that differs from the format they are presented in the equivalence test, I will using the second one, which is not standardized
+
 
 ```r
 library(xtable)  # To make a latex-table for the thesis
@@ -2905,7 +2671,7 @@ xtable(para_all) # output in Rmd
 
 ```
 ## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Fri Mar 19 15:50:37 2021
+## % Mon Mar 22 18:04:32 2021
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllllll}
@@ -2913,68 +2679,68 @@ xtable(para_all) # output in Rmd
 ##  & Parameter & Coefficient & SE & 95\% CI & z & p \\ 
 ##   \hline
 ## 1 & Roe deer &  &  &  &  &        \\ 
-##   2 & (Intercept) & 0.05 & 0.02 & (0.02, 0.10) & -8.32 & $<$ .001 \\ 
-##   3 & time.deploy & 0.89 & 0.05 & (0.80, 0.99) & -2.24 & 0.025  \\ 
-##   4 & flash [IR] & 0.84 & 0.36 & (0.36, 1.93) & -0.42 & 0.674  \\ 
-##   5 & flash [LED] & 0.89 & 0.38 & (0.38, 2.05) & -0.28 & 0.778  \\ 
-##   6 & time.deploy * flash [IR] & 1.05 & 0.07 & (0.92, 1.20) & 0.71 & 0.476  \\ 
-##   7 & time.deploy * flash [LED] & 1.01 & 0.06 & (0.89, 1.14) & 0.12 & 0.901  \\ 
+##   2 & (Intercept) & -3.04 & 0.37 & (-3.76, -2.32) & -8.32 & $<$ .001 \\ 
+##   3 & time.deploy & -0.12 & 0.05 & (-0.22, -0.02) & -2.24 & 0.025  \\ 
+##   4 & flash [IR] & -0.18 & 0.43 & (-1.02,  0.66) & -0.42 & 0.674  \\ 
+##   5 & flash [wLED] & -0.12 & 0.43 & (-0.96,  0.72) & -0.28 & 0.778  \\ 
+##   6 & time.deploy * flash [IR] & 0.05 & 0.07 & (-0.08,  0.18) & 0.71 & 0.476  \\ 
+##   7 & time.deploy * flash [wLED] & 7.96e-03 & 0.06 & (-0.12,  0.13) & 0.12 & 0.901  \\ 
 ##   8 & Red fox &  &  &  &  &        \\ 
-##   9 & (Intercept) & 0.03 & 7.37e-03 & (0.02, 0.05) & -14.95 & $<$ .001 \\ 
-##   10 & time.deploy & 1.00 & 0.07 & (0.88, 1.14) & -0.02 & 0.985  \\ 
-##   11 & flashIR & 1.02 & 0.28 & (0.59, 1.76) & 0.07 & 0.942  \\ 
-##   12 & flashLED & 1.14 & 0.32 & (0.66, 1.97) & 0.48 & 0.631  \\ 
-##   13 & time.deploy:flashIR & 0.99 & 0.09 & (0.83, 1.18) & -0.06 & 0.949  \\ 
-##   14 & time.deploy:flashLED & 0.97 & 0.09 & (0.82, 1.16) & -0.30 & 0.763  \\ 
+##   9 & (Intercept) & 0.03 & 7.37e-03 & ( 0.02,  0.05) & -14.95 & $<$ .001 \\ 
+##   10 & time.deploy & 1.00 & 0.07 & ( 0.88,  1.14) & -0.02 & 0.985  \\ 
+##   11 & flashIR & 1.02 & 0.28 & ( 0.59,  1.76) & 0.07 & 0.942  \\ 
+##   12 & flashLED & 1.14 & 0.32 & ( 0.66,  1.97) & 0.48 & 0.631  \\ 
+##   13 & time.deploy:flashIR & 0.99 & 0.09 & ( 0.83,  1.18) & -0.06 & 0.949  \\ 
+##   14 & time.deploy:flashLED & 0.97 & 0.09 & ( 0.82,  1.16) & -0.30 & 0.763  \\ 
 ##   15 & Badger &  &  &  &  &        \\ 
-##   16 & (Intercept) & 0.01 & 3.90e-03 & (0.01, 0.02) & -12.45 & $<$ .001 \\ 
-##   17 & time.deploy & 1.17 & 0.09 & (0.99, 1.37) & 1.90 & 0.058  \\ 
-##   18 & flashIR & 1.34 & 0.51 & (0.64, 2.82) & 0.78 & 0.433  \\ 
-##   19 & flashLED & 1.42 & 0.54 & (0.68, 2.97) & 0.93 & 0.352  \\ 
-##   20 & time.deploy:flashIR & 1.02 & 0.10 & (0.84, 1.23) & 0.17 & 0.865  \\ 
-##   21 & time.deploy:flashLED & 1.01 & 0.10 & (0.84, 1.22) & 0.10 & 0.922  \\ 
+##   16 & (Intercept) & 0.01 & 3.90e-03 & ( 0.01,  0.02) & -12.45 & $<$ .001 \\ 
+##   17 & time.deploy & 1.17 & 0.09 & ( 0.99,  1.37) & 1.90 & 0.058  \\ 
+##   18 & flashIR & 1.34 & 0.51 & ( 0.64,  2.82) & 0.78 & 0.433  \\ 
+##   19 & flashLED & 1.42 & 0.54 & ( 0.68,  2.97) & 0.93 & 0.352  \\ 
+##   20 & time.deploy:flashIR & 1.02 & 0.10 & ( 0.84,  1.23) & 0.17 & 0.865  \\ 
+##   21 & time.deploy:flashLED & 1.01 & 0.10 & ( 0.84,  1.22) & 0.10 & 0.922  \\ 
 ##   22 & Moose &  &  &  &  &        \\ 
-##   23 & (Intercept) & 8.94e-03 & 2.95e-03 & (0.00, 0.02) & -14.31 & $<$ .001 \\ 
-##   24 & time.deploy & 1.02 & 0.11 & (0.83, 1.26) & 0.21 & 0.830  \\ 
-##   25 & flashIR & 1.15 & 0.43 & (0.55, 2.40) & 0.37 & 0.715  \\ 
-##   26 & flashLED & 1.35 & 0.50 & (0.65, 2.80) & 0.79 & 0.427  \\ 
-##   27 & time.deploy:flashIR & 1.11 & 0.15 & (0.85, 1.46) & 0.78 & 0.433  \\ 
-##   28 & time.deploy:flashLED & 0.97 & 0.13 & (0.75, 1.27) & -0.19 & 0.849  \\ 
+##   23 & (Intercept) & 8.94e-03 & 2.95e-03 & ( 0.00,  0.02) & -14.31 & $<$ .001 \\ 
+##   24 & time.deploy & 1.02 & 0.11 & ( 0.83,  1.26) & 0.21 & 0.830  \\ 
+##   25 & flashIR & 1.15 & 0.43 & ( 0.55,  2.40) & 0.37 & 0.715  \\ 
+##   26 & flashLED & 1.35 & 0.50 & ( 0.65,  2.80) & 0.79 & 0.427  \\ 
+##   27 & time.deploy:flashIR & 1.11 & 0.15 & ( 0.85,  1.46) & 0.78 & 0.433  \\ 
+##   28 & time.deploy:flashLED & 0.97 & 0.13 & ( 0.75,  1.27) & -0.19 & 0.849  \\ 
 ##   29 & Red deer &  &  &  &  &        \\ 
-##   30 & (Intercept) & 1.73e-03 & 1.18e-03 & (0.00, 0.01) & -9.35 & $<$ .001 \\ 
-##   31 & time.deploy & 0.80 & 0.12 & (0.60, 1.06) & -1.56 & 0.119  \\ 
-##   32 & flashIR & 1.38 & 1.03 & (0.32, 6.01) & 0.43 & 0.671  \\ 
-##   33 & flashLED & 1.34 & 1.01 & (0.31, 5.88) & 0.39 & 0.697  \\ 
-##   34 & time.deploy:flashIR & 1.16 & 0.22 & (0.80, 1.69) & 0.80 & 0.424  \\ 
-##   35 & time.deploy:flashLED & 1.72 & 0.33 & (1.18, 2.51) & 2.81 & 0.005  \\ 
+##   30 & (Intercept) & 1.73e-03 & 1.18e-03 & ( 0.00,  0.01) & -9.35 & $<$ .001 \\ 
+##   31 & time.deploy & 0.80 & 0.12 & ( 0.60,  1.06) & -1.56 & 0.119  \\ 
+##   32 & flashIR & 1.38 & 1.03 & ( 0.32,  6.01) & 0.43 & 0.671  \\ 
+##   33 & flashLED & 1.34 & 1.01 & ( 0.31,  5.88) & 0.39 & 0.697  \\ 
+##   34 & time.deploy:flashIR & 1.16 & 0.22 & ( 0.80,  1.69) & 0.80 & 0.424  \\ 
+##   35 & time.deploy:flashLED & 1.72 & 0.33 & ( 1.18,  2.51) & 2.81 & 0.005  \\ 
 ##   36 & Lynx &  &  &  &  &        \\ 
-##   37 & (Intercept) & 7.44e-04 & 4.45e-04 & (0.00, 0.00) & -12.03 & $<$ .001 \\ 
-##   38 & time.deploy & 0.61 & 0.20 & (0.32, 1.15) & -1.52 & 0.128  \\ 
-##   39 & flashIR & 1.56 & 1.03 & (0.43, 5.70) & 0.67 & 0.502  \\ 
-##   40 & flashLED & 2.30 & 1.50 & (0.64, 8.26) & 1.28 & 0.202  \\ 
-##   41 & time.deploy:flashIR & 1.76 & 0.68 & (0.83, 3.74) & 1.48 & 0.140  \\ 
-##   42 & time.deploy:flashLED & 1.81 & 0.70 & (0.85, 3.84) & 1.54 & 0.124  \\ 
+##   37 & (Intercept) & 7.44e-04 & 4.45e-04 & ( 0.00,  0.00) & -12.03 & $<$ .001 \\ 
+##   38 & time.deploy & 0.61 & 0.20 & ( 0.32,  1.15) & -1.52 & 0.128  \\ 
+##   39 & flashIR & 1.56 & 1.03 & ( 0.43,  5.70) & 0.67 & 0.502  \\ 
+##   40 & flashLED & 2.30 & 1.50 & ( 0.64,  8.26) & 1.28 & 0.202  \\ 
+##   41 & time.deploy:flashIR & 1.76 & 0.68 & ( 0.83,  3.74) & 1.48 & 0.140  \\ 
+##   42 & time.deploy:flashLED & 1.81 & 0.70 & ( 0.85,  3.84) & 1.54 & 0.124  \\ 
 ##   43 & Hare &  &  &  &  &        \\ 
-##   44 & (Intercept) & 0.02 & 6.39e-03 & (0.01, 0.03) & -10.23 & $<$ .001 \\ 
-##   45 & time.deploy & 1.09 & 0.08 & (0.94, 1.26) & 1.13 & 0.258  \\ 
-##   46 & flashIR & 1.04 & 0.50 & (0.41, 2.65) & 0.08 & 0.933  \\ 
-##   47 & flashLED & 1.12 & 0.53 & (0.44, 2.84) & 0.23 & 0.819  \\ 
-##   48 & time.deploy:flashIR & 0.89 & 0.08 & (0.74, 1.07) & -1.28 & 0.199  \\ 
-##   49 & time.deploy:flashLED & 1.00 & 0.10 & (0.83, 1.21) & 0.02 & 0.983  \\ 
+##   44 & (Intercept) & 0.02 & 6.39e-03 & ( 0.01,  0.03) & -10.23 & $<$ .001 \\ 
+##   45 & time.deploy & 1.09 & 0.08 & ( 0.94,  1.26) & 1.13 & 0.258  \\ 
+##   46 & flashIR & 1.04 & 0.50 & ( 0.41,  2.65) & 0.08 & 0.933  \\ 
+##   47 & flashLED & 1.12 & 0.53 & ( 0.44,  2.84) & 0.23 & 0.819  \\ 
+##   48 & time.deploy:flashIR & 0.89 & 0.08 & ( 0.74,  1.07) & -1.28 & 0.199  \\ 
+##   49 & time.deploy:flashLED & 1.00 & 0.10 & ( 0.83,  1.21) & 0.02 & 0.983  \\ 
 ##   50 & European Pine Marten &  &  &  &  &        \\ 
-##   51 & (Intercept) & 2.45e-03 & 9.01e-04 & (0.00, 0.01) & -16.34 & $<$ .001 \\ 
-##   52 & time.deploy & 1.25 & 0.28 & (0.81, 1.95) & 1.01 & 0.314  \\ 
-##   53 & flashIR & 3.42 & 1.38 & (1.55, 7.53) & 3.06 & 0.002  \\ 
-##   54 & flashLED & 2.35 & 0.96 & (1.05, 5.23) & 2.09 & 0.037  \\ 
-##   55 & time.deploy:flashIR & 0.76 & 0.19 & (0.47, 1.24) & -1.08 & 0.280  \\ 
-##   56 & time.deploy:flashLED & 1.06 & 0.27 & (0.64, 1.75) & 0.22 & 0.828  \\ 
+##   51 & (Intercept) & 2.45e-03 & 9.01e-04 & ( 0.00,  0.01) & -16.34 & $<$ .001 \\ 
+##   52 & time.deploy & 1.25 & 0.28 & ( 0.81,  1.95) & 1.01 & 0.314  \\ 
+##   53 & flashIR & 3.42 & 1.38 & ( 1.55,  7.53) & 3.06 & 0.002  \\ 
+##   54 & flashLED & 2.35 & 0.96 & ( 1.05,  5.23) & 2.09 & 0.037  \\ 
+##   55 & time.deploy:flashIR & 0.76 & 0.19 & ( 0.47,  1.24) & -1.08 & 0.280  \\ 
+##   56 & time.deploy:flashLED & 1.06 & 0.27 & ( 0.64,  1.75) & 0.22 & 0.828  \\ 
 ##   57 & Red squirrel &  &  &  &  &        \\ 
-##   58 & (Intercept) & 4.47e-03 & 2.78e-06 & (0.00, 0.00) & -8710.74 & $<$ .001 \\ 
-##   59 & time.deploy & 1.22 & 7.55e-04 & (1.21, 1.22) & 314.46 & $<$ .001 \\ 
-##   60 & flashIR & 1.17 & 7.24e-04 & (1.16, 1.17) & 247.49 & $<$ .001 \\ 
-##   61 & flashLED & 1.58 & 9.84e-04 & (1.58, 1.59) & 740.62 & $<$ .001 \\ 
-##   62 & time.deploy:flashIR & 0.66 & 4.07e-04 & (0.66, 0.66) & -679.35 & $<$ .001 \\ 
-##   63 & time.deploy:flashLED & 0.96 & 5.96e-04 & (0.96, 0.96) & -65.39 & $<$ .001 \\ 
+##   58 & (Intercept) & 4.47e-03 & 2.78e-06 & ( 0.00,  0.00) & -8710.74 & $<$ .001 \\ 
+##   59 & time.deploy & 1.22 & 7.55e-04 & ( 1.21,  1.22) & 314.46 & $<$ .001 \\ 
+##   60 & flashIR & 1.17 & 7.24e-04 & ( 1.16,  1.17) & 247.49 & $<$ .001 \\ 
+##   61 & flashLED & 1.58 & 9.84e-04 & ( 1.58,  1.59) & 740.62 & $<$ .001 \\ 
+##   62 & time.deploy:flashIR & 0.66 & 4.07e-04 & ( 0.66,  0.66) & -679.35 & $<$ .001 \\ 
+##   63 & time.deploy:flashLED & 0.96 & 5.96e-04 & ( 0.96,  0.96) & -65.39 & $<$ .001 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -2992,10 +2758,15 @@ m_hjort<- readRDS("m_hjort.rds")
 m_gaup <- readRDS("m_gaupe.rds")
 m_hare <- readRDS("m_hare.rds")
 m_maar <- readRDS("m_maar.rds")
-m_ekorn<- readRDS("m_ekorn.rds") 
-# gather all models
-m_all <- list(m_raa, m_rev ,m_grvl, m_elg, m_hjort, m_gaup, m_hare, m_maar, m_ekorn)
+m_ekorn<- readRDS("m_ekorn.rds")
+```
 
+
+
+```r
+# gather all models
+m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
+#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 # not standardized
 para_all2 <- bind_rows(
 model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",            rep("",5)), .before = 1),
@@ -3010,7 +2781,7 @@ model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",        rep(
 ) %>% 
  insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
-para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","LED", "TimeDeploy * IR", "TimeDeploy * LED"), times=9)
+para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","wLED", "TimeDeploy * IR", "TimeDeploy * wLED"), times=9)
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters2.tex")
@@ -3018,8 +2789,8 @@ print(xtable(para_all2, type = "latex"), include.rownames = F,
 
 ## Joint forest-plots
 
-Plots divided into size-based groups of three x three species.
-Thus, ungulates are one group, the largest carnivores are one, and the smallest three form the most mixed group of hare, squirrel and pine marten 
+Plots divided into size-based groups.
+Unlikely to be included in the thesis.
 
 
 ```r
@@ -3029,14 +2800,6 @@ p_mds1<- sjPlot::plot_models(m_raa, m_rev, m_grvl, m_elg, m_hjort, spacing = .8,
 p_mds2 <- sjPlot::plot_models(m_hare, m_maar,m_ekorn,m_gaup, spacing = .8,
                     legend.title = "Species",
                     m.labels = c("Hare","Pine marten","Red squirrel","Lynx"))
-p_mds1;p_mds2
-```
-
-![](glmm_sp_files/figure-html/mod-plot-1.png)<!-- -->![](glmm_sp_files/figure-html/mod-plot-2.png)<!-- -->
-
-```r
-saveRDS(p_mds1, "pmds1.rds")
-saveRDS(p_mds2, "pmds2.rds")
 ```
 
 
@@ -3065,15 +2828,15 @@ m_compare
 ## 
 ## Name    |    Model |      AIC |      BIC | R2 (cond.) | R2 (marg.) |   ICC |  RMSE | Performance-Score
 ## ------------------------------------------------------------------------------------------------------
-## m_ekorn | glmerMod | 2965.187 | 3026.245 |      0.428 |      0.008 | 0.423 | 0.159 |            70.32%
-## m_gaup  | glmerMod |  686.228 |  739.944 |      0.183 |      0.060 | 0.132 | 0.103 |            68.88%
-## m_maar  | glmerMod | 1810.358 | 1869.513 |      0.223 |      0.052 | 0.180 | 0.138 |            63.61%
-## m_grvl  | glmerMod | 4728.274 | 4788.590 |      0.354 |      0.005 | 0.351 | 0.220 |            47.87%
-## m_hjort | glmerMod | 1743.432 | 1798.645 |      0.177 |      0.011 | 0.168 | 0.172 |            46.48%
-## m_elg   | glmerMod | 2956.300 | 3015.409 |      0.164 |      0.003 | 0.161 | 0.167 |            37.74%
-## m_hare  | glmerMod | 4925.041 | 4984.792 |      0.275 |      0.002 | 0.273 | 0.241 |            35.42%
-## m_raa   | glmerMod | 7685.618 | 7745.758 |      0.293 |      0.002 | 0.291 | 0.319 |            18.24%
-## m_rev   | glmerMod | 5740.112 | 5801.171 |      0.146 |  6.490e-04 | 0.145 | 0.221 |            17.61%
+## m_gaup  | glmerMod |  745.849 |  806.907 |      0.369 |      0.028 | 0.350 | 0.065 |            80.16%
+## m_hjort | glmerMod | 1821.564 | 1882.623 |      0.503 |      0.008 | 0.499 | 0.119 |            77.17%
+## m_maar  | glmerMod | 1851.145 | 1912.203 |      0.277 |      0.046 | 0.242 | 0.122 |            68.23%
+## m_ekorn | glmerMod | 2964.184 | 3025.242 |      0.421 |      0.008 | 0.416 | 0.159 |            61.61%
+## m_elg   | glmerMod | 3024.207 | 3085.265 |      0.274 |      0.003 | 0.272 | 0.148 |            46.45%
+## m_grvl  | glmerMod | 4756.822 | 4817.880 |      0.388 |      0.006 | 0.384 | 0.210 |            45.81%
+## m_hare  | glmerMod | 4968.157 | 5029.215 |      0.370 |  9.358e-04 | 0.369 | 0.222 |            40.56%
+## m_rev   | glmerMod | 5740.112 | 5801.171 |      0.146 |  6.490e-04 | 0.145 | 0.221 |            15.77%
+## m_raa   | glmerMod | 7685.618 | 7745.758 |      0.293 |      0.002 | 0.291 | 0.319 |            14.30%
 ```
 
 ```r
@@ -3087,12 +2850,15 @@ m_compare %>% plot() #A `range` must be provided for data with only one observat
 # which is because they are different subsets of each other
 ```
 
+## Model assumptions
+The following section includes a lot of citing from other sources, mainly to help future me understand everything anew, and to get some pointers on where to read further.
 
 
 ```r
 overd <- list()
 zeroi <- list()
 singu <- list()
+
 for (i in 1:9) {
 overd[[i]] <- check_overdispersion(m_all[[i]])
 zeroi[[i]] <-  check_zeroinflation(m_all[[i]])
@@ -3102,14 +2868,39 @@ singu[[i]] <- check_singularity(m_all[[i]])
 overd # No overdispersion detected
 zeroi # Model seems ok, ratio of observed and predicted zeros is within the tolerance range.
 singu %>% unique() # FALSE
+#citation("performance")
+performance::check_autocorrelation(m_raa)
 ```
 
+Using the performance-package from easystats (Lüdecke, Makowski, Waggoner & Patil (2020)), no overdispersion was detected.
+>Overdispersion occurs when the observed variance is higher than the variance of a theoretical model. For Poisson models, variance increases with the mean, thus, variance usually (roughly) equals the mean value. If the variance is much higher, the data are "overdispersed". (performance::check_singularity, R help file)
+
+Dispersion ratios lied between 0.65 (squirrel) and 0.94 (pine marten).
+>If the dispersion ratio is close to one, a Poisson model fits well to the data. Dispersion ratios larger than one indicate overdispersion, thus a negative binomial model or similar might fit better to the data. A p-value < .05 indicates overdispersion.
+
+The R documentation also states that Poisson model's overdispersion test is based on the code from _Gelman and Hill (2007), page 115._ 
+And that the function for mixed models only returns _approximate_ estimates, which is probably inaccurate for zer-inflated mixed models (fitted with glmmTMB). The documentations doesn't mention poisson mixed models specifically, but as no models were zero-inflated, I will assume the dispersion ratios are fine.
+
+>If the amount of observed zeros is larger than the amount of predicted zeros, the model is underfitting zeros, which indicates a zero-inflation in the data. In such cases, it is recommended to use negative binomial or zero-inflated models. (performance::check_zeroinflation, R help file)
+
+No models were zero-inflated, nor singular.
+>If a model is "singular", this means that some dimensions of the variance-covariance matrix have been estimated as exactly zero. This often occurs for mixed models with complex random effects structures. (performance::check_singularity, R help file)
+
+In other words, there weren't more zeros than predicted and my random effects structure wasn't overly complicated.
 
 
 
 
+### Assumptions of Poisson regression 
+(from https://www.statology.org/poisson-regression/, accessed 22.03.2021)
 
+__Assumption 1:__ The response variable consists of count data. In traditional linear regression, the response variable consists of continuous data. To use Poisson regression, however, our response variable needs to consists of count data that include integers of 0 or greater (e.g. 0, 1, 2, 14, 34, 49, 200, etc.). Our response variable cannot contain negative values.
 
+__Assumption 2:__ Observations are independent. Each observation in the dataset should be independent of one another. This means that one observation should not be able to provide any information about a different observation.
+
+__Assumption 3:__ The distribution of counts follows a Poisson distribution. As a result, the observed and expected counts should be similar. One simple way to test for this is to plot the expected and observed counts and see if they are similar.
+
+__Assumption 4:__ The mean and variance of the model are equal. This is a result of the assumption that the distribution of counts follows a Poisson distribution. For a Poisson distribution the variance has the same value as the mean. If this assumption is satisfied, then you have equidispersion. However, this assumption is often violated as overdispersion is a common problem.
 
 
 
@@ -3128,17 +2919,20 @@ singu %>% unique() # FALSE
 
 
 ```r
-# sp ="raadyr"
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp,
-                             loc %in% n_loc) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp) #.dep5 = fully scaled time.deploy
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson) # poisson family of distributions
-# ggeffect calls effects::Effect
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
@@ -3146,7 +2940,7 @@ assumpt <- performance::check_model(m_sp) # check assumptions
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit", two_sd = TRUE, exponentiate = TRUE)
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
@@ -3172,7 +2966,7 @@ result <- equivalence_test(m_sp)
 result
 
 # labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
 par_lab <- par_lab[5:1]
 # Equivalence plot
 p_eq <- plot(result) + labs(y = "Log-Mean") + 
@@ -3186,32 +2980,6 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
-
-# trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("LED \   (",c[2,2],")")
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "LED"),
-                    labels=c(lab_ctrl, lab_IR, lab_LED))
-
 
 
 # cowplot::plot_grid(NULL,NULL,p_dens,NULL,
