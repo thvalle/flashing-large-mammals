@@ -2027,16 +2027,15 @@
     <bcf:datasource type="file" datatype="bibtex">/home/torgeir/Documents/Papers/library.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Burton2015</bcf:citekey>
-    <bcf:citekey order="2">Henrich2020</bcf:citekey>
-    <bcf:citekey order="3">Beddari2019</bcf:citekey>
-    <bcf:citekey order="4">Moen1999</bcf:citekey>
-    <bcf:citekey order="5">Odden2015</bcf:citekey>
-    <bcf:citekey order="6">RCoreTeam2020</bcf:citekey>
-    <bcf:citekey order="7">RStudioTeam2020a</bcf:citekey>
-    <bcf:citekey order="8">tidyverse</bcf:citekey>
-    <bcf:citekey order="9">easystats</bcf:citekey>
-    <bcf:citekey order="10">lme4</bcf:citekey>
+    <bcf:citekey order="1">Meek2014</bcf:citekey>
+    <bcf:citekey order="2">Moen1999</bcf:citekey>
+    <bcf:citekey order="3">Odden2015</bcf:citekey>
+    <bcf:citekey order="4">RCoreTeam2020</bcf:citekey>
+    <bcf:citekey order="5">RStudioTeam2020a</bcf:citekey>
+    <bcf:citekey order="6">tidyverse</bcf:citekey>
+    <bcf:citekey order="7">easystats</bcf:citekey>
+    <bcf:citekey order="8">lme4</bcf:citekey>
+    <bcf:citekey order="9">Heinrich2020</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global" type="entry" sortscheme="none" sortnamekeyscheme="global">
   <bcf:sorting>

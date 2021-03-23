@@ -8,7 +8,7 @@
 %Det finnes diverse gode interaktive tegneprogrammer, for eksempel
 %AdobeIllustrator, Inkscape, GIMP og paint.net, samt et meget godt deklarativt tegne-program:MetaPost.
 
-\includeonly{tex/intro, tex/method, tex/results}
+%\includeonly{tex/intro, tex/method, tex/results}
 \begin{document}
 
 \maketitle
@@ -31,7 +31,7 @@
 \include{tex/results}
 
 % -- discussion --
-%\include{tex/discussion}
+\include{tex/discussion}
 
 % -- conclusion --
 %\include{tex/conclusion}

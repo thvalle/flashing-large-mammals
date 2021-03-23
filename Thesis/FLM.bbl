@@ -19,166 +19,88 @@
 
 \refsection{0}
   \sortlist[entry]{none/global}
-    \entry{Burton2015}{article}{}
-      \name{author}{8}{}{%
-        {{uniquename=0,hash=743098108bcb18b6d0d14da821904683}{%
-           family={Burton},
-           family_i={B\bibinitperiod},
-           given={A.\bibnamedelimi Cole},
-           given_i={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
-        {{uniquename=0,hash=8903ab3fcf541d375b3c41ae22e54c6c}{%
-           family={Neilson},
-           family_i={N\bibinitperiod},
-           given={Eric},
-           given_i={E\bibinitperiod}}}%
-        {{uniquename=0,hash=634b999de89b50af2052747b305f2e81}{%
-           family={Moreira},
+    \entry{Meek2014}{article}{}
+      \name{author}{11}{}{%
+        {{uniquename=0,hash=655c96ffcbb22024a16a040c2084196c}{%
+           family={Meek},
            family_i={M\bibinitperiod},
-           given={Dario},
-           given_i={D\bibinitperiod}}}%
-        {{uniquename=0,hash=344b217010007feccc5e512af6205f65}{%
-           family={Ladle},
-           family_i={L\bibinitperiod},
-           given={Andrew},
+           given={P.\bibnamedelimi D.},
+           given_i={P\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{uniquename=0,hash=1f8762857dd1a438c7d4a463f0bd0902}{%
+           family={Ballard},
+           family_i={B\bibinitperiod},
+           given={G.},
+           given_i={G\bibinitperiod}}}%
+        {{uniquename=0,hash=e4209097c2f0b9c96d73fd397ae3309c}{%
+           family={Claridge},
+           family_i={C\bibinitperiod},
+           given={A.},
            given_i={A\bibinitperiod}}}%
-        {{uniquename=0,hash=9a52ad6c0a5efa49c7f45efcb1fdc249}{%
-           family={Steenweg},
-           family_i={S\bibinitperiod},
-           given={Robin},
-           given_i={R\bibinitperiod}}}%
-        {{uniquename=0,hash=8e9014d5ea1aadb025168c2a9964b247}{%
-           family={Fisher},
-           family_i={F\bibinitperiod},
-           given={Jason\bibnamedelima T.},
-           given_i={J\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
-        {{uniquename=0,hash=ef44c3ffaabce70ebb9a93eda0454ceb}{%
-           family={Bayne},
-           family_i={B\bibinitperiod},
-           given={Erin},
-           given_i={E\bibinitperiod}}}%
-        {{uniquename=0,hash=5613ea8be8ffb2b1008d9eed9e8f0f24}{%
-           family={Boutin},
-           family_i={B\bibinitperiod},
-           given={Stan},
-           given_i={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{5986c73af847edb619d182764368136f}
-      \strng{fullhash}{91ef19b0eb8f2fe53257f6cedd00baf3}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2015}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Reliable assessment of animal populations is a long-standing challenge in wildlife ecology. Technological advances have led to widespread adoption of camera traps (CTs) to survey wildlife distribution, abundance and behaviour. As for any wildlife survey method, camera trapping must contend with sources of sampling error such as imperfect detection. Early applications focused on density estimation of naturally marked species, but there is growing interest in broad-scale CT surveys of unmarked populations and communities. Nevertheless, inferences based on detection indices are controversial, and the suitability of alternatives such as occupancy estimation is debatable. We reviewed 266 CT studies published between 2008 and 2013. We recorded study objectives and methodologies, evaluating the consistency of CT protocols and sampling designs, the extent to which CT surveys considered sampling error, and the linkages between analytical assumptions and species ecology. Nearly two-thirds of studies surveyed more than one species, and a majority used response variables that ignored imperfect detection (e.g. presence-absence, relative abundance). Many studies used opportunistic sampling and did not explicitly report details of sampling design and camera deployment that could affect conclusions. Most studies estimating density used capture-recapture methods on marked species, with spatially explicit methods becoming more prominent. Few studies estimated density for unmarked species, focusing instead on occupancy modelling or measures of relative abundance. While occupancy studies estimated detectability, most did not explicitly define key components of the modelling framework (e.g. a site) or discuss potential violations of model assumptions (e.g. site closure). Studies using relative abundance relied on assumptions of equal detectability, and most did not explicitly define expected relationships between measured responses and underlying ecological processes (e.g. animal abundance and movement). Synthesis and applications. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring.}
-      \field{issn}{13652664}
-      \field{journaltitle}{Journal of Applied Ecology}
-      \field{number}{3}
-      \field{title}{{Wildlife camera trapping: A review and recommendations for linking surveys to ecological processes}}
-      \field{volume}{52}
-      \field{year}{2015}
-      \field{pages}{675\bibrangedash 685}
-      \range{pages}{11}
-      \verb{doi}
-      \verb 10.1111/1365-2664.12432
-      \endverb
-      \verb{file}
-      \verb :home/torgeir/Documents/Papers/CTReviewBurton2015.pdf:pdf
-      \endverb
-      \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
-    \endentry
-    \entry{Henrich2020}{article}{}
-      \name{author}{7}{}{%
-        {{uniquename=0,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
-           family={Henrich},
-           family_i={H\bibinitperiod},
-           given={Maik},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=5e98a26a9acbe53cba1caed564152b5a}{%
-           family={Niederlechner},
-           family_i={N\bibinitperiod},
-           given={Sandra},
-           given_i={S\bibinitperiod}}}%
-        {{uniquename=0,hash=7acec411e8fcb58e39fb4cd3b43fbae4}{%
-           family={Kröschel},
+        {{uniquename=0,hash=a9e1d6f296fba589b41ae9e6cf3de34d}{%
+           family={Kays},
            family_i={K\bibinitperiod},
-           given={Max},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=885f933da6c42bf36e8c6c406d6550d6}{%
-           family={Thoma},
+           given={R.},
+           given_i={R\bibinitperiod}}}%
+        {{uniquename=0,hash=9901ef3b57f214af3b9d3b43dcb31733}{%
+           family={Moseby},
+           family_i={M\bibinitperiod},
+           given={K.},
+           given_i={K\bibinitperiod}}}%
+        {{uniquename=0,hash=f4da2afefbf07644d3d62d34219ad996}{%
+           family={O'Brien},
+           family_i={O\bibinitperiod},
+           given={T.},
+           given_i={T\bibinitperiod}}}%
+        {{uniquename=0,hash=4349ac1ae0831f27485f5be2fce8c785}{%
+           family={O'Connell},
+           family_i={O\bibinitperiod},
+           given={A.},
+           given_i={A\bibinitperiod}}}%
+        {{uniquename=0,hash=ce270d48cc7e3ac8bbb598132c2fb385}{%
+           family={Sanderson},
+           family_i={S\bibinitperiod},
+           given={J.},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=db42741d854aa1021161c53baaa5c24b}{%
+           family={Swann},
+           family_i={S\bibinitperiod},
+           given={D.\bibnamedelimi E.},
+           given_i={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{uniquename=0,hash=2d386df6ef011fe65b080c9f8749cbbb}{%
+           family={Tobler},
            family_i={T\bibinitperiod},
-           given={Stefanie},
-           given_i={S\bibinitperiod}}}%
-        {{uniquename=0,hash=8efbcfda15d6816970d81361c26d0804}{%
-           family={Dormann},
-           family_i={D\bibinitperiod},
-           given={Carsten\bibnamedelima F.},
-           given_i={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
-        {{uniquename=0,hash=f2023df7507c5721104bd31350623c8c}{%
-           family={Hartig},
-           family_i={H\bibinitperiod},
-           given={Florian},
-           given_i={F\bibinitperiod}}}%
-        {{uniquename=0,hash=7a3b2c1ad75a363dbd62c7140aaee6c0}{%
-           family={Heurich},
-           family_i={H\bibinitperiod},
-           given={Marco},
+           given={M.},
            given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=427bad06a0a2cd7ce3367f32765022f4}{%
+           family={Townsend},
+           family_i={T\bibinitperiod},
+           given={S.},
+           given_i={S\bibinitperiod}}}%
       }
-      \strng{namehash}{1158d5f33e7af81b7ff00614d53248b9}
-      \strng{fullhash}{eb5173b7a87e8bdde475e2eb1f572e36}
+      \strng{namehash}{00fe80aea26d203f80e742ca76e4ed84}
+      \strng{fullhash}{79464283ec16d0335e3458cbe2be242c}
       \field{sortinit}{0}
       \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2020}
+      \field{labelyear}{2014}
       \field{datelabelsource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Camera traps have become an important tool in wildlife monitoring. However, an issue in interpreting their data in statistical analyses of population densities, demography or behaviour is that the probability of detecting the target animals and their behaviours may vary depending on environmental and methodological factors. A specific problem is the type of flash used in the camera trap, as animals may react differently to different flash types and change their avoidance or habituation behaviour accordingly over time. Here, we provide the first systematic test of the impact of flash type in studies of red deer (Cervus elaphus) and roe deer (Capreolus capreolus), based on an analysis of behavioural responses to white, standard infrared and black flashes during 900 camera trap deployments in the Bavarian Forest National Park and the Northern Black Forest. The results revealed that both deer species were more likely to react to standard infrared than to black flash, but trigger delays prevented comparisons to white flash. Red deer reacted more frequently to camera traps than did roe deer, and responses were more common in the Northern Black Forest than in the Bavarian Forest National Park, where hunting is severely restricted. Contrary to our expectations, camera trapping rates of free-ranging deer did not significantly decline over time for any flash type or species. Despite the lack of evidence for avoidance behaviour, we recommend the use of black flash for behavioural studies of deer populations to minimize the risk of introducing a source of disturbance whereas infrared and white flash are equally suitable for determinations of demographic parameters.}
-      \field{annotation}{Studien såg på forskjeller mellom svart, infrar{ø}d og kvit blits, men kvit blei ekskludert frå ein del analyser grunna forsinkelser i trigger, samt fråvêr av rapidfire-funksjon (blitsen måtte ladast mellom kvar fyring). Hjort viste st{ø}rre grad av påverknad frå kamera (i snitt), mens rådyr i vinterinnhegning såg ut til å unngå kameraene. Monge individ: vanskelig å skilne endringer i visitt-rate Naturleg låg gjenvisitt-rate: lite sannsynleg med unnviking av kamera}
-      \field{issn}{20563485}
-      \field{journaltitle}{Remote Sensing in Ecology and Conservation}
-      \field{number}{3}
-      \field{title}{{The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer}}
-      \field{volume}{6}
-      \field{year}{2020}
-      \field{pages}{399\bibrangedash 410}
-      \range{pages}{12}
+      \field{abstract}{Camera traps are used by scientists and natural resource managers to acquire ecological data, and the rapidly increasing camera trapping literature highlights how popular this technique has become. Nevertheless, the methodological information reported in camera trap publications can vary widely, making replication of the study difficult. Here we propose a series of guiding principles for reporting methods and results obtained using camera traps. Attributes of camera trapping we cover include: (i) specifying the model(s) of camera traps(s) used, (ii) mode of deployment, (iii) camera settings, and (iv) study design. In addition to suggestions regarding best practice data coding and analysis, we present minimum principles for standardizing information that we believe should be reported in all peer-reviewed papers. Standardised reporting enables more robust comparisons among studies, facilitates national and global reviews, enables greater ease of study replication, and leads to improved wildlife research and management outcomes. {©} 2014 Her majesty the Queen in Right of Australia.}
+      \field{issn}{15729710}
+      \field{journaltitle}{Biodiversity and Conservation}
+      \field{number}{9}
+      \field{title}{{Recommended guiding principles for reporting on camera trapping research}}
+      \field{volume}{23}
+      \field{year}{2014}
+      \field{pages}{2321\bibrangedash 2343}
+      \range{pages}{23}
       \verb{doi}
-      \verb 10.1002/rse2.150
+      \verb 10.1007/s10531-014-0712-8
       \endverb
       \verb{file}
-      \verb :home/torgeir/Documents/Papers/Henrich_2020 --- The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer.pdf:pdf
+      \verb :home/torgeir/Documents/Papers/Meek2014a_GuidingPrinciples.pdf:pdf
       \endverb
-      \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
-    \endentry
-    \entry{Beddari2019}{article}{}
-      \name{author}{1}{}{%
-        {{uniquename=0,hash=49c5d3f04746c4e707798fee11f091ef}{%
-           family={Beddari},
-           family_i={B\bibinitperiod},
-           given={Benedicte\bibnamedelima Lissner},
-           given_i={B\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-      }
-      \strng{namehash}{49c5d3f04746c4e707798fee11f091ef}
-      \strng{fullhash}{49c5d3f04746c4e707798fee11f091ef}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2019}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{In ecology, camera trapping is commonly used as a non-invasive technique to collect ecological observation data and to monitor populations. The technique is used to address a variety of research questions worldwide. Despite being widely used, few studies have evaluated the potential effects of camera traps on animals, and to my knowledge no studies have quantified to what extent and under which conditions such effects occur. In this thesis, I have assessed the behavior of two large carnivores in Norway, Eurasian lynx (Lynx lynx) and wolf (Canis lupus), using still images captured by camera traps. The aim of the study was to investigate whether the presence of camera traps can cause behavioral changes in wildlife. I recorded behaviors that indicated apparent detection of cameras by visual and/or acoustic contact. Furthermore, other distinct behaviors towards camera was assessed, in addition to the orientation of the animal in a given visit, to detect distinct changes in direction caused by the trap. Finally, I compared behavioral scores between species and camera-specific factors like flash type. Lynx and wolves both apparently detected cameras (eyes and/or ears pointed directly at the camera) in approximately 11\% of the visits, and altered their behavior in response to them. Two different categories of responses were discovered: Responses directly related to an apparent detection (approach, flight, observe and startle) and responses related to the presence camera traps (physical contact, olfactory sensing and squinting). I detected species-specific and camera-specific differences in behavioral impacts. Lynx were more likely to approach the camera, compare to wolves who expressed flight and startle response more pronounced. Flash and different flash types influenced the species differently in how they responded to the presence of camera traps. Both species were found to have pronounced change in orientation when expressing apparent detection responses to camera. My study revealed clear evidence of camera traps being low-invasive, but not non-invasive wildlife monitoring tools. This suggests that camera trap studies should quantify their impact on study species and its effect on inferences.}
-      \field{journaltitle}{Master of Sciences in Natural resource Management}
-      \field{title}{{Behavioral responses to camera traps : a study on two large carnivores in Norway}}
-      \field{year}{2019}
-      \field{pages}{52}
-      \range{pages}{1}
-      \verb{file}
-      \verb :home/torgeir/.local/share/data/Mendeley Ltd./Mendeley Desktop/Downloaded/Beddari - 2019 - Behavioral responses to camera traps a study on two large carnivores in Norway.pdf:pdf
-      \endverb
-      \verb{url}
-      \verb https://nmbu.brage.unit.no/nmbu-xmlui/handle/11250/2608534
-      \endverb
+      \keyw{Camera trap guidelines,Camera trap methodology,Ecological monitoring,Remote cameras,Trail cameras}
     \endentry
     \entry{Moen1999}{book}{}
       \name{author}{1}{}{%
@@ -493,6 +415,7 @@
       \endverb
     \endentry
   \endsortlist
+  \missing{Heinrich2020}
   \missing{easystats}
 \endrefsection
 \endinput

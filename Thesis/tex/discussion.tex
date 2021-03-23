@@ -1,44 +1,89 @@
 \chapter{Discussion}
 
-What I've really been attempting to do in this thesis, is to look for any surprising differences in the detection rate of target species when using a white LED camera trap. Therefore, I have been more afraid of commiting a type II error (false positive; accepting H0 when it really is false) than I have been of committing a type I error (rejecting H0 when it really is true).
-Hopefully, the equivalence tests I've performed can say something meaningful about the effect size of white LED flash-usage.
+%I denne delen tolker og diskuterer du betydningen av resultatene som har kommet fram.
+%Her samles alle de andre delene for å belyse forskningsspørsmålet.
 
-Surely, there are examples of some individual animals reacting strongly to the white light, and fleeing from the site (see photo series in fig TK).
+In the example of Scandlynx, CTs have been introduced as a more reliable survey method than snow track counts of the Eurasian lynx in Norway. The CTs bring in a lot of useful information about the lynx, but it is also triggered by the rest of the mammal species in the area. Thus they provide a lot of information of other species as well, which would be a shame to throw away.
 
-Still, when the goal is to merely detect species, and estimate a species density, does the white LED stress animals to the extent that our results will be biased? %dårlig formulering
+As I have shown in the density plots from my raw data, I am able to record the daily activity pattern of these other mammal species, and (all/most/some/none) matched the activity-patterns that I expected out from reading about their known activity patterns. %(\cite{})
 
 
+
+
+%    Hva betyr resultatene i lys av teori og/eller andre studier?
+The decisions on setup of scandlynx CTs are solely based on maximizing the chances of detecting lynx, and on gathering as much information about individual lynx as possible.
+My aim has been to see if the decision on whether or not to use a white LED flash affects the detection rates of other species. Beddari (2018) showed that grey wolfs shy away from sites equipped with white LED CTs. They scared away from the site immediately, and were (only redetected in TK instances / never redetected). For lynx the story was different. One lynx was recorded sleeping in front of a white LED CT, (and didn't seem to affect the chance of redetection?).
+Heinrich etal. (2020) investigated the detection rates of roe deer and red deer in Blackforest(TK?), Germany, but were unable to conclude on the effect of white light as they used a xenon white flash, that had a cool down of at least 22 seconds after each photo was taken.
+
+Heinrich etal. (2020) also set up cameras at new sites every time, and for shorter periods than me (~20 days?)%TODO
+I used already established CT sites with red-glow and no-glow Infra-Red flashes (henceforth referred to as IR CTs). Then I set up an additional white LED CT 5-20 cm above the preinstalled IR CTs in alternating 3 month periods.
+Thus, from the wild animals' perspective, the novelty was twice the sound made from the camera shutters, one additional box on a tree, above the other box that had been there for a while, and, during the night, (at least) three flashes of white light.
+For the animals that were familiar with a weird looking box on that specific tree, which made a strange noise, already, maybe they weren't especially surprised, as they were expecting something going on around that tree anyway.
+
+
+
+
+
+
+
+
+
+Til konklusjonen:
+Hvordan besvares problemstillingen? Er hypotesen styrket, svekket eller falsifisert? Ikke trekk inn momenter som ikke har vært nevnt tidligere i teksten (under Introduksjon, Metode eller Resultat). Hvis studien ikke gir grunnlag for å konkludere, kan du avslutte med en oppsummering.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Som Atle har sendt til diskusjon:
+
+..general results..
+Out of all nine species included in my analysis, only the red squirrel showed a diurnal pattern.
+Roe deer and pine marten were active throughout the day, but both had their peaks in the twilight hours. 
+
+..roe deer..
+Although the figure doesn’t tell us if each photo was taken before or after sunrise/sunset, there seems to have been a significant portion taken during the twilight. Thus, it has been dark enough that the white LED has been triggered. However, there were little activity during the middle of the night, when the light stimuli would have been at it’s strongest. Consequently, most photos were taken when the flash stimuli wasn’t at it’s strongest.
+Just to repeat myself, the overall pattern stayed the same for all periods, which at least tells us that any effect of the flash seems to have been small.
+
+
+..roe deer.. -- equivalence testing %AMkomm: Dette er diskusjon. Og det er god metode-diskusjon! Flytt dit
+
+Looking at figure [fig:raadyr]b, the main effect of the IR and LED periods have a wide CI, which makes us unable to conclude on the groups’ true effect sizes. IR is estimated to be within the Region of Practical Equivalence (ROPE), and LED is estimated to be outside, but the large variation still present in the data prevents a conclusion. Considering the time variable, and it’s interaction, all are within the ROPE, and the test tells us to accept it’s practical equivalence to H0, namely that there is no effect.
+Still, when interpreting a continuous variable as this, it is worth considering it’s scale. I scaled my time variable to represent 10 day intervals, in order for the model to converge. That means the estimated effect of time since deployment is ten times larger than it would have been if it remained as 1 day intervals. Conversely, had I scaled it to represent the whole span of 84 days, the estimated effect and confidence interval would have been 8.4 times larger than what it is now (0.4), and so would it’s confidence interval. The equivalence test would be undecided on the effect of time since deployment.
+
+
+Seeing as many experiments are set up with a period length much shorter than mine, it seems reasonable to aim for a time unit which would translate well to these more common lengths. In \cite{Heinrich2020} they set up cameras for periods of ~20 days,%TODO mean period length of Heinrich etal.
+and could therefore not have detected any effects on a time scale of 84 days.
+
+
+		-- forts. %AMkomm: Dette er også diskusjon
+Nevertheless, the control-group is what I am using as a reference point to what is normal. What I am interested in investigating is whether, and to what extent, the LED group deviates from the control group.
+As mentioned, the main effect is non-significantly positive compared to both the control and the IR. The same is true along the time axis. Both the slope for IR and LED are practically equivalent to the slope for control. Interesting to note, is however, that the slopes cross each other, which is what they would do if there is an effect of the LED, ie. that the IR periods counteract the effect of the LED periods.
+
+\section{Model performance} %AMkomm: Dette er diskusjon
+The models explaining variation and whatnot, mostly due to the random terms. This is to say that after having accounted for variations between camera sites, and seasonal fluctuations, there still was a lot of variation in the dataset left to explain, and the period-categories of “Control”, “IR” and “LED” interacting with time since deployment didn’t explain much of it.
+method:
+Using the performance package i checked various assumptions, and all held up Overdispersion, zero-inflation and singularity all held up in every model.
+
+
+
+
+%
+%\section{Old discussion}
+%
+%What I've really been attempting to do in this thesis, is to look for any surprising differences in the detection rate of target species when using a white LED camera trap. Therefore, I have been more afraid of commiting a type II error (false positive; accepting H0 when it really is false) than I have been of committing a type I error (rejecting H0 when it really is true).
+%Hopefully, the equivalence tests I've performed can say something meaningful about the effect size of white LED flash-usage.
+%
+%Surely, there are examples of some individual animals reacting strongly to the white light, and fleeing from the site (see photo series in fig TK).
 
 
 
 %POST-IT
-%% Physiological features of species could determine effect: badgers poor eye sight -> less reactive to visual stimuli?
-%%Species interaction with human: high conflict animals wary of flash as it signals humans nearby
-%%Camera site proximity to urban area/ roads (Artificial Light At Night) : +correlation with proximity and effect on species
-%%smaller animals less likely to be detected by camera. Dark numbers?
-
-
+% Physiological features of species could determine effect: badgers poor eye sight -> less reactive to visual stimuli?
+%Species interaction with human: high conflict animals wary of flash as it signals humans nearby
+%Camera site proximity to urban area/ roads (Artificial Light At Night) : +correlation with proximity and effect on species
 
 
 
 
 %TIPS FRÅ INGVILD:
 % Bare pass på at du svarer på hypotesene dine og drøfter dem
-
-
-
-
-Hypothesising GLMM:
-
-\textbf{If} $H_1$ is true, and there truly is an effect of the white LED for long periods on the detection rate of roe deer, this effect could in turn account for the different intercept values of IR and flash, as the IR periods usually starts after a flash period (with the exception of the first IR-period, i.e. first red periods in figure \vref{fig:timeseries_flash}).
-
-Remembering my study design, 20 cameras start with white LED, 20 with IR.
-Intercept should theoretically be identical in the 1st period.
-2nd period; white LEDs are moved. New LED CTs should have same intercept (unchanged detection rate), and new IR CTs should have a hypothetical lower intercept due to the effect of white LED.
-3rd period; white LED moved, new LED CTs (IR intercept), new IR CTs (hypothetical lower intercept), and so on.
-
-Which sums up to 3 IR periods where detection rates could start lower than that of white LED.
-
-If that was true, and the white LED interacting with time had a significantly negative slope, then the slope of IR should be positive, as the roe deer detection rate returned to normal.
-The slope for the control-group(time.deploy:flashControl) should represent a normal detection rate, and be close to flat ($ \beta \approx 0$), intercept possibly closer to that of white LED, than IR.
-

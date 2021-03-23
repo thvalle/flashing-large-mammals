@@ -1,78 +1,64 @@
 \chapter{Introduction}
 
 
-How does the usage of white LED flash affect our data?
+%How does the usage of white LED flash affect our data?
 %AMkomm:Jeg ville startet med behovet for å estimere antall dyr. 
 %At det er selve grunnlaget for bestandsøkologien. 
 %Få med at det er utfordrende, fordi dyrene ikke kan observeres lett i tett skog.
-***
-Grove trekk utan kritisk selvblikk:
+%***
+%Grove trekk utan selvkritisk blikk:
 
-Scientists often want to estimate how many individuals of certain species are present. When forvalting deer species for hunting, or trying to figure out expected grazing pressure on crops in an area, there is a need to understand how many individuals of different species are present. % Hello, echo
+%Scientists often want to estimate how many individuals of certain species are present. When forvalting deer species for hunting, or trying to figure out expected grazing pressure on crops in an area, there is a need to understand how many individuals of different species are present. % Hello, echo
+%
+%So, as mammal species tend to be quite elucive, and mostly night active, it is inherently difficult to count them in a reliable and standardised way. This is especially true for large carnivores, as the Eurasian lynx, and grey wolf. They are both night acitve and highly shy. And in Norway they are forvalta after a precise number of family groups. Hence, there is a dire need to know how many there are of them.
+%
+%Usually, the lynx has been counted using snow tracks in the winter (Odden 2015). However, lately there has been a variable lenght of the snow season, which has made the snow track counts unpredictable and difficult to conduct at a consistent time of year (Odden 2015).
+%
+%Therefore, looking for new methods, NINA has started to use camera traps (CTs).
+%***
+%
+%***
+Estimating number of animals are central in the population ecology, and has always been under development in order to get accurate, reliable ways of conducting surveys.
 
-So, as mammal species tend to be quite elucive, and mostly night active, it is inherently difficult to count them in a reliable and standardised way. This is especially true for large carnivores, as the Eurasian lynx, and grey wolf. They are both night acitve and highly shy. And in Norway they are forvalta after a precise number of family groups. Hence, there is a dire need to know how many there are of them.
+Counting mammals directly is difficult, as they are shy, elusive, and mainly night active. Some methods involve walking one or several men in a row, scaring up animals, and counting them as they flee. Still, any such method is prone to undercounting, due to low visibility in dense forests and lack of focus from observers after a while.
+There are other, indirect methods, like counting tracks or calls during the mating season, but these work best when the target species has a large density.
 
-Usually, the lynx has been counted using snow tracks in the winter (Odden 2015). However, lately there has been a variable lenght of the snow season, which has made the snow track counts unpredictable and difficult to conduct at a consistent time of year (Odden 2015).
+In snowy areas, like Norway, counting snowtracks has been a popular method.
+Snow track counts has the advantage of highly visible tracks, and a somewhat accurate dating of the tracks to the last snowfall, as old tracks vanish.
+However, lately there has been a variable lenght of the snow season in southern Norway, which has made the snow track counts unpredictable and difficult to conduct at a consistent time of year.
 
-Therefore, looking for new methods, NINA has started to use camera traps (CTs).
-***
+Therefore, looking for new methods, the Norwegian Institute of Nature Research (NINA) has started to use camera traps (CTs). CTs have been developing fast, and become quite affordable. They offer a consistent, standardised sampling method which also records date, hour and, in some instances, temperature.
 
-***
-Estimating number of animals are central in the bestand ecology, and has always been under development in order to get accurate, reliable ways of conducting surveys.
+CTs normally use infra-red (IR) light to photo-capture animals, which is invisible to the human eye, but has been shown to be visible to several other mammals (\cite{Meek2014}).
+However, the lack of sharpness and detail from IR photos limit the information we can retrieve from them, e.g. individual variation in coat patterns which can be used in capture-recapture models to accurately estimate population numbers. 
 
-Counting mammals directly is difficult, as they are shy, elusive, and mainly night active. Some methods involve walking one or several men in a row, scaring up animals, and counting them as they scare away. Still, any such method is prone to undercounting, due to low visibility in dense forests and lack of focus from observers after a while. Other counting methods include counts from vantage points, which is generally considered to be the most accurate (ie. least variable outcome). There are other, indirect methods, like counting and/ or collecting faeces and counting tracks.
+The need for more detail has led to the usage of white light flashes.
+CTs with white light flash comes with either white xenon or white light-emitting diode (LED) technology, where xenon provides the sharpest photos, but has the disadvantage of long cool downs after each photo (minimum of 22 seconds %TODO 
+in Heinrich 2020).
 
-In snowy areas, like Norway, counting snowtracks has been a popular method. This method has the advantage of tracks being present for a limited time. Snow track counts also makes it possible to date the activity to the last snowfall, as old tracks are VISKA UT. Tracks are also easily visible.
-
-However, lately there has been a variable lenght of the snow season, which has made the snow track counts unpredictable and difficult to conduct at a consistent time of year.
-
-Therefore, looking for new methods, NINA has started to use camera traps (CTs). CTs have been developing super fast, and have become quite affordable. They offer a consistent, standardised sampling method which also records date, hour and, in some instances, temperature. 
-The impression has long been that it is a non-invasive method, which has been disproven in later years.
-
-CTs normally use infra-red light to photo-capture animals, which is invisible to the human eye, but has been proven to be visible to several other mammals (\cite{Meek2014}). The photos taken with IR flash are able to tell which species pass, but often lack much detail.
-
-Sometimes scientists want to get photos with better quality in order to answer different questions. For example, in the case of naturally marked species, scientists are able to distinguish individual animals, which makes it easy to estimate densities quite accurately using the well established capture-recapture method.
-IR CT photos taken during night is in no way detailed enough to provide coat patterns of for example a lynx, which has led to the usage of white light flashes.
-
-
-However, white light is highly visible to all land dwelling species, and will likely affect the animals to some extent (eg. startle, stress) which in turn could bias the data we collect. Problems related to CT awareness and behavioural changes have already been discussed by many (). Beddari showed that the grey wolf tend to shy away from sites where a white LED CT was used, whilst the lynx seemed less bothered. Heinrich 2020 studied roe deer and red deer's responses to IR flash, black flash and white flash, but used a xenon white flash, which has a long cool down, and hindered any meaningful comparisons with the other flash types.
-
-
-I will try to quantify whether the detection rate of any common target species are altered when using a white light-emitting diode (LED) flash. The white LED cameras don't have the same cool down period after each triggering, and thus gather more information. 
-
+Naturally, white light is highly visible to all land dwelling mammals, and will likely affect the animals to some extent (eg. startle, stress) which in turn could bias the data we collect. Problems related to CT awareness and behavioural changes have already been discussed by many ().
+Beddari (2019) showed that grey wolfs (\textit{Canis lupus}) in Norway tend to shy away from sites where a white LED CT was used, whilst the Eurasian lynx (\textit{Lynx lynx}) seemed less bothered. Heinrich (2020) studied roe deer and red deer's responses to IR, black and white flash, but used a xenon white flash, which has a long cool down, and hindered any meaningful comparisons with the other flash types.
 
 
-
-
-***
+%***
 
 %Litt om estimeringsmetoder og problemer - og at det er særlig vanskelig for nattaktive og sky arter.
 %Litt om bruk av kamerafeller og metodikk som er i enorm utvikling. Binde opp til NINA arbeid og samarbeid i Skandinavia
 
-
-Capture Recapture models only available for naturally marked species (e.g. tigers \textit{Panthera tigris}, leopards \textit{Panthera pardus}). 
-"Nevertheless, the majority of wildlife species are not easily individually identifiable from photos, rendering CR approaches difficult and leading to widespread interest in alternate analytical approaches for ‘unmarked’ species" \cite{Burton2015} %Dette vil eg ha inn i samanheng med årsaken til LED-bruk
-
-
-Camera traps (CTs) give us the opportunity to monitor in a quantifiable, somewhat standardised way, that is almost non-invasive. 
-Normally CTs have been using infrared (IR) light to flash animals during the night, as this was believed to be invisible to the animals (though this has later been proven wrong). %TODO citations
-However, the lack of sharpness and detail in these photos limit the information we can retrieve from them (e.g. individual variation in coloration), which has brought us to the usage of white light flashes.
-CTs with white light flash comes with either white xenon or white light-emitting diode (LED) technology.
-Xenon CTs has the disadvantage of a recovery time after each photo. \cite{Henrich2020} experienced a recovery time of at least 22 s, which prevented them from doing meaningful comparisons with black and IR flash. 
-
-Naturally, a white flash is highly visible for any surface dwelling mammal, which begs the question to what extent it impacts the animals. Or rather, to which \textit{additional} extent it impacts the animals, and therefore, how it affects our data.
-Animal sightings by CTs can be used to measure species density, and any deviation from the norm in probability of sighting, will skew the precision of the estimate.
+%
+%Capture Recapture models are only available for naturally marked species (e.g. tigers \textit{Panthera tigris}, leopards \textit{Panthera pardus}). 
+%Nevertheless, the majority of wildlife species are not easily individually identifiable from photos, rendering CR approaches difficult and leading to widespread interest in alternate analytical approaches for ‘unmarked’ species" \cite{Burton2015} %Dette vil eg ha inn i samanheng med årsaken til LED-bruk
 
 
-\cite{Beddari2019} showed that wolfs (\textit{Canis lupus}) tend to shy away from CTs using white light, whilst the lynx (\textit{Lynx lynx}) is less bothered, when compared to the usage of IR flashes. %TODO vask!
-The wolfs were more shy and aware of all CTs in general, attributed to their higher sense of smell, which is a reminder that each species will perceive CT presence different, and thus behave differently as a respone to the stimuli.
+
+In this study, I will attempt to quantify how the usage of white LED flash affects the detection rate of \textsl{the most common large mammal species in the area}. 
+White LED CTs have similar recovery speeds to that of regular IR CTs, as both utilize LEDs as flashes, which makes them well fit for meaningful comparisons.
 
 \subparagraph{Hypotheses}
-In this study, I will attempt to quantify how the usage of white LED flash affects the detection rate of \textsl{the most common large mammal species in the area} and whether this effect correlates with other factors as urbanisation.
 
-* Null hypothesis (H0): Usage of white LED flash will have no effect on the detection rate of any species.
+(H0): Usage of white LED flash will have no effect on the detection rate of any species.
 
-* Alternative hypothesis (HA): Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species. The effect will likely vary in extent between species.
+(HA): Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species. The effect will likely vary in extent between species.
 
 %* Hypothesis 2: The effect of the white LED will correlate with urbanisation-factors, as individuals that live closer to urban areas are habituated to Artificial Light At Night (ALAN), and thus will have a weaker response to the white LED
 

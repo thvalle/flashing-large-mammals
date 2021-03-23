@@ -3,8 +3,8 @@ _____________________________
 Why did I do what I did?
 
 -CT growing popularity
-	-wLED to capt-recapt
--potential bias in detect rates
+	-wLED to capture-recapture
+-potential bias in detection rates
 -I put wLED on IR CTs on/off 
 -wLED seems to have small effect
 	~all non-significant
@@ -48,7 +48,10 @@ Strong and weak sides of my study
 	-H0 undecided
    -More random-effects?
 	-CT height, habitat etc
-	 -maybe wouldnt affect fix.eff R2
+   -Habitat * flash?
+	 -roads and large trails work as an attractant/funnel for travelling animals. 
+	   -maybe a wLED stressor is too small to counteract the funneling effect
+		-thus only CTs at animal paths would significantly affect detection rates
 _____________________________
 Implications for practice?
 
@@ -66,7 +69,8 @@ More research needed?
   -for me in particular, the LED could've scared individuals off even before they entered the IR frame (Browning trigger!).
      -other studies could try to couple a lagging(!) LED-flash to an IR(/black) CT
 	-thus allowing for a detection before the white light stimuli
--SCR setup with multiple CT flash-types, noting whether individuals avoid the white flash CTs
+-SCR setup with multiple CT flash-types, in 1-2 home range scale, random placement
+	-noting whether individuals avoid the white flash CTs
 
 
 ____________________________

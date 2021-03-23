@@ -6,36 +6,40 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subparagraph}{Hypotheses}{6}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}Method and materials}{8}
+\contentsline {chapter}{\numberline {2}Method and materials}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Study area}{8}
+\contentsline {section}{\numberline {2.1}Study area}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Study species}{8}
+\contentsline {section}{\numberline {2.2}Study species}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Study design}{8}
+\contentsline {section}{\numberline {2.3}Study design}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data Collection}{11}
+\contentsline {section}{\numberline {2.4}Data Collection}{10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Data processing}{12}
+\contentsline {section}{\numberline {2.5}Data processing}{11}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.6}Statistical analysis}{12}
+\contentsline {section}{\numberline {2.6}Statistical analysis}{11}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Results}{16}
+\contentsline {chapter}{\numberline {3}Results}{15}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Roe deer}{18}
+\contentsline {section}{\numberline {3.1}Roe deer}{17}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Red fox}{20}
+\contentsline {section}{\numberline {3.2}Red fox}{18}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Badger}{21}
+\contentsline {section}{\numberline {3.3}Badger}{19}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.4}Hare}{22}
+\contentsline {section}{\numberline {3.4}Hare}{20}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.5}Red squirrel}{23}
+\contentsline {section}{\numberline {3.5}Red squirrel}{21}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.6}Moose}{23}
+\contentsline {section}{\numberline {3.6}Moose}{22}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.7}Red deer}{24}
+\contentsline {section}{\numberline {3.7}Red deer}{23}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.8}Pine marten}{25}
+\contentsline {section}{\numberline {3.8}Pine marten}{24}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.9}Lynx}{27}
+\contentsline {section}{\numberline {3.9}Lynx}{25}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {4}Discussion}{26}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.1}Model performance}{27}

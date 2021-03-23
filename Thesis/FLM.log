@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  21 MAR 2021 20:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  23 MAR 2021 12:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -871,7 +871,8 @@ Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
-))) (./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux))
+))) (./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux) (./tex/
+discussion.aux))
 \openout1 = `FLM.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
@@ -888,8 +889,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
 LaTeX Font Info:    ... okay on input line 12.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 12.
@@ -980,6 +980,13 @@ Package biblatex Info: ... file 'FLM.bbl' found.
 
 Package biblatex Warning: The following entry could not be found
 (biblatex)                in the database:
+(biblatex)                Heinrich2020
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
 (biblatex)                easystats
 (biblatex)                Please verify the spelling and rerun
 (biblatex)                LaTeX afterwards.
@@ -998,23 +1005,23 @@ erthousand on input line 12.
 LaTeX Info: Redefining \ohm on input line 12.
 Package gensymb Info: Using \textohm for \ohm on input line 12.
 Package gensymb Info: Using \textmu for \micro on input line 12.
- <img/MN_IMBV_A_ENG.png, id=1, 619.8357pt x 73.4745pt>
-File: img/MN_IMBV_A_ENG.png Graphic file (type png)
-
-<use img/MN_IMBV_A_ENG.png>
-Package pdftex.def Info: img/MN_IMBV_A_ENG.png used on input line 14.
-(pdftex.def)             Requested size: 309.91708pt x 36.73715pt.
+ <img/UiO_logo.png, id=1, 593.21625pt x 593.21625pt>
+File: img/UiO_logo.png Graphic file (type png)
+ <use img/UiO_logo.png>
+Package pdftex.def Info: img/UiO_logo.png used on input line 14.
+(pdftex.def)             Requested size: 177.96625pt x 177.96625pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <12> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 14.
- [1
+
+[1
 
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/MN_IMBV_A_ENG.png>] 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/UiO_logo.png>]
 (./FLM.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 11.
@@ -1034,34 +1041,39 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@lot=\write6
 \openout6 = `FLM.lot'.
 
-
-[4
+ [4
 
 ]
 \openout2 = `tex/intro.aux'.
 
  (./tex/intro.tex
 Chapter 1.
+
+Overfull \hbox (2.65991pt too wide) in paragraph at lines 30--31
+[]\T1/cmr/m/n/10.95 Therefore, look-ing for new meth-ods, the Nor-we-gian In-st
+i-tute of Nature Re-search (NINA)
+ []
+
 [5
 
 
-]) [6] [7]
+]) [6]
 \openout2 = `tex/method.aux'.
 
  (./tex/method.tex
 Chapter 2.
-[8
+[7
 
 
 
-] <./img/experiment_setup.jpg, id=42, 963.6pt x 542.025pt>
+] <./img/experiment_setup.jpg, id=38, 963.6pt x 542.025pt>
 File: ./img/experiment_setup.jpg Graphic file (type jpg)
 
 <use ./img/experiment_setup.jpg>
 Package pdftex.def Info: ./img/experiment_setup.jpg used on input line 50.
 (pdftex.def)             Requested size: 385.43317pt x 216.80615pt.
  (./tex/fig/met1.tex
-<./img/cam_install_example/IMG_20190212_161615169.jpg, id=43, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190212_161615169.jpg, id=39, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190212_161615169.jpg Graphic file (type j
 pg)
@@ -1070,7 +1082,7 @@ Package pdftex.def Info: ./img/cam_install_example/IMG_20190212_161615169.jpg u
 sed on input line 5.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<./img/cam_install_example/IMG_20190515_170952923.jpg, id=44, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190515_170952923.jpg, id=40, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190515_170952923.jpg Graphic file (type j
 pg)
@@ -1079,7 +1091,7 @@ Package pdftex.def Info: ./img/cam_install_example/IMG_20190515_170952923.jpg u
 sed on input line 11.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<./img/cam_install_example/IMG_20190521_181329313.jpg, id=45, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190521_181329313.jpg, id=41, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190521_181329313.jpg Graphic file (type j
 pg)
@@ -1088,7 +1100,7 @@ Package pdftex.def Info: ./img/cam_install_example/IMG_20190521_181329313.jpg u
 sed on input line 17.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
-<./img/cam_install_example/IMG_20190529_181049340.jpg, id=46, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190529_181049340.jpg, id=42, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190529_181049340.jpg Graphic file (type j
 pg)
@@ -1106,19 +1118,19 @@ Overfull \hbox (2.4216pt too wide) in paragraph at lines 3--29
 []$ $[]$ 
  []
 
-) [9 <./img/experiment_setup.jpg>] [10 <./img/cam_install_example/IMG_20190212_
-161615169.jpg> <./img/cam_install_example/IMG_20190515_170952923.jpg> <./img/ca
-m_install_example/IMG_20190521_181329313.jpg> <./img/cam_install_example/IMG_20
-190529_181049340.jpg>] (./tex/tab/cam_mod.tex)
+) [8 <./img/experiment_setup.jpg>] [9 <./img/cam_install_example/IMG_20190212_1
+61615169.jpg> <./img/cam_install_example/IMG_20190515_170952923.jpg> <./img/cam
+_install_example/IMG_20190521_181329313.jpg> <./img/cam_install_example/IMG_201
+90529_181049340.jpg>] (./tex/tab/cam_mod.tex)
 
 Package caption Warning: \label without proper reference on input line 110.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:map' on page 11 undefined on input line 102.
+LaTeX Warning: Reference `fig:map' on page 10 undefined on input line 102.
 
-[11]
-<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=57, 505.89pt x 361.3
+[10]
+<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=54, 505.89pt x 361.3
 5pt>
 File: ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png Graphic file (type 
 png)
@@ -1128,167 +1140,212 @@ used on input line 158.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
 
-LaTeX Warning: Reference `app:sessinfo' on page 12 undefined on input line 178.
+LaTeX Warning: Reference `app:sessinfo' on page 11 undefined on input line 171.
 
 
-[12] [13 <../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>]
-<../R/glmm_sp_files/figure-html/period-length-wControl-1.png, id=67, 505.89pt x
+[11] [12 <../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>]
+<../R/glmm_sp_files/figure-html/period-length-wControl-1.png, id=63, 505.89pt x
  361.35pt>
 File: ../R/glmm_sp_files/figure-html/period-length-wControl-1.png Graphic file 
 (type png)
  <use ../R/glmm_sp_files/figure-html/period-length-wControl-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/period-length-wControl-
-1.png used on input line 204.
+1.png used on input line 197.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
-[14 <../R/glmm_sp_files/figure-html/period-length-wControl-1.png>]
-Overfull \hbox (128.69649pt too wide) in paragraph at lines 225--228
+[13 <../R/glmm_sp_files/figure-html/period-length-wControl-1.png>]
+Overfull \hbox (128.69649pt too wide) in paragraph at lines 218--221
 \T1/cmr/m/n/10.95 to the de-fault [-0.1, 0.1] of a stand-ard-ized para-meter (w
 ww.easystats.github.io/bayestestR/reference/rope_range.html,
  []
 
-) [15]
+) [14]
 \openout2 = `tex/results.aux'.
 
  (./tex/results.tex
 Chapter 3.
+
+LaTeX Warning: Reference `fig:events' on page 15 undefined on input line 19.
+
+
+<../R/glmm_sp_files/figure-html/active-days-3.png, id=75, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/active-days-3.png Graphic file (type png)
+
+<use ../R/glmm_sp_files/figure-html/active-days-3.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/active-days-3.png used 
+on input line 26.
+(pdftex.def)             Requested size: 202.3524pt x 144.53743pt.
+
+<../R/glmm_sp_files/figure-html/events-1.png, id=76, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/events-1.png Graphic file (type png)
+
+<use ../R/glmm_sp_files/figure-html/events-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/events-1.png used on in
+put line 34.
+(pdftex.def)             Requested size: 202.3524pt x 144.53743pt.
+
+Overfull \hbox (2.4216pt too wide) in paragraph at lines 24--38
+[]$[]$ $[]$ 
+ []
+
 (./tex/tab/parameters2.tex
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 5.
+(Font)              <7> on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 5.
-)
-Overfull \hbox (45.78247pt too wide) in paragraph at lines 5--37
+(Font)              <5> on input line 4.
+
+Overfull \hbox (53.00293pt too wide) in paragraph at lines 4--64
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 42.5369pt on input line 38.
+LaTeX Warning: Float too large for page by 5.5369pt on input line 64.
 
-[16
+) [15
 
 
 
-] [17]
-<../R/glmm_sp_files/figure-html/parameters-1.png, id=84, 505.89pt x 361.35pt>
+ <../R/glmm_sp_files/figure-html/active-days-3.png> <../R/glmm_sp_files/figure-
+html/events-1.png>] [16]
+<../R/glmm_sp_files/figure-html/parameters-1.png, id=85, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/parameters-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-html/parameters-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/parameters-1.png used o
-n input line 53.
+n input line 62.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 53--59
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 62--68
  [][] 
  []
 
+[17
 
-Underfull \vbox (badness 1028) has occurred while \output is active []
-
- [18
-
- <../R/glmm_sp_files/figure-html/parameters-1.png (PNG copy)>] [19]
-<../R/glmm_sp_files/figure-html/rev2-1.png, id=92, 505.89pt x 361.35pt>
+ <../R/glmm_sp_files/figure-html/parameters-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/rev2-1.png, id=89, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/rev2-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-html/rev2-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/rev2-1.png used on inpu
-t line 85.
+t line 92.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 85--91
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 92--98
  [][] 
  []
 
-[20 <../R/glmm_sp_files/figure-html/rev2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/gaupe2-1.png, id=96, 505.89pt x 361.35pt>
-File: ../R/glmm_sp_files/figure-html/gaupe2-1.png Graphic file (type png)
-
-<use ../R/glmm_sp_files/figure-html/gaupe2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/gaupe2-1.png used on in
-put line 109.
-(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
-
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 109--115
- [][] 
- []
-
-[21 <../R/glmm_sp_files/figure-html/gaupe2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/grevling2-1.png, id=100, 505.89pt x 361.35pt>
+[18 <../R/glmm_sp_files/figure-html/rev2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/grevling2-1.png, id=93, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/grevling2-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-html/grevling2-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/grevling2-1.png used on
- input line 127.
+ input line 117.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 127--133
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 117--118
  [][] 
  []
 
-[22 <../R/glmm_sp_files/figure-html/grevling2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/elg2-1.png, id=104, 505.89pt x 361.35pt>
-File: ../R/glmm_sp_files/figure-html/elg2-1.png Graphic file (type png)
-
-<use ../R/glmm_sp_files/figure-html/elg2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/elg2-1.png used on inpu
-t line 147.
-(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
-
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 147--153
- [][] 
- []
-
-[23 <../R/glmm_sp_files/figure-html/elg2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/hjort2-1.png, id=108, 505.89pt x 361.35pt>
-File: ../R/glmm_sp_files/figure-html/hjort2-1.png Graphic file (type png)
-
-<use ../R/glmm_sp_files/figure-html/hjort2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hjort2-1.png used on in
-put line 162.
-(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
-
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 162--168
- [][] 
- []
-
-[24 <../R/glmm_sp_files/figure-html/hjort2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/hare2-1.png, id=112, 505.89pt x 361.35pt>
+[19 <../R/glmm_sp_files/figure-html/grevling2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/hare2-1.png, id=98, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/hare2-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-html/hare2-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hare2-1.png used on inp
-ut line 177.
+ut line 149.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 177--183
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 149--150
  [][] 
  []
 
-<../R/glmm_sp_files/figure-html/maar2-1.png, id=113, 505.89pt x 361.35pt>
+[20 <../R/glmm_sp_files/figure-html/hare2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/ekorn2-1.png, id=102, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/ekorn2-1.png Graphic file (type png)
+
+<use ../R/glmm_sp_files/figure-html/ekorn2-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/ekorn2-1.png used on in
+put line 162.
+(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
+
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 162--163
+ [][] 
+ []
+
+[21 <../R/glmm_sp_files/figure-html/ekorn2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/elg2-1.png, id=106, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/elg2-1.png Graphic file (type png)
+
+<use ../R/glmm_sp_files/figure-html/elg2-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/elg2-1.png used on inpu
+t line 177.
+(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
+
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 177--178
+ [][] 
+ []
+
+[22 <../R/glmm_sp_files/figure-html/elg2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/hjort2-1.png, id=110, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/hjort2-1.png Graphic file (type png)
+
+<use ../R/glmm_sp_files/figure-html/hjort2-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hjort2-1.png used on in
+put line 189.
+(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
+
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 189--191
+ [][] 
+ []
+
+[23 <../R/glmm_sp_files/figure-html/hjort2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/maar2-1.png, id=114, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/maar2-1.png Graphic file (type png)
 
 <use ../R/glmm_sp_files/figure-html/maar2-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/maar2-1.png used on inp
-ut line 196.
+ut line 204.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 196--202
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 204--206
  [][] 
  []
 
-[25 <../R/glmm_sp_files/figure-html/hare2-1.png (PNG copy)>] [26 <../R/glmm_sp_
-files/figure-html/maar2-1.png (PNG copy)>]) [27]
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 57.
+[24 <../R/glmm_sp_files/figure-html/maar2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/gaupe2-1.png, id=118, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/gaupe2-1.png Graphic file (type png)
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
+<use ../R/glmm_sp_files/figure-html/gaupe2-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/gaupe2-1.png used on in
+put line 220.
+(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
+
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 220--222
+ [][] 
+ []
+
+) [25 <../R/glmm_sp_files/figure-html/gaupe2-1.png (PNG copy)>]
+\openout2 = `tex/discussion.aux'.
+
+
+(./tex/discussion.tex
+Chapter 4.
+[26
+
+
+
+]) [27]
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 57.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 ) [28
 
 
 
-] (./FLM.aux
-(./tex/intro.aux) (./tex/method.aux) (./tex/results.aux))
+]
+(./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux)
+(./tex/discussion.aux))
 
 LaTeX Warning: There were undefined references.
 
@@ -1297,34 +1354,34 @@ Package logreq Info: Writing requests to 'FLM.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 11034 strings out of 494910
- 182374 string characters out of 6179837
- 600853 words of memory out of 5000000
- 14096 multiletter control sequences out of 15000+600000
+ 11039 strings out of 494910
+ 182746 string characters out of 6179837
+ 602983 words of memory out of 5000000
+ 14091 multiletter control sequences out of 15000+600000
  21886 words of font info for 49 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  51i,9n,45p,3661b,1459s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1095.600pk> </home
 /torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/torgeir/
 .texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/torgeir/.texmf-va
-r/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </home/torgeir/.texmf-var/fonts/p
-k/ljfour/jknappen/ec/ecbx1440.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/
-jknappen/ec/ecsl1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/
-ec/ecti1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx20
-74.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk>
- </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/t
-orgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/torgeir/.t
-exmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk> </home/torgeir/.texmf-var/
-fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/torgeir/.texmf-var/fonts/pk/
-ljfour/jknappen/ec/ecrm1200.600pk></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy8.pfb>
-Output written on FLM.pdf (28 pages, 13532021 bytes).
+r/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/torgeir/.texmf-var/fonts/p
+k/ljfour/jknappen/ec/tcrm1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/
+jknappen/ec/ecbx1440.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/
+ec/ecsl1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti10
+95.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk>
+ </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/t
+orgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/torgeir/.t
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/torgeir/.texmf-var/
+fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/torgeir/.texmf-var/fonts/pk/
+ljfour/jknappen/ec/ecrm1728.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jk
+nappen/ec/ecrm2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on FLM.pdf (28 pages, 13698359 bytes).
 PDF statistics:
- 631 PDF objects out of 1000 (max. 8388607)
- 132 compressed objects within 2 object streams
+ 658 PDF objects out of 1000 (max. 8388607)
+ 135 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
 
