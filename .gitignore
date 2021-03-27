@@ -14,3 +14,8 @@ R/glmm_sp_cache
 *.lof
 *.blg
 *.gfs
+Thesis/library.bib
+
+*.log
+
+*.bbl

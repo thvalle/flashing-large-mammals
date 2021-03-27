@@ -487,6 +487,128 @@
       \endverb
       \keyw{Camera trap guidelines,Camera trap methodology,Ecological monitoring,Remote cameras,Trail cameras}
     \endentry
+    \entry{Henrich2020}{article}{}
+      \name{author}{7}{}{%
+        {{uniquename=0,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
+           family={Henrich},
+           family_i={H\bibinitperiod},
+           given={Maik},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=5e98a26a9acbe53cba1caed564152b5a}{%
+           family={Niederlechner},
+           family_i={N\bibinitperiod},
+           given={Sandra},
+           given_i={S\bibinitperiod}}}%
+        {{uniquename=0,hash=7acec411e8fcb58e39fb4cd3b43fbae4}{%
+           family={Kröschel},
+           family_i={K\bibinitperiod},
+           given={Max},
+           given_i={M\bibinitperiod}}}%
+        {{uniquename=0,hash=885f933da6c42bf36e8c6c406d6550d6}{%
+           family={Thoma},
+           family_i={T\bibinitperiod},
+           given={Stefanie},
+           given_i={S\bibinitperiod}}}%
+        {{uniquename=0,hash=8efbcfda15d6816970d81361c26d0804}{%
+           family={Dormann},
+           family_i={D\bibinitperiod},
+           given={Carsten\bibnamedelima F.},
+           given_i={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{uniquename=0,hash=f2023df7507c5721104bd31350623c8c}{%
+           family={Hartig},
+           family_i={H\bibinitperiod},
+           given={Florian},
+           given_i={F\bibinitperiod}}}%
+        {{uniquename=0,hash=7a3b2c1ad75a363dbd62c7140aaee6c0}{%
+           family={Heurich},
+           family_i={H\bibinitperiod},
+           given={Marco},
+           given_i={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{1158d5f33e7af81b7ff00614d53248b9}
+      \strng{fullhash}{eb5173b7a87e8bdde475e2eb1f572e36}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2020}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera traps have become an important tool in wildlife monitoring. However, an issue in interpreting their data in statistical analyses of population densities, demography or behaviour is that the probability of detecting the target animals and their behaviours may vary depending on environmental and methodological factors. A specific problem is the type of flash used in the camera trap, as animals may react differently to different flash types and change their avoidance or habituation behaviour accordingly over time. Here, we provide the first systematic test of the impact of flash type in studies of red deer (Cervus elaphus) and roe deer (Capreolus capreolus), based on an analysis of behavioural responses to white, standard infrared and black flashes during 900 camera trap deployments in the Bavarian Forest National Park and the Northern Black Forest. The results revealed that both deer species were more likely to react to standard infrared than to black flash, but trigger delays prevented comparisons to white flash. Red deer reacted more frequently to camera traps than did roe deer, and responses were more common in the Northern Black Forest than in the Bavarian Forest National Park, where hunting is severely restricted. Contrary to our expectations, camera trapping rates of free-ranging deer did not significantly decline over time for any flash type or species. Despite the lack of evidence for avoidance behaviour, we recommend the use of black flash for behavioural studies of deer populations to minimize the risk of introducing a source of disturbance whereas infrared and white flash are equally suitable for determinations of demographic parameters.}
+      \field{annotation}{Studien såg på forskjeller mellom svart, infrar{ø}d og kvit blits, men kvit blei ekskludert frå ein del analyser grunna forsinkelser i trigger, samt fråvêr av rapidfire-funksjon (blitsen måtte ladast mellom kvar fyring). Hjort viste st{ø}rre grad av påverknad frå kamera (i snitt), mens rådyr i vinterinnhegning såg ut til å unngå kameraene. Monge individ: vanskelig å skilne endringer i visitt-rate Naturleg låg gjenvisitt-rate: lite sannsynleg med unnviking av kamera}
+      \field{issn}{20563485}
+      \field{journaltitle}{Remote Sensing in Ecology and Conservation}
+      \field{number}{3}
+      \field{title}{{The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer}}
+      \field{volume}{6}
+      \field{year}{2020}
+      \field{pages}{399\bibrangedash 410}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1002/rse2.150
+      \endverb
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/Henrich{\_}2020 --- The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer.pdf:pdf
+      \endverb
+      \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
+    \endentry
+    \entry{Hofmeester2019}{article}{}
+      \name{author}{6}{}{%
+        {{uniquename=0,hash=bdd49e81d1eee2c9edfcc47209a29921}{%
+           family={Hofmeester},
+           family_i={H\bibinitperiod},
+           given={Tim\bibnamedelima R.},
+           given_i={T\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{uniquename=0,hash=fbbfc850b5adbae047705f0eccc4ec1b}{%
+           family={Cromsigt},
+           family_i={C\bibinitperiod},
+           given={Joris\bibnamedelima P.G.M.},
+           given_i={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+           family={Odden},
+           family_i={O\bibinitperiod},
+           given={John},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=5561a94b48a2745b41e40d539c7d7e45}{%
+           family={Andrén},
+           family_i={A\bibinitperiod},
+           given={Henrik},
+           given_i={H\bibinitperiod}}}%
+        {{uniquename=0,hash=0cfb18adf8b2e542b1e94d0721b247ea}{%
+           family={Kindberg},
+           family_i={K\bibinitperiod},
+           given={Jonas},
+           given_i={J\bibinitperiod}}}%
+        {{uniquename=0,hash=34ea6866526f38c42b1aa363b3b8b8e7}{%
+           family={Linnell},
+           family_i={L\bibinitperiod},
+           given={John\bibnamedelima D.C.},
+           given_i={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{33f4eac0a08145a84b063471dd33dc76}
+      \strng{fullhash}{bb12c94823b1f115c47e1b0ba9fed90f}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelyear}{2019}
+      \field{datelabelsource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Obtaining reliable species observations is of great importance in animal ecology and wildlife conservation. An increasing number of studies use camera traps (CTs) to study wildlife communities, and an increasing effort is made to make better use and reuse of the large amounts of data that are produced. It is in these circumstances that it becomes paramount to correct for the species- and study-specific variation in imperfect detection within CTs. We reviewed the literature and used our own experience to compile a list of factors that affect CT detection of animals. We did this within a conceptual framework of six distinct scales separating out the influences of (a) animal characteristics, (b) CT specifications, (c) CT set-up protocols, and (d) environmental variables. We identified 40 factors that can potentially influence the detection of animals by CTs at these six scales. Many of these factors were related to only a few overarching parameters. Most of the animal characteristics scale with body mass and diet type, and most environmental characteristics differ with season or latitude such that remote sensing products like NDVI could be used as a proxy index to capture this variation. Factors that influence detection at the microsite and camera scales are probably the most important in determining CT detection of animals. The type of study and specific research question will determine which factors should be corrected. Corrections can be done by directly adjusting the CT metric of interest or by using covariates in a statistical framework. Our conceptual framework can be used to design better CT studies and help when analyzing CT data. Furthermore, it provides an overview of which factors should be reported in CT studies to make them repeatable, comparable, and their data reusable. This should greatly improve the possibilities for global scale analyses of (reused) CT data.}
+      \field{issn}{20457758}
+      \field{journaltitle}{Ecology and Evolution}
+      \field{number}{4}
+      \field{title}{{Framing pictures: A conceptual framework to identify and correct for biases in detection probability of camera traps enabling multi-species comparison}}
+      \field{volume}{9}
+      \field{year}{2019}
+      \field{pages}{2320\bibrangedash 2336}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/ece3.4878
+      \endverb
+      \verb{file}
+      \verb :home/torgeir/Documents/Papers/ece3.4878.pdf:pdf
+      \endverb
+      \keyw{animal characteristics,detectability,environmental variables,mammal monitoring,reuse of data,trail camera}
+    \endentry
     \entry{Moen1999}{book}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=b7fa9e8909f388b5a3b1a78fb4575871}{%
