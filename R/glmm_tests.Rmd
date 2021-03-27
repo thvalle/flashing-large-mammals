@@ -105,7 +105,7 @@ habitat <- readRDS("habitat.rds") %>%
 # filtering out periods longer than (shortest) median length.
 time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, must be rescaled by /10
   left_join(habitat, by = "loc") 
-# time.dep5 <- time.dep4 %>% filter(loc[n.obs > 0])
+time.dep5 <- time.dep4 %>% mutate(time.deploy = time.deploy/8.4)
 
 ```
 
@@ -119,11 +119,11 @@ time.dep4 <- time.dep3 %>% filter(time.deploy < h/10) %>%  # h is normal scale, 
 ```{r sp, eval=FALSE}
 # sp ="maar"
 loc1 <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-time_sp <- filter(time.dep4, species %in% sp, loc %in% loc1) #.dep4 = trimmed data
-# time_sp <- filter(time.dep5, species %in% sp, !period %in% ctrl) #.dep5 = test-transformations
+# time_sp <- filter(time.dep4, species %in% sp, loc %in% loc1) #.dep4 = trimmed data
+time_sp <- filter(time.dep5, species %in% sp, loc %in% loc1) #.dep5 = test-transformations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week) + (1|habitat), # random effects
+            (1 | loc) + (1 | week), # random effects
             data   = time_sp,
             family = poisson) # poisson family of distributions
 # ggeffect calls effects::Effect
@@ -168,6 +168,7 @@ assumpt
 # just a shortcut for editing
 sp="raadyr"
 m_sp <- readRDS("m_raadyr.rds")
+# m_sp <- readRDS("m_grevling.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 ```
 
@@ -176,8 +177,8 @@ p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 library(cowplot) # to make grid-plots
 library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8"),
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), alpha = 0.2, line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#e41a1c","#377eb8")
               ) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
@@ -189,8 +190,9 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, rule = "cet")
 result
+
 
 # labels for equivalence test - prettier to the human eye
 par_lab <- c("Time", "IR", "LED", "Time * IR", "Time * LED")
@@ -302,8 +304,7 @@ para_rev = para_sp
 ```
 
 
-```{r knit-exit, eval=TRUE
-}
+```{r knit-exit, eval=T}
 knitr::knit_exit() # to exit knitting process here instead of at the document end
 ```
 

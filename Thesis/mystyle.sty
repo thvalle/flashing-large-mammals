@@ -6,19 +6,77 @@
 \usepackage{varioref} %referansepakke - see fig X on page Y/ next/previous page
 %\usepackage{showkeys} %easily keep track of the labels you add or use (e.g. see them in pdf)          !!!Remove before final print!!!
 
-\usepackage{multirow} %for tables with multirow sections
-\urlstyle{sf} 
+% \usepackage{multirow} %for tables with multirow sections
+
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
-\usepackage{subcaption}
+\usepackage{subcaption} % caption under subfigures?
+\usepackage{wrapfig} % wrap text around figures
 
-\usepackage[style=authoryear, sorting=none, backend=biber]{biblatex} 
-\usepackage[style=english]{csquotes}
-\addbibresource{/home/torgeir/Documents/Papers/library.bib}
+%biblatex example setup
+%\usepackage[
+%style=authoryear-comp,
+%sorting=nyt, %sort intext by name year then title
+%maxcitenames=2, %max intext authors
+%maxbibnames=30, %max endtext authors
+%url=false, %Dont print URL
+%sortcites=true, %sorts intext citations
+%backend=biber
+%]{biblatex}
+\usepackage[style=authoryear-comp,sorting=nyt,maxcitenames=2,maxbibnames=30,sortcites=true,backend=biber]{biblatex}
+\urlstyle{sf} %change url to sans serif for better linebreaking
+%\usepackage{hyperref} % to get clickable links
 
-\usepackage{gensymb} %Pro­vides generic com­mands \de­gree, \cel­sius, \pert­hou­sand, \mi­cro and \ohm which work both in text and maths mode
+
+\usepackage[style=english]{csquotes} %provides international handling of quote marks and should always be included when you use the biblatex package.
+
+\usepackage{gensymb} %Provides generic commands \degree, \celsius, \perthousand, \micro and \ohm which work both in text and maths mode
 
 
-%\fancyhdr{} 
 %https://no.overleaf.com/learn/latex/How_to_Write_a_Thesis_in_LaTeX_(Part_2):_Page_Layout
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\renewcommand{\chaptermark}[1]{%
+	\markboth{#1}{}}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{Flashing Large Mammals}
+\fancyfoot{} % remove pagenumber
+\fancyfoot[RO,LE]{\thepage} %pagenumber left and right
+\fancyfoot[CO,CE]{\leftmark}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\usepackage{titlesec} % to adjust chapter formatting
+
+\titleformat{\chapter}[block]
+{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
+\titlespacing*{\chapter}{0pt}{-19pt}{0pt}
+
+% listoftables and figures on same page:
+
+\usepackage{titletoc}
+\titlecontents{table}
+[0pt]                                  % left margin
+{\addvspace{.5cm}}%                    % above code (e.g vertical space)
+{\contentsmargin{0pt}                  % numbered entry format
+	Table~\thecontentslabel%
+	\large}
+{\contentsmargin{0pt}\large}           % unnumbered entry format
+{\titlerule*[.5pc]{.}\contentspage}    % filler-page format (e.g dots)
+%[\addvspace{.5pc}]                    % below code (e.g vertical space)
+
+\titlecontents{figure}
+[0pt]                                  % left margin
+{\addvspace{.5cm}}%                    % above code (e.g vertical space)
+{\contentsmargin{0pt}                  % numbered entry format
+	Figure~\thecontentslabel%
+	\large}
+{\contentsmargin{0pt}\large}           % unnumbered entry format
+{\titlerule*[.5pc]{.}\contentspage}    % filler-page format (e.g dots)
+%[\addvspace{.5pc}]                    % below code (e.g vertical space)
+
+
+
 
 

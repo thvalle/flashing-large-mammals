@@ -1,23 +1,35 @@
 \documentclass[11pt,UKenglish,a4paper,twoside]{report}
 \usepackage{graphicx}
 \usepackage{mystyle}
+\addbibresource{tex/library.bib}
+%\bibliography{tex/library} %don't know the difference
 %\graphicspath{ {img/} } %bruker heile paths sidan pandoc ikkje støtter \graphicspath{}
 
-\include{tex/title}
+%\include{tex/title}
+
+
 
 
 %\includeonly{tex/intro, tex/method, tex/results}
 \begin{document}
 
-\maketitle
+%\maketitle
+\include{tex/titlepage}
 
-%\include{tex/abstract}
+\pagenumbering{roman}
+
+\include{tex/abstract}
 %\include{tex/dedication}
 %\include{tex/acknowledge}
 
 \tableofcontents
+\begingroup
+\makeatletter
 \listoffigures
 \listoftables
+
+
+\pagenumbering{arabic}
 
 % -- intro --
 \include{tex/intro}
@@ -43,7 +55,7 @@
 %\renewcommand{\thesubsection}{\Alph{subsection}}
 %
 %\subsection{R Session Info}
-%\label{app:sessinfo}
+\label{app:sessinfo}
 
 %\input{tex/sessinfo.tex}
 

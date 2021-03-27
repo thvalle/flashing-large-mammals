@@ -35,7 +35,8 @@ min(obs$date) # [1] "2019-01-15"
 max(obs$date) # [1] "2020-02-17"  #but last field date was 2020-02-26 at camera 850 & 822!!
 
 sp_focus <- c("ekorn", "elg", "grevling", "hare", "raadyr", "rev")
-obstation <- obs %>% left_join(stations, by = "loc") %>% filter(species %in% sp_focus) %>% unite(abc, abc, flash) # unite lager ny faktor med alle kombinasjoner
+obstation <- obs %>% left_join(stations, by = "loc") %>% filter(species %in% sp_focus) %>%
+  unite(abc, abc, flash) # unite lager ny faktor med alle kombinasjoner
 
 #obstation %>% with(table(species, abc)) %>% 
  # knitr::kable(caption = "Table with kable")
@@ -46,9 +47,12 @@ length(unique(obs$image_id))     # is it because only one picture is selected pe
 # obs_by_loc <- obs %>% group_by(loc) %>% summarise(n = length(timeserie_id)) %>% arrange(desc(n))
 # plot(obs_by_loc)
 
-x <- obs %>% left_join(stations) %>% group_by(abc, loc) %>% 
+x <- obs %>% left_join(stations) %>% group_by(abc, loc, cam_mod) %>% 
   summarise(n=n())
 x %>% group_by(abc) %>% count() %>% pander::pander()
+x %>% group_by(cam_mod) %>% count() %>% pander::pander()
+
+stations %>% group_by(cam_mod) %>% count() %>% pander::pander()
 ```
 
 ## Timeseries plot of periods from the troubleshooting and organisation with Neri
@@ -78,24 +82,26 @@ p_eff <- effort %>%
   mutate(trt_gr = ifelse(period %in% ctrl, "Control", "Treatment"), # faceting factor
          # renaming control-groups in order to extract period-breaks, and not confuse with ctrl_1,2,3,4
          flash = factor(ifelse(period %in% ctrl[c(2,4)], 4, flash), ordered = T,
-                      levels = c(2,3,1,4), labels = c("IR", "LED", "Control", " "))) %>% 
+                      levels = c(1,4,2,3),
+                      labels = c("Control", "period splits added during analysis","IR", "White LED"))) %>% 
 ggplot() +
   facet_grid(rows = "trt_gr", scales = "free_y", space = "free_y") +
   geom_point(aes(date, as.factor(loc), col=flash), size = 0.9) +
   theme_classic() + labs(y = "Location") +
   theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
         legend.position = "top")+
-  scale_color_manual(values = c(c("#abd9e9","#4575b4"),          # trt-colr
-                                rep(c("#fdae61","#f46d43")) )) + # ctrl-colr
-  guides(colour = guide_legend(override.aes = list(size = 2)), #adjust rows of legend
-                x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
-                # x = guide_axis(angle = -10))  #adjust axis-text angle
-p_eff +   theme(legend.title = element_blank()) +
+  scale_color_manual(values = c("#fdae61","#f46d43",     # ctrl-col
+                                 "#abd9e9","#4575b4")) + # trt-col
   scale_x_date(NULL, breaks = f_work, date_labels = "%d-%b",
                sec.axis = sec_axis(~., breaks = c(c$c,f_work[10]), labels = scales::date_format("%d-%b %y") ) ) +
   geom_vline(xintercept = f_work, linetype = "dashed",  alpha =.5) +
   geom_rect(data = rects, aes(xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf),
             alpha = 0.1 )
+p_eff +   theme(legend.title = element_blank()) +
+  guides(colour = guide_legend(override.aes = list(size = 2), ncol = 2, 
+                               reverse = F, byrow = T), #adjust rows of legend
+                x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
+                # x = guide_axis(angle = -10))  #adjust axis-text angle
 ```
 
  
@@ -147,10 +153,10 @@ ggplot() +
   # annotate("rect", xmin = xy[1], xmax = xy[3],
   #        ymin = xy[2], ymax = xy[4],
   #        alpha = .4) +
-   annotate(geom="rect", xmin = 9.28, xmax = 11.4, # i samsvar med excel-
-            ymin = 59.2, ymax = 60.5,              # kjørearket mitt
+   annotate(geom="rect", xmin = 9.3, xmax = 11.5, # i samsvar med excel-
+            ymin = 59.3, ymax = 60.5,              # kjørearket mitt
             alpha = .5, col = "black") +
-  coord_sf(xlim = c(0,25), ylim = c(57,71)) +
+  coord_sf(xlim = c(0.7,25), ylim = c(57,71)) +
   theme_bw()
 
 # ggplot(Viken) +
@@ -158,11 +164,11 @@ ggplot() +
 ```
 
 ```{r}
-library(tmap)
-tmap_mode("plot")
-tm_basemap() + 
-  tm_polygons(Viken) + #will only draw polygon, not additional layers
-  tm_shape(loc_sf) + tm_bubbles(col = "red")
+# library(tmap)
+# tmap_mode("plot")
+# tm_basemap() + 
+#   tm_polygons(Viken) + #will only draw polygon, not additional layers
+#   tm_shape(loc_sf) + tm_bubbles(col = "red")
 
 
 # Library

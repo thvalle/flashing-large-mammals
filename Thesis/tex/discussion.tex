@@ -1,15 +1,24 @@
 \chapter{Discussion}
-%AMkomm:
-%Gjenta først utfordringen med å telle antall dyr. At det er en rask utvikling av metoder, men at man ikke kjenner effekten av ulike sensorer
+%TIPS FRÅ INGVILD:
+% Bare pass på at du svarer på hypotesene dine og drøfter dem
+
+%AMkomm: Gjenta først utfordringen med å telle antall dyr. At det er en rask utvikling av metoder, men at man ikke kjenner effekten av ulike sensorer
+
+%IMRkomm:Det er også fint å starte diskusjonen med et avsnitt som viser litt bakgrunn, som Atle nevner, så kort oppsummert hva du fant, og hvorfor dette er viktige funn/hvordan de passer inn i det større bildet. Så kan man gå videre med underavsnittene der man diskuterer mer detaljer og delmomenter
 
 In the example of Scandlynx, CTs have been introduced as a more reliable survey method than snow track counts of the Eurasian lynx in Norway. The CTs bring in a lot of useful information about the lynx, but it is also triggered by the rest of the mammal species in the area. Thus they provide a lot of information of other species as well, which would be a shame to throw away.
+
+
+% BRØDTEKST
+
+
 
 \section{Overall activity pattern of the mammal community}
 
 As I have shown %AMkomm: Dette er bra - men da må du også introdusere det i introduksjon. Lag deloverskrifter - gjør det enklere å strukturere teksten
 in the density plots from my raw data, I am able to record the daily activity pattern of these other mammal species, and (all/most/some/none) matched the activity-patterns that I expected out from reading about their known activity patterns. %(\cite{})
 Only the red squirrel showed a diurnal pattern. Roe deer and pine marten were active throughout the day, but both had their peaks in the twilight hours.
-
+%IMRkomm: Kanskje skrive mer her om hvorfor de har det aktivitetsmønsteret de har, og hvorfor det er likt/ulikt mellom arter? Med referanser til tidlgiere studier
 
 
 \section{The effect of CT flashes on large carnivores}
@@ -25,7 +34,8 @@ Considering the results for roe deer, although the density figures can’t tell 
 Thus, it has been dark enough that the white LED has been triggered.
 However, there were little activity during the middle of the night, when the light stimuli would have been at its strongest. 
 Consequently, most photos were taken when the flash stimuli wasn’t at its strongest. 
-Just to repeat myself, the overall pattern stayed the same for all periods, which at least tells us that any effect of the flash seems to have been small.
+The overall pattern stayed the same for all periods, %IMRkomm og ingen significant effect i modellene
+which at least tells us that any effect of the flash seems to have been small.
 
 Looking at equivalence test of roe deer in figure [fig:raadyr]b, the main effect of the IR and white LED periods have a wide CI, which makes us unable to conclude on the groups’ true effect sizes. IR is estimated to be within the Region of Practical Equivalence (ROPE), and LED is estimated to be outside, but the large variation still present in the data prevents a conclusion.
 Considering the time variable, and its interactions, all are within the ROPE, and the test tells us to accept its practical equivalence to H0, namely that there is no effect. Still, when interpreting a continuous variable as this, it is worth considering its scale. I scaled my time variable to represent 10 day intervals, in order for the model to converge. That means the estimated effect of time since deployment is ten times larger than it would have been if it remained as 1 day intervals. Conversely, had I scaled it to represent the whole span of 84 days, the estimated effect and confidence interval would have been 8.4 times larger than what it is now (0.4), and so would it’s confidence interval. The equivalence test would be undecided on the effect of time since deployment.
@@ -33,17 +43,20 @@ Considering the time variable, and its interactions, all are within the ROPE, an
 
 \section{Methodological considerations}
 
-\subsection{CT setup}
+hello hello
+
+\subsubsection{CT setup}
 
 Seeing as many experiments are set up with a period length much shorter than mine, it seems reasonable to aim for a time unit which would translate well to these more common lengths. Henrich et al. (2020) set up cameras for periods of  20 days, and could therefore not have detected any effects on a time scale of 84 days.
 
 
-\subsection{Study design}
+\subsubsection{Study design}
 
 Nevertheless, the control-group is what I am using as a reference point to what is normal. What I am interested in investigating is whether, and to what extent, the LED group deviates from the control group. As mentioned, the main effect is non-significantly negative compared to both the control and the IR. The same is true along the time axis. Both the slope for IR and white LED are practically equivalent to the slope for control. 
 
-\subsection{Estimation issues}
+\subsubsection{Estimation issues}
 
+Let's talk about estimation issues
 
 \section{Model performance} %AMkomm: Dette er diskusjon
 %The models explaining variation and whatnot, mostly due to the random terms. This is to say that after having accounted for variations between camera sites, and seasonal fluctuations, there still was a lot of variation in the dataset left to explain, and the period-categories of “Control”, “IR” and “LED” interacting with time since deployment didn’t explain much of it.
@@ -54,7 +67,7 @@ Using the performance package i checked various assumptions, and all held up Ove
 
 
 %
-%\section{Old discussion}
+%\subsection{Old discussion}
 %
 %What I've really been attempting to do in this thesis, is to look for any surprising differences in the detection rate of target species when using a white LED camera trap. Therefore, I have been more afraid of commiting a type II error (false positive; accepting H0 when it really is false) than I have been of committing a type I error (rejecting H0 when it really is true).
 %Hopefully, the equivalence tests I've performed can say something meaningful about the effect size of white LED flash-usage.
@@ -68,8 +81,3 @@ Using the performance package i checked various assumptions, and all held up Ove
 %Species interaction with human: high conflict animals wary of flash as it signals humans nearby
 %Camera site proximity to urban area/ roads (Artificial Light At Night) : +correlation with proximity and effect on species
 
-
-
-
-%TIPS FRÅ INGVILD:
-% Bare pass på at du svarer på hypotesene dine og drøfter dem

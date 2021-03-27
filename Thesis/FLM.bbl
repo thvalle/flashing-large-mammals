@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 2.6 $
+% $ biblatex bbl format version 3.1 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -18,71 +18,456 @@
 
 
 \refsection{0}
-  \sortlist[entry]{none/global}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{R-lme4}{manual}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=291c4bc67cf41a2019405a2328a9b75e}{%
+           family={Bates},
+           familyi={B\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0041cc0eb4aa28929ffbd059d5e4add5}{%
+           family={Maechler},
+           familyi={M\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d6b13be971f13ee03cc83cded41b6d7e}{%
+           family={Bolker},
+           familyi={B\bibinitperiod},
+           given={Ben},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=666afa7867ec142c4a63a819a19244f9}{%
+           family={Walker},
+           familyi={W\bibinitperiod},
+           given={Steven},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d09b320744f09c093eb8b0d7f6bbdda0}
+      \strng{fullhash}{7fb4c5e907b1e55e95b530d5388bd764}
+      \strng{bibnamehash}{7fb4c5e907b1e55e95b530d5388bd764}
+      \strng{authorbibnamehash}{7fb4c5e907b1e55e95b530d5388bd764}
+      \strng{authornamehash}{d09b320744f09c093eb8b0d7f6bbdda0}
+      \strng{authorfullhash}{7fb4c5e907b1e55e95b530d5388bd764}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 1.1-26}
+      \field{title}{{lme4: Linear Mixed-Effects Models using Eigen and S4}}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://github.com/lme4/lme4/
+      \endverb
+      \verb{url}
+      \verb https://github.com/lme4/lme4/
+      \endverb
+    \endentry
+    \entry{Burton2015}{article}{}
+      \name{author}{8}{}{%
+        {{un=0,uniquepart=base,hash=1d33599f30f34cf3f6889c5ced964886}{%
+           family={Burton},
+           familyi={B\bibinitperiod},
+           given={A.\bibnamedelimi Cole},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8903ab3fcf541d375b3c41ae22e54c6c}{%
+           family={Neilson},
+           familyi={N\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=634b999de89b50af2052747b305f2e81}{%
+           family={Moreira},
+           familyi={M\bibinitperiod},
+           given={Dario},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=344b217010007feccc5e512af6205f65}{%
+           family={Ladle},
+           familyi={L\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9a52ad6c0a5efa49c7f45efcb1fdc249}{%
+           family={Steenweg},
+           familyi={S\bibinitperiod},
+           given={Robin},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ad537e7273ac617960a9995be3a9ab00}{%
+           family={Fisher},
+           familyi={F\bibinitperiod},
+           given={Jason\bibnamedelima T.},
+           giveni={J\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ef44c3ffaabce70ebb9a93eda0454ceb}{%
+           family={Bayne},
+           familyi={B\bibinitperiod},
+           given={Erin},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5613ea8be8ffb2b1008d9eed9e8f0f24}{%
+           family={Boutin},
+           familyi={B\bibinitperiod},
+           given={Stan},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{148eb2239174ef2f16a03cbba748aade}
+      \strng{fullhash}{c30956d899a6050e4b551ba6a23cbbf2}
+      \strng{bibnamehash}{c30956d899a6050e4b551ba6a23cbbf2}
+      \strng{authorbibnamehash}{c30956d899a6050e4b551ba6a23cbbf2}
+      \strng{authornamehash}{148eb2239174ef2f16a03cbba748aade}
+      \strng{authorfullhash}{c30956d899a6050e4b551ba6a23cbbf2}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Reliable assessment of animal populations is a long-standing challenge in wildlife ecology. Technological advances have led to widespread adoption of camera traps (CTs) to survey wildlife distribution, abundance and behaviour. As for any wildlife survey method, camera trapping must contend with sources of sampling error such as imperfect detection. Early applications focused on density estimation of naturally marked species, but there is growing interest in broad-scale CT surveys of unmarked populations and communities. Nevertheless, inferences based on detection indices are controversial, and the suitability of alternatives such as occupancy estimation is debatable. We reviewed 266 CT studies published between 2008 and 2013. We recorded study objectives and methodologies, evaluating the consistency of CT protocols and sampling designs, the extent to which CT surveys considered sampling error, and the linkages between analytical assumptions and species ecology. Nearly two-thirds of studies surveyed more than one species, and a majority used response variables that ignored imperfect detection (e.g. presence-absence, relative abundance). Many studies used opportunistic sampling and did not explicitly report details of sampling design and camera deployment that could affect conclusions. Most studies estimating density used capture-recapture methods on marked species, with spatially explicit methods becoming more prominent. Few studies estimated density for unmarked species, focusing instead on occupancy modelling or measures of relative abundance. While occupancy studies estimated detectability, most did not explicitly define key components of the modelling framework (e.g. a site) or discuss potential violations of model assumptions (e.g. site closure). Studies using relative abundance relied on assumptions of equal detectability, and most did not explicitly define expected relationships between measured responses and underlying ecological processes (e.g. animal abundance and movement). Synthesis and applications. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring. The rapid adoption of camera traps represents an exciting transition in wildlife survey methodology. We remain optimistic about the technology's promise, but call for more explicit consideration of underlying processes of animal abundance, movement and detection by cameras, including more thorough reporting of methodological details and assumptions. Such transparency will facilitate efforts to evaluate and improve the reliability of camera trap surveys, ultimately leading to stronger inferences and helping to meet modern needs for effective ecological inquiry and biodiversity monitoring.}
+      \field{issn}{13652664}
+      \field{journaltitle}{Journal of Applied Ecology}
+      \field{number}{3}
+      \field{title}{{Wildlife camera trapping: A review and recommendations for linking surveys to ecological processes}}
+      \field{volume}{52}
+      \field{year}{2015}
+      \field{pages}{675\bibrangedash 685}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1111/1365-2664.12432
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Burton et al. - 2015 - Wildlife camera trapping A review and recommendations for linking surveys to ecological processes.pdf:pdf
+      \endverb
+      \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
+    \endentry
+    \entry{Henrich2020}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
+           family={Henrich},
+           familyi={H\bibinitperiod},
+           given={Maik},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5e98a26a9acbe53cba1caed564152b5a}{%
+           family={Niederlechner},
+           familyi={N\bibinitperiod},
+           given={Sandra},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7acec411e8fcb58e39fb4cd3b43fbae4}{%
+           family={Kröschel},
+           familyi={K\bibinitperiod},
+           given={Max},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=885f933da6c42bf36e8c6c406d6550d6}{%
+           family={Thoma},
+           familyi={T\bibinitperiod},
+           given={Stefanie},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e58ec5a72f2b79de033f264f720ad88c}{%
+           family={Dormann},
+           familyi={D\bibinitperiod},
+           given={Carsten\bibnamedelima F.},
+           giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f2023df7507c5721104bd31350623c8c}{%
+           family={Hartig},
+           familyi={H\bibinitperiod},
+           given={Florian},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a3b2c1ad75a363dbd62c7140aaee6c0}{%
+           family={Heurich},
+           familyi={H\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1158d5f33e7af81b7ff00614d53248b9}
+      \strng{fullhash}{af9b95e825bf1386ee0bad1cef206653}
+      \strng{bibnamehash}{af9b95e825bf1386ee0bad1cef206653}
+      \strng{authorbibnamehash}{af9b95e825bf1386ee0bad1cef206653}
+      \strng{authornamehash}{1158d5f33e7af81b7ff00614d53248b9}
+      \strng{authorfullhash}{af9b95e825bf1386ee0bad1cef206653}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera traps have become an important tool in wildlife monitoring. However, an issue in interpreting their data in statistical analyses of population densities, demography or behaviour is that the probability of detecting the target animals and their behaviours may vary depending on environmental and methodological factors. A specific problem is the type of flash used in the camera trap, as animals may react differently to different flash types and change their avoidance or habituation behaviour accordingly over time. Here, we provide the first systematic test of the impact of flash type in studies of red deer (Cervus elaphus) and roe deer (Capreolus capreolus), based on an analysis of behavioural responses to white, standard infrared and black flashes during 900 camera trap deployments in the Bavarian Forest National Park and the Northern Black Forest. The results revealed that both deer species were more likely to react to standard infrared than to black flash, but trigger delays prevented comparisons to white flash. Red deer reacted more frequently to camera traps than did roe deer, and responses were more common in the Northern Black Forest than in the Bavarian Forest National Park, where hunting is severely restricted. Contrary to our expectations, camera trapping rates of free-ranging deer did not significantly decline over time for any flash type or species. Despite the lack of evidence for avoidance behaviour, we recommend the use of black flash for behavioural studies of deer populations to minimize the risk of introducing a source of disturbance whereas infrared and white flash are equally suitable for determinations of demographic parameters.}
+      \field{annotation}{Studien s{å}g p{å} forskjeller mellom svart, infrar{ø}d og kvit blits, men kvit blei ekskludert fr{å} ein del analyser grunna forsinkelser i trigger, samt fr{å}vêr av rapidfire-funksjon (blitsen m{å}tte ladast mellom kvar fyring). Hjort viste st{ø}rre grad av p{å}verknad fr{å} kamera (i snitt), mens r{å}dyr i vinterinnhegning s{å}g ut til {å} unng{å} kameraene. Monge individ: vanskelig {å} skilne endringer i visitt-rate Naturleg l{å}g gjenvisitt-rate: lite sannsynleg med unnviking av kamera}
+      \field{issn}{20563485}
+      \field{journaltitle}{Remote Sensing in Ecology and Conservation}
+      \field{number}{3}
+      \field{title}{{The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer}}
+      \field{volume}{6}
+      \field{year}{2020}
+      \field{pages}{399\bibrangedash 410}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1002/rse2.150
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Henrich et al. - 2020 - The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer.pdf:pdf
+      \endverb
+      \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
+    \endentry
+    \entry{Hofmeester2019}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=68180ab55823180a458118c16d26784d}{%
+           family={Hofmeester},
+           familyi={H\bibinitperiod},
+           given={Tim\bibnamedelima R.},
+           giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=95daebf350763e538def960ec85297dc}{%
+           family={Cromsigt},
+           familyi={C\bibinitperiod},
+           given={Joris\bibnamedelima P.G.M.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+           family={Odden},
+           familyi={O\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5561a94b48a2745b41e40d539c7d7e45}{%
+           family={Andrén},
+           familyi={A\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cfb18adf8b2e542b1e94d0721b247ea}{%
+           family={Kindberg},
+           familyi={K\bibinitperiod},
+           given={Jonas},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=af97da4ff2947a446a5f22d59453067a}{%
+           family={Linnell},
+           familyi={L\bibinitperiod},
+           given={John\bibnamedelima D.C.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
+      \strng{fullhash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{bibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{authorbibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{authornamehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
+      \strng{authorfullhash}{979ef48584fe4c248f3772648e3ea5eb}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Obtaining reliable species observations is of great importance in animal ecology and wildlife conservation. An increasing number of studies use camera traps (CTs) to study wildlife communities, and an increasing effort is made to make better use and reuse of the large amounts of data that are produced. It is in these circumstances that it becomes paramount to correct for the species- and study-specific variation in imperfect detection within CTs. We reviewed the literature and used our own experience to compile a list of factors that affect CT detection of animals. We did this within a conceptual framework of six distinct scales separating out the influences of (a) animal characteristics, (b) CT specifications, (c) CT set-up protocols, and (d) environmental variables. We identified 40 factors that can potentially influence the detection of animals by CTs at these six scales. Many of these factors were related to only a few overarching parameters. Most of the animal characteristics scale with body mass and diet type, and most environmental characteristics differ with season or latitude such that remote sensing products like NDVI could be used as a proxy index to capture this variation. Factors that influence detection at the microsite and camera scales are probably the most important in determining CT detection of animals. The type of study and specific research question will determine which factors should be corrected. Corrections can be done by directly adjusting the CT metric of interest or by using covariates in a statistical framework. Our conceptual framework can be used to design better CT studies and help when analyzing CT data. Furthermore, it provides an overview of which factors should be reported in CT studies to make them repeatable, comparable, and their data reusable. This should greatly improve the possibilities for global scale analyses of (reused) CT data.}
+      \field{issn}{20457758}
+      \field{journaltitle}{Ecology and Evolution}
+      \field{number}{4}
+      \field{title}{{Framing pictures: A conceptual framework to identify and correct for biases in detection probability of camera traps enabling multi-species comparison}}
+      \field{volume}{9}
+      \field{year}{2019}
+      \field{pages}{2320\bibrangedash 2336}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/ece3.4878
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Hofmeester et al. - 2019 - Framing pictures A conceptual framework to identify and correct for biases in detection probability of camera.pdf:pdf
+      \endverb
+      \keyw{animal characteristics,detectability,environmental variables,mammal monitoring,reuse of data,trail camera}
+    \endentry
+    \entry{R-parameters}{manual}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=e064e4ae54988e12b214c315997070d0}{%
+           family={Lüdecke},
+           familyi={L\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b21f8d3c6be7a2d1ab8d1b8cb84f1268}{%
+           family={Makowski},
+           familyi={M\bibinitperiod},
+           given={Dominique},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6757054e1a50517507422c9958756a00}{%
+           family={Ben-Shachar},
+           familyi={B\bibinithyphendelim S\bibinitperiod},
+           given={Mattan\bibnamedelima S},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1d33f4a49d999a220aa925dd7fa59e0d}{%
+           family={Patil},
+           familyi={P\bibinitperiod},
+           given={Indrajeet},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=61aeb12d8356847fd78276efbc908086}{%
+           family={H{ø}jsgaard},
+           familyi={H\bibinitperiod},
+           given={S{ø}ren},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{07312856bfcec88454643821234f1dd3}
+      \strng{fullhash}{5334f4b425de371521a777f3bbad50d0}
+      \strng{bibnamehash}{5334f4b425de371521a777f3bbad50d0}
+      \strng{authorbibnamehash}{5334f4b425de371521a777f3bbad50d0}
+      \strng{authornamehash}{07312856bfcec88454643821234f1dd3}
+      \strng{authorfullhash}{5334f4b425de371521a777f3bbad50d0}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 0.12.0.1}
+      \field{title}{{parameters: Processing of Model Parameters}}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://easystats.github.io/parameters/
+      \endverb
+      \verb{url}
+      \verb https://easystats.github.io/parameters/
+      \endverb
+    \endentry
+    \entry{easystats}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b21f8d3c6be7a2d1ab8d1b8cb84f1268}{%
+           family={Makowski},
+           familyi={M\bibinitperiod},
+           given={Dominique},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6757054e1a50517507422c9958756a00}{%
+           family={Ben-Shachar},
+           familyi={B\bibinithyphendelim S\bibinitperiod},
+           given={Mattan\bibnamedelima S},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e064e4ae54988e12b214c315997070d0}{%
+           family={Lüdecke},
+           familyi={L\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a4a2603626ee82dbbd2e09f03ea1709a}
+      \strng{fullhash}{9008109ccb98c7ef431a830429958a22}
+      \strng{bibnamehash}{9008109ccb98c7ef431a830429958a22}
+      \strng{authorbibnamehash}{9008109ccb98c7ef431a830429958a22}
+      \strng{authornamehash}{a4a2603626ee82dbbd2e09f03ea1709a}
+      \strng{authorfullhash}{9008109ccb98c7ef431a830429958a22}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{GitHub}
+      \field{title}{{The easystats collection of R packages.}}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://github.com/easystats/easystats
+      \endverb
+      \verb{url}
+      \verb https://github.com/easystats/easystats
+      \endverb
+    \endentry
     \entry{Meek2014}{article}{}
       \name{author}{11}{}{%
-        {{uniquename=0,hash=655c96ffcbb22024a16a040c2084196c}{%
+        {{un=0,uniquepart=base,hash=407f42d942b1b796e74ea763e931bcb2}{%
            family={Meek},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={P.\bibnamedelimi D.},
-           given_i={P\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-        {{uniquename=0,hash=1f8762857dd1a438c7d4a463f0bd0902}{%
+           giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88fc2343abc98a03245365a672ccfa74}{%
            family={Ballard},
-           family_i={B\bibinitperiod},
+           familyi={B\bibinitperiod},
            given={G.},
-           given_i={G\bibinitperiod}}}%
-        {{uniquename=0,hash=e4209097c2f0b9c96d73fd397ae3309c}{%
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b0c8db360bca8b3e9a9825e766faf745}{%
            family={Claridge},
-           family_i={C\bibinitperiod},
+           familyi={C\bibinitperiod},
            given={A.},
-           given_i={A\bibinitperiod}}}%
-        {{uniquename=0,hash=a9e1d6f296fba589b41ae9e6cf3de34d}{%
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=38f8dc9844be9cb8740e0c02db7cb122}{%
            family={Kays},
-           family_i={K\bibinitperiod},
+           familyi={K\bibinitperiod},
            given={R.},
-           given_i={R\bibinitperiod}}}%
-        {{uniquename=0,hash=9901ef3b57f214af3b9d3b43dcb31733}{%
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3b34d6d30bf982f1beab0a7397c98260}{%
            family={Moseby},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={K.},
-           given_i={K\bibinitperiod}}}%
-        {{uniquename=0,hash=f4da2afefbf07644d3d62d34219ad996}{%
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3d4a580493351270964b5f71c9119e56}{%
            family={O'Brien},
-           family_i={O\bibinitperiod},
+           familyi={O\bibinitperiod},
            given={T.},
-           given_i={T\bibinitperiod}}}%
-        {{uniquename=0,hash=4349ac1ae0831f27485f5be2fce8c785}{%
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6290d34b64d894f117013116f9625bf3}{%
            family={O'Connell},
-           family_i={O\bibinitperiod},
+           familyi={O\bibinitperiod},
            given={A.},
-           given_i={A\bibinitperiod}}}%
-        {{uniquename=0,hash=ce270d48cc7e3ac8bbb598132c2fb385}{%
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8fb495513ab0d2badf1af7cec781fe60}{%
            family={Sanderson},
-           family_i={S\bibinitperiod},
+           familyi={S\bibinitperiod},
            given={J.},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=db42741d854aa1021161c53baaa5c24b}{%
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dac5cae1804c8504b91b6d020cfc7377}{%
            family={Swann},
-           family_i={S\bibinitperiod},
+           familyi={S\bibinitperiod},
            given={D.\bibnamedelimi E.},
-           given_i={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-        {{uniquename=0,hash=2d386df6ef011fe65b080c9f8749cbbb}{%
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9669c2a0220727c38c65cf9503dd6a52}{%
            family={Tobler},
-           family_i={T\bibinitperiod},
+           familyi={T\bibinitperiod},
            given={M.},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=427bad06a0a2cd7ce3367f32765022f4}{%
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=38393490b9d66a58de82bcabd0a0203f}{%
            family={Townsend},
-           family_i={T\bibinitperiod},
+           familyi={T\bibinitperiod},
            given={S.},
-           given_i={S\bibinitperiod}}}%
+           giveni={S\bibinitperiod},
+           givenun=0}}%
       }
-      \strng{namehash}{00fe80aea26d203f80e742ca76e4ed84}
-      \strng{fullhash}{79464283ec16d0335e3458cbe2be242c}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2014}
-      \field{datelabelsource}{}
+      \strng{namehash}{d35fe9e342542766e089531e41f679a0}
+      \strng{fullhash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
+      \strng{bibnamehash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
+      \strng{authorbibnamehash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
+      \strng{authornamehash}{d35fe9e342542766e089531e41f679a0}
+      \strng{authorfullhash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Camera traps are used by scientists and natural resource managers to acquire ecological data, and the rapidly increasing camera trapping literature highlights how popular this technique has become. Nevertheless, the methodological information reported in camera trap publications can vary widely, making replication of the study difficult. Here we propose a series of guiding principles for reporting methods and results obtained using camera traps. Attributes of camera trapping we cover include: (i) specifying the model(s) of camera traps(s) used, (ii) mode of deployment, (iii) camera settings, and (iv) study design. In addition to suggestions regarding best practice data coding and analysis, we present minimum principles for standardizing information that we believe should be reported in all peer-reviewed papers. Standardised reporting enables more robust comparisons among studies, facilitates national and global reviews, enables greater ease of study replication, and leads to improved wildlife research and management outcomes. {©} 2014 Her majesty the Queen in Right of Australia.}
@@ -98,24 +483,25 @@
       \verb 10.1007/s10531-014-0712-8
       \endverb
       \verb{file}
-      \verb :home/torgeir/Documents/Papers/Meek2014a_GuidingPrinciples.pdf:pdf
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Meek et al. - 2014 - Recommended guiding principles for reporting on camera trapping research.pdf:pdf
       \endverb
       \keyw{Camera trap guidelines,Camera trap methodology,Ecological monitoring,Remote cameras,Trail cameras}
     \endentry
     \entry{Moen1999}{book}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=6db06355d80c01d10d2a8c7c40954ad4}{%
+        {{un=0,uniquepart=base,hash=b7fa9e8909f388b5a3b1a78fb4575871}{%
            family={Moen},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={Asbj{ø}rn},
-           given_i={A\bibinitperiod}}}%
+           giveni={A\bibinitperiod},
+           givenun=0}}%
       }
       \name{editor}{1}{}{%
         {{hash=18bbc28df8395fe7885c9bcb367fcf56}{%
            family={Lillethun},
-           family_i={L\bibinitperiod},
+           familyi={L\bibinitperiod},
            given={Arvid},
-           given_i={A\bibinitperiod}}}%
+           giveni={A\bibinitperiod}}}%
       }
       \list{location}{1}{%
         {H{ø}nefoss}%
@@ -123,12 +509,19 @@
       \list{publisher}{1}{%
         {Norwegian Mapping Authority}%
       }
-      \strng{namehash}{6db06355d80c01d10d2a8c7c40954ad4}
-      \strng{fullhash}{6db06355d80c01d10d2a8c7c40954ad4}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{1999}
-      \field{datelabelsource}{}
+      \strng{namehash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{fullhash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{bibnamehash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{authorbibnamehash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{authornamehash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{authorfullhash}{b7fa9e8909f388b5a3b1a78fb4575871}
+      \strng{editorbibnamehash}{18bbc28df8395fe7885c9bcb367fcf56}
+      \strng{editornamehash}{18bbc28df8395fe7885c9bcb367fcf56}
+      \strng{editorfullhash}{18bbc28df8395fe7885c9bcb367fcf56}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{82-7945-000-9 Vegetation}
@@ -136,18 +529,22 @@
       \field{year}{1999}
       \field{pages}{209}
       \range{pages}{1}
+      \verb{urlraw}
+      \verb https://www.nb.no/items/URN:NBN:no-nb{\_}digibok{\_}2010011503011
+      \endverb
       \verb{url}
-      \verb https://www.nb.no/items/URN:NBN:no-nb_digibok_2010011503011
+      \verb https://www.nb.no/items/URN:NBN:no-nb%7B%5C_%7Ddigibok%7B%5C_%7D2010011503011
       \endverb
       \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
     \endentry
     \entry{Odden2015}{report}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+        {{un=0,uniquepart=base,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
            family={Odden},
-           family_i={O\bibinitperiod},
+           familyi={O\bibinitperiod},
            given={John},
-           given_i={J\bibinitperiod}}}%
+           giveni={J\bibinitperiod},
+           givenun=0}}%
       }
       \list{location}{1}{%
         {Oslo, Norway}%
@@ -157,32 +554,39 @@
       }
       \strng{namehash}{264aa2e2a54350f344718a34cfcdb4dd}
       \strng{fullhash}{264aa2e2a54350f344718a34cfcdb4dd}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2015}
-      \field{datelabelsource}{}
+      \strng{bibnamehash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \strng{authorbibnamehash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \strng{authornamehash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \strng{authorfullhash}{264aa2e2a54350f344718a34cfcdb4dd}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The lynx population in Scandinavia has been monitored since the 1990's using snow-tracking to detect the presence of family groups. Parts of Norway have experienced winters with limited snow cover in recent years, creating a need to find alternatives to our current monitoring meth- ods. This report summarize experiences from a pilot project testing camera traps for monitoring lynx in 3 study areas in southeastern Norway. The goal has been to test if camera traps increase the number of observations of family groups, and if we can use individual recognition from im- ages to calculate the density of lynx using spatial capture-recapture methods. Although camera traps are a standard method for lynx monitoring in many countries, there is a need to evaluate their suitability in Norway where we need to monitor very large areas with very low density lynx populations. Camera traps were deployed at 297 localities in the 3 study areas, in parts of Oslo, Akershus and {Ø}stfold Counties (Region 4, 2010-2015), Vestfold County with adjoining areas of Buskerud and Telemark (Region 2, 2012-2015) and Oppland County (Region 3, 2014-2015). All fieldwork was conducted in collaboration with the Norwegian Hunters and Anglers Association in Oppland and Akershus, with assistance from students and volunteers. We photographed lynx 573 times in 112 locations during 120 453 camera-days. During the same period, we observed other species 42 435 times. In all three areas cameras increased the num- ber of observations of family groups. Fourteen of 18 family groups detected by the public and reported to the National Large Predator Monitoring Program (Rovdata) within the study areas during all study winters had at least one observation from camera-traps. We compared estimates of the number of family groups made by the traditional methods (lynx tracks in snow and grouping by distance criteria, AK) within the study areas with estimates based on data from camera traps. Estimates based on AK were 23 family groups for all years and all areas combined, and corre- sponding estimates solely based on data from camera traps were for 20 family groups. We estimated densities of lynx in Regions 4 and 2 using spatial capture-recapture methods, and in both areas lynx densities decreased during the study period. In Region 2 densities decreased from 2.1 (±0.7) lynx/1000 km2 in 2012/13 to 1.2 (±0.4) in 2014/15. In Region 4 lynx densities decreased from 2.0 (±0.5) and 2.9 (±1.5) lynx/1000 km2 the first 2 years to 1.3 (±0.4), 0.6 (±0.1) and 0.4 (±0.2) lynx/1000 km2 the last 3 winters. We followed nine lynx with GPS collars within these study areas, and all marked lynx were cap- tured by camera traps. Female lynx were photographed on average 10 times per year, while male lynx on average were photographed 27 times per year. We demonstrate that camera traps can be a useful supplement to the current snow-based mon- itoring of lynx family groups in Scandinavia. A more intensive system of camera traps may also provide estimates of lynx densities with a measure of the precision in the estimates. Our experi- ence here is also that the involvement of local people in the operation of the camera traps may reduce conflicts. We need to further develop camera traps as a method to be used in long-term studies of demographic parameters of lynx, behavioral studies, habitat selection, effects of hu- man disturbance and interactions with other species. It is also important to evaluate the potential of camera traps as a tool to monitor multiple species in forest ecosystems. John}
       \field{isbn}{9788242628466}
-      \field{title}{{Bruk av viltkamera i overvåking av gaupe - et pilotstudie i tre områder på {Ø}stlandet - NINA Rapport 1216}}
+      \field{title}{{Bruk av viltkamera i overv{å}king av gaupe - et pilotstudie i tre omr{å}der p{å} {Ø}stlandet - NINA Rapport 1216}}
       \field{type}{techreport}
       \field{year}{2015}
       \field{pages}{54}
       \range{pages}{1}
       \verb{file}
-      \verb :home/torgeir/Documents/Papers/Odden2015.pdf:pdf
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Odden - 2015 - Bruk av viltkamera i overv{\aa}king av gaupe - et pilotstudie i tre omr{\aa}der p{\aa} {\O}stlandet - NINA Rapport 1216.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
       \endverb
       \verb{url}
       \verb https://brage.nina.no/nina-xmlui/handle/11250/2368722
       \endverb
       \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
     \endentry
-    \entry{RCoreTeam2020}{manual}{}
+    \entry{R-base}{manual}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=a902f7a1275f47f57554b7ea75ccd0bc}{%
-           family={{R\bibnamedelimb Core\bibnamedelimb Team}},
-           family_i={R\bibinitperiod}}}%
+        {{un=0,uniquepart=base,hash=dcdebb6b35bff7c0568bf8c50ef8626d}{%
+           family={{R Core Team}},
+           familyi={R\bibinitperiod}}}%
       }
       \list{location}{1}{%
         {Vienna, Austria}%
@@ -190,180 +594,222 @@
       \list{organization}{1}{%
         {R Foundation for Statistical Computing}%
       }
-      \strng{namehash}{a902f7a1275f47f57554b7ea75ccd0bc}
-      \strng{fullhash}{a902f7a1275f47f57554b7ea75ccd0bc}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2020}
-      \field{datelabelsource}{}
+      \strng{namehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{fullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{bibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorbibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authornamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorfullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{R: A Language and Environment for Statistical Computing}}
-      \field{year}{2020}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://www.r-project.org/
+      \endverb
       \verb{url}
       \verb https://www.r-project.org/
       \endverb
     \endentry
-    \entry{RStudioTeam2020a}{manual}{}
+    \entry{RStudio}{misc}{}
       \name{author}{1}{}{%
-        {{uniquename=0,hash=90fbfa7dc07c6cc64d243966cd050af3}{%
-           family={{RStudio\bibnamedelimb Team}},
-           family_i={R\bibinitperiod}}}%
+        {{un=0,uniquepart=base,hash=637571a077e704fe4594c3457d5a6a81}{%
+           family={{RStudio Team}},
+           familyi={R\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {RStudio, PBC}%
       }
       \list{location}{1}{%
         {Boston, MA}%
       }
-      \list{organization}{1}{%
-        {RStudio, PBC}%
-      }
-      \strng{namehash}{90fbfa7dc07c6cc64d243966cd050af3}
-      \strng{fullhash}{90fbfa7dc07c6cc64d243966cd050af3}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2020}
-      \field{datelabelsource}{}
+      \strng{namehash}{637571a077e704fe4594c3457d5a6a81}
+      \strng{fullhash}{637571a077e704fe4594c3457d5a6a81}
+      \strng{bibnamehash}{637571a077e704fe4594c3457d5a6a81}
+      \strng{authorbibnamehash}{637571a077e704fe4594c3457d5a6a81}
+      \strng{authornamehash}{637571a077e704fe4594c3457d5a6a81}
+      \strng{authorfullhash}{637571a077e704fe4594c3457d5a6a81}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{RStudio: Integrated Development Environment for R}}
       \field{year}{2020}
+      \verb{urlraw}
+      \verb http://www.rstudio.com/
+      \endverb
       \verb{url}
       \verb http://www.rstudio.com/
       \endverb
     \endentry
     \entry{tidyverse}{article}{}
       \name{author}{24}{}{%
-        {{uniquename=0,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+        {{un=0,uniquepart=base,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
            family={Wickham},
-           family_i={W\bibinitperiod},
+           familyi={W\bibinitperiod},
            given={Hadley},
-           given_i={H\bibinitperiod}}}%
-        {{uniquename=0,hash=0c11220b22f907dc3709ff23c6b023e5}{%
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0c11220b22f907dc3709ff23c6b023e5}{%
            family={Averick},
-           family_i={A\bibinitperiod},
+           familyi={A\bibinitperiod},
            given={Mara},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=0f88b724c9f070dbceda00a5027d25bb}{%
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0f88b724c9f070dbceda00a5027d25bb}{%
            family={Bryan},
-           family_i={B\bibinitperiod},
+           familyi={B\bibinitperiod},
            given={Jennifer},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=3ad4f9244dbfff3b38eeeec6d91fbd7d}{%
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3ad4f9244dbfff3b38eeeec6d91fbd7d}{%
            family={Chang},
-           family_i={C\bibinitperiod},
+           familyi={C\bibinitperiod},
            given={Winston},
-           given_i={W\bibinitperiod}}}%
-        {{uniquename=0,hash=4ecd44ecbb04d17f2451ea24f4113e2f}{%
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=28ee445d433874efb86495f4c4e9d559}{%
            family={McGowan},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={Lucy\bibnamedelima D'Agostino},
-           given_i={L\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-        {{uniquename=0,hash=3bd2c624a8715b2aeffcecaa24f3d017}{%
+           giveni={L\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bd2c624a8715b2aeffcecaa24f3d017}{%
            family={François},
-           family_i={F\bibinitperiod},
+           familyi={F\bibinitperiod},
            given={Romain},
-           given_i={R\bibinitperiod}}}%
-        {{uniquename=0,hash=de759ef99fad34b8426e26035eb4a20b}{%
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de759ef99fad34b8426e26035eb4a20b}{%
            family={Grolemund},
-           family_i={G\bibinitperiod},
+           familyi={G\bibinitperiod},
            given={Garrett},
-           given_i={G\bibinitperiod}}}%
-        {{uniquename=0,hash=83154656fbd4fc02a9e468c493204cf9}{%
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=83154656fbd4fc02a9e468c493204cf9}{%
            family={Hayes},
-           family_i={H\bibinitperiod},
+           familyi={H\bibinitperiod},
            given={Alex},
-           given_i={A\bibinitperiod}}}%
-        {{uniquename=0,hash=4caae9be043b32573c94b11203a4a2fe}{%
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4caae9be043b32573c94b11203a4a2fe}{%
            family={Henry},
-           family_i={H\bibinitperiod},
+           familyi={H\bibinitperiod},
            given={Lionel},
-           given_i={L\bibinitperiod}}}%
-        {{uniquename=0,hash=5d26572f4d1de0fce70db1a8cfb6b0d1}{%
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d26572f4d1de0fce70db1a8cfb6b0d1}{%
            family={Hester},
-           family_i={H\bibinitperiod},
+           familyi={H\bibinitperiod},
            given={Jim},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=3305789acf03200ed22f154007d4fab9}{%
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3305789acf03200ed22f154007d4fab9}{%
            family={Kuhn},
-           family_i={K\bibinitperiod},
+           familyi={K\bibinitperiod},
            given={Max},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=3219fca86efad07be2c3bdcce2ff6169}{%
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=baa847ed0a47fe330db451600329cf32}{%
            family={Pedersen},
-           family_i={P\bibinitperiod},
+           familyi={P\bibinitperiod},
            given={Thomas\bibnamedelima Lin},
-           given_i={T\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-        {{uniquename=0,hash=ac004a72f317bb04dcf539660a0feee0}{%
+           giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ac004a72f317bb04dcf539660a0feee0}{%
            family={Miller},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={Evan},
-           given_i={E\bibinitperiod}}}%
-        {{uniquename=0,hash=7ab1c185cbf2b8444dae944ea4bf9f3f}{%
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5769225f722449dff0c3f62aa09d2f6e}{%
            family={Bache},
-           family_i={B\bibinitperiod},
+           familyi={B\bibinitperiod},
            given={Stephan\bibnamedelima Milton},
-           given_i={S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
-        {{uniquename=0,hash=1435ca4f08e53208e1c34297357afa80}{%
+           giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1435ca4f08e53208e1c34297357afa80}{%
            family={Müller},
-           family_i={M\bibinitperiod},
+           familyi={M\bibinitperiod},
            given={Kirill},
-           given_i={K\bibinitperiod}}}%
-        {{uniquename=0,hash=0f4f7df4d18c1270721b575fc1288184}{%
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0f4f7df4d18c1270721b575fc1288184}{%
            family={Ooms},
-           family_i={O\bibinitperiod},
+           familyi={O\bibinitperiod},
            given={Jeroen},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=42a6c387e6c733bd0db8180d2bbacd30}{%
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=42a6c387e6c733bd0db8180d2bbacd30}{%
            family={Robinson},
-           family_i={R\bibinitperiod},
+           familyi={R\bibinitperiod},
            given={David},
-           given_i={D\bibinitperiod}}}%
-        {{uniquename=0,hash=13c79784f4bd9ce9ca016c501f0d0d43}{%
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d318a128b5a51b4b776ac61c1f4f7e99}{%
            family={Seidel},
-           family_i={S\bibinitperiod},
+           familyi={S\bibinitperiod},
            given={Dana\bibnamedelima Paige},
-           given_i={D\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
-        {{uniquename=0,hash=ac149bcd683a561a218e8dc1c1529489}{%
+           giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ac149bcd683a561a218e8dc1c1529489}{%
            family={Spinu},
-           family_i={S\bibinitperiod},
+           familyi={S\bibinitperiod},
            given={Vitalie},
-           given_i={V\bibinitperiod}}}%
-        {{uniquename=0,hash=cc134fc26d52494111fa09f0a1546069}{%
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cc134fc26d52494111fa09f0a1546069}{%
            family={Takahashi},
-           family_i={T\bibinitperiod},
+           familyi={T\bibinitperiod},
            given={Kohske},
-           given_i={K\bibinitperiod}}}%
-        {{uniquename=0,hash=858f3a61393526cfc73cb860925a277a}{%
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=858f3a61393526cfc73cb860925a277a}{%
            family={Vaughan},
-           family_i={V\bibinitperiod},
+           familyi={V\bibinitperiod},
            given={Davis},
-           given_i={D\bibinitperiod}}}%
-        {{uniquename=0,hash=acc6b5a79d7cad33c02e41491584028f}{%
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=acc6b5a79d7cad33c02e41491584028f}{%
            family={Wilke},
-           family_i={W\bibinitperiod},
+           familyi={W\bibinitperiod},
            given={Claus},
-           given_i={C\bibinitperiod}}}%
-        {{uniquename=0,hash=ff79890fd7a7f58816ee7360c25d812e}{%
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ff79890fd7a7f58816ee7360c25d812e}{%
            family={Woo},
-           family_i={W\bibinitperiod},
+           familyi={W\bibinitperiod},
            given={Kara},
-           given_i={K\bibinitperiod}}}%
-        {{uniquename=0,hash=f2f301536c9cd620e39deb5fad8712ff}{%
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f2f301536c9cd620e39deb5fad8712ff}{%
            family={Yutani},
-           family_i={Y\bibinitperiod},
+           familyi={Y\bibinitperiod},
            given={Hiroaki},
-           given_i={H\bibinitperiod}}}%
+           giveni={H\bibinitperiod},
+           givenun=0}}%
       }
       \strng{namehash}{e0731a35ef88164c57848ecb7ca5f8ca}
-      \strng{fullhash}{fa5412b21fba19cdd2a59e8e526b29a1}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2019}
-      \field{datelabelsource}{}
+      \strng{fullhash}{60da0af5902bcdfab541641a492d8d42}
+      \strng{bibnamehash}{60da0af5902bcdfab541641a492d8d42}
+      \strng{authorbibnamehash}{60da0af5902bcdfab541641a492d8d42}
+      \strng{authornamehash}{e0731a35ef88164c57848ecb7ca5f8ca}
+      \strng{authorfullhash}{60da0af5902bcdfab541641a492d8d42}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Open Source Software}
       \field{number}{43}
-      \field{title}{{Welcome to the {tidyverse}}}
+      \field{title}{{Welcome to the {\{}tidyverse{\}}}}
       \field{volume}{4}
       \field{year}{2019}
       \field{pages}{1686}
@@ -372,51 +818,7 @@
       \verb 10.21105/joss.01686
       \endverb
     \endentry
-    \entry{lme4}{article}{}
-      \name{author}{4}{}{%
-        {{uniquename=0,hash=291c4bc67cf41a2019405a2328a9b75e}{%
-           family={Bates},
-           family_i={B\bibinitperiod},
-           given={Douglas},
-           given_i={D\bibinitperiod}}}%
-        {{uniquename=0,hash=9cd1e56848b277b4f48a6e0b817ba5ab}{%
-           family={Mächler},
-           family_i={M\bibinitperiod},
-           given={Martin},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=d6b13be971f13ee03cc83cded41b6d7e}{%
-           family={Bolker},
-           family_i={B\bibinitperiod},
-           given={Ben},
-           given_i={B\bibinitperiod}}}%
-        {{uniquename=0,hash=3face7d9e1128ebfefc56b5f54f28451}{%
-           family={Walker},
-           family_i={W\bibinitperiod},
-           given={Steve},
-           given_i={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{d09b320744f09c093eb8b0d7f6bbdda0}
-      \strng{fullhash}{e1419b3c7f22b8a469bd183c172e98b4}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2015}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Journal of Statistical Software}
-      \field{number}{1}
-      \field{title}{{Fitting Linear Mixed-Effects Models Using {lme4}}}
-      \field{volume}{67}
-      \field{year}{2015}
-      \field{pages}{1\bibrangedash 48}
-      \range{pages}{48}
-      \verb{doi}
-      \verb 10.18637/jss.v067.i01
-      \endverb
-    \endentry
-  \endsortlist
-  \missing{Heinrich2020}
-  \missing{easystats}
+  \enddatalist
 \endrefsection
 \endinput
 

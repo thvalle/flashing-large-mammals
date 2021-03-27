@@ -52,14 +52,15 @@
     <requires type="static">
       <file>blx-dm.def</file>
       <file>blx-compat.def</file>
-      <file>biblatex_.def</file>
-      <file>authoryear.bbx</file>
+      <file>biblatex.def</file>
       <file>standard.bbx</file>
-      <file>authoryear.cbx</file>
+      <file>authoryear.bbx</file>
+      <file>authoryear-comp.bbx</file>
+      <file>authoryear-comp.cbx</file>
       <file>biblatex.cfg</file>
-      <file>UKenglish.lbx</file>
       <file>british.lbx</file>
       <file>english.lbx</file>
+      <file>UKenglish.lbx</file>
     </requires>
   </internal>
   <external package="biblatex" priority="5" active="0">
@@ -81,7 +82,7 @@
       <file>FLM.bcf</file>
     </requires>
     <requires type="editable">
-      <file>/home/torgeir/Documents/Papers/library.bib</file>
+      <file>tex/library.bib</file>
     </requires>
   </external>
 </requests>

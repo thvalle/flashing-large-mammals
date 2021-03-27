@@ -1,31 +1,37 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\defcounter {refsection}{0}\relax 
-\select@language {UKenglish}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
+\babel@toc {UKenglish}{}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Experiment setup}}{8}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Examples of camera setups}}{9}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Map of study area}}{4}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Active camera days}}{12}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The Experimental setup}}{5}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Period lengths}}{13}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Examples of camera setups}}{6}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.4}{\ignorespaces An overview of active camera days}}{9}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Period lengths}}{10}{}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Camera trapping days and number of events per species\relax }}{15}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Caption1\relax }}{12}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Roe deer}}{17}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Raw count and number of events per species}}{13}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Red fox}}{18}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Camera trapping days and number of events per species\relax }}{13}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Red deer}}{23}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Roe deer}}{15}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Pine marten}}{24}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Red fox}}{16}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Lynx}}{25}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Red deer}}{21}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Pine marten}}{22}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Lynx}}{23}{}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
+\contentsfinish 

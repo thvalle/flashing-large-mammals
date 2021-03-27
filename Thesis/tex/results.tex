@@ -12,7 +12,9 @@ The type of CT flash had an overall minor effect on detection rates.
 In general, the control periods (which never had white flashes) had a somewhat lower detection rate than the IR and white LED periods.
 %Between the experiment periods, I expected the IR periods to have the highest detection rate, but LED was somewhat higher for most species (see table \ref{tab:params}). %AMkomm: why?
 
-There were a total of $\approx 18 000$ camera trapping days, which was unevenly distributed between the different periods and period types. Trimming the data according to median period length of IR periods (which was shorter than that of control and white LED periods) evened out the disproportions between the periods (see figure \ref{fig:active days}).
+There were a total of $\approx 18 000$ camera trapping days, which was unevenly distributed between the different periods and period types.
+
+%Trimming the data according to median period length of IR periods (which was shorter than that of control and white LED periods) evened out the disproportions between the periods (see figure \ref{fig:active days}). %IMRkomm: Dette har du allerede sagt i metode
 
 
 
@@ -20,42 +22,54 @@ I will present detailed results of all the nine mammalian species included in my
 Each species is presented with a figure showing activity across time of day, a photo taken with a white LED CT of the species, %TODO (during night) 
 an equivalence test, and a plot of the marginal means of the fixed effects in the GLMM model, showing the detection rates of all three types of periods (Control, IR and white LED) along a time axis.
 
+%\begin{wrapfigure}{o}{.4\textwidth}
+% \centering
+%	\includegraphics[scale=.2]{../R/glmm_sp_files/figure-html/active-days-3.png}
+% \caption[Active camera days]
+% {Active camera days} %\par \small
+% %Number of active days per type of period, before and after trimming the data}
+% \label{fig:active days}
+%\end{wrapfigure}
+\begin{figure}[ht]
+\includegraphics[width=0.9\linewidth]{../R/glmm_sp_files/figure-html/active-days-3.png} 
+	\caption{Caption1}
+	\label{fig:wrapfig}
+\end{figure}
+
+
 \begin{figure}
-\begin{subfigure}{.5\textwidth}
- \centering
-	\includegraphics[scale=.4]{../R/glmm_sp_files/figure-html/active-days-3.png}
- \caption[Active camera days]
- {Active camera days %\par \small
- Number of active days per type of period, before and after trimming the data}
- \label{fig:active days}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
  \centering
 	\includegraphics[scale=.4]{../R/glmm_sp_files/figure-html/events-1.png}
  \caption[Raw count and number of events per species]
  {Raw count and number of events per species}
-\end{subfigure}
 \caption{Camera trapping days and number of events per species}
+\label{fig:events}
 \end{figure}
 
 
-The main effect of LED was positive for most species, although none responded significantly (table \ref{tab:param}).
+The main effect of LED was positive for most species, although none responded significantly (table \ref{tab:param}). % IMRkomm: Det er vanskelig å si noe generelt om en main effect når denne også er med i (signifikante) interaksjoner. Og all den tid denne heller ikke er signifikant, så trenger du ikke nevne hvilken retning den tar. Dette er også en kategorisk variabel, så dette estimatet gir forskjellen fra referansenivået (her: kontroll), ikke en global effekt. Og denne effekten er igjen påvirket av interaksjonene den deltar i.
+\clearpage
 
 \begin{table}[ht]  % må inn for å fjerna begin{table} kvar gong tabellen oppdaterast!
-\caption[Results of GLMM]
-{% \par \small 
-Results of generalised linear mixed effects models on detection rate of species at 56 different locations in south-eastern Norway,% with three different treatment levels; periods from sites unchanged through the the whole study period (Intercept), period with only IR camera (IR) and period with additional white LED camera (LED). Random effects are location ID and week of year. 
+
+\caption[Model results]
+{ \small 
+Results of Poisson mixed effects models on detection rate of species at 56 different locations in southeastern Norway, with three different treatment levels interacting with time since deployment (Time); periods from sites unchanged through the the whole study period (Intercept), periods with only IR camera (IR), periods with an additional white LED camera (wLED). Random effects are location ID and week of year. 
 %95\% Confidence Intervals and p-values were computed using the Wald approximation.
 }
 \label{tab:param}
-\small
+\footnotesize
 \input{tex/tab/parameters2.tex}
+%IMRkomm:
+%Ta bort parentes rundt «intercept», skriv i teksten at TimeDeploy = time since deployment of camera, kanskje også forklare hva IR og white LED er i teksten. Skriv at referansenivået for flash type er control. Fp med hvilke random effects du har brukt, og før opp stdev for disse. 
+%Kanskje markere signifikante effekter med bold eller kursiv, for å lette lesingen?
 
- 
+\pagestyle{empty}
 %\input{tex/fig/res1.tex}
 
 
 \clearpage %to force the insertion of parameters table
+\pagestyle{fancy}
 
 \section{Roe deer}
 Roe deer was the most common species detected by the CTs, with a total number of 1709 events.
@@ -93,7 +107,7 @@ The overall pattern was similar between each group (Control, IR, white LED), and
 The GLMM explaining variation in detection rate of red fox had a substantial explanatory power (conditional R2 = 0.19), but the part related to the fixed effects alone (marginal R2) was just 0.001.
 In other words, most of the explained variation in detection rate was due to seasonal changes and variation between the different camera sites captured in the random terms.
 No parameters were significant in a standard NHST, and considering the equivalence test in figure \ref{fig:rev}b, the effect of time was practically equivalent for all types of periods.
-However, the large variation in the main effect of  IR and white LED hinders any decision on H0, although the estimate of white LED (0.18) hints at an attractant effect.
+However, the large variation in the main effect of  IR and white LED hinders any decision on H0. %, although the estimate of white LED (0.18) hints at an attractant effect. %IMRkomm: Men p-verdien er knallhøy, så jeg ville ikke klassifisert dette som et hint mot effekt.
 
 \begin{figure}
 		  \centering

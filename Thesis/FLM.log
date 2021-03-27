@@ -1,818 +1,438 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.6.4)  23 MAR 2021 12:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.3.25)  26 MAR 2021 20:58
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**FLM.tex
-(./FLM.tex
-LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 5 language(s) loaded.
-(/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
-Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
-File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
-)
-\c@part=\count79
-\c@chapter=\count80
-\c@section=\count81
-\c@subsection=\count82
-\c@subsubsection=\count83
-\c@paragraph=\count84
-\c@subparagraph=\count85
-\c@figure=\count86
-\c@table=\count87
-\abovecaptionskip=\skip41
-\belowcaptionskip=\skip42
-\bibindent=\dimen102
-)
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+**./FLM.tex
+(FLM.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\repo
+rt.cls
+Document Class: report 2020/04/10 v1.4m Standard LaTeX document class
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\size
+11.clo
+File: size11.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count179
+\c@chapter=\count180
+\c@section=\count181
+\c@subsection=\count182
+\c@subsubsection=\count183
+\c@paragraph=\count184
+\c@subparagraph=\count185
+\c@figure=\count186
+\c@table=\count187
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\
+graphicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\
+keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks14
+\KV@toks@=\toks15
 )
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2016/01/03 v1.0q Standard LaTeX Graphics (DPC,SPQR)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\
+graphics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\
+trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-
+cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 95.
+Package graphics Info: Driver file: pdftex.def on input line 105.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count88
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-
+def\pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen103
-\Gin@req@width=\dimen104
-)
-(./mystyle.sty
+\Gin@req@height=\dimen139
+\Gin@req@width=\dimen140
+) (mystyle.sty
 Package: mystyle 2021/02/09 Selfmade mystyle package
- (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2015/03/17 v1.2c Input encoding file
-\inpenc@prehook=\toks15
-\inpenc@posthook=\toks16
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def
-File: utf8.def 2015/12/03 v1.1r UTF-8 support for inputenc
-Now handling font encoding OML ...
-... no UTF-8 mapping file for font encoding OML
-Now handling font encoding T1 ...
-... processing UTF-8 mapping file for font encoding T1
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.dfu
-File: t1enc.dfu 2015/12/03 v1.1r UTF-8 support for inputenc
-   defining Unicode char U+00A0 (decimal 160)
-   defining Unicode char U+00A1 (decimal 161)
-   defining Unicode char U+00A3 (decimal 163)
-   defining Unicode char U+00AB (decimal 171)
-   defining Unicode char U+00AD (decimal 173)
-   defining Unicode char U+00BB (decimal 187)
-   defining Unicode char U+00BF (decimal 191)
-   defining Unicode char U+00C0 (decimal 192)
-   defining Unicode char U+00C1 (decimal 193)
-   defining Unicode char U+00C2 (decimal 194)
-   defining Unicode char U+00C3 (decimal 195)
-   defining Unicode char U+00C4 (decimal 196)
-   defining Unicode char U+00C5 (decimal 197)
-   defining Unicode char U+00C6 (decimal 198)
-   defining Unicode char U+00C7 (decimal 199)
-   defining Unicode char U+00C8 (decimal 200)
-   defining Unicode char U+00C9 (decimal 201)
-   defining Unicode char U+00CA (decimal 202)
-   defining Unicode char U+00CB (decimal 203)
-   defining Unicode char U+00CC (decimal 204)
-   defining Unicode char U+00CD (decimal 205)
-   defining Unicode char U+00CE (decimal 206)
-   defining Unicode char U+00CF (decimal 207)
-   defining Unicode char U+00D0 (decimal 208)
-   defining Unicode char U+00D1 (decimal 209)
-   defining Unicode char U+00D2 (decimal 210)
-   defining Unicode char U+00D3 (decimal 211)
-   defining Unicode char U+00D4 (decimal 212)
-   defining Unicode char U+00D5 (decimal 213)
-   defining Unicode char U+00D6 (decimal 214)
-   defining Unicode char U+00D8 (decimal 216)
-   defining Unicode char U+00D9 (decimal 217)
-   defining Unicode char U+00DA (decimal 218)
-   defining Unicode char U+00DB (decimal 219)
-   defining Unicode char U+00DC (decimal 220)
-   defining Unicode char U+00DD (decimal 221)
-   defining Unicode char U+00DE (decimal 222)
-   defining Unicode char U+00DF (decimal 223)
-   defining Unicode char U+00E0 (decimal 224)
-   defining Unicode char U+00E1 (decimal 225)
-   defining Unicode char U+00E2 (decimal 226)
-   defining Unicode char U+00E3 (decimal 227)
-   defining Unicode char U+00E4 (decimal 228)
-   defining Unicode char U+00E5 (decimal 229)
-   defining Unicode char U+00E6 (decimal 230)
-   defining Unicode char U+00E7 (decimal 231)
-   defining Unicode char U+00E8 (decimal 232)
-   defining Unicode char U+00E9 (decimal 233)
-   defining Unicode char U+00EA (decimal 234)
-   defining Unicode char U+00EB (decimal 235)
-   defining Unicode char U+00EC (decimal 236)
-   defining Unicode char U+00ED (decimal 237)
-   defining Unicode char U+00EE (decimal 238)
-   defining Unicode char U+00EF (decimal 239)
-   defining Unicode char U+00F0 (decimal 240)
-   defining Unicode char U+00F1 (decimal 241)
-   defining Unicode char U+00F2 (decimal 242)
-   defining Unicode char U+00F3 (decimal 243)
-   defining Unicode char U+00F4 (decimal 244)
-   defining Unicode char U+00F5 (decimal 245)
-   defining Unicode char U+00F6 (decimal 246)
-   defining Unicode char U+00F8 (decimal 248)
-   defining Unicode char U+00F9 (decimal 249)
-   defining Unicode char U+00FA (decimal 250)
-   defining Unicode char U+00FB (decimal 251)
-   defining Unicode char U+00FC (decimal 252)
-   defining Unicode char U+00FD (decimal 253)
-   defining Unicode char U+00FE (decimal 254)
-   defining Unicode char U+00FF (decimal 255)
-   defining Unicode char U+0100 (decimal 256)
-   defining Unicode char U+0101 (decimal 257)
-   defining Unicode char U+0102 (decimal 258)
-   defining Unicode char U+0103 (decimal 259)
-   defining Unicode char U+0104 (decimal 260)
-   defining Unicode char U+0105 (decimal 261)
-   defining Unicode char U+0106 (decimal 262)
-   defining Unicode char U+0107 (decimal 263)
-   defining Unicode char U+0108 (decimal 264)
-   defining Unicode char U+0109 (decimal 265)
-   defining Unicode char U+010A (decimal 266)
-   defining Unicode char U+010B (decimal 267)
-   defining Unicode char U+010C (decimal 268)
-   defining Unicode char U+010D (decimal 269)
-   defining Unicode char U+010E (decimal 270)
-   defining Unicode char U+010F (decimal 271)
-   defining Unicode char U+0110 (decimal 272)
-   defining Unicode char U+0111 (decimal 273)
-   defining Unicode char U+0112 (decimal 274)
-   defining Unicode char U+0113 (decimal 275)
-   defining Unicode char U+0114 (decimal 276)
-   defining Unicode char U+0115 (decimal 277)
-   defining Unicode char U+0116 (decimal 278)
-   defining Unicode char U+0117 (decimal 279)
-   defining Unicode char U+0118 (decimal 280)
-   defining Unicode char U+0119 (decimal 281)
-   defining Unicode char U+011A (decimal 282)
-   defining Unicode char U+011B (decimal 283)
-   defining Unicode char U+011C (decimal 284)
-   defining Unicode char U+011D (decimal 285)
-   defining Unicode char U+011E (decimal 286)
-   defining Unicode char U+011F (decimal 287)
-   defining Unicode char U+0120 (decimal 288)
-   defining Unicode char U+0121 (decimal 289)
-   defining Unicode char U+0122 (decimal 290)
-   defining Unicode char U+0123 (decimal 291)
-   defining Unicode char U+0124 (decimal 292)
-   defining Unicode char U+0125 (decimal 293)
-   defining Unicode char U+0128 (decimal 296)
-   defining Unicode char U+0129 (decimal 297)
-   defining Unicode char U+012A (decimal 298)
-   defining Unicode char U+012B (decimal 299)
-   defining Unicode char U+012C (decimal 300)
-   defining Unicode char U+012D (decimal 301)
-   defining Unicode char U+012E (decimal 302)
-   defining Unicode char U+012F (decimal 303)
-   defining Unicode char U+0130 (decimal 304)
-   defining Unicode char U+0131 (decimal 305)
-   defining Unicode char U+0132 (decimal 306)
-   defining Unicode char U+0133 (decimal 307)
-   defining Unicode char U+0134 (decimal 308)
-   defining Unicode char U+0135 (decimal 309)
-   defining Unicode char U+0136 (decimal 310)
-   defining Unicode char U+0137 (decimal 311)
-   defining Unicode char U+0139 (decimal 313)
-   defining Unicode char U+013A (decimal 314)
-   defining Unicode char U+013B (decimal 315)
-   defining Unicode char U+013C (decimal 316)
-   defining Unicode char U+013D (decimal 317)
-   defining Unicode char U+013E (decimal 318)
-   defining Unicode char U+0141 (decimal 321)
-   defining Unicode char U+0142 (decimal 322)
-   defining Unicode char U+0143 (decimal 323)
-   defining Unicode char U+0144 (decimal 324)
-   defining Unicode char U+0145 (decimal 325)
-   defining Unicode char U+0146 (decimal 326)
-   defining Unicode char U+0147 (decimal 327)
-   defining Unicode char U+0148 (decimal 328)
-   defining Unicode char U+014A (decimal 330)
-   defining Unicode char U+014B (decimal 331)
-   defining Unicode char U+014C (decimal 332)
-   defining Unicode char U+014D (decimal 333)
-   defining Unicode char U+014E (decimal 334)
-   defining Unicode char U+014F (decimal 335)
-   defining Unicode char U+0150 (decimal 336)
-   defining Unicode char U+0151 (decimal 337)
-   defining Unicode char U+0152 (decimal 338)
-   defining Unicode char U+0153 (decimal 339)
-   defining Unicode char U+0154 (decimal 340)
-   defining Unicode char U+0155 (decimal 341)
-   defining Unicode char U+0156 (decimal 342)
-   defining Unicode char U+0157 (decimal 343)
-   defining Unicode char U+0158 (decimal 344)
-   defining Unicode char U+0159 (decimal 345)
-   defining Unicode char U+015A (decimal 346)
-   defining Unicode char U+015B (decimal 347)
-   defining Unicode char U+015C (decimal 348)
-   defining Unicode char U+015D (decimal 349)
-   defining Unicode char U+015E (decimal 350)
-   defining Unicode char U+015F (decimal 351)
-   defining Unicode char U+0160 (decimal 352)
-   defining Unicode char U+0161 (decimal 353)
-   defining Unicode char U+0162 (decimal 354)
-   defining Unicode char U+0163 (decimal 355)
-   defining Unicode char U+0164 (decimal 356)
-   defining Unicode char U+0165 (decimal 357)
-   defining Unicode char U+0168 (decimal 360)
-   defining Unicode char U+0169 (decimal 361)
-   defining Unicode char U+016A (decimal 362)
-   defining Unicode char U+016B (decimal 363)
-   defining Unicode char U+016C (decimal 364)
-   defining Unicode char U+016D (decimal 365)
-   defining Unicode char U+016E (decimal 366)
-   defining Unicode char U+016F (decimal 367)
-   defining Unicode char U+0170 (decimal 368)
-   defining Unicode char U+0171 (decimal 369)
-   defining Unicode char U+0172 (decimal 370)
-   defining Unicode char U+0173 (decimal 371)
-   defining Unicode char U+0174 (decimal 372)
-   defining Unicode char U+0175 (decimal 373)
-   defining Unicode char U+0176 (decimal 374)
-   defining Unicode char U+0177 (decimal 375)
-   defining Unicode char U+0178 (decimal 376)
-   defining Unicode char U+0179 (decimal 377)
-   defining Unicode char U+017A (decimal 378)
-   defining Unicode char U+017B (decimal 379)
-   defining Unicode char U+017C (decimal 380)
-   defining Unicode char U+017D (decimal 381)
-   defining Unicode char U+017E (decimal 382)
-   defining Unicode char U+01CD (decimal 461)
-   defining Unicode char U+01CE (decimal 462)
-   defining Unicode char U+01CF (decimal 463)
-   defining Unicode char U+01D0 (decimal 464)
-   defining Unicode char U+01D1 (decimal 465)
-   defining Unicode char U+01D2 (decimal 466)
-   defining Unicode char U+01D3 (decimal 467)
-   defining Unicode char U+01D4 (decimal 468)
-   defining Unicode char U+01E2 (decimal 482)
-   defining Unicode char U+01E3 (decimal 483)
-   defining Unicode char U+01E6 (decimal 486)
-   defining Unicode char U+01E7 (decimal 487)
-   defining Unicode char U+01E8 (decimal 488)
-   defining Unicode char U+01E9 (decimal 489)
-   defining Unicode char U+01EA (decimal 490)
-   defining Unicode char U+01EB (decimal 491)
-   defining Unicode char U+01F0 (decimal 496)
-   defining Unicode char U+01F4 (decimal 500)
-   defining Unicode char U+01F5 (decimal 501)
-   defining Unicode char U+0218 (decimal 536)
-   defining Unicode char U+0219 (decimal 537)
-   defining Unicode char U+021A (decimal 538)
-   defining Unicode char U+021B (decimal 539)
-   defining Unicode char U+01E02 (decimal 7682)
-   defining Unicode char U+01E03 (decimal 7683)
-   defining Unicode char U+200C (decimal 8204)
-   defining Unicode char U+2013 (decimal 8211)
-   defining Unicode char U+2014 (decimal 8212)
-   defining Unicode char U+2018 (decimal 8216)
-   defining Unicode char U+2019 (decimal 8217)
-   defining Unicode char U+201A (decimal 8218)
-   defining Unicode char U+201C (decimal 8220)
-   defining Unicode char U+201D (decimal 8221)
-   defining Unicode char U+201E (decimal 8222)
-   defining Unicode char U+2030 (decimal 8240)
-   defining Unicode char U+2031 (decimal 8241)
-   defining Unicode char U+2039 (decimal 8249)
-   defining Unicode char U+203A (decimal 8250)
-   defining Unicode char U+2423 (decimal 9251)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\inpu
+tenc.sty
+Package: inputenc 2020/08/01 v1.3d Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
 )
-Now handling font encoding OT1 ...
-... processing UTF-8 mapping file for font encoding OT1
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ot1enc.dfu
-File: ot1enc.dfu 2015/12/03 v1.1r UTF-8 support for inputenc
-   defining Unicode char U+00A0 (decimal 160)
-   defining Unicode char U+00A1 (decimal 161)
-   defining Unicode char U+00A3 (decimal 163)
-   defining Unicode char U+00AD (decimal 173)
-   defining Unicode char U+00B8 (decimal 184)
-   defining Unicode char U+00BF (decimal 191)
-   defining Unicode char U+00C5 (decimal 197)
-   defining Unicode char U+00C6 (decimal 198)
-   defining Unicode char U+00D8 (decimal 216)
-   defining Unicode char U+00DF (decimal 223)
-   defining Unicode char U+00E6 (decimal 230)
-   defining Unicode char U+00EC (decimal 236)
-   defining Unicode char U+00ED (decimal 237)
-   defining Unicode char U+00EE (decimal 238)
-   defining Unicode char U+00EF (decimal 239)
-   defining Unicode char U+00F8 (decimal 248)
-   defining Unicode char U+0131 (decimal 305)
-   defining Unicode char U+0141 (decimal 321)
-   defining Unicode char U+0142 (decimal 322)
-   defining Unicode char U+0152 (decimal 338)
-   defining Unicode char U+0153 (decimal 339)
-   defining Unicode char U+0174 (decimal 372)
-   defining Unicode char U+0175 (decimal 373)
-   defining Unicode char U+0176 (decimal 374)
-   defining Unicode char U+0177 (decimal 375)
-   defining Unicode char U+0218 (decimal 536)
-   defining Unicode char U+0219 (decimal 537)
-   defining Unicode char U+021A (decimal 538)
-   defining Unicode char U+021B (decimal 539)
-   defining Unicode char U+2013 (decimal 8211)
-   defining Unicode char U+2014 (decimal 8212)
-   defining Unicode char U+2018 (decimal 8216)
-   defining Unicode char U+2019 (decimal 8217)
-   defining Unicode char U+201C (decimal 8220)
-   defining Unicode char U+201D (decimal 8221)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\font
+enc.sty
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
 )
-Now handling font encoding OMS ...
-... processing UTF-8 mapping file for font encoding OMS
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/omsenc.dfu
-File: omsenc.dfu 2015/12/03 v1.1r UTF-8 support for inputenc
-   defining Unicode char U+00A7 (decimal 167)
-   defining Unicode char U+00B6 (decimal 182)
-   defining Unicode char U+00B7 (decimal 183)
-   defining Unicode char U+2020 (decimal 8224)
-   defining Unicode char U+2021 (decimal 8225)
-   defining Unicode char U+2022 (decimal 8226)
-)
-Now handling font encoding OMX ...
-... no UTF-8 mapping file for font encoding OMX
-Now handling font encoding U ...
-... no UTF-8 mapping file for font encoding U
-   defining Unicode char U+00A9 (decimal 169)
-   defining Unicode char U+00AA (decimal 170)
-   defining Unicode char U+00AE (decimal 174)
-   defining Unicode char U+00BA (decimal 186)
-   defining Unicode char U+02C6 (decimal 710)
-   defining Unicode char U+02DC (decimal 732)
-   defining Unicode char U+200C (decimal 8204)
-   defining Unicode char U+2026 (decimal 8230)
-   defining Unicode char U+2122 (decimal 8482)
-   defining Unicode char U+2423 (decimal 9251)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.def
-File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
-LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
-))
-(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip10
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/url\url.s
+ty
+\Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2016/02/24 3.9q The Babel package
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\b
+abel.sty
+Package: babel 2021/03/03 3.55 The Babel package
 
-(/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf
-Language: english 2012/08/20 v3.3p English support from the babel system
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\b
+abel.def
+File: babel.def 2021/03/03 3.55 Babel common definitions
+\babel@savecnt=\count188
+\U@D=\dimen141
+\l@babelnohyphens=\language83
 
-(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2016/02/24 3.9q Babel common definitions
-\babel@savecnt=\count89
-\U@D=\dimen105
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\t
+xtbabel.def)
+\bbl@readstream=\read2
 )
-\l@canadian = a dialect from \language\l@american 
-\l@australian = a dialect from \language\l@british 
-\l@newzealand = a dialect from \language\l@british 
-))
-(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
-Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
-Package textcomp Info: Sub-encoding information:
-(textcomp)               5 = only ISO-Adobe without \textcurrency
-(textcomp)               4 = 5 + \texteuro
-(textcomp)               3 = 4 + \textohm
-(textcomp)               2 = 3 + \textestimated + \textcurrency
-(textcomp)               1 = TS1 - \textcircled - \t
-(textcomp)               0 = TS1 (full)
-(textcomp)             Font families with sub-encoding setting implement
-(textcomp)             only a restricted character set as indicated.
-(textcomp)             Family '?' is the default used for unknown fonts.
-(textcomp)             See the documentation for details.
-Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
+\bbl@dirlevel=\count189
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def
-File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
-Now handling font encoding TS1 ...
-... processing UTF-8 mapping file for font encoding TS1
+*************************************
+* Local config file bblopts.cfg used
+*
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.dfu
-File: ts1enc.dfu 2015/12/03 v1.1r UTF-8 support for inputenc
-   defining Unicode char U+00A2 (decimal 162)
-   defining Unicode char U+00A3 (decimal 163)
-   defining Unicode char U+00A4 (decimal 164)
-   defining Unicode char U+00A5 (decimal 165)
-   defining Unicode char U+00A6 (decimal 166)
-   defining Unicode char U+00A7 (decimal 167)
-   defining Unicode char U+00A8 (decimal 168)
-   defining Unicode char U+00A9 (decimal 169)
-   defining Unicode char U+00AA (decimal 170)
-   defining Unicode char U+00AC (decimal 172)
-   defining Unicode char U+00AE (decimal 174)
-   defining Unicode char U+00AF (decimal 175)
-   defining Unicode char U+00B0 (decimal 176)
-   defining Unicode char U+00B1 (decimal 177)
-   defining Unicode char U+00B2 (decimal 178)
-   defining Unicode char U+00B3 (decimal 179)
-   defining Unicode char U+00B4 (decimal 180)
-   defining Unicode char U+00B5 (decimal 181)
-   defining Unicode char U+00B6 (decimal 182)
-   defining Unicode char U+00B7 (decimal 183)
-   defining Unicode char U+00B9 (decimal 185)
-   defining Unicode char U+00BA (decimal 186)
-   defining Unicode char U+00BC (decimal 188)
-   defining Unicode char U+00BD (decimal 189)
-   defining Unicode char U+00BE (decimal 190)
-   defining Unicode char U+00D7 (decimal 215)
-   defining Unicode char U+00F7 (decimal 247)
-   defining Unicode char U+0192 (decimal 402)
-   defining Unicode char U+02C7 (decimal 711)
-   defining Unicode char U+02D8 (decimal 728)
-   defining Unicode char U+02DD (decimal 733)
-   defining Unicode char U+0E3F (decimal 3647)
-   defining Unicode char U+2016 (decimal 8214)
-   defining Unicode char U+2020 (decimal 8224)
-   defining Unicode char U+2021 (decimal 8225)
-   defining Unicode char U+2022 (decimal 8226)
-   defining Unicode char U+2030 (decimal 8240)
-   defining Unicode char U+2031 (decimal 8241)
-   defining Unicode char U+203B (decimal 8251)
-   defining Unicode char U+203D (decimal 8253)
-   defining Unicode char U+2044 (decimal 8260)
-   defining Unicode char U+204E (decimal 8270)
-   defining Unicode char U+2052 (decimal 8274)
-   defining Unicode char U+20A1 (decimal 8353)
-   defining Unicode char U+20A4 (decimal 8356)
-   defining Unicode char U+20A6 (decimal 8358)
-   defining Unicode char U+20A9 (decimal 8361)
-   defining Unicode char U+20AB (decimal 8363)
-   defining Unicode char U+20AC (decimal 8364)
-   defining Unicode char U+20B1 (decimal 8369)
-   defining Unicode char U+2103 (decimal 8451)
-   defining Unicode char U+2116 (decimal 8470)
-   defining Unicode char U+2117 (decimal 8471)
-   defining Unicode char U+211E (decimal 8478)
-   defining Unicode char U+2120 (decimal 8480)
-   defining Unicode char U+2122 (decimal 8482)
-   defining Unicode char U+2126 (decimal 8486)
-   defining Unicode char U+2127 (decimal 8487)
-   defining Unicode char U+212E (decimal 8494)
-   defining Unicode char U+2190 (decimal 8592)
-   defining Unicode char U+2191 (decimal 8593)
-   defining Unicode char U+2192 (decimal 8594)
-   defining Unicode char U+2193 (decimal 8595)
-   defining Unicode char U+2329 (decimal 9001)
-   defining Unicode char U+232A (decimal 9002)
-   defining Unicode char U+2422 (decimal 9250)
-   defining Unicode char U+25E6 (decimal 9702)
-   defining Unicode char U+25EF (decimal 9711)
-   defining Unicode char U+266A (decimal 9834)
-))
-LaTeX Info: Redefining \oldstylenums on input line 334.
-Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 349.
-Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 350.
-Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 351.
-Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 352.
-Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 353.
-Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 354.
-Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 355.
-Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 356.
-Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 357.
-Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 358.
-Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 359.
-Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 360.
-Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 361.
-Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 362.
-Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 363.
-Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 364.
-Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 365.
-Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 366.
-Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 367.
-Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 368.
-Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
-Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
-Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
-Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/arabi\bbl
+opts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/babel-eng
+lish\UKenglish.ldf
+Language: UKenglish 2017/06/06 v3.3r English support from the babel system
 
-Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
-Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
-Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
-Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 376.
-Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 377.
-Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 378.
-Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 379.
-Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 380.
-Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 381.
-Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 382.
-Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 383.
-Package textcomp Info: Setting lmtt sub-encoding to TS1/0 on input line 384.
-Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 385.
-Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 386.
-Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 387.
-Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 388.
-Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 389.
-Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 390.
-Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 391.
-Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 392.
-Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 393.
-Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 394.
-Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 395.
-Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 396.
-Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 397.
-Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 398.
-Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 399.
-Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 400.
-Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 401.
-Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 402.
-Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 403.
-Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 404.
-Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 405.
-Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
-Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
-Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
-Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/tools/varioref.sty
-Package: varioref 2015/09/22 v1.5b package for extended references (FMi)
-\c@vrcnt=\count90
-)
-(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
-\bigstrutjot=\dimen106
-)
-(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2010/09/12 v5.6 Page Geometry
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
-)
-(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
-\Gm@cnth=\count91
-\Gm@cntv=\count92
-\c@Gm@tempcnt=\count93
-\Gm@bindingoffset=\dimen107
-\Gm@wd@mp=\dimen108
-\Gm@odd@mp=\dimen109
-\Gm@even@mp=\dimen110
-\Gm@layoutwidth=\dimen111
-\Gm@layoutheight=\dimen112
-\Gm@layouthoffset=\dimen113
-\Gm@layoutvoffset=\dimen114
-\Gm@dimlist=\toks17
-)
-(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
-Package: subcaption 2016/02/20 v1.1-142 Sub-captions (AR)
-
-(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
-
-(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2016/02/04 v1.7-139 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen115
-\captionmargin@=\dimen116
-\captionwidth=\dimen117
-\caption@tempdima=\dimen118
-\caption@indent=\dimen119
-\caption@parindent=\dimen120
-\caption@hangindent=\dimen121
-)
-\c@ContinuedFloat=\count94
-)
-\c@subfigure=\count95
-\c@subtable=\count96
-)
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
-Package: biblatex 2016/03/03 v3.3 programmable bibliographies (PK/JW/AB)
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex_.sty
-Package: biblatex_ 2016/03/03 v3.3 programmable bibliographies (biber) (PK/JW/A
-B)
-
-(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count97
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/babel-eng
+lish\english.ldf
+Language: english 2017/06/06 v3.3r English support from the babel system
+Package babel Info: \l@canadian = using hyphenrules for english
+(babel)             (\language0) on input line 102.
+Package babel Info: \l@australian = using hyphenrules for ukenglish
+(babel)             (\language77) on input line 105.
+Package babel Info: \l@newzealand = using hyphenrules for ukenglish
+(babel)             (\language77) on input line 108.
 )))
-(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
-Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count98
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\text
+comp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/latex-too
+ls\varioref.sty
+Package: varioref 2020/08/11 v1.6e package for extended references (FMi)
+\c@vrcnt=\count190
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\
+geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
 
-(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\i
+fvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\i
+ftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+\Gm@cnth=\count191
+\Gm@cntv=\count192
+\c@Gm@tempcnt=\count193
+\Gm@bindingoffset=\dimen142
+\Gm@wd@mp=\dimen143
+\Gm@odd@mp=\dimen144
+\Gm@even@mp=\dimen145
+\Gm@layoutwidth=\dimen146
+\Gm@layoutheight=\dimen147
+\Gm@layouthoffset=\dimen148
+\Gm@layoutvoffset=\dimen149
+\Gm@dimlist=\toks18
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\
+geometry.cfg))
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\s
+ubcaption.sty
+Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\c
+aption.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\c
+aption3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen150
+\captionmargin@=\dimen151
+\captionwidth=\dimen152
+\caption@tempdima=\dimen153
+\caption@indent=\dimen154
+\caption@parindent=\dimen155
+\caption@hangindent=\dimen156
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count194
+\c@continuedfloat=\count195
+)
+\c@subfigure=\count196
+\c@subtable=\count197
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/wrapfig\w
+rapfig.sty
+\wrapoverhang=\dimen157
+\WF@size=\dimen158
+\c@WF@wrappedlines=\count198
+\WF@box=\box47
+\WF@everypar=\toks19
+Package: wrapfig 2003/01/31  v 3.6
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+biblatex.sty
+Package: biblatex 2020/12/31 v3.16 programmable bibliographies (PK/MW)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/pdftexc
+mds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/infware
+rr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/ltxcmds
+\ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/etoolbox\
+etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count199
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/kvoptions
+\kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/generic/kvsetke
+ys\kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+))
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/logreq\lo
+greq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count266
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/logreq\lo
+greq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 ))
-(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\ifth
+en.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count99
-\c@listtotal=\count100
-\c@listcount=\count101
-\c@liststart=\count102
-\c@liststop=\count103
-\c@citecount=\count104
-\c@citetotal=\count105
-\c@multicitecount=\count106
-\c@multicitetotal=\count107
-\c@instcount=\count108
-\c@maxnames=\count109
-\c@minnames=\count110
-\c@maxitems=\count111
-\c@minitems=\count112
-\c@citecounter=\count113
-\c@savedcitecounter=\count114
-\c@uniquelist=\count115
-\c@uniquename=\count116
-\c@refsection=\count117
-\c@refsegment=\count118
-\c@maxextratitle=\count119
-\c@maxextratitleyear=\count120
-\c@maxextrayear=\count121
-\c@maxextraalpha=\count122
-\c@abbrvpenalty=\count123
-\c@highnamepenalty=\count124
-\c@lownamepenalty=\count125
-\c@maxparens=\count126
-\c@parenlevel=\count127
-\blx@tempcnta=\count128
-\blx@tempcntb=\count129
-\blx@tempcntc=\count130
-\blx@maxsection=\count131
-\blx@maxsegment@0=\count132
-\blx@notetype=\count133
-\blx@parenlevel@text=\count134
-\blx@parenlevel@foot=\count135
-\blx@sectionciteorder@0=\count136
-\labelnumberwidth=\skip43
-\labelalphawidth=\skip44
-\biblabelsep=\skip45
-\bibitemsep=\skip46
-\bibnamesep=\skip47
-\bibinitsep=\skip48
-\bibparsep=\skip49
-\bibhang=\skip50
-\blx@bcfin=\read1
+\c@tabx@nest=\count267
+\c@listtotal=\count268
+\c@listcount=\count269
+\c@liststart=\count270
+\c@liststop=\count271
+\c@citecount=\count272
+\c@citetotal=\count273
+\c@multicitecount=\count274
+\c@multicitetotal=\count275
+\c@instcount=\count276
+\c@maxnames=\count277
+\c@minnames=\count278
+\c@maxitems=\count279
+\c@minitems=\count280
+\c@citecounter=\count281
+\c@maxcitecounter=\count282
+\c@savedcitecounter=\count283
+\c@uniquelist=\count284
+\c@uniquename=\count285
+\c@refsection=\count286
+\c@refsegment=\count287
+\c@maxextratitle=\count288
+\c@maxextratitleyear=\count289
+\c@maxextraname=\count290
+\c@maxextradate=\count291
+\c@maxextraalpha=\count292
+\c@abbrvpenalty=\count293
+\c@highnamepenalty=\count294
+\c@lownamepenalty=\count295
+\c@maxparens=\count296
+\c@parenlevel=\count297
+\blx@tempcnta=\count298
+\blx@tempcntb=\count299
+\blx@tempcntc=\count300
+\blx@maxsection=\count301
+\blx@maxsegment@0=\count302
+\blx@notetype=\count303
+\blx@parenlevel@text=\count304
+\blx@parenlevel@foot=\count305
+\blx@sectionciteorder@0=\count306
+\blx@entrysetcounter=\count307
+\blx@biblioinstance=\count308
+\labelnumberwidth=\skip49
+\labelalphawidth=\skip50
+\biblabelsep=\skip51
+\bibitemsep=\skip52
+\bibnamesep=\skip53
+\bibinitsep=\skip54
+\bibparsep=\skip55
+\bibhang=\skip56
+\blx@bcfin=\read3
 \blx@bcfout=\write3
-\c@mincomprange=\count137
-\c@maxcomprange=\count138
-\c@mincompwidth=\count139
+\blx@langwohyphens=\language84
+\c@mincomprange=\count309
+\c@maxcomprange=\count310
+\c@mincompwidth=\count311
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+blx-dm.def
+File: blx-dm.def 2020/12/31 v3.16 biblatex localization (PK/MW)
+)
 Package biblatex Info: Trying to load biblatex style data model...
-Package biblatex Info: ... file 'authoryear.dbx' not found.
+Package biblatex Info: ... file 'authoryear-comp.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count140
-\c@savedafterword=\count141
-\c@annotator=\count142
-\c@savedannotator=\count143
-\c@author=\count144
-\c@savedauthor=\count145
-\c@bookauthor=\count146
-\c@savedbookauthor=\count147
-\c@commentator=\count148
-\c@savedcommentator=\count149
-\c@editor=\count150
-\c@savededitor=\count151
-\c@editora=\count152
-\c@savededitora=\count153
-\c@editorb=\count154
-\c@savededitorb=\count155
-\c@editorc=\count156
-\c@savededitorc=\count157
-\c@foreword=\count158
-\c@savedforeword=\count159
-\c@holder=\count160
-\c@savedholder=\count161
-\c@introduction=\count162
-\c@savedintroduction=\count163
-\c@namea=\count164
-\c@savednamea=\count165
-\c@nameb=\count166
-\c@savednameb=\count167
-\c@namec=\count168
-\c@savednamec=\count169
-\c@translator=\count170
-\c@savedtranslator=\count171
-\c@shortauthor=\count172
-\c@savedshortauthor=\count173
-\c@shorteditor=\count174
-\c@savedshorteditor=\count175
-\c@labelname=\count176
-\c@savedlabelname=\count177
-\c@institution=\count178
-\c@savedinstitution=\count179
-\c@lista=\count180
-\c@savedlista=\count181
-\c@listb=\count182
-\c@savedlistb=\count183
-\c@listc=\count184
-\c@savedlistc=\count185
-\c@listd=\count186
-\c@savedlistd=\count187
-\c@liste=\count188
-\c@savedliste=\count189
-\c@listf=\count190
-\c@savedlistf=\count191
-\c@location=\count192
-\c@savedlocation=\count193
-\c@organization=\count194
-\c@savedorganization=\count195
-\c@origlocation=\count196
-\c@savedoriglocation=\count197
-\c@origpublisher=\count198
-\c@savedorigpublisher=\count199
-\c@publisher=\count266
-\c@savedpublisher=\count267
-\c@language=\count268
-\c@savedlanguage=\count269
-\c@pageref=\count270
-\c@savedpageref=\count271
-\shorthandwidth=\skip51
-\shortjournalwidth=\skip52
-\shortserieswidth=\skip53
-\shorttitlewidth=\skip54
-\shortauthorwidth=\skip55
-\shorteditorwidth=\skip56
+\c@afterword=\count312
+\c@savedafterword=\count313
+\c@annotator=\count314
+\c@savedannotator=\count315
+\c@author=\count316
+\c@savedauthor=\count317
+\c@bookauthor=\count318
+\c@savedbookauthor=\count319
+\c@commentator=\count320
+\c@savedcommentator=\count321
+\c@editor=\count322
+\c@savededitor=\count323
+\c@editora=\count324
+\c@savededitora=\count325
+\c@editorb=\count326
+\c@savededitorb=\count327
+\c@editorc=\count328
+\c@savededitorc=\count329
+\c@foreword=\count330
+\c@savedforeword=\count331
+\c@holder=\count332
+\c@savedholder=\count333
+\c@introduction=\count334
+\c@savedintroduction=\count335
+\c@namea=\count336
+\c@savednamea=\count337
+\c@nameb=\count338
+\c@savednameb=\count339
+\c@namec=\count340
+\c@savednamec=\count341
+\c@translator=\count342
+\c@savedtranslator=\count343
+\c@shortauthor=\count344
+\c@savedshortauthor=\count345
+\c@shorteditor=\count346
+\c@savedshorteditor=\count347
+\c@labelname=\count348
+\c@savedlabelname=\count349
+\c@institution=\count350
+\c@savedinstitution=\count351
+\c@lista=\count352
+\c@savedlista=\count353
+\c@listb=\count354
+\c@savedlistb=\count355
+\c@listc=\count356
+\c@savedlistc=\count357
+\c@listd=\count358
+\c@savedlistd=\count359
+\c@liste=\count360
+\c@savedliste=\count361
+\c@listf=\count362
+\c@savedlistf=\count363
+\c@location=\count364
+\c@savedlocation=\count365
+\c@organization=\count366
+\c@savedorganization=\count367
+\c@origlocation=\count368
+\c@savedoriglocation=\count369
+\c@origpublisher=\count370
+\c@savedorigpublisher=\count371
+\c@publisher=\count372
+\c@savedpublisher=\count373
+\c@language=\count374
+\c@savedlanguage=\count375
+\c@origlanguage=\count376
+\c@savedoriglanguage=\count377
+\c@pageref=\count378
+\c@savedpageref=\count379
+\shorthandwidth=\skip57
+\shortjournalwidth=\skip58
+\shortserieswidth=\skip59
+\shorttitlewidth=\skip60
+\shortauthorwidth=\skip61
+\shorteditorwidth=\skip62
+\locallabelnumberwidth=\skip63
+\locallabelalphawidth=\skip64
+\localshorthandwidth=\skip65
+\localshortjournalwidth=\skip66
+\localshortserieswidth=\skip67
+\localshorttitlewidth=\skip68
+\localshortauthorwidth=\skip69
+\localshorteditorwidth=\skip70
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def
-File: blx-compat.def 2016/03/03 v3.3 biblatex compatibility (PK/JW/AB)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+blx-compat.def
+File: blx-compat.def 2020/12/31 v3.16 biblatex compatibility (PK/MW)
 )
 Package biblatex Info: Trying to load generic definitions...
-Package biblatex Info: ... file 'biblatex_.def' found.
+Package biblatex Info: ... file 'biblatex.def' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex_.def
-File: biblatex_.def 
-\c@textcitecount=\count272
-\c@textcitetotal=\count273
-\c@textcitemaxnames=\count274
-\c@biburlnumpenalty=\count275
-\c@biburlucpenalty=\count276
-\c@biburllcpenalty=\count277
-\c@smartand=\count278
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+biblatex.def
+File: biblatex.def 2020/12/31 v3.16 biblatex compatibility (PK/MW)
+\c@textcitecount=\count380
+\c@textcitetotal=\count381
+\c@textcitemaxnames=\count382
+\c@biburlbigbreakpenalty=\count383
+\c@biburlbreakpenalty=\count384
+\c@biburlnumpenalty=\count385
+\c@biburlucpenalty=\count386
+\c@biburllcpenalty=\count387
+\biburlbigskip=\muskip17
+\biburlnumskip=\muskip18
+\biburlucskip=\muskip19
+\biburllcskip=\muskip20
+\c@smartand=\count388
 )
+Package biblatex Info: Trying to load bibliography style 'authoryear-comp'...
+Package biblatex Info: ... file 'authoryear-comp.bbx' found.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+bbx\authoryear-comp.bbx
+File: authoryear-comp.bbx 2020/12/31 v3.16 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'authoryear'...
 Package biblatex Info: ... file 'authoryear.bbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/authoryear.bbx
-File: authoryear.bbx 2016/03/03 v3.3 biblatex bibliography style (PK/JW/AB)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+bbx\authoryear.bbx
+File: authoryear.bbx 2020/12/31 v3.16 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
-File: standard.bbx 2016/03/03 v3.3 biblatex bibliography style (PK/JW/AB)
-\c@bbx:relatedcount=\count279
-\c@bbx:relatedtotal=\count280
-))
-Package biblatex Info: Trying to load citation style 'authoryear'...
-Package biblatex Info: ... file 'authoryear.cbx' found.
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+bbx\standard.bbx
+File: standard.bbx 2020/12/31 v3.16 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count389
+\c@bbx:relatedtotal=\count390
+)))
+Package biblatex Info: Trying to load citation style 'authoryear-comp'...
+Package biblatex Info: ... file 'authoryear-comp.cbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/authoryear.cbx
-File: authoryear.cbx 2016/03/03 v3.3 biblatex citation style (PK/JW/AB)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+cbx\authoryear-comp.cbx
+File: authoryear-comp.cbx 2020/12/31 v3.16 biblatex citation style (PK/MW)
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -820,118 +440,133 @@ Package biblatex Info: Redefining '\footcitetext'.
 Package biblatex Info: Redefining '\smartcite'.
 Package biblatex Info: Redefining '\textcite'.
 Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\footcites'.
+Package biblatex Info: Redefining '\footcitetexts'.
+Package biblatex Info: Redefining '\smartcites'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+biblatex.cfg
 File: biblatex.cfg 
-)))
-(/usr/share/texlive/texmf-dist/tex/latex/csquotes/csquotes.sty
-Package: csquotes 2016/01/31 v5.1g context-sensitive quotations (JAW)
-\csq@reset=\count281
-\csq@gtype=\count282
-\csq@glevel=\count283
-\csq@qlevel=\count284
-\csq@maxlvl=\count285
-\csq@tshold=\count286
-\csq@ltx@everypar=\toks18
+))
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\
+csquotes.sty
+Package: csquotes 2021-02-22 v5.2l context-sensitive quotations (JAW)
+\csq@reset=\count391
+\csq@gtype=\count392
+\csq@glevel=\count393
+\csq@qlevel=\count394
+\csq@maxlvl=\count395
+\csq@tshold=\count396
+\csq@ltx@everypar=\toks20
 
-(/usr/share/texlive/texmf-dist/tex/latex/csquotes/csquotes.def
-File: csquotes.def 2016/01/31 v5.1g csquotes generic definitions (JAW)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\
+csquotes.def
+File: csquotes.def 2021-02-22 v5.2l csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
 
-(/usr/share/texlive/texmf-dist/tex/latex/csquotes/csquotes.cfg
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\
+csquotes.cfg
 File: csquotes.cfg 
 )
 Package csquotes Info: Disabling multilingual quotes.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
 )
-(/usr/share/texlive/texmf-dist/tex/latex/was/gensymb.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/was\gensy
+mb.sty
 Package: gensymb 2003/07/02 v1.0 (WaS)
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/fancyhdr\
+fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
+rs
+\f@nch@headwidth=\skip71
+\f@nch@O@elh=\skip72
+\f@nch@O@erh=\skip73
+\f@nch@O@olh=\skip74
+\f@nch@O@orh=\skip75
+\f@nch@O@elf=\skip76
+\f@nch@O@erf=\skip77
+\f@nch@O@olf=\skip78
+\f@nch@O@orf=\skip79
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/fancyhdr\
+extramarks.sty
+Package: extramarks 2021/01/28 v4.0.1 Extra marks for LaTeX
+\@temptokenb=\toks21
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/titlesec\
+titlesec.sty
+Package: titlesec 2019/10/16 v2.13 Sectioning titles
+\ttl@box=\box48
+\beforetitleunit=\skip80
+\aftertitleunit=\skip81
+\ttl@plus=\dimen159
+\ttl@minus=\dimen160
+\ttl@toksa=\toks22
+\titlewidth=\dimen161
+\titlewidthlast=\dimen162
+\titlewidthfirst=\dimen163
+)
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/titlesec\
+titletoc.sty
+Package: titletoc 2019/10/16 v2.13 TOC entries
+\ttl@leftsep=\dimen164
 ))
-\@input{tex/title.aux}
-\openout2 = `tex/title.aux'.
-
-(./tex/title.tex)
-Package biblatex Info: Trying to load language 'UKenglish'...
-Package biblatex Info: ... file 'UKenglish.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/UKenglish.lbx
-File: UKenglish.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
-Package biblatex Info: Trying to load language 'british'...
-Package biblatex Info: ... file 'british.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/british.lbx
-File: british.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
-Package biblatex Info: Trying to load language 'english'...
-Package biblatex Info: ... file 'english.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
-File: english.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
-))) (./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux) (./tex/
-discussion.aux))
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3backend
+\l3backend-pdftex.def
+File: l3backend-pdftex.def 2021-03-02 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count397
+\l__pdf_internal_box=\box49
+) (FLM.aux (tex/titlepage.aux) (tex/abstract.aux)
+(tex/intro.aux) (tex/method.aux) (tex/results.aux) (tex/discussion.aux))
 \openout1 = `FLM.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
-File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
 
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mk
+ii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count287
-\scratchdimen=\dimen122
-\scratchbox=\box26
-\nofMPsegments=\count288
-\nofMParguments=\count289
-\everyMPshowfont=\toks19
-\MPscratchCnt=\count290
-\MPscratchDim=\dimen123
-\MPnumerator=\count291
-\makeMPintoPDFobject=\count292
-\everyMPtoPDFconversion=\toks20
-) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+\scratchcounter=\count398
+\scratchdimen=\dimen165
+\scratchbox=\box50
+\nofMPsegments=\count399
+\nofMParguments=\count400
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count401
+\MPscratchDim=\dimen166
+\MPnumerator=\count402
+\makeMPintoPDFobject=\count403
+\everyMPtoPDFconversion=\toks24
 )
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-
+pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
 
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-))
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/00miktex\
+epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -968,145 +603,187 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
+Package biblatex Info: Trying to load language 'UKenglish'...
+Package biblatex Info: ... file 'UKenglish.lbx' found.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+lbx\UKenglish.lbx
+File: UKenglish.lbx 2020/12/31 v3.16 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'british'...
+Package biblatex Info: ... file 'british.lbx' found.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+lbx\british.lbx
+File: british.lbx 2020/12/31 v3.16 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load language 'british'...
+Package biblatex Info: ... file 'british.lbx' found.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+lbx\british.lbx
+File: british.lbx 2020/12/31 v3.16 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex/
+lbx\english.lbx
+File: english.lbx 2020/12/31 v3.16 biblatex localization (PK/MW)
+)))
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
+Package biblatex Info: Document encoding is UTF8 ....
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3kernel\
+expl3.sty
+Package: expl3 2021-02-18 L3 programming layer (loader) 
+)
+Package biblatex Info: ... and expl3
+(biblatex)             2021-02-18 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/biblatex\
+blx-case-expl3.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3package
+s/xparse\xparse.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3package
+s/xparse\xparse-2020-10-01.sty
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3package
+s/xparse\xparse-generic.tex)))
+Package: blx-case-expl3 2020/12/31 v3.16 expl3 case changing code for biblatex
+)
 \openout3 = `FLM.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'FLM.bbl' found.
-(./FLM.bbl
-
-Package biblatex Warning: The following entry could not be found
-(biblatex)                in the database:
-(biblatex)                Heinrich2020
-(biblatex)                Please verify the spelling and rerun
-(biblatex)                LaTeX afterwards.
-
-
-Package biblatex Warning: The following entry could not be found
-(biblatex)                in the database:
-(biblatex)                easystats
-(biblatex)                Please verify the spelling and rerun
-(biblatex)                LaTeX afterwards.
-
-)
-Package biblatex Info: Reference section=0 on input line 12.
-Package biblatex Info: Reference segment=0 on input line 12.
+ (FLM.bbl)
+Package biblatex Info: Reference section=0 on input line 14.
+Package biblatex Info: Reference segment=0 on input line 14.
 \symgns@font=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/cmr/m/n --> TS1/cmr/bx/n on input line 12.
-Package gensymb Info: Math companion symbols declared on input line 12.
-LaTeX Info: Redefining \degree on input line 12.
-LaTeX Info: Redefining \celsius on input line 12.
+(Font)                  TS1/cmr/m/n --> TS1/cmr/b/n on input line 14.
+Package gensymb Info: Math companion symbols declared on input line 14.
+LaTeX Info: Redefining \degree on input line 14.
+LaTeX Info: Redefining \celsius on input line 14.
 Package gensymb Info: Using text companion symbols for \degree, \celsius and \p
-erthousand on input line 12.
-LaTeX Info: Redefining \ohm on input line 12.
-Package gensymb Info: Using \textohm for \ohm on input line 12.
-Package gensymb Info: Using \textmu for \micro on input line 12.
- <img/UiO_logo.png, id=1, 593.21625pt x 593.21625pt>
+erthousand on input line 14.
+LaTeX Info: Redefining \ohm on input line 14.
+Package gensymb Info: Using \textohm for \ohm on input line 14.
+Package gensymb Info: Using \textmu for \micro on input line 14.
+\openout2 = `tex/titlepage.aux'.
+
+ (tex/titlepage.tex
+<img/UiO_logo.png, id=1, 593.21625pt x 593.21625pt>
 File: img/UiO_logo.png Graphic file (type png)
- <use img/UiO_logo.png>
-Package pdftex.def Info: img/UiO_logo.png used on input line 14.
-(pdftex.def)             Requested size: 177.96625pt x 177.96625pt.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 14.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 14.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 14.
-
-[1
+<use img/UiO_logo.png>
+Package pdftex.def Info: img/UiO_logo.png  used on input line 20.
+(pdftex.def)             Requested size: 170.71393pt x 170.7158pt.
+ [1
 
 
+{C:/Users/Nora.Familie-PC/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <.
+/img/UiO_logo.png>])
+\openout2 = `tex/abstract.aux'.
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/UiO_logo.png>]
-(./FLM.toc
+ (tex/abstract.tex) [1
+
+
+
+] (FLM.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 11.
+(Font)              <10.95> on input line 10.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 10.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 10.
 )
 \tf@toc=\write4
 \openout4 = `FLM.toc'.
 
  [2
 
-] (./FLM.lof)
+
+
+] (FLM.lof)
 \tf@lof=\write5
 \openout5 = `FLM.lof'.
 
  [3
 
-] (./FLM.lot)
+] (FLM.lot)
 \tf@lot=\write6
 \openout6 = `FLM.lot'.
 
- [4
+ [1
 
 ]
 \openout2 = `tex/intro.aux'.
 
- (./tex/intro.tex
+
+(tex/intro.tex
 Chapter 1.
-
-Overfull \hbox (2.65991pt too wide) in paragraph at lines 30--31
-[]\T1/cmr/m/n/10.95 Therefore, look-ing for new meth-ods, the Nor-we-gian In-st
-i-tute of Nature Re-search (NINA)
- []
-
-[5
+[2
 
 
-]) [6]
+])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[3]
 \openout2 = `tex/method.aux'.
 
- (./tex/method.tex
+ (tex/method.tex
 Chapter 2.
-[7
-
-
-
-] <./img/experiment_setup.jpg, id=38, 963.6pt x 542.025pt>
+<./img/experiment_setup.jpg, id=37, 963.6pt x 542.025pt>
 File: ./img/experiment_setup.jpg Graphic file (type jpg)
-
 <use ./img/experiment_setup.jpg>
-Package pdftex.def Info: ./img/experiment_setup.jpg used on input line 50.
+Package pdftex.def Info: ./img/experiment_setup.jpg  used on input line 43.
 (pdftex.def)             Requested size: 385.43317pt x 216.80615pt.
- (./tex/fig/met1.tex
-<./img/cam_install_example/IMG_20190212_161615169.jpg, id=39, 3131.7pt x 4175.6
+[4
+
+
+
+
+] (tex/fig/met1.tex
+<./img/cam_install_example/IMG_20190212_161615169.jpg, id=42, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190212_161615169.jpg Graphic file (type j
 pg)
- <use ./img/cam_install_example/IMG_20190212_161615169.jpg>
-Package pdftex.def Info: ./img/cam_install_example/IMG_20190212_161615169.jpg u
-sed on input line 5.
+<use ./img/cam_install_example/IMG_20190212_161615169.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190212_161615169.jpg  
+used on input line 5.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
-
-<./img/cam_install_example/IMG_20190515_170952923.jpg, id=40, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190515_170952923.jpg, id=43, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190515_170952923.jpg Graphic file (type j
 pg)
- <use ./img/cam_install_example/IMG_20190515_170952923.jpg>
-Package pdftex.def Info: ./img/cam_install_example/IMG_20190515_170952923.jpg u
-sed on input line 11.
+<use ./img/cam_install_example/IMG_20190515_170952923.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190515_170952923.jpg  
+used on input line 11.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
-
-<./img/cam_install_example/IMG_20190521_181329313.jpg, id=41, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190521_181329313.jpg, id=44, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190521_181329313.jpg Graphic file (type j
 pg)
- <use ./img/cam_install_example/IMG_20190521_181329313.jpg>
-Package pdftex.def Info: ./img/cam_install_example/IMG_20190521_181329313.jpg u
-sed on input line 17.
+<use ./img/cam_install_example/IMG_20190521_181329313.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190521_181329313.jpg  
+used on input line 17.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
-
-<./img/cam_install_example/IMG_20190529_181049340.jpg, id=42, 3131.7pt x 4175.6
+<./img/cam_install_example/IMG_20190529_181049340.jpg, id=45, 3131.7pt x 4175.6
 pt>
 File: ./img/cam_install_example/IMG_20190529_181049340.jpg Graphic file (type j
 pg)
- <use ./img/cam_install_example/IMG_20190529_181049340.jpg>
-Package pdftex.def Info: ./img/cam_install_example/IMG_20190529_181049340.jpg u
-sed on input line 23.
+<use ./img/cam_install_example/IMG_20190529_181049340.jpg>
+Package pdftex.def Info: ./img/cam_install_example/IMG_20190529_181049340.jpg  
+used on input line 23.
 (pdftex.def)             Requested size: 170.71718pt x 227.588pt.
 
 Overfull \hbox (2.4216pt too wide) in paragraph at lines 3--29
@@ -1118,154 +795,195 @@ Overfull \hbox (2.4216pt too wide) in paragraph at lines 3--29
 []$ $[]$ 
  []
 
-) [8 <./img/experiment_setup.jpg>] [9 <./img/cam_install_example/IMG_20190212_1
-61615169.jpg> <./img/cam_install_example/IMG_20190515_170952923.jpg> <./img/cam
-_install_example/IMG_20190521_181329313.jpg> <./img/cam_install_example/IMG_201
-90529_181049340.jpg>] (./tex/tab/cam_mod.tex)
+)
 
-Package caption Warning: \label without proper reference on input line 110.
-See the caption package documentation for explanation.
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
 
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-LaTeX Warning: Reference `fig:map' on page 10 undefined on input line 102.
+[5 <./img/experiment_setup.jpg>]
 
-[10]
-<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=54, 505.89pt x 361.3
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[6 <./img/cam_install_example/IMG_20190212_161615169.jpg> <./img/cam_install_ex
+ample/IMG_20190515_170952923.jpg> <./img/cam_install_example/IMG_20190521_18132
+9313.jpg> <./img/cam_install_example/IMG_20190529_181049340.jpg>]
+(tex/tab/cam_mod.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[7]
+<../R/FLM_notebook_files/figure-gfm/effort-facet-1.png, id=57, 505.89pt x 361.3
 5pt>
 File: ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png Graphic file (type 
 png)
- <use ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>
+<use ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>
 Package pdftex.def Info: ../R/FLM_notebook_files/figure-gfm/effort-facet-1.png 
-used on input line 158.
+ used on input line 166.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
 
-LaTeX Warning: Reference `app:sessinfo' on page 11 undefined on input line 171.
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
 
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[11] [12 <../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>]
-<../R/glmm_sp_files/figure-html/period-length-wControl-1.png, id=63, 505.89pt x
+[8]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[9 <../R/FLM_notebook_files/figure-gfm/effort-facet-1.png>]
+<../R/glmm_sp_files/figure-html/period-length-wControl-1.png, id=69, 505.89pt x
  361.35pt>
 File: ../R/glmm_sp_files/figure-html/period-length-wControl-1.png Graphic file 
 (type png)
- <use ../R/glmm_sp_files/figure-html/period-length-wControl-1.png>
+<use ../R/glmm_sp_files/figure-html/period-length-wControl-1.png>
 Package pdftex.def Info: ../R/glmm_sp_files/figure-html/period-length-wControl-
-1.png used on input line 197.
+1.png  used on input line 203.
 (pdftex.def)             Requested size: 404.71254pt x 289.0804pt.
 
-[13 <../R/glmm_sp_files/figure-html/period-length-wControl-1.png>]
-Overfull \hbox (128.69649pt too wide) in paragraph at lines 218--221
-\T1/cmr/m/n/10.95 to the de-fault [-0.1, 0.1] of a stand-ard-ized para-meter (w
-ww.easystats.github.io/bayestestR/reference/rope_range.html,
- []
 
-) [14]
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[10 <../R/glmm_sp_files/figure-html/period-length-wControl-1.png>])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[11]
 \openout2 = `tex/results.aux'.
 
- (./tex/results.tex
+ (tex/results.tex
 Chapter 3.
-
-LaTeX Warning: Reference `fig:events' on page 15 undefined on input line 19.
-
-
-<../R/glmm_sp_files/figure-html/active-days-3.png, id=75, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-html/active-days-3.png, id=77, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/active-days-3.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/active-days-3.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/active-days-3.png used 
-on input line 26.
-(pdftex.def)             Requested size: 202.3524pt x 144.53743pt.
-
-<../R/glmm_sp_files/figure-html/events-1.png, id=76, 505.89pt x 361.35pt>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/active-days-3.png  used
+ on input line 34.
+(pdftex.def)             Requested size: 384.10959pt x 274.3697pt.
+<../R/glmm_sp_files/figure-html/events-1.png, id=78, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/events-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/events-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/events-1.png used on in
-put line 34.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/events-1.png  used on i
+nput line 42.
 (pdftex.def)             Requested size: 202.3524pt x 144.53743pt.
+[12
 
-Overfull \hbox (2.4216pt too wide) in paragraph at lines 24--38
-[]$[]$ $[]$ 
- []
 
-(./tex/tab/parameters2.tex
+
+
+ <../R/glmm_sp_files/figure-html/active-days-3.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[13 <../R/glmm_sp_files/figure-html/events-1.png>] (tex/tab/parameters2.tex
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 4.
+(Font)              <9> on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 4.
-
-Overfull \hbox (53.00293pt too wide) in paragraph at lines 4--64
- [][] 
- []
-
-
-LaTeX Warning: Float too large for page by 5.5369pt on input line 64.
-
-) [15
-
-
-
- <../R/glmm_sp_files/figure-html/active-days-3.png> <../R/glmm_sp_files/figure-
-html/events-1.png>] [16]
-<../R/glmm_sp_files/figure-html/parameters-1.png, id=85, 505.89pt x 361.35pt>
+)
+[14]
+<../R/glmm_sp_files/figure-html/parameters-1.png, id=92, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/parameters-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/parameters-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/parameters-1.png used o
-n input line 62.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/parameters-1.png  used 
+on input line 90.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 62--68
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 90--96
  [][] 
  []
 
-[17
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15
+
 
  <../R/glmm_sp_files/figure-html/parameters-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/rev2-1.png, id=89, 505.89pt x 361.35pt>
+<../R/glmm_sp_files/figure-html/rev2-1.png, id=97, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/rev2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/rev2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/rev2-1.png used on inpu
-t line 92.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/rev2-1.png  used on inp
+ut line 114.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 92--98
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 114--120
  [][] 
  []
 
-[18 <../R/glmm_sp_files/figure-html/rev2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/grevling2-1.png, id=93, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[16 <../R/glmm_sp_files/figure-html/rev2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/grevling2-1.png, id=101, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/grevling2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/grevling2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/grevling2-1.png used on
- input line 117.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/grevling2-1.png  used o
+n input line 130.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 117--118
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 130--131
  [][] 
  []
 
-[19 <../R/glmm_sp_files/figure-html/grevling2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/hare2-1.png, id=98, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[17 <../R/glmm_sp_files/figure-html/grevling2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/hare2-1.png, id=105, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/hare2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/hare2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hare2-1.png used on inp
-ut line 149.
-(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
-
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 149--150
- [][] 
- []
-
-[20 <../R/glmm_sp_files/figure-html/hare2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/ekorn2-1.png, id=102, 505.89pt x 361.35pt>
-File: ../R/glmm_sp_files/figure-html/ekorn2-1.png Graphic file (type png)
-
-<use ../R/glmm_sp_files/figure-html/ekorn2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/ekorn2-1.png used on in
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hare2-1.png  used on in
 put line 162.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
@@ -1273,115 +991,209 @@ Overfull \hbox (28.50545pt too wide) in paragraph at lines 162--163
  [][] 
  []
 
-[21 <../R/glmm_sp_files/figure-html/ekorn2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/elg2-1.png, id=106, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[18 <../R/glmm_sp_files/figure-html/hare2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/ekorn2-1.png, id=109, 505.89pt x 361.35pt>
+File: ../R/glmm_sp_files/figure-html/ekorn2-1.png Graphic file (type png)
+<use ../R/glmm_sp_files/figure-html/ekorn2-1.png>
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/ekorn2-1.png  used on i
+nput line 175.
+(pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
+
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 175--176
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[19 <../R/glmm_sp_files/figure-html/ekorn2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/elg2-1.png, id=113, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/elg2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/elg2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/elg2-1.png used on inpu
-t line 177.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/elg2-1.png  used on inp
+ut line 190.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 177--178
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 190--191
  [][] 
  []
 
-[22 <../R/glmm_sp_files/figure-html/elg2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/hjort2-1.png, id=110, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[20 <../R/glmm_sp_files/figure-html/elg2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/hjort2-1.png, id=117, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/hjort2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/hjort2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hjort2-1.png used on in
-put line 189.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/hjort2-1.png  used on i
+nput line 202.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 189--191
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 202--204
  [][] 
  []
 
-[23 <../R/glmm_sp_files/figure-html/hjort2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/maar2-1.png, id=114, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[21 <../R/glmm_sp_files/figure-html/hjort2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/maar2-1.png, id=122, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/maar2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/maar2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/maar2-1.png used on inp
-ut line 204.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/maar2-1.png  used on in
+put line 217.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 204--206
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 217--219
  [][] 
  []
 
-[24 <../R/glmm_sp_files/figure-html/maar2-1.png (PNG copy)>]
-<../R/glmm_sp_files/figure-html/gaupe2-1.png, id=118, 505.89pt x 361.35pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[22 <../R/glmm_sp_files/figure-html/maar2-1.png (PNG copy)>]
+<../R/glmm_sp_files/figure-html/gaupe2-1.png, id=126, 505.89pt x 361.35pt>
 File: ../R/glmm_sp_files/figure-html/gaupe2-1.png Graphic file (type png)
-
 <use ../R/glmm_sp_files/figure-html/gaupe2-1.png>
-Package pdftex.def Info: ../R/glmm_sp_files/figure-html/gaupe2-1.png used on in
-put line 220.
+Package pdftex.def Info: ../R/glmm_sp_files/figure-html/gaupe2-1.png  used on i
+nput line 233.
 (pdftex.def)             Requested size: 455.29678pt x 325.21199pt.
 
-Overfull \hbox (28.50545pt too wide) in paragraph at lines 220--222
+Overfull \hbox (28.50545pt too wide) in paragraph at lines 233--235
  [][] 
  []
 
-) [25 <../R/glmm_sp_files/figure-html/gaupe2-1.png (PNG copy)>]
+)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[23 <../R/glmm_sp_files/figure-html/gaupe2-1.png (PNG copy)>]
 \openout2 = `tex/discussion.aux'.
 
 
-(./tex/discussion.tex
+(tex/discussion.tex
 Chapter 4.
+[24
+
+
+
+
+])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[25]
+LaTeX Font Info:    Trying to load font information for T1+cmss on input line 6
+7.
+
+(C:\Users\Nora.Familie-PC\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\t1cm
+ss.fd
+File: t1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+Overfull \hbox (0.10497pt too wide) in paragraph at lines 68--68
+[][]\T1/cmr/m/n/10.95 Henrich, Maik, Sandra Nieder-lech-ner, Max Kröschel, Stef
+anie Thoma, Carsten F. Dormann,
+ []
+
+
+Overfull \hbox (15.27975pt too wide) in paragraph at lines 68--68
+[][]\T1/cmr/m/n/10.95 Wickham, Had-ley, Mara Av-er-ick, Jen-nifer Bryan, Win-st
+on Chang, Lucy D'Agostino McGowan,
+ []
+
 [26
 
 
 
-]) [27]
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 57.
- (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
-File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [28
 
-
-
-]
-(./FLM.aux (./tex/intro.aux) (./tex/method.aux) (./tex/results.aux)
-(./tex/discussion.aux))
-
-LaTeX Warning: There were undefined references.
-
+] (FLM.aux (tex/titlepage.aux) (tex/abstract.aux) (tex/intro.aux)
+(tex/method.aux) (tex/results.aux) (tex/discussion.aux))
 Package logreq Info: Writing requests to 'FLM.run.xml'.
 \openout1 = `FLM.run.xml'.
 
- ) 
+ )
+(\end occurred inside a group at level 1)
+
+### semi simple group (level 1) entered at line 26 (\begingroup)
+### bottom level 
 Here is how much of TeX's memory you used:
- 11039 strings out of 494910
- 182746 string characters out of 6179837
- 602983 words of memory out of 5000000
- 14091 multiletter control sequences out of 15000+600000
- 21886 words of font info for 49 fonts, out of 8000000 for 9000
- 36 hyphenation exceptions out of 8191
- 51i,9n,45p,3661b,1459s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1095.600pk> </home
-/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/torgeir/
-.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/torgeir/.texmf-va
-r/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/torgeir/.texmf-var/fonts/p
-k/ljfour/jknappen/ec/tcrm1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/
-jknappen/ec/ecbx1440.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/
-ec/ecsl1095.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti10
-95.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk>
- </home/torgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/t
-orgeir/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/torgeir/.t
-exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk> </home/torgeir/.texmf-var/
-fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/torgeir/.texmf-var/fonts/pk/
-ljfour/jknappen/ec/ecrm1728.600pk> </home/torgeir/.texmf-var/fonts/pk/ljfour/jk
-nappen/ec/ecrm2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on FLM.pdf (28 pages, 13698359 bytes).
+ 13597 strings out of 479290
+ 252527 string characters out of 2848393
+ 1040758 words of memory out of 3000000
+ 30807 multiletter control sequences out of 15000+600000
+ 421717 words of font info for 61 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 84i,10n,91p,3677b,2251s stack positions out of 5000i,500n,10000p,200000b,80000s
+{C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fon
+ts/enc/dvips/cm-super/cm-super-t1.enc}{C:/Users/Nora.Familie-PC/AppData/Local/P
+rograms/MiKTeX 2.9/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<C:/Users/Nora.Fam
+ilie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10
+.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmmi9.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Nora.Familie-PC/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Use
+rs/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmsy8.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/cm-super/sfbx1095.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Pr
+ograms/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1200.pfb><C:/Users/Nora.Famil
+ie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1440.pf
+b><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
+c/cm-super/sfbx1728.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/public/cm-super/sfbx2074.pfb><C:/Users/Nora.Familie-PC/AppData
+/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx2488.pfb><C:/Users/N
+ora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sf
+cc1095.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
+pe1/public/cm-super/sfrm0900.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Progra
+ms/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Users/Nora.Familie-P
+C/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1095.pfb><C
+:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm
+-super/sfrm1200.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9
+/fonts/type1/public/cm-super/sfrm1440.pfb><C:/Users/Nora.Familie-PC/AppData/Loc
+al/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1728.pfb><C:/Users/Nora.
+Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/cm-super/sfss10
+95.pfb><C:/Users/Nora.Familie-PC/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
+public/cm-super/sfti1095.pfb>
+Output written on FLM.pdf (30 pages, 13854593 bytes).
 PDF statistics:
- 658 PDF objects out of 1000 (max. 8388607)
- 135 compressed objects within 2 object streams
+ 206 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  96 words of extra memory for PDF output out of 10000 (max. 10000000)
 

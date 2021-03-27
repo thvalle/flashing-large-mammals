@@ -1,17 +1,17 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\defcounter {refsection}{0}\relax 
-\select@language {UKenglish}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
+\babel@toc {UKenglish}{}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {2.1}{\ignorespaces Camera models included in the survey\relax }}{10}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {2.2}{\ignorespaces Camera settings and features}}{10}
+\contentsline {table}{\numberline {2.1}{\ignorespaces Camera models included in the survey\relax }}{7}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {2.2}{\ignorespaces Camera settings and features}}{7}{}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.1}{\ignorespaces Model parameters}}{16}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Model results}}{14}{}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
+\contentsfinish 

@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "23 mars, 2021"
+date: "26 mars, 2021"
 output:
   html_document:
     toc: true
@@ -99,7 +99,27 @@ library(sjPlot)      # parameters + sjPlot probably does a similar and better jo
 
 ```r
 library(see)         # plot-related package from the easystats-verse
+library(xtable)  # To make a latex-table for the thesis
+```
 
+```
+## 
+## Attaching package: 'xtable'
+```
+
+```
+## The following object is masked from 'package:parameters':
+## 
+##     display
+```
+
+```
+## The following object is masked from 'package:performance':
+## 
+##     display
+```
+
+```r
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
 
@@ -503,8 +523,8 @@ plot_grid(p_count +
 ```r
 sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
-sp_ruminata <- c("raadyr", "elg", "hjort","hare", "ekorn")
-# sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+sp_ruminata <- c("raadyr", "elg", "hjort")
+sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
 
 obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
   mutate(flash = fct_shift(flash,-1), #reordering flash-factor
@@ -513,7 +533,7 @@ obs_activity <- obs %>% filter(species %in% sp_focus) %>%
          year = lubridate::year(date))
 obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
 obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
-# obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
 obs_activity %>% 
 ggplot(aes(week)) +
   #geom_bar(col="black", fill="white") +
@@ -563,7 +583,12 @@ ggplot(aes(week)) +
 ```
 
 ```
-## Warning: ggrepel: 280 unlabeled data points (too many overlaps). Consider
+## Warning: ggrepel: 114 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps
+```
+
+```
+## Warning: ggrepel: 166 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps
 ```
 
@@ -733,7 +758,7 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
                     #labels=c(lab_ctrl, lab_IR, lab_LED)
                     )
-
+#TODO få inn n_loc i plottet, kanskje per periode
 
 
 # Trying to map activity patterns to before and after sunrise/sunset
@@ -787,20 +812,9 @@ ggplot(aes(week)) +
 
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
-```
-
-```
-## Linking to ImageMagick 6.9.11.57
-## Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
-## Disabled features: fontconfig, x11
-```
-
-```r
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -811,7 +825,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -878,17 +893,26 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
+```
 
+```
+## Linking to ImageMagick 6.9.11.57
+## Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
+## Disabled features: fontconfig, x11
+```
+
+```r
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -952,7 +976,8 @@ p_raa    = p_sp
 # report-object
 r_raa    = r_sp
 # parameters refit
-para_raa = para_sp
+para_raa = para_sp  
+res_raa = result$ROPE_Percentage 
 ```
 
 __Chunk order:__
@@ -1079,11 +1104,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -1094,7 +1117,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -1161,17 +1185,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -1194,7 +1219,9 @@ p_rev    = p_sp
 # report-object
 r_rev    = r_sp
 # parameters refit
-para_rev = para_sp
+para_rev = para_sp 
+# SGPV
+res_rev = result$ROPE_Percentage
 ```
 
 
@@ -1329,11 +1356,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -1344,7 +1369,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -1411,17 +1437,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -1444,7 +1471,9 @@ p_grvl    = p_sp
 # report-object
 r_grvl    = r_sp
 # parameters refit
-para_grvl = para_sp
+para_grvl = para_sp  
+# SGPV
+res_grvl = result$ROPE_Percentage
 ```
 
 
@@ -1562,11 +1591,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -1577,7 +1604,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -1644,17 +1672,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -1677,7 +1706,9 @@ p_elg    = p_sp
 # report-object
 r_elg    = r_sp
 # parameters refit
-para_elg = para_sp
+para_elg = para_sp  
+# SGPV
+res_elg = result$ROPE_Percentage
 ```
 
 ## Red deer
@@ -1794,11 +1825,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -1809,7 +1838,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -1876,17 +1906,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -1909,7 +1940,9 @@ p_hjort    = p_sp
 # report-object
 r_hjort    = r_sp
 # parameters refit
-para_hjort = para_sp
+para_hjort = para_sp  
+# SGPV
+res_hjort = result$ROPE_Percentage
 ```
 
 
@@ -2027,11 +2060,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -2042,7 +2073,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -2109,17 +2141,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -2143,6 +2176,8 @@ p_gaup    = p_sp
 r_gaup    = r_sp
 # parameters refit
 para_gaup = para_sp
+# SGPV
+res_gaup = result$ROPE_Percentage
 ```
 
 
@@ -2265,11 +2300,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -2280,7 +2313,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -2347,17 +2381,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -2380,7 +2415,9 @@ p_hare    = p_sp
 # report-object
 r_hare    = r_sp
 # parameters refit
-para_hare = para_sp
+para_hare = para_sp  
+# SGPV
+res_hare = result$ROPE_Percentage
 ```
 
 
@@ -2502,11 +2539,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -2517,7 +2552,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -2584,17 +2620,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -2617,7 +2654,9 @@ p_ekorn    = p_sp
 # report-object
 r_ekorn    = r_sp
 # parameters refit
-para_ekorn = para_sp
+para_ekorn = para_sp  
+# SGPV
+res_ekorn = result$ROPE_Percentage
 ```
 
 
@@ -2736,11 +2775,9 @@ as.report_table(r_sp)
 ```
 
 ```r
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -2751,7 +2788,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 ```
 
@@ -2818,17 +2856,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -2851,7 +2890,9 @@ p_maar    = p_sp
 # report-object
 r_maar    = r_sp
 # parameters refit
-para_maar = para_sp
+para_maar = para_sp 
+# SGPV
+res_maar = result$ROPE_Percentage
 ```
 
 
@@ -2865,27 +2906,6 @@ para_maar = para_sp
 
 Making parameter-tables to include in my thesis. The first one contains standardized parameters, but since that differs from the format they are presented in the equivalence test, I will using the second one, which is not standardized
 
-
-```r
-library(xtable)  # To make a latex-table for the thesis
-```
-
-```
-## 
-## Attaching package: 'xtable'
-```
-
-```
-## The following object is masked from 'package:parameters':
-## 
-##     display
-```
-
-```
-## The following object is masked from 'package:performance':
-## 
-##     display
-```
 
 ```r
 para_raa  <- para_raa %>% 
@@ -2910,83 +2930,6 @@ print(xtable(para_all, type = "latex"), include.rownames = F,
 xtable(para_all) # output in Rmd
 ```
 
-```
-## % latex table generated in R 4.0.4 by xtable 1.8-4 package
-## % Tue Mar 23 10:17:47 2021
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rllllll}
-##   \hline
-##  & Parameter & Coefficient & SE & 95\% CI & z & p \\ 
-##   \hline
-## 1 & Roe deer &  &  &  &  &        \\ 
-##   2 & (Intercept) & -3.04 & 0.37 & (-3.76, -2.32) & -8.32 & $<$ .001 \\ 
-##   3 & time.deploy & -0.12 & 0.05 & (-0.22, -0.02) & -2.24 & 0.025  \\ 
-##   4 & flash [IR] & -0.18 & 0.43 & (-1.02,  0.66) & -0.42 & 0.674  \\ 
-##   5 & flash [wLED] & -0.12 & 0.43 & (-0.96,  0.72) & -0.28 & 0.778  \\ 
-##   6 & time.deploy * flash [IR] & 0.05 & 0.07 & (-0.08,  0.18) & 0.71 & 0.476  \\ 
-##   7 & time.deploy * flash [wLED] & 7.96e-03 & 0.06 & (-0.12,  0.13) & 0.12 & 0.901  \\ 
-##   8 & Red fox &  &  &  &  &        \\ 
-##   9 & (Intercept) & 0.03 & 7.37e-03 & ( 0.02,  0.05) & -14.95 & $<$ .001 \\ 
-##   10 & time.deploy & 1.00 & 0.07 & ( 0.88,  1.14) & -0.02 & 0.985  \\ 
-##   11 & flashIR & 1.02 & 0.28 & ( 0.59,  1.76) & 0.07 & 0.942  \\ 
-##   12 & flashLED & 1.14 & 0.32 & ( 0.66,  1.97) & 0.48 & 0.631  \\ 
-##   13 & time.deploy:flashIR & 0.99 & 0.09 & ( 0.83,  1.18) & -0.06 & 0.949  \\ 
-##   14 & time.deploy:flashLED & 0.97 & 0.09 & ( 0.82,  1.16) & -0.30 & 0.763  \\ 
-##   15 & Badger &  &  &  &  &        \\ 
-##   16 & (Intercept) & 0.01 & 3.90e-03 & ( 0.01,  0.02) & -12.45 & $<$ .001 \\ 
-##   17 & time.deploy & 1.17 & 0.09 & ( 0.99,  1.37) & 1.90 & 0.058  \\ 
-##   18 & flashIR & 1.34 & 0.51 & ( 0.64,  2.82) & 0.78 & 0.433  \\ 
-##   19 & flashLED & 1.42 & 0.54 & ( 0.68,  2.97) & 0.93 & 0.352  \\ 
-##   20 & time.deploy:flashIR & 1.02 & 0.10 & ( 0.84,  1.23) & 0.17 & 0.865  \\ 
-##   21 & time.deploy:flashLED & 1.01 & 0.10 & ( 0.84,  1.22) & 0.10 & 0.922  \\ 
-##   22 & Moose &  &  &  &  &        \\ 
-##   23 & (Intercept) & 8.94e-03 & 2.95e-03 & ( 0.00,  0.02) & -14.31 & $<$ .001 \\ 
-##   24 & time.deploy & 1.02 & 0.11 & ( 0.83,  1.26) & 0.21 & 0.830  \\ 
-##   25 & flashIR & 1.15 & 0.43 & ( 0.55,  2.40) & 0.37 & 0.715  \\ 
-##   26 & flashLED & 1.35 & 0.50 & ( 0.65,  2.80) & 0.79 & 0.427  \\ 
-##   27 & time.deploy:flashIR & 1.11 & 0.15 & ( 0.85,  1.46) & 0.78 & 0.433  \\ 
-##   28 & time.deploy:flashLED & 0.97 & 0.13 & ( 0.75,  1.27) & -0.19 & 0.849  \\ 
-##   29 & Red deer &  &  &  &  &        \\ 
-##   30 & (Intercept) & 1.73e-03 & 1.18e-03 & ( 0.00,  0.01) & -9.35 & $<$ .001 \\ 
-##   31 & time.deploy & 0.80 & 0.12 & ( 0.60,  1.06) & -1.56 & 0.119  \\ 
-##   32 & flashIR & 1.38 & 1.03 & ( 0.32,  6.01) & 0.43 & 0.671  \\ 
-##   33 & flashLED & 1.34 & 1.01 & ( 0.31,  5.88) & 0.39 & 0.697  \\ 
-##   34 & time.deploy:flashIR & 1.16 & 0.22 & ( 0.80,  1.69) & 0.80 & 0.424  \\ 
-##   35 & time.deploy:flashLED & 1.72 & 0.33 & ( 1.18,  2.51) & 2.81 & 0.005  \\ 
-##   36 & Lynx &  &  &  &  &        \\ 
-##   37 & (Intercept) & 7.44e-04 & 4.45e-04 & ( 0.00,  0.00) & -12.03 & $<$ .001 \\ 
-##   38 & time.deploy & 0.61 & 0.20 & ( 0.32,  1.15) & -1.52 & 0.128  \\ 
-##   39 & flashIR & 1.56 & 1.03 & ( 0.43,  5.70) & 0.67 & 0.502  \\ 
-##   40 & flashLED & 2.30 & 1.50 & ( 0.64,  8.26) & 1.28 & 0.202  \\ 
-##   41 & time.deploy:flashIR & 1.76 & 0.68 & ( 0.83,  3.74) & 1.48 & 0.140  \\ 
-##   42 & time.deploy:flashLED & 1.81 & 0.70 & ( 0.85,  3.84) & 1.54 & 0.124  \\ 
-##   43 & Hare &  &  &  &  &        \\ 
-##   44 & (Intercept) & 0.02 & 6.39e-03 & ( 0.01,  0.03) & -10.23 & $<$ .001 \\ 
-##   45 & time.deploy & 1.09 & 0.08 & ( 0.94,  1.26) & 1.13 & 0.258  \\ 
-##   46 & flashIR & 1.04 & 0.50 & ( 0.41,  2.65) & 0.08 & 0.933  \\ 
-##   47 & flashLED & 1.12 & 0.53 & ( 0.44,  2.84) & 0.23 & 0.819  \\ 
-##   48 & time.deploy:flashIR & 0.89 & 0.08 & ( 0.74,  1.07) & -1.28 & 0.199  \\ 
-##   49 & time.deploy:flashLED & 1.00 & 0.10 & ( 0.83,  1.21) & 0.02 & 0.983  \\ 
-##   50 & European Pine Marten &  &  &  &  &        \\ 
-##   51 & (Intercept) & 2.45e-03 & 9.01e-04 & ( 0.00,  0.01) & -16.34 & $<$ .001 \\ 
-##   52 & time.deploy & 1.25 & 0.28 & ( 0.81,  1.95) & 1.01 & 0.314  \\ 
-##   53 & flashIR & 3.42 & 1.38 & ( 1.55,  7.53) & 3.06 & 0.002  \\ 
-##   54 & flashLED & 2.35 & 0.96 & ( 1.05,  5.23) & 2.09 & 0.037  \\ 
-##   55 & time.deploy:flashIR & 0.76 & 0.19 & ( 0.47,  1.24) & -1.08 & 0.280  \\ 
-##   56 & time.deploy:flashLED & 1.06 & 0.27 & ( 0.64,  1.75) & 0.22 & 0.828  \\ 
-##   57 & Red squirrel &  &  &  &  &        \\ 
-##   58 & (Intercept) & 4.47e-03 & 2.78e-06 & ( 0.00,  0.00) & -8710.74 & $<$ .001 \\ 
-##   59 & time.deploy & 1.22 & 7.55e-04 & ( 1.21,  1.22) & 314.46 & $<$ .001 \\ 
-##   60 & flashIR & 1.17 & 7.24e-04 & ( 1.16,  1.17) & 247.49 & $<$ .001 \\ 
-##   61 & flashLED & 1.58 & 9.84e-04 & ( 1.58,  1.59) & 740.62 & $<$ .001 \\ 
-##   62 & time.deploy:flashIR & 0.66 & 4.07e-04 & ( 0.66,  0.66) & -679.35 & $<$ .001 \\ 
-##   63 & time.deploy:flashLED & 0.96 & 5.96e-04 & ( 0.96,  0.96) & -65.39 & $<$ .001 \\ 
-##    \hline
-## \end{tabular}
-## \end{table}
-```
-
 
 
 ```r
@@ -3005,27 +2948,29 @@ m_ekorn<- readRDS("m_ekorn.rds")
 
 
 ```r
-# gather all models
-m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
-#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 # not standardized
 para_all2 <- bind_rows(
-model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",            rep("",5)), .before = 1),
-model_parameters(m_rev)   %>% add_column(Species = c("Red fox",             rep("",5)), .before = 1),
-model_parameters(m_grvl)  %>% add_column(Species = c("Badger",              rep("",5)), .before = 1),
-model_parameters(m_elg)   %>% add_column(Species = c("Moose",               rep("",5)), .before = 1),
-model_parameters(m_hjort) %>% add_column(Species = c("Red deer",            rep("",5)), .before = 1),
-model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",                rep("",5)), .before = 1),
-model_parameters(m_hare)  %>% add_column(Species = c("Hare",                rep("",5)), .before = 1),
-model_parameters(m_maar)  %>% add_column(Species = c("European Pine Marten",rep("",5)), .before = 1),
-model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",        rep("",5)), .before = 1)
+model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",    rep("",5)), .before = 1),
+model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
+model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
+model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
+model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1),
+model_parameters(m_elg)   %>% add_column(Species = c("Moose",       rep("",5)), .before = 1),
+model_parameters(m_hjort) %>% add_column(Species = c("Red deer",    rep("",5)), .before = 1),
+model_parameters(m_maar)  %>% add_column(Species = c("Pine Marten", rep("",5)), .before = 1), 
+model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1)
 ) %>% 
- insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
+ insight::format_table(ci_brackets = c("(", ")"), digits = 2) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
-para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","wLED", "TimeDeploy * IR", "TimeDeploy * wLED"), times=9)
+para_all2$Parameter <- rep(c("Intercept","Time","IR","wLED", "Time * IR", "Time * wLED"), times=9)
+para_all2$SGPV <- round(c(res_raa,res_rev,res_grvl,res_hare,res_ekorn,res_elg,res_hjort,res_maar,res_gaup),2)
+
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters2.tex")
+# gather all models
+m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
+#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 ```
 
 ## Joint forest-plots
@@ -3061,27 +3006,27 @@ m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,
 ```
 
 ```r
-m_compare
+m_compare[c(1  ,5,6)]
 ```
 
 ```
 ## # Comparison of Model Performance Indices
 ## 
-## Name    |    Model |      AIC |      BIC | R2 (cond.) | R2 (marg.) |   ICC |  RMSE | Performance-Score
-## ------------------------------------------------------------------------------------------------------
-## m_gaup  | glmerMod |  745.849 |  806.907 |      0.369 |      0.028 | 0.350 | 0.065 |            80.16%
-## m_hjort | glmerMod | 1821.564 | 1882.623 |      0.503 |      0.008 | 0.499 | 0.119 |            77.17%
-## m_maar  | glmerMod | 1851.145 | 1912.203 |      0.277 |      0.046 | 0.242 | 0.122 |            68.23%
-## m_ekorn | glmerMod | 2964.184 | 3025.242 |      0.421 |      0.008 | 0.416 | 0.159 |            61.61%
-## m_elg   | glmerMod | 3024.207 | 3085.265 |      0.274 |      0.003 | 0.272 | 0.148 |            46.45%
-## m_grvl  | glmerMod | 4756.822 | 4817.880 |      0.388 |      0.006 | 0.384 | 0.210 |            45.81%
-## m_hare  | glmerMod | 4968.157 | 5029.215 |      0.370 |  9.358e-04 | 0.369 | 0.222 |            40.56%
-## m_rev   | glmerMod | 5740.112 | 5801.171 |      0.146 |  6.490e-04 | 0.145 | 0.221 |            15.77%
-## m_raa   | glmerMod | 7685.618 | 7745.758 |      0.293 |      0.002 | 0.291 | 0.319 |            14.30%
+## Name    | R2 (cond.) | R2 (marg.)
+## ---------------------------------
+## m_ekorn |      0.428 |      0.008
+## m_gaup  |      0.183 |      0.060
+## m_maar  |      0.223 |      0.052
+## m_grvl  |      0.354 |      0.005
+## m_hjort |      0.177 |      0.011
+## m_elg   |      0.164 |      0.003
+## m_hare  |      0.275 |      0.002
+## m_raa   |      0.293 |      0.002
+## m_rev   |      0.146 |  6.490e-04
 ```
 
 ```r
-m_compare %>% plot() #A `range` must be provided for data with only one observation.
+m_compare[c(1:3,5,6)] %>% plot() #A `range` must be provided for data with only one observation.
 ```
 
 ![](glmm_sp_files/figure-html/mod-comparisons-1.png)<!-- -->
@@ -3188,11 +3133,9 @@ saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut fo
 ```r
 summary(r_sp)
 as.report_table(r_sp)
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -3203,7 +3146,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 
 # labels for equivalence test - prettier to the human eye
@@ -3246,17 +3190,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -3274,7 +3219,9 @@ p_xx    = p_sp
 # report-object
 r_xx    = r_sp
 # parameters refit
-para_xx = para_sp
+para_xx = para_sp 
+# SGPV
+res_xx = result$ROPE_Percentage
 ```
 
 
@@ -3305,7 +3252,7 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] xtable_1.8-4        magick_2.7.0        see_0.6.2.1        
+##  [1] magick_2.7.0        xtable_1.8-4        see_0.6.2.1        
 ##  [4] sjPlot_2.8.7        parameters_0.12.0.1 ggeffects_1.0.1    
 ##  [7] report_0.2.0        performance_0.7.0.1 cowplot_1.1.1      
 ## [10] lme4_1.1-26         Matrix_1.3-2        forcats_0.5.1      

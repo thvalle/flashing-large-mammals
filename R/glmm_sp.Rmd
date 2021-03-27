@@ -21,6 +21,8 @@ library(ggeffects)   # Estimated Marginal Means and Marginal Effects from Regres
 library(parameters)  # extract model-parameters etc. from (most) models
 library(sjPlot)      # parameters + sjPlot probably does a similar and better job than ggeffects
 library(see)         # plot-related package from the easystats-verse
+library(xtable)  # To make a latex-table for the thesis
+
 
 # Data drom Data_exploration2_nesting.R
 time.dep <- readRDS("timedep.rds")
@@ -271,8 +273,8 @@ plot_grid(p_count +
 ```{r year-activity}
 sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
-sp_ruminata <- c("raadyr", "elg", "hjort","hare", "ekorn")
-# sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+sp_ruminata <- c("raadyr", "elg", "hjort")
+sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
 
 obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
   mutate(flash = fct_shift(flash,-1), #reordering flash-factor
@@ -281,7 +283,7 @@ obs_activity <- obs %>% filter(species %in% sp_focus) %>%
          year = lubridate::year(date))
 obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
 obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
-# obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
 obs_activity %>% 
 ggplot(aes(week)) +
   #geom_bar(col="black", fill="white") +
@@ -398,7 +400,7 @@ p_dens <- obs %>% filter(species %in% sp) %>%
   scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
                     #labels=c(lab_ctrl, lab_IR, lab_LED)
                     )
-
+#TODO få inn n_loc i plottet, kanskje per periode
 
 
 # Trying to map activity patterns to before and after sunrise/sunset
@@ -452,11 +454,9 @@ ggplot(aes(week)) +
 
 
 ```{r parameters}
-library(cowplot) # to make grid-plots
-library(magick)
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("black","#e41a1c","#377eb8")) +
+p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("#8c510a","#d6604d","#377eb8")) +
    labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
   theme(legend.position = "top", legend.title = element_blank(),
@@ -467,7 +467,8 @@ p_sp1 <- plot(p_sp, ci.style = c("dash"), line.size = 1, #ci.styles: “ribbon�
 #                                    subtitle = 'standardize  = "refit" ')
 
 # Equivalence test
-result <- equivalence_test(m_sp)
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
 result
 
 # labels for equivalence test - prettier to the human eye
@@ -510,17 +511,18 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 #                    axis = "r"
 # ) 
 
+library(cowplot) # to make grid-plots
+library(magick)
 
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_sp1,
-                             p_eq,
-                             p_dens,
+p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                   #nrow = 2,
-                   rel_widths = c(3,4),
-                   rel_heights = c(3,2),
+                             p_sp1,
+                             p_eq,
+                   # rel_widths = c(3,4),
+                   rel_heights = c(2,3),
                    labels="auto"
                    #align = "h"
 ) + labs(title = paste0(sp, " present at ",n_loc," sites."))
@@ -547,7 +549,8 @@ p_raa    = p_sp
 # report-object
 r_raa    = r_sp
 # parameters refit
-para_raa = para_sp
+para_raa = para_sp  
+res_raa = result$ROPE_Percentage 
 ```
 
 __Chunk order:__
@@ -574,7 +577,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r rev-objects, cache=TRUE}
+```{r rev-objects}
 # Model
 m_rev    = m_sp
 # ggpredict 
@@ -582,7 +585,9 @@ p_rev    = p_sp
 # report-object
 r_rev    = r_sp
 # parameters refit
-para_rev = para_sp
+para_rev = para_sp 
+# SGPV
+res_rev = result$ROPE_Percentage
 ```
 
 
@@ -608,7 +613,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r grevling-objects, cache=TRUE}
+```{r grevling-objects}
 # Model
 m_grvl    = m_sp
 # ggpredict 
@@ -616,7 +621,9 @@ p_grvl    = p_sp
 # report-object
 r_grvl    = r_sp
 # parameters refit
-para_grvl = para_sp
+para_grvl = para_sp  
+# SGPV
+res_grvl = result$ROPE_Percentage
 ```
 
 
@@ -634,7 +641,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r elg-objects, cache=TRUE}
+```{r elg-objects}
 # Model
 m_elg    = m_sp
 # ggpredict 
@@ -642,7 +649,9 @@ p_elg    = p_sp
 # report-object
 r_elg    = r_sp
 # parameters refit
-para_elg = para_sp
+para_elg = para_sp  
+# SGPV
+res_elg = result$ROPE_Percentage
 ```
 
 ## Red deer
@@ -659,7 +668,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r hjort-objects, cache=TRUE}
+```{r hjort-objects}
 # Model
 m_hjort    = m_sp
 # ggpredict 
@@ -667,7 +676,9 @@ p_hjort    = p_sp
 # report-object
 r_hjort    = r_sp
 # parameters refit
-para_hjort = para_sp
+para_hjort = para_sp  
+# SGPV
+res_hjort = result$ROPE_Percentage
 ```
 
 
@@ -685,7 +696,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r gaupe-objects, cache=TRUE}
+```{r gaupe-objects}
 # Model
 m_gaup    = m_sp
 # ggpredict 
@@ -694,6 +705,8 @@ p_gaup    = p_sp
 r_gaup    = r_sp
 # parameters refit
 para_gaup = para_sp
+# SGPV
+res_gaup = result$ROPE_Percentage
 ```
 
 
@@ -716,7 +729,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r hare-objects, cache=TRUE}
+```{r hare-objects}
 # Model
 m_hare    = m_sp
 # ggpredict 
@@ -724,7 +737,9 @@ p_hare    = p_sp
 # report-object
 r_hare    = r_sp
 # parameters refit
-para_hare = para_sp
+para_hare = para_sp  
+# SGPV
+res_hare = result$ROPE_Percentage
 ```
 
 
@@ -759,7 +774,7 @@ va_r <- insight::get_variance(m_sp)
 ```
 
 
-```{r ekorn-objects, cache=TRUE}
+```{r ekorn-objects}
 # Model
 m_ekorn    = m_sp
 # ggpredict 
@@ -767,7 +782,9 @@ p_ekorn    = p_sp
 # report-object
 r_ekorn    = r_sp
 # parameters refit
-para_ekorn = para_sp
+para_ekorn = para_sp  
+# SGPV
+res_ekorn = result$ROPE_Percentage
 ```
 
 
@@ -786,7 +803,7 @@ Now, sp contains `r sp`.
 ```
 
 
-```{r maar-objects, cache=TRUE}
+```{r maar-objects}
 # Model
 m_maar    = m_sp
 # ggpredict 
@@ -794,7 +811,9 @@ p_maar    = p_sp
 # report-object
 r_maar    = r_sp
 # parameters refit
-para_maar = para_sp
+para_maar = para_sp 
+# SGPV
+res_maar = result$ROPE_Percentage
 ```
 
 
@@ -808,8 +827,7 @@ para_maar = para_sp
 
 Making parameter-tables to include in my thesis. The first one contains standardized parameters, but since that differs from the format they are presented in the equivalence test, I will using the second one, which is not standardized
 
-```{r model-report}
-library(xtable)  # To make a latex-table for the thesis
+```{r model-report, eval=FALSE}
 para_raa  <- para_raa %>% 
   add_row(Parameter = "Roe deer", .before = 1) # adds a row for species name in the resulting table
 para_rev  <- para_rev   %>% add_row(Parameter = "Red fox",  .before = 1)
@@ -847,28 +865,30 @@ m_ekorn<- readRDS("m_ekorn.rds")
 ```
 
 
-```{r model-report2}
-# gather all models
-m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
-#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
+```{r model-report2, eval=F}
 # not standardized
 para_all2 <- bind_rows(
-model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",            rep("",5)), .before = 1),
-model_parameters(m_rev)   %>% add_column(Species = c("Red fox",             rep("",5)), .before = 1),
-model_parameters(m_grvl)  %>% add_column(Species = c("Badger",              rep("",5)), .before = 1),
-model_parameters(m_elg)   %>% add_column(Species = c("Moose",               rep("",5)), .before = 1),
-model_parameters(m_hjort) %>% add_column(Species = c("Red deer",            rep("",5)), .before = 1),
-model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",                rep("",5)), .before = 1),
-model_parameters(m_hare)  %>% add_column(Species = c("Hare",                rep("",5)), .before = 1),
-model_parameters(m_maar)  %>% add_column(Species = c("European Pine Marten",rep("",5)), .before = 1),
-model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",        rep("",5)), .before = 1)
+model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",    rep("",5)), .before = 1),
+model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
+model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
+model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
+model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1),
+model_parameters(m_elg)   %>% add_column(Species = c("Moose",       rep("",5)), .before = 1),
+model_parameters(m_hjort) %>% add_column(Species = c("Red deer",    rep("",5)), .before = 1),
+model_parameters(m_maar)  %>% add_column(Species = c("Pine Marten", rep("",5)), .before = 1), 
+model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1)
 ) %>% 
- insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
+ insight::format_table(ci_brackets = c("(", ")"), digits = 2) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
-para_all2$Parameter <- rep(c("(Intercept)","TimeDeploy","IR","wLED", "TimeDeploy * IR", "TimeDeploy * wLED"), times=9)
+para_all2$Parameter <- rep(c("Intercept","Time","IR","wLED", "Time * IR", "Time * wLED"), times=9)
+para_all2$SGPV <- round(c(res_raa,res_rev,res_grvl,res_hare,res_ekorn,res_elg,res_hjort,res_maar,res_gaup),2)
+
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters2.tex")
+# gather all models
+m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
+#sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 ```
 
 ## Joint forest-plots
@@ -894,10 +914,11 @@ Whichs species' detection rates was best explained by the my model formula?
 m_compare <- compare_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,
                                  m_gaup, m_hare, m_ekorn, m_maar,
             metrics = "common", rank=T) # "common" will compute AIC, BIC, R2, ICC and RMSE
-m_compare
-m_compare %>% plot() #A `range` must be provided for data with only one observation.
+m_compare[c(1  ,5,6)]
+m_compare[c(1:3,5,6)] %>% plot() #A `range` must be provided for data with only one observation.
 # test_performance(m_raa,m_rev,m_grvl,m_elg,m_hjort,m_gaup) #models don't have the same response variable, 
 # which is because they are different subsets of each other
+
 ```
 
 ## Model assumptions
@@ -980,7 +1001,9 @@ p_xx    = p_sp
 # report-object
 r_xx    = r_sp
 # parameters refit
-para_xx = para_sp
+para_xx = para_sp 
+# SGPV
+res_xx = result$ROPE_Percentage
 ```
 
 

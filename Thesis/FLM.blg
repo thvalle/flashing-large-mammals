@@ -1,21 +1,18 @@
-[1] Config.pm:340> INFO - This is Biber 2.4
-[2] Config.pm:343> INFO - Logfile is 'FLM.blg'
-[170] biber:287> INFO - === Tue Mar 23, 2021, 12:53:42
-[459] Biber.pm:348> INFO - Reading 'FLM.bcf'
-[959] Biber.pm:742> INFO - Found 9 citekeys in bib section 0
-[978] Biber.pm:3151> INFO - Processing section 0
-[1088] Biber.pm:3308> INFO - Looking for bibtex format file '/home/torgeir/Documents/Papers/library.bib' for section 0
-[2791] bibtex.pm:1113> INFO - Decoding LaTeX character macros into UTF-8
-[4227] bibtex.pm:974> INFO - Found BibTeX data source '/home/torgeir/Documents/Papers/library.bib'
-[4246] Utils.pm:147> WARN - Duplicate entry key: 'Odden2015' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
-[4249] Utils.pm:147> WARN - Duplicate entry key: 'Odden2018a' in file '/home/torgeir/Documents/Papers/library.bib', skipping ...
-[4660] Utils.pm:147> WARN - BibTeX subsystem: /tmp/rzsuIodks3/library.bib_18579.utf8, line 6, warning: 172 characters of junk seen at toplevel
-[4676] Utils.pm:147> WARN - I didn't find a database entry for 'easystats' (section 0)
-[4676] Utils.pm:147> WARN - I didn't find a database entry for 'Heinrich2020' (section 0)
-[5086] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
-[5086] UCollate.pm:65> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[5086] Biber.pm:3028> INFO - Sorting list 'none/global' of type 'entry' with scheme 'none' and locale 'en-UK'
-[5087] Biber.pm:3032> INFO - No sort tailoring available for locale 'en-UK'
-[5119] bbl.pm:519> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
-[5345] bbl.pm:615> INFO - Output to FLM.bbl
-[5346] Biber.pm:109> INFO - WARNINGS: 5
+[0] Config.pm:311> INFO - This is Biber 2.16
+[1] Config.pm:314> INFO - Logfile is 'FLM.blg'
+[222] biber-MSWIN64:340> INFO - === 
+[293] Biber.pm:415> INFO - Reading 'FLM.bcf'
+[499] Biber.pm:952> INFO - Found 12 citekeys in bib section 0
+[529] Biber.pm:4340> INFO - Processing section 0
+[553] Biber.pm:4531> INFO - Looking for bibtex format file 'tex/library.bib' for section 0
+[729] bibtex.pm:1689> INFO - LaTeX decoding ...
+[1062] bibtex.pm:1494> INFO - Found BibTeX data source 'tex/library.bib'
+[1090] Utils.pm:395> WARN - Duplicate entry key: 'Odden2018a' in file 'tex/library.bib', skipping ...
+[1361] Utils.pm:395> WARN - BibTeX subsystem: C:\Users\NORA~1.FAM\AppData\Local\Temp\biber_tmp_FpOr\7f56027f9015dc497dc7645faffbdd71_4176.utf8, line 6, warning: 172 characters of junk seen at toplevel
+[1426] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1426] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1427] Biber.pm:4168> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
+[1427] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-UK'
+[1472] bbl.pm:654> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
+[1503] bbl.pm:757> INFO - Output to FLM.bbl
+[1512] Biber.pm:128> INFO - WARNINGS: 2
