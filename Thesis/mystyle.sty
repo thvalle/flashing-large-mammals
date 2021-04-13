@@ -1,31 +1,36 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{mystyle}[2021/02/09 Selfmade mystyle package] %prefix som visstnok trengs for at LaTeX skal skjønne .sty-dokumentet
-\usepackage[utf8]{inputenc} %kva for ein encoding som innputtes - Unicode Transformation Format
-\usepackage[T1]{fontenc,url} %font-pakke | url-leser(?)
-\usepackage{babel,textcomp} %språkpakke: trengst for alt utanom US English | tekstkompilering
+\usepackage[utf8]{inputenc} % Løser problem med å skrive andre enn engelske bokstaver f.eks æ,ø,å.- Unicode Transformation Format
+\usepackage[T1]{fontenc,url} %Støtter koding av forskjellige fonter. |  Gjør internett- og e-mail adresser klikkbare i tex-dokumentet.
+\usepackage{babel} %språkpakke: trengst for alt utanom US English | tekstkompilering
 \usepackage{varioref} %referansepakke - see fig X on page Y/ next/previous page
 %\usepackage{showkeys} %easily keep track of the labels you add or use (e.g. see them in pdf)          !!!Remove before final print!!!
-
+\usepackage{textcomp} %- Støtter bruk av forskjellige fonter som dollartegn, copyright, en kvart,
+%en halv mm, se http://gcp.fcaglp.unlp.edu.ar/_media/integrantes:psantamaria:latex:textcomp.pdf
 % \usepackage{multirow} %for tables with multirow sections
 
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{subcaption} % caption under subfigures?
-\usepackage{wrapfig} % wrap text around figures
+%\usepackage{wrapfig} % wrap text around figures
 
 %biblatex example setup
 %\usepackage[
 %style=authoryear-comp,
 %sorting=nyt, %sort intext by name year then title
 %maxcitenames=2, %max intext authors
+%minnames=1, %seemed to sort the lacking a,b,c after Meek14a,Meek14b
 %maxbibnames=30, %max endtext authors
 %url=false, %Dont print URL
 %sortcites=true, %sorts intext citations
+%firstinits=true %First name in initial form! Finally found it :D
 %backend=biber
 %]{biblatex}
-\usepackage[style=authoryear-comp,sorting=nyt,maxcitenames=2,maxbibnames=30,sortcites=true,backend=biber]{biblatex}
+%[authordate,backend=biber,maxnames=1,]maxcitenames=1,mincitenames=1,maxbibnames=30,
+\usepackage[style=authoryear-comp,maxbibnames=30,maxcitenames=2,uniquelist=false,firstinits=true,url=false,isbn=false,backend=biber]{biblatex}
 \urlstyle{sf} %change url to sans serif for better linebreaking
 %\usepackage{hyperref} % to get clickable links
 
+\usepackage[subtle]{savetrees} %tries to use less pages (subtle, moderate, extreme)
 
 \usepackage[style=english]{csquotes} %provides international handling of quote marks and should always be included when you use the biblatex package.
 
@@ -53,30 +58,12 @@
 {\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
 \titlespacing*{\chapter}{0pt}{-19pt}{0pt}
 
-% listoftables and figures on same page:
-
-\usepackage{titletoc}
-\titlecontents{table}
-[0pt]                                  % left margin
-{\addvspace{.5cm}}%                    % above code (e.g vertical space)
-{\contentsmargin{0pt}                  % numbered entry format
-	Table~\thecontentslabel%
-	\large}
-{\contentsmargin{0pt}\large}           % unnumbered entry format
-{\titlerule*[.5pc]{.}\contentspage}    % filler-page format (e.g dots)
-%[\addvspace{.5pc}]                    % below code (e.g vertical space)
-
-\titlecontents{figure}
-[0pt]                                  % left margin
-{\addvspace{.5cm}}%                    % above code (e.g vertical space)
-{\contentsmargin{0pt}                  % numbered entry format
-	Figure~\thecontentslabel%
-	\large}
-{\contentsmargin{0pt}\large}           % unnumbered entry format
-{\titlerule*[.5pc]{.}\contentspage}    % filler-page format (e.g dots)
-%[\addvspace{.5pc}]                    % below code (e.g vertical space)
 
 
+\usepackage{booktabs,siunitx} 		% nicer spacing in tables, aligning
+\sisetup{%								numbers in tables
+	output-decimal-marker={.},		% 	based on commas (.)
+}
 
 
 

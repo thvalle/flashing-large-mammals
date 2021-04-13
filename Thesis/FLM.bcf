@@ -171,11 +171,11 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquelist</bcf:key>
-      <bcf:value>true</bcf:value>
+      <bcf:value>false</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquename</bcf:key>
-      <bcf:value>full</bcf:value>
+      <bcf:value>init</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniqueprimaryauthor</bcf:key>
@@ -381,11 +381,11 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquelist</bcf:key>
-      <bcf:value>true</bcf:value>
+      <bcf:value>false</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquename</bcf:key>
-      <bcf:value>full</bcf:value>
+      <bcf:value>init</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniqueprimaryauthor</bcf:key>
@@ -2345,22 +2345,97 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">tex/library.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Odden2015</bcf:citekey>
-    <bcf:citekey order="2">Odden2015</bcf:citekey>
-    <bcf:citekey order="3">Burton2015</bcf:citekey>
-    <bcf:citekey order="4">Meek2014</bcf:citekey>
-    <bcf:citekey order="5">Henrich2020</bcf:citekey>
-    <bcf:citekey order="6">Meek2014</bcf:citekey>
-    <bcf:citekey order="7">Burton2015</bcf:citekey>
-    <bcf:citekey order="8">Hofmeester2019</bcf:citekey>
+    <bcf:citekey order="1">morellet2011</bcf:citekey>
+    <bcf:citekey order="2">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="3">morellet2011</bcf:citekey>
+    <bcf:citekey order="4">Burton2015</bcf:citekey>
+    <bcf:citekey order="5">Rovero2013</bcf:citekey>
+    <bcf:citekey order="6">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="7">Kamler2007</bcf:citekey>
+    <bcf:citekey order="7">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="8">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="9">Meek2014a</bcf:citekey>
+    <bcf:citekey order="10">Meek2014a</bcf:citekey>
     <bcf:citekey order="10">Burton2015</bcf:citekey>
-    <bcf:citekey order="11">Moen1999</bcf:citekey>
-    <bcf:citekey order="12">R-base</bcf:citekey>
-    <bcf:citekey order="13">RStudio</bcf:citekey>
-    <bcf:citekey order="14">tidyverse</bcf:citekey>
-    <bcf:citekey order="15">easystats</bcf:citekey>
-    <bcf:citekey order="16">R-lme4</bcf:citekey>
-    <bcf:citekey order="17">R-parameters</bcf:citekey>
+    <bcf:citekey order="10">Beddari2019</bcf:citekey>
+    <bcf:citekey order="11">Meek2014a</bcf:citekey>
+    <bcf:citekey order="11">Meek2016</bcf:citekey>
+    <bcf:citekey order="12">Meek2014a</bcf:citekey>
+    <bcf:citekey order="12">Rovero2013</bcf:citekey>
+    <bcf:citekey order="13">Rovero2013</bcf:citekey>
+    <bcf:citekey order="14">Rovero2013</bcf:citekey>
+    <bcf:citekey order="15">Henrich2020</bcf:citekey>
+    <bcf:citekey order="16">Dryja2005</bcf:citekey>
+    <bcf:citekey order="17">Glen2013a</bcf:citekey>
+    <bcf:citekey order="18">Meek2014a</bcf:citekey>
+    <bcf:citekey order="19">Dryja2005</bcf:citekey>
+    <bcf:citekey order="20">Schmitz2010</bcf:citekey>
+    <bcf:citekey order="21">Schmitz2010</bcf:citekey>
+    <bcf:citekey order="21">Hall2012</bcf:citekey>
+    <bcf:citekey order="22">Ollivier2004</bcf:citekey>
+    <bcf:citekey order="22">Solovei2009</bcf:citekey>
+    <bcf:citekey order="23">Dryja2005</bcf:citekey>
+    <bcf:citekey order="24">Nakagawara2001</bcf:citekey>
+    <bcf:citekey order="25">Hall2012</bcf:citekey>
+    <bcf:citekey order="26">Moen1999</bcf:citekey>
+    <bcf:citekey order="27">Odden2015</bcf:citekey>
+    <bcf:citekey order="28">Odden2015</bcf:citekey>
+    <bcf:citekey order="29">R-base</bcf:citekey>
+    <bcf:citekey order="30">RStudio</bcf:citekey>
+    <bcf:citekey order="31">tidyverse</bcf:citekey>
+    <bcf:citekey order="32">easystats</bcf:citekey>
+    <bcf:citekey order="33">knitr2015</bcf:citekey>
+    <bcf:citekey order="34">R-lubridate</bcf:citekey>
+    <bcf:citekey order="35">ggplot2</bcf:citekey>
+    <bcf:citekey order="36">R-sjPlot</bcf:citekey>
+    <bcf:citekey order="37">R-lme4</bcf:citekey>
+    <bcf:citekey order="38">R-performance</bcf:citekey>
+    <bcf:citekey order="39">R-parameters</bcf:citekey>
+    <bcf:citekey order="40">Meek2014a</bcf:citekey>
+    <bcf:citekey order="41">Meek2014a</bcf:citekey>
+    <bcf:citekey order="41">Rovero2013</bcf:citekey>
+    <bcf:citekey order="41">Glen2013a</bcf:citekey>
+    <bcf:citekey order="42">Taggart2020</bcf:citekey>
+    <bcf:citekey order="43">Taggart2020</bcf:citekey>
+    <bcf:citekey order="44">Beddari2019</bcf:citekey>
+    <bcf:citekey order="45">Taggart2020</bcf:citekey>
+    <bcf:citekey order="46">Taggart2020</bcf:citekey>
+    <bcf:citekey order="47">Henrich2020</bcf:citekey>
+    <bcf:citekey order="48">Henrich2020</bcf:citekey>
+    <bcf:citekey order="49">Henrich2020</bcf:citekey>
+    <bcf:citekey order="50">Henrich2020</bcf:citekey>
+    <bcf:citekey order="51">Henrich2020</bcf:citekey>
+    <bcf:citekey order="52">Henrich2020</bcf:citekey>
+    <bcf:citekey order="53">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="54">Kamler2007</bcf:citekey>
+    <bcf:citekey order="55">Kamler2007</bcf:citekey>
+    <bcf:citekey order="56">Kamler2007</bcf:citekey>
+    <bcf:citekey order="57">Kamler2007</bcf:citekey>
+    <bcf:citekey order="58">Kamler2007</bcf:citekey>
+    <bcf:citekey order="59">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="60">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="61">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="62">Ogurtsov2018</bcf:citekey>
+    <bcf:citekey order="63">Ogurtsov2018</bcf:citekey>
+    <bcf:citekey order="64">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="65">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="66">Gaynor2018</bcf:citekey>
+    <bcf:citekey order="67">Henrich2020</bcf:citekey>
+    <bcf:citekey order="68">Henrich2020</bcf:citekey>
+    <bcf:citekey order="69">Hall2012</bcf:citekey>
+    <bcf:citekey order="70">Hall2012</bcf:citekey>
+    <bcf:citekey order="71">Hall2012</bcf:citekey>
+    <bcf:citekey order="72">Hall2012</bcf:citekey>
+    <bcf:citekey order="73">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="74">Ikeda2016</bcf:citekey>
+    <bcf:citekey order="75">Hall2012</bcf:citekey>
+    <bcf:citekey order="76">Hall2012</bcf:citekey>
+    <bcf:citekey order="77">Hall2012</bcf:citekey>
+    <bcf:citekey order="78">Hall2012</bcf:citekey>
+    <bcf:citekey order="79">Hall2012</bcf:citekey>
+    <bcf:citekey order="80">Hall2012</bcf:citekey>
+    <bcf:citekey order="81">Hall2012</bcf:citekey>
+    <bcf:citekey order="82">Hall2012</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

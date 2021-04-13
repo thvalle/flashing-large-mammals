@@ -204,7 +204,7 @@ Interesting to note on the summary(fit)-table are the standar error values. The 
 
 ### Model 1 |  ~ )
 
-```{r mod2-house}
+```{r mod2-house, eval=FALSE}
 
 
 #ggforest(mod2a, data = obs_sp)
@@ -240,7 +240,7 @@ The difference that showed up in the two curves could just as likely be due to c
 
 
 ```{r survplot-habitat}
-sp = "raadyr"
+sp = "grevling"
 obs_sp <- obs %>%  # remaking obs_sp, to include all 6 species
   filter(species %in% sp & !period == "Control")
 
@@ -533,7 +533,7 @@ I haven't spent much time here, as I've tried to find a cleaner approach with ti
 Firstly, here's a survival plot of all 6 species. 
 
 ```{r survplot-all}
-sp = c("elg","hjort","grevling","gaupe", "rev", "raadyr")
+sp = c("elg","hjort","grevling","gaupe", "rev", "raadyr", "hare", "ekorn", "maar")
 obs_sp <- obs %>%  # remaking obs_sp, to include all 6 species
   filter(species %in% sp & !period == "Control")
 
@@ -548,7 +548,7 @@ ggsurv <- ggsurvplot(fit, data = obs_sp, title = "white LED flash: dotted lines"
                      risk.table.y.text = FALSE,# show bars instead of names in text annotations
                      ggtheme = theme_minimal(),  
                      censor.shape = "|", censor.size = 3,
-                     xlim = c(0,120),linetype = rep(c(1,2), each = 6),
+                     xlim = c(0,120),linetype = rep(c(1,2), each = 9),
                     # legend.labs =  c("white LED", "IR"),
                      tables.height = 0.2, tables.theme = theme_cleantable())
 curv_facet <- ggsurv$plot + facet_wrap( ~ species) #+ theme(legend.position = "none")

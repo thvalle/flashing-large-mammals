@@ -18,15 +18,16 @@
 
 \pagenumbering{roman}
 
+\newpage
+
+
 \include{tex/abstract}
 %\include{tex/dedication}
 %\include{tex/acknowledge}
 
 \tableofcontents
-\begingroup
-\makeatletter
-\listoffigures
-\listoftables
+%\listoffigures
+%\listoftables
 
 
 \pagenumbering{arabic}
@@ -64,7 +65,11 @@
 %\include{tex/appendix} %maybe forget about this one
 
 \clearpage
-\printbibliography
+\printbibliography[title={References}, notkeyword=R]
+\printbibliography[title={Statistical tools}, keyword=R]
+
 
 \end{document}
 
+% docx conversion for Atle:
+% pandoc FLM.tex --filter pandoc-crossref --top-level-division=chapter --bibliography=tex\library.bib -o FLM.docx

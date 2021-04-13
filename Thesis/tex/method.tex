@@ -1,7 +1,7 @@
 \chapter{Method and materials}
 
 
-\section{Study area} % flyttet først etter AMkomm
+\section{Study area} % flyttet først etter AM
 
 
 %https://klimaservicesenter.no/faces/desktop/article.xhtml?uri=klimaservicesenteret/klimaprofiler/klimaprofil-oslo-og-akershus
@@ -12,14 +12,14 @@ The climate has a continental character due to rain shadows of the mountain ridg
 
 \begin{figure}
 \centering
-%\includegraphics[scale=•]{•} %TODO
+\includegraphics[width=\textwidth]{../R/FLM_notebook_files/figure-gfm/study-map-1.png}
 	\caption[Map of study area]
-	{Map of study area %\par \small
-	60 sites in Southeastern Norway were included in the survey. Point colouration represents camera model, and white dots represent sites that had periods with an additional white LED camera trap (CT).}
-	\label{fig:map}
+	{Map of study area  \small %\par
+	60 sites in Southeastern Norway were included in the survey. Point colouration represents camera brand, and white dots represent sites that had periods with an additional white LED camera trap.}
+\label{fig:map}
 \end{figure}
 
-The mean annual temperatures ranges from 2-6 \celsius , precipitation lies between 700-1500mm and growing season length lies between 170 - 190 days (\cite{Moen1999}).
+The mean annual temperatures ranges from 2-6 \celsius , precipitation lies between 700-1500mm and growing season length lies between 170-190 days \autocite{Moen1999}.
 Topography is predominantly flat towards the south, and more rugged and elevated towards the north. The landscape is a mosaic of forest and agricultural areas, divided with a wide network of gravel roads.
 The area is situated in the southern boreal and boreonemoral zones. %Må finne oppdaterte data (frå Norges vassdrags- og energidirektorat, 2019?)
 Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) make up the dominating boreal coniferous forests, with frequent presence of silver birch (\textit{Betula pendula}) and downy birch (\textit{Betula pubescens}), then aspen (\textit{Populous tremula}), alder (\textit{Alnus incana}) and black alder (\textit{Alnus glutinosa}).
@@ -28,23 +28,32 @@ Norway spruce (\textit{Picea abies}) and Scots pine (\textit{Pinus sylvestris}) 
 
 \section{Study design} 
 
+%%%%%%%%%% Flytta av JO til metode: %%%%%%%%%%%%%%%
+In northern areas, like Norway, counting animal tracks on snow has been a popular method (Linnell et al. 2007). %TODO Linnell, Odden Andren Liber Andersen Moa Kvam... 2007 distance rules for minimum counts of lynx
+%TODO Linnell Brøseth Odden Nilsen 2010 sustainably harvesting a large carnivore?
+Snow track counts have the benefit of visible tracks, and provide a somewhat accurate dating of the tracks to the last snowfall, when old tracks fade.
+However, lately the snow season in southern Norway has been variable, which makes snow track counts unpredictable and difficult to conduct at a consistent time of year \autocite{Odden2015}.
+%% Camera traps
+Therefore, the Norwegian Institute of Nature Research (NINA) started with camera trap (CT) surveys in 2010,  as an additional method to monitor family groups of Eurasian lynx (\textit{Lynx lynx}) in southeastern Norway  \autocite{Odden2015}. The surveys are integrated in a coordinated Scandinavian science project on lynx, called Scandlynx. 
+
+
 I was given access to CTs used in the Scandlynx project, and chose 60 sites to get a substantial amount of data.
 For logistical reasons, I chose the sites closest to Oslo which weren't already equipped with white LED flashes. 
 Instead, these CTs were equipped with infra-red flashes, and I will refer to them as the \emph{IR CTs}.
 
 
-The IR CTs had been installed on trees 1-3 m from wildlife, human or tractor paths, 20-160 cm above ground level, and their distance from houses or roads varied to a large extent. %IMRkomm: Oppgi range? %TODO
-They were set up and handled by people from NINA and, at the sites further from Oslo, by local volunteers. %members of the Norwegian Hunters and Fishers Society (NJFF). 
+The IR CTs had been installed on trees 1-3 m from wildlife, human or tractor paths, 20-160 cm above ground level, 100-3000 m from closest house (median 495 m).
+They were set up and handled by people from NINA, and in some places by local volunteers. 
 The installation of the cameras did not follow a strict protocol, nor were their locations chosen randomly. The overall placement was systematic as decided by NINA. 
-Then there was a deliberately-biased placement of the CTs put up in areas where the individual handler deemed it most likely to photograph lynx, and hence, based on a combination of site accessibility and expectations of animal occurrence. % slik som (\cite{Burton2015} seier skal formidlast). 
+Then there was a deliberately-biased placement of the CTs put up in areas where the NINA employees or local volunteers deemed it most likely to photograph lynx, and hence, based on a combination of site accessibility and expectations of animal occurrence. % slik som \autocite{Burton2015} seier skal formidlast. 
 
 
 \begin{figure}
     \begin{center}
-    	\includegraphics[scale=0.4]{./img/experiment_setup.jpg} %insert figure of groups     
+    	\includegraphics[width=\textwidth]{./img/cam_example/experiment_setup.jpg} %insert figure of groups     
     \end{center}
-\caption[The Experimental setup]
-    	{Experiment setup %\par \small
+\caption[The experimental setup]
+    	{The experimental setup.  \small %\par
     	 60 sites with preinstalled Infrared Camera Traps (IR CTs) that was divided into three groups, where the first group remained unchanged (control group), and the two other alternated on having additional white LED CTs present or not (treatment groups).}
     \label{fig:exp_set}
 \end{figure} 
@@ -56,9 +65,9 @@ The first group remained unchanged as a control, and the other two groups (hereb
 Periods when an additional white LED CT was present (and operational), I will refer to as \emph{white LED periods}.
 Periods when the white LED was absent (or inactive), I will refer to as \emph{IR periods}.
 All periods from the control group, I will refer to as \emph{control periods}.
-Note that control periods also are periods with only IR CTs present, but differ from the IR periods in that there never was a white LED present at these sites.
+Note that control periods also are periods that only had IR CTs present, but they differ from the IR periods in that there never was a white LED present at these sites.
 
-I set up all white LED CTs above the IR CTs already in place (installation examples in figure \ref{fig:cam_ex_main}).
+I up all white LED CTs above the IR CTs already in place (installation examples in figure \ref{fig:cam_ex_main}).
 Using an electric drill, I mounted the CTs with metal cases that remained locked between visits.
 I used short logs to adjust the angle of the white LED CTs, aligning them to match the corresponding IR CT's field of view.
 Vegetation obstructing the view of any camera was removed at setup, or when noticed during a later visitation (e.g. tall grass during summer).
@@ -66,8 +75,15 @@ At one site the IR camera had been installed so far above ground level that I ch
 The metal cases containing the white LED CTs remained at each site until the end of the survey. Note that the second treatment group had no additional metal case before the start of their first white LED period in May 2019.
 
 
+\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{./img/cam_example/install_ex4.jpg}
+			\caption[Examples of camera installations]
+	{Examples of camera installations.  \small %\par
+		The preinstalled IR cameras varied in the way they were set up. Lower cameras had Infra-Red flash, upper cameras had white LED flash. Additional CT boxes remained during IR periods, as seen in picture a.}
+	\label{fig:cam_ex_main}
+\end{figure}
 
-\input{tex/fig/met1.tex}
 
 
 I visited sites of the treatment groups at least once every three months in order to move the white LED cameras.
@@ -78,7 +94,6 @@ This was mostly the case for sites close to, and south of, Oslo, or rather, the 
 
 
 
-%We quantified the degree of consistency in implementing and reporting features of CT protocols and study design that might affect detectability and sampling error (e.g. camera type and settings, spatial and temporal sampling effort, use of attractants; Table S1). These details are fundamental to interpreting results of CT studies and assessing their reliability, repeatability and suitability for broader comparison or synthesis (Meek et al. 2014a)
 
 
 
@@ -89,16 +104,22 @@ This was mostly the case for sites close to, and south of, Oslo, or rather, the 
 Five different models of Reconyx (address: 3828 Creekside Ln, Ste 2, Holmen, WI 54636, USA, www.reconyx.com) cameras were used, 
 and one model of Browning (address: One Browning Place, Morgan, UT 84050, USA, www.browningtrailcameras.com).
 Model names and flash types are presented in table \ref{tab:cam_mod}.  
-As all Reconyx models were from the same series, they were practically identical in all aspects except for the type of flash. Differences in features and settings between the Reconyx an the Browning CTs are presented in table \ref{tab:cam_set}.
+As seen in the map in figure \ref{fig:map}, there was a correlation between latitude and camera brand.
+Since all Reconyx models were from the same series, they were practically identical in all aspects except for the type of flash. Differences in features and settings between the Reconyx an the Browning CTs are presented in table \ref{tab:cam_set}. For my analyses, I assumed all IR CTs to be practically identical.
 
 
-Cameras were operating 24 hours per day. All were set to take photos as quickly as possible with the \emph{rapidfire} and \emph{no delay} settings. However, the two brands differed slightly in their trigger recovery speed, as shown in table \ref{tab:cam_set}.
-Both brands had passive infrared (PIR) motion detectors\footnote{PIR motion detectors work by detecting heat radiation (infrared light), and are triggered by moving objects that are hotter than their surroundings.} 
+Cameras were operating 24 hours per day. All were set to take photos as quickly as possible with the \emph{rapidfire} and \emph{no delay} settings. 
+The two brands differed slightly in their trigger recovery speed, as shown in table \ref{tab:cam_set}.
+However, the difference was not large enough to affect the results. 
+More important for the result would be differences in detection area due to my placement of the white LED CTs.
+Differences in horizontal angle between IR and white LED CTs could cause the white LED to trigger first, and sometimes scare the passing animal away before entering the IR CT's field of view.
+Browning CTs had a slightly wider detection angle than the Reconyx CTs, which could be beneficial in minimizing the times a white LED was triggered first.
+Both brands had passive infrared (PIR) motion detectors\footnote{PIR motion detectors work by detecting heat radiation (infrared light), and are triggered by moving objects that are warmer than their surroundings.} 
 with ranges that far exceeded the expected travelling route. 
 The largest functional difference between the two brands was in the number of photos taken per trigger. 
 While Reconyx CTs were set to take 3 photos per trigger, the Browning CTs were set to 8 photos per trigger. In turn, Browning CTs tended to fill their memory cards faster in areas with sheep or cattle, and due to triggering by vegetation.
 Consequently, they tended to have less active days than the Reconyx, as CTs stop taking pictures when their memory cards are full.
-Adding insult to injury, the Browning CTs weren't set to take time lapse photos, confounding the number of active days.
+Adding insult to injury, the Browning CTs did not have a time lapse function, confounding the number of active days.
 To approach the true number of active CT days, I assumed all Browning cameras to be functional every day, unless the camera was inactive when I visited it. In that case, I considered the camera inactive since the day of its last photo.
 On the other hand, Reconyx cameras were set to take one time lapse photo per day, making it easy to verify which days they were operational.
 
@@ -107,8 +128,6 @@ On the other hand, Reconyx cameras were set to take one time lapse photo per day
 
 
 
-As seen in figure \ref{fig:map}, %TODO insert map with loc, white point inside flash-cameras.
-there was a correlation between latitude and camera type.
 
 % difference between the two camera types*** 
 % Assumptions: chance of detection & sp validation BROWNING > RECONYX, operational days BROWNING < RECONYX
@@ -125,15 +144,15 @@ there was a correlation between latitude and camera type.
 
 
 
-
 \section{Data processing} 
 
 All SD cards were delivered to NINA for data processing.
-The white LED CTs were considered as external flashes, and so, only the pictures from the preinstalled IR CTs were sorted for species identification.
+The white LED CTs were considered as external flashes, and so, \textit{only the pictures from the preinstalled IR CTs} (mounted underneath the white LED cameras) % added by JO
+were sorted for species identification.
 First, a facial recognition algorithm (FRA) was used to identify species on all pictures. %artificial intelligence software (AI)
 Second, a human sorter reviewed the software's output, confirming all the correct identifications and rectifying the wrong ones. 
-Consequently, the rate of correctly identified species has increased as the FRA sometimes detect animals that aren't easily noticed by human sorters (John Odden pers. comm.). 
-NINA's goal is for the FRA to automatically and reliably delete pictures of humans, which has been requested from The Norwegian Data Protection Authority (Datatilsynet) for CT usage in parks and other densely crowded areas (John Odden pers. comm.).
+Consequently, the rate of correctly identified species has increased as the FRA sometimes detect animals that aren't easily noticed by human sorters (John Odden personal communication). 
+NINA's goal is for the FRA to automatically and reliably delete pictures of humans, which has been requested from The Norwegian Data Protection Authority (Datatilsynet) (John Odden personal communication).
 %Nei, vi har ikke publisert artikkel på gjenkjenningsalgoritmen. Du har jo vært med på prosessen sjøl, så jeg veit ikke om du egentlig trenger referanse her, men du kan sette inn John O som pers med og merke det, så kan han eller jeg endre det slik vi mener det bør være når vi leser gjennom oppgava di..
 
 Third, NINA provided me with a data frame containing time stamps for every triggering of each IR CT, including all metadata from the CTs, coupled with predicted species (FRA output, with a confidence number), verified species (by human sorters), number of animals and distance from camera.
@@ -142,13 +161,11 @@ Thus, if a moose ruminated in front of a camera for 30 minutes, the data frame w
 Finally, I extracted metadata from all pictures taken by the white LED CTs, %joined it to the species ID-data frame,  
 and used that to define the duration of each white LED period.
 
-If a site's white LED CT stopped working (eg. due to full SD card or empty batteries) before the day I came to relocate it, that site would have already entered its next IR period.
-Time lapse photos from the white LED CTs allowed for accurate dating of these period transitions.
-This happened a few  %IMRkomm: skriv antall ganger, evt summert varighet på periode, eller % av tiden  %TODO
-times, which can be seen as the times a light blue period starts outside of the shaded areas in figure \ref{fig:timeseries}. 
-If an IR CT stopped working during a white LED period, the rest of the period represented a data gap even if the white LED CT was functioning. 
+Four times a site's white LED CT stopped working (eg. due to full SD card or empty batteries) before the day I came to relocate it, which can be seen as the dark blue lines transitioning to light blue outside of a field work period in figure \ref{fig:timeseries}.
+Time lapse photos from the white LED CTs made dating of these stops in treatment accurate, keeping the transition to IR periods reliable. 
+Whenever an IR CT stopped working during a white LED period, the rest of the period represented a data gap even if the white LED CT was functioning.\footnote{Remember that white LED CTs were considered as external flashes, and their pictures were left out of the analyses.} 
 Nevertheless, inhabitant animals would still be exposed to the white flash up until the start of the following IR period.
-I never experienced that both the IR and white LED CTs of a site had stopped working at the same time.
+I never experienced that both the IR and white LED CTs of a site had stopped working at the same time. 
 
 
 In order to remove autocorrelation in the observations, I defined an event to be any sighting of a species that occurred more than 20 minutes after the previous sighting of the same species.
@@ -157,7 +174,7 @@ Ergo, I counted the number of independent times a species was observed, not the 
 My predictor variable of interest was the three different types of periods, namely IR, white LED and control periods, and how they interacted with time since deployment (ie. time since the start of each period).
 
 
-When modelling the detection rates, periods of similar lengths were required.
+When modelling the detection rates, periods of similar lengths were required. %TODO NHT: jeg ville vurdert å flytte denne til der du forklarer hvordan du modellerte deteksjonsrater
 White LED and IR periods were clearly defined, but control periods lacked a common definition for period splits, as I visited control sites less frequently than the treatment sites.
 Therefore, I divided the control sites into four periods of similar lengths to that of the IR- and white LED-periods (see figure \ref{fig:timeseries}). 
 %Describing in brief how coding is undertaken is useful for readers to understand the methods used in relation to the results.(Meek etal 2014)
@@ -169,77 +186,88 @@ Three sites were removed from the treatment groups, because of large or frequent
 
 
 
-\begin{figure}
-		\centering
-		\includegraphics[scale=.8]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}	
-\caption[An overview of active camera days]
-{An overview of active camera days for each camera throughout the whole study period. %\par \small 
-Colours indicate the different periods for each site. White spaces indicate gaps where the IR CTs were inactive. Control camera periods were defined in similar lengths to that of the treatment group during analysis. As a result, the first day of control periods are often set at dates far from when I actually visited a site. Shaded areas represent my field work periods. \label{fig:timeseries}}
-\end{figure}
 
 
 
 \section{Statistical analysis} 
 
-To test for effects of the white LED flash I used the R programming language (\cite{R-base}), in the RStudio IDE (\cite{RStudio}), adopting large parts of the tidyverse (\cite{tidyverse}) and the easystats (\cite{easystats}) frameworks along the way. Complete citation of R packages used are presented in appendix A. %\ref{app:sessinfo} 
+To test for effects of the white LED flash I used the R programming language \autocite{R-base}, in the RStudio IDE \autocite{RStudio}, adopting large parts of the tidyverse \autocite{tidyverse} and the easystats \autocite{easystats} frameworks along the way. 
+Ensuring that all species were modelled equally (and reducing workload), I wrote code in an RMarkdown-file, using the R package knitr \cite{knitr2015}, which iteratively (re)ran all processes on subsets for each species, and stored updated plots and tables to include in the final manuscript. 
+Dates were handled using the R package lubridate \autocite{R-lubridate}, and for the plots of diel patterns, I defined winter as December - February, spring as March - May, and so on. 
+Plots were produced using the R packages ggplot2 \autocite{ggplot2} and sjPlot \autocite{R-sjPlot}.
 
 
-
-	\subsection*{GLMM}
-To test H1 I looked for differences in detection rate per day, using Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 (\cite{R-lme4}).
+	\subsection*{Exploring the effect of LED flash on detection rates}
+I used Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 \autocite{R-lme4}.
 I fitted separate models for each species to avoid overly complicated models. 
 Locations that had 0 observations of the modelled species were filtered out before the modelling, but for all locations that had observed the species, all periods were included.
-The dependent variable was count data (number of observations), and I therefore assumed the error term followed a Poisson distribution ($ X \sim Pois(\lambda) $).
+The dependent variable was count data (number of observations per day), and I therefore assumed the error term followed a Poisson distribution ($ X \sim Pois(\lambda) $).
 
-I included location ID and week of the year as random effects to account for consistent differences between camera sites and seasonal changes during the year of study.
+Although there were differences between the Browning and Reconyx IR CTs, I didn't include them as variables in my models, because they correlated with spatial and microhabitat-variables.
+Instead, I included location ID and week of the year as random effects to account for differences between camera sites and seasonal changes during the year of study. 
 95\% Confidence Intervals (CIs) and p-values were computed using the Wald approximation.
-I used standardized parameters (mean = 0, SD = 1) to enable comparison of effect sizes.
+%I used standardized parameters (mean = 0, SD = 1) to enable comparison of effect sizes. % I don't think I did so
 
 The main term of interest was time since deployment (continuous) interacting with type of flash period (categorical; formula: n.obs $\sim$ time.deploy $\ast$ flash).
-For the sites that were equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up/took down the white LED.
+For the sites that were equipped with an additional white LED camera, time since deployment starts from the day I visited the camera, and set up or took down the white LED.
+For the sites that started with an IR period, time since deployment started at the first day of field work, or when I visited them. 
 The control group’s “day 0” of time since deployment were set at points reflecting the onset of field work each time, in order to obtain periods of similar lengths to that of the white LED-locations.
 
-I trimmed the period lengths down to a reduced maximum length, based on the median length of the IR and white LED periods, to enhance meaningful comparison.
-Thus, any period exceeding the shortest median length, was trimmed down, as visualized in figure \ref{fig:median_period}.
+I trimmed the period lengths down to a reduced maximum length, based on the median length of the IR and white LED periods, to enhance meaningful comparison (Figure 2.5).
 Finally, due to large eigenvalues in the fixed effects, the model failed to converge, and an error message prompted me to rescale variables.
 Therefore I divided the time since deployment-variable by ten, which solved the convergence issue.
-Consequently, the time axis is shown in days/10, which means that 8 corresponds to 80 days. %IMRkomm: foreslår at du endrer annoteringen på aksene dine til å vise faktiske dager, ikke dager/10
+Consequently, the time parameter estimates represent the change in detection rates per 10 days. %IMR: foreslår at du endrer annoteringen på aksene dine til å vise faktiske dager, ikke dager/10
 
+%The model failed to converge for red squirrel. Therefore, I changed the optimizer to penalized iteratively reweighted least squares step, by setting argument nAGQ = 0 in the glmer-function. %works after filtering away detectionless locations
+
+%AM: til analyse
+The control periods should stay horizontal, representing a baseline detection rate, given that the random effects succeeded in removing seasonal variation. 
+If there were any effect of the white LED, and detection rates were altered, I expect the IR period to show a regression to the norm, ie. counteracting the trend during the white LED periods.
+Thus, if the white LED had a negative slope along the time axis, the IR should have a positive slope. %Further, the detection rate at the start of each period, should correspond somewhat to the detection rate at the end of the previous period. Still, that pattern could be skewed to some extent due to my visitation of each location at the start of all IR and white LED periods.
+To prove an effect, white LED and IR periods have to be significantly different from each other, rather than just significantly different from the control group.
+
+Using the R package performance \autocite{R-performance} I checked the model for overdispersion, zero-inflation and singularity, which held up in every model.
+
+%%%% Figurene bør havne på same side for å minimere antall fargesider
+
+\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}	
+\caption[An overview of active camera days]
+{An overview of active camera days for each camera throughout the whole study period.  \small %\par 
+Colours indicate the different periods for each site. White spaces indicate gaps where the IR CTs were inactive. Control camera periods were defined in similar lengths to that of the treatment group during analysis. As a result, the first day of control periods are often set at dates far from when I actually visited a site. Shaded areas represent my field work periods.}
+\label{fig:timeseries}
+\end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=.8]{../R/glmm_sp_files/figure-html/period-length-wControl-1.png}
+	\includegraphics[width=\textwidth]{../R/glmm_sp_files/figure-html/period-length-wControl-1.png}
 	\caption[Period lengths]
-	{Period lengths for each camera. %\par \small 
-	Vertical line represents the median IR period length, which was shorter than the median of the other groups. Data superseding the median were trimmed away for the GLMM. \label{fig:median_period}}
+	{Period lengths for each camera.  \small %\par 
+	Vertical line represents the median IR period length, which was shorter than the median of the other groups. Data superseding the median were trimmed away for the GLMM.} 
+	\label{fig:median_period}
 \end{figure}
 
-%AMkomm: til analyse
-If there were any effect of the white LED, the IR period should show a regression to the norm, ie. counteracting the trend during the white LED periods.
-Thus, if the white LED had a negative slope along the time axis, the IR should have a positive slope.
-Further, the detection rate at the start of each period, should correspond somewhat to the detection rate at the end of the previous period. Still, that pattern could be skewed to some extent due to my visitation of each location at the start of all IR and white LED periods.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-
-
-
-\subsection*{Equivalence test}
+\subsection*{Equivalence test and Second Generation P-Values}
 % Multiple testing i arkiv/method-ark
-I used the standard significance level of $\alpha = .05$, and performed an equivalence test on my model outputs, using the function equivalence\_test from the R package parameters (\cite{R-parameters}).
+I used the standard significance level of $\alpha = .05$, and performed an equivalence test on my model outputs, using the function equivalence\_test from the R package parameters \autocite{R-parameters}.
 In an equivalence test, model parameters are tested against a Region of Practical Equivalence (ROPE) as opposed to merely one single mean value which is done in a standard Null Hypothesis Significance Test (NHST).
 Thus, rather than saying that a parameter's effect was significantly different (or not) from 0, the \emph{effect size} is also considered.
 If the parameter estimate and confidence interval (CI) lies outside the ROPE, the effect is significantly and practically different from 0, and the null hypothesis is rejected.
 However, if the CI is inside the ROPE, H0 is accepted, no matter if a NHST would have deemed it significantly different, because the difference is so small that there is practically no effect.
 
-%The radical difference from a standard NHST is acceptance of a null hypothesis, which is an attempt to use 
+The percentage of the CI inside the ROPE is identical to the Second Generation P-Value (SGPV), which was proposed %TODO by who?
+ as a way to account for all the empirical data supporting null hypotheses. %TODO Språkvask.
 
 
-Inside the function equivalence\_test I used the Two One-Sided Tests (TOST) rule, where the CI is set to $1 - 2\times \alpha$. In my case that gave a CI of 0.90.
+Inside the function equivalence\_test I used the Two One-Sided Tests (TOST) rule, where the CI is set to $1 - 2\times \alpha$. In my case that gave a CI of 0.90.\footnote{Therefore, a significant difference in a TOST differs slightly from a significant difference in a standard NHST, which is based on a CI of 0.95.}
 For models from count data, the residual variance is often used to define the ROPE range. However, the description of the rope\_range function from the package bayestestR (R-bayestestR) states this threshold as "rather experimental" and that the range is probably often similar to the default [-0.1, 0.1] of a standardized parameter.
 Hence, I used the default ROPE range which corresponds to a negligible effect size according to Cohen, 1988.
 
-%In the TOST procedure, the null hypothesis is the presence of a true effect of DL or DU, and the alternative hypothesis is an effect that falls within the equivalence bounds or the absence of an effect that is worthwhile to examine. \cite{Lakens2017}
+%In the TOST procedure, the null hypothesis is the presence of a true effect of DL or DU, and the alternative hypothesis is an effect that falls within the equivalence bounds or the absence of an effect that is worthwhile to examine. \autocite{Lakens2017}
 
 
 

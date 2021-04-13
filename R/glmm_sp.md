@@ -1,7 +1,7 @@
 ---
 title: "GLMM per art"
 author: "Torgeir Holmgard Valle"
-date: "26 mars, 2021"
+date: "13 april, 2021"
 output:
   html_document:
     toc: true
@@ -83,7 +83,7 @@ library(sjPlot)      # parameters + sjPlot probably does a similar and better jo
 ```
 
 ```
-## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
+## #refugeeswelcome
 ```
 
 ```
@@ -419,18 +419,30 @@ p_count <- ggplot(sp_count, aes(reorder(species, count, FUN = mean),count)) +
 ![](glmm_sp_files/figure-html/events-1.png)<!-- -->
 
 ```r
+sp_eng2 <- c("Roe deer", "Hare", "Badger", "Red fox", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
+sp_eng2 <- sp_eng2[9:1] # reverse order
 # data without flash-grouping
 sp_count_trim <- time.dep4 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
   summarise(count = sum(n.obs))
 sp_count_full <- time.dep3 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
   summarise(count = sum(n.obs))
 # plot full and trimmed on top of each other
-ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
-  labs(x= "Species", y = "Events") +
-  scale_y_continuous(n.breaks = 10) + 
-  geom_col() +
-  geom_col(data=sp_count_trim, fill="blue") +
+p_events <- ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "", y = "Total number of events") + ylim(0,1750) +
+  scale_y_continuous(n.breaks = 5) + scale_x_discrete(labels = sp_eng2) +
+  geom_col(col="black",fill="white") +
+  geom_col(data=sp_count_trim, col="black", 
+           fill="darkgrey") +
   geom_label(aes(x=species,y=count,label = count))
+```
+
+```
+## Scale for 'y' is already present. Adding another scale for 'y', which will
+## replace the existing scale.
+```
+
+```r
+p_events
 ```
 
 ![](glmm_sp_files/figure-html/events-2.png)<!-- -->
@@ -493,10 +505,11 @@ ggplot(active_p,aes(period,value,fill=variable)) +
 p_days <- active_p %>% mutate(period = fct_rev(period)) %>% 
 ggplot(aes(flash,value,fill=flash,col=period)) +
   geom_col() +
-  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_fill_grey(start = .8, end = 1) + #flash fill colours
   scale_color_grey(start = 0, end = 0) + #black surrounding colour
-  labs(x= "Period group", y= "Active camera trapping days") +
-  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  labs(x= "Period group", y= "Total camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5),
+            angle=90, size = 3.33) + # ,show.legend = F) +
   facet_wrap(~variable) +
   theme(legend.position = "none", axis.title.x = element_blank())
 p_days
@@ -504,18 +517,69 @@ p_days
 
 ![](glmm_sp_files/figure-html/active-days-3.png)<!-- -->
 
+```r
+total_days <- active_trimmed %>% group_by(period, flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) )
+```
+
+```
+## `summarise()` has grouped output by 'period'. You can override using the `.groups` argument.
+```
+
+```r
+total_days$Full %>% sum()
+```
+
+```
+## [1] 18133
+```
+
 
 
 ```r
-plot_grid(p_count +
-            scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
-                               sec.axis = dup_axis(name = element_blank())) ,
-          p_days + 
-            scale_y_continuous(#n.breaks = 7,
-                               sec.axis = dup_axis(name = element_blank()) ),
-          nrow = 2,
-          rel_heights = c(2,3))
+cowplot::plot_grid(p_events + ylim(0,1800), #ylim to prevent cutting of "1709"
+                   p_days,
+  nrow = 2,
+  labels = "auto",
+  label_size = 12,
+  align = "v"
+)
 ```
+
+```
+## Scale for 'y' is already present. Adding another scale for 'y', which will
+## replace the existing scale.
+```
+
+```
+## Warning: Graphs cannot be vertically aligned unless the axis parameter is set.
+## Placing graphs unaligned.
+```
+
+![](glmm_sp_files/figure-html/days-count-1.png)<!-- -->
+
+```r
+cowplot::plot_grid(p_events + coord_flip() + ylim(0,1800), #ylim to prevent cutting of "1709"
+                   p_days,
+  nrow = 1,
+  labels = "auto",
+  label_size = 12,
+  align = "h"
+)
+```
+
+```
+## Scale for 'y' is already present. Adding another scale for 'y', which will
+## replace the existing scale.
+```
+
+```
+## Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.
+## Placing graphs unaligned.
+```
+
+![](glmm_sp_files/figure-html/days-count-2.png)<!-- -->
 
 # Yearly activity
 
@@ -523,8 +587,8 @@ plot_grid(p_count +
 ```r
 sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
-sp_ruminata <- c("raadyr", "elg", "hjort")
-sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+sp_cervidae <- c("raadyr", "elg", "hjort")
+sp_glires <- c("hare", "ekorn") # I know they're not both rodents
 
 obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
   mutate(flash = fct_shift(flash,-1), #reordering flash-factor
@@ -532,8 +596,8 @@ obs_activity <- obs %>% filter(species %in% sp_focus) %>%
          month = lubridate::month(date),
          year = lubridate::year(date))
 obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
-obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
-obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity$order[obs_activity$species %in% sp_cervidae] <- "Cervidae"
+obs_activity$order[obs_activity$species %in% sp_glires] <- "Glires"
 obs_activity %>% 
 ggplot(aes(week)) +
   #geom_bar(col="black", fill="white") +
@@ -583,12 +647,12 @@ ggplot(aes(week)) +
 ```
 
 ```
-## Warning: ggrepel: 114 unlabeled data points (too many overlaps). Consider
+## Warning: ggrepel: 166 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps
 ```
 
 ```
-## Warning: ggrepel: 166 unlabeled data points (too many overlaps). Consider
+## Warning: ggrepel: 114 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps
 ```
 
@@ -611,6 +675,7 @@ The following code chunks are written in a modular fashion, so that everything w
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -625,7 +690,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -640,6 +704,7 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
+# Cervids
 
 ## Roe deer
 
@@ -651,6 +716,14 @@ In the following chunk, knitr will call the code chunks referenced in the 'ref.l
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 47
+```
+
+```r
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -665,7 +738,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -734,30 +806,13 @@ va_r <- insight::get_variance(m_sp)
 
 ```r
 # trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("wLED \   (",c[2,2],")")
+# c <- obs %>% filter(species %in% sp) %>% 
+#   group_by(flash) %>% 
+#   summarise(count = n())
+# lab_ctrl <- paste0("Control (",c[3,2],")")
+# lab_IR   <- paste0("IR \    (",c[1,2],")")
+# lab_LED  <- paste0("wLED \   (",c[2,2],")")
 
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
 #TODO få inn n_loc i plottet, kanskje per periode
 
 
@@ -792,6 +847,39 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 # 
 # overlap::sunTime()
 
+# Density plots
+# p_dens <- obs %>% filter(species %in% sp) %>% 
+#   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+#   ggplot(aes(Hour)) +
+#   geom_bar(col="black", fill="white") +
+#   geom_density(aes(y=..density..*20*count, #scaling density with the count
+#                    fill=flash, alpha=.1),
+#                show.legend = c(alpha = F), bw=1.2) +
+#   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+#   scale_y_continuous(n.breaks = 6) + # n y-ticks
+#   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+#         legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+#         legend.box.just = "right")+ 
+#   scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+#                     #labels=c(lab_ctrl, lab_IR, lab_LED)
+#                     )
+# p_dens <-
+  obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*30*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right") + 
+ # scale_fill_bluebrown(reverse = T, labels = c("Winter", "Spring", "Summer","Fall"))
+ scale_fill_manual(values = c("#1f78b4","white","#33a02c","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
 
 #yearly activity
 
@@ -813,12 +901,16 @@ ggplot(aes(week)) +
 
 ```r
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -868,30 +960,64 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         32
+## 2 wLED       30
+## 3 Control    15
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -909,13 +1035,19 @@ jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                             p_sp1,
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -944,7 +1076,7 @@ summary(r_sp)
 ```
 
 ```r
-as.report_table(r_sp)
+as.report_table(r_sp) 
 ```
 
 ```
@@ -989,18 +1121,24 @@ __Chunk order:__
 1. objects
 
 
-## Red Fox
+## Moose
 
- 
-This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
 
-Now, sp contains rev.
+Now, sp contains elg.
 
 
 ```r
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 41
+```
+
+```r
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -1015,7 +1153,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1028,36 +1165,36 @@ summary(m_sp)
 ##    Data: time_sp
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
-##   5740.1   5801.2  -2862.1   5724.1    15241 
+##   2956.3   3015.4  -1470.2   2940.3    11943 
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -0.6332 -0.2445 -0.1816 -0.1298 13.0526 
+## -0.4229 -0.1843 -0.1363 -0.1026 17.4246 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 0.74933  0.8656  
-##  week   (Intercept) 0.07133  0.2671  
-## Number of obs: 15249, groups:  loc, 53; week, 52
+##  week   (Intercept) 0.5270   0.7260  
+##  loc    (Intercept) 0.4014   0.6335  
+## Number of obs: 11951, groups:  week, 52; loc, 41
 ## 
 ## Fixed effects:
-##                         Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -3.4391866  0.2565890 -13.403   <2e-16 ***
-## time.deploy           -0.0005472  0.0282401  -0.019    0.985    
-## flashIR                0.0294434  0.3151412   0.093    0.926    
-## flashwLED              0.1764789  0.3136447   0.563    0.574    
-## time.deploy:flashIR   -0.0024082  0.0378228  -0.064    0.949    
-## time.deploy:flashwLED -0.0111628  0.0370606  -0.301    0.763    
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -4.153451   0.302125 -13.747   <2e-16 ***
+## time.deploy            0.006304   0.045516   0.138    0.890    
+## flashIR               -0.081991   0.349354  -0.235    0.814    
+## flashwLED              0.301856   0.338919   0.891    0.373    
+## time.deploy:flashIR    0.050860   0.059004   0.862    0.389    
+## time.deploy:flashwLED -0.006982   0.056859  -0.123    0.902    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.442                            
-## flashIR     -0.776  0.326                     
-## flashwLED   -0.782  0.335  0.860              
-## tm.dply:fIR  0.289 -0.653 -0.472 -0.244       
-## tm.dply:LED  0.302 -0.682 -0.248 -0.467  0.504
+## time.deploy -0.626                            
+## flashIR     -0.680  0.462                     
+## flashwLED   -0.712  0.485  0.746              
+## tm.dply:fIR  0.372 -0.629 -0.670 -0.357       
+## tm.dply:LED  0.431 -0.703 -0.384 -0.655  0.529
 ```
 
 ```r
@@ -1065,6 +1202,7 @@ r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
 para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
+
 ### Plot
 
 
@@ -1073,44 +1211,48 @@ summary(r_sp)
 ```
 
 ```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 8.63e-04. The model's intercept is at -3.44 (95% CI [-3.94, -2.94]). Within this model:
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 3.72e-03. The model's intercept is at -4.15 (95% CI [-4.75, -3.56]). Within this model:
 ## 
-##   - The effect of time.deploy is non-significantly negative (beta = -5.47e-04, 95% CI [-0.06, 0.05], p = 0.985, Std. beta = -1.29e-03)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.03, 95% CI [-0.59, 0.65], p = 0.926, Std. beta = 0.02)
-##   - The effect of flash [wLED] is non-significantly positive (beta = 0.18, 95% CI [-0.44, 0.79], p = 0.574, Std. beta = 0.13)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -2.41e-03, 95% CI [-0.08, 0.07], p = 0.949, Std. beta = -5.69e-03)
-##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.06], p = 0.763, Std. beta = -0.03)
+##   - The effect of time.deploy is non-significantly positive (beta = 6.30e-03, 95% CI [-0.08, 0.10], p = 0.890, Std. beta = 0.01)
+##   - The effect of flash [IR] is non-significantly negative (beta = -0.08, 95% CI [-0.77, 0.60], p = 0.814, Std. beta = 0.12)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.30, 95% CI [-0.36, 0.97], p = 0.373, Std. beta = 0.27)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.06, 0.17], p = 0.389, Std. beta = 0.12)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -6.98e-03, 95% CI [-0.12, 0.10], p = 0.902, Std. beta = -0.02)
 ```
 
 ```r
-as.report_table(r_sp)
+as.report_table(r_sp) 
 ```
 
 ```
 ## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
 ## -----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -3.44 | [-3.94, -2.94] | -13.40 | Inf | < .001 |      -3.44 |    [-3.89, -2.99] |         
-## time.deploy                |   -5.47e-04 | [-0.06,  0.05] |  -0.02 | Inf | 0.985  |  -1.29e-03 |    [-0.13,  0.13] |         
-## flash [IR]                 |        0.03 | [-0.59,  0.65] |   0.09 | Inf | 0.926  |       0.02 |    [-0.52,  0.56] |         
-## flash [wLED]               |        0.18 | [-0.44,  0.79] |   0.56 | Inf | 0.574  |       0.13 |    [-0.41,  0.68] |         
-## time.deploy * flash [IR]   |   -2.41e-03 | [-0.08,  0.07] |  -0.06 | Inf | 0.949  |  -5.69e-03 |    [-0.18,  0.17] |         
-## time.deploy * flash [wLED] |       -0.01 | [-0.08,  0.06] |  -0.30 | Inf | 0.763  |      -0.03 |    [-0.20,  0.15] |         
+## (Intercept)                |       -4.15 | [-4.75, -3.56] | -13.75 | Inf | < .001 |      -4.13 |    [-4.59, -3.67] |         
+## time.deploy                |    6.30e-03 | [-0.08,  0.10] |   0.14 | Inf | 0.890  |       0.01 |    [-0.20,  0.23] |         
+## flash [IR]                 |       -0.08 | [-0.77,  0.60] |  -0.23 | Inf | 0.814  |       0.12 |    [-0.39,  0.62] |         
+## flash [wLED]               |        0.30 | [-0.36,  0.97] |   0.89 | Inf | 0.373  |       0.27 |    [-0.23,  0.78] |         
+## time.deploy * flash [IR]   |        0.05 | [-0.06,  0.17] |   0.86 | Inf | 0.389  |       0.12 |    [-0.15,  0.39] |         
+## time.deploy * flash [wLED] |   -6.98e-03 | [-0.12,  0.10] |  -0.12 | Inf | 0.902  |      -0.02 |    [-0.28,  0.25] |         
 ##                            |             |                |        |     |        |            |                   |         
-## AIC                        |             |                |        |     |        |            |                   |  5740.11
-## BIC                        |             |                |        |     |        |            |                   |  5801.17
+## AIC                        |             |                |        |     |        |            |                   |  2956.30
+## BIC                        |             |                |        |     |        |            |                   |  3015.41
 ## R2 (conditional)           |             |                |        |     |        |            |                   |     0.19
-## R2 (marginal)              |             |                |        |     |        |            |                   | 8.63e-04
+## R2 (marginal)              |             |                |        |     |        |            |                   | 3.72e-03
 ## Sigma                      |             |                |        |     |        |            |                   |     1.00
 ```
 
 ```r
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -1128,12 +1270,12 @@ result
 ##   ROPE: [-0.10 0.10]
 ## 
 ##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-3.86 -3.02]
-##                 time.deploy  Accepted    100.00 % [-0.05  0.05]
-##                  flash [IR] Undecided     19.29 % [-0.49  0.55]
-##                flash [wLED] Undecided     19.38 % [-0.34  0.69]
-##    time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.06]
-##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.05]
+##                 (Intercept)  Rejected      0.00 % [-4.65 -3.66]
+##                 time.deploy  Accepted    100.00 % [-0.07  0.08]
+##                  flash [IR] Undecided     17.40 % [-0.66  0.49]
+##                flash [wLED] Undecided     17.94 % [-0.26  0.86]
+##    time.deploy * flash [IR] Undecided     75.32 % [-0.05  0.15]
+##  time.deploy * flash [wLED] Undecided     99.73 % [-0.10  0.09]
 ```
 
 ```r
@@ -1160,30 +1302,64 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         25
+## 2 wLED       27
+## 3 Control    13
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -1193,17 +1369,23 @@ jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                             p_sp1,
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
-![](glmm_sp_files/figure-html/rev2-1.png)<!-- -->
+![](glmm_sp_files/figure-html/elg2-1.png)<!-- -->
 
 ```r
        #  hjust = 1, halign = 1, valign = 0)
@@ -1213,37 +1395,35 @@ p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 
 ```r
 # Model
-m_rev    = m_sp
+m_elg    = m_sp
 # ggpredict 
-p_rev    = p_sp
+p_elg    = p_sp
 # report-object
-r_rev    = r_sp
+r_elg    = r_sp
 # parameters refit
-para_rev = para_sp 
+para_elg = para_sp  
 # SGPV
-res_rev = result$ROPE_Percentage
+res_elg = result$ROPE_Percentage
 ```
 
+## Red deer
 
 
-```r
-knitr::knit_exit()
-# Exita knitting process here instead of at the document end
-# Perfect for doing a test run, checking if the code works for at least two different species
-# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
-```
-
-
-## Badger
-
-
-Now, sp contains grevling.
+Now, sp contains hjort.
 
 
 ```r
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 26
+```
+
+```r
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -1258,7 +1438,302 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
+# Summary, report, model
+summary(m_sp)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: poisson  ( log )
+## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
+##    Data: time_sp
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   1743.4   1798.6   -863.7   1727.4     7336 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.4840 -0.1774 -0.1283 -0.0927 16.1188 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  week   (Intercept) 0.2568   0.5067  
+##  loc    (Intercept) 0.7147   0.8454  
+## Number of obs: 7344, groups:  week, 52; loc, 26
+## 
+## Fixed effects:
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.891154   0.407582  -9.547  < 2e-16 ***
+## time.deploy           -0.094938   0.058353  -1.627  0.10374    
+## flashIR               -0.009873   0.498299  -0.020  0.98419    
+## flashwLED             -0.687348   0.526986  -1.304  0.19213    
+## time.deploy:flashIR    0.061810   0.076779   0.805  0.42080    
+## time.deploy:flashwLED  0.231225   0.078062   2.962  0.00306 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) tm.dpl flshIR flsLED tm.:IR
+## time.deploy -0.509                            
+## flashIR     -0.759  0.386                     
+## flashwLED   -0.738  0.388  0.767              
+## tm.dply:fIR  0.344 -0.687 -0.555 -0.289       
+## tm.dply:LED  0.373 -0.713 -0.302 -0.609  0.531
+```
+
+```r
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
+```
+
+### Plot
+
+
+```r
+summary(r_sp)
+```
+
+```
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.20) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -3.89 (95% CI [-4.69, -3.09]). Within this model:
+## 
+##   - The effect of time.deploy is non-significantly negative (beta = -0.09, 95% CI [-0.21, 0.02], p = 0.104, Std. beta = -0.22)
+##   - The effect of flash [IR] is non-significantly negative (beta = -9.87e-03, 95% CI [-0.99, 0.97], p = 0.984, Std. beta = 0.23)
+##   - The effect of flash [wLED] is non-significantly negative (beta = -0.69, 95% CI [-1.72, 0.35], p = 0.192, Std. beta = 0.21)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.06, 95% CI [-0.09, 0.21], p = 0.421, Std. beta = 0.15)
+##   - The interaction effect of flash [wLED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.08, 0.38], p < .01, Std. beta = 0.55)
+```
+
+```r
+as.report_table(r_sp) 
+```
+
+```
+## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
+## ---------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.89 | [-4.69, -3.09] | -9.55 | Inf | < .001 |      -4.26 |    [-4.95, -3.57] |        
+## time.deploy                |       -0.09 | [-0.21,  0.02] | -1.63 | Inf | 0.104  |      -0.22 |    [-0.50,  0.05] |        
+## flash [IR]                 |   -9.87e-03 | [-0.99,  0.97] | -0.02 | Inf | 0.984  |       0.23 |    [-0.58,  1.04] |        
+## flash [wLED]               |       -0.69 | [-1.72,  0.35] | -1.30 | Inf | 0.192  |       0.21 |    [-0.61,  1.03] |        
+## time.deploy * flash [IR]   |        0.06 | [-0.09,  0.21] |  0.81 | Inf | 0.421  |       0.15 |    [-0.21,  0.50] |        
+## time.deploy * flash [wLED] |        0.23 | [ 0.08,  0.38] |  2.96 | Inf | 0.003  |       0.55 |    [ 0.19,  0.91] |        
+##                            |             |                |       |     |        |            |                   |        
+## AIC                        |             |                |       |     |        |            |                   | 1743.43
+## BIC                        |             |                |       |     |        |            |                   | 1798.64
+## R2 (conditional)           |             |                |       |     |        |            |                   |    0.20
+## R2 (marginal)              |             |                |       |     |        |            |                   |    0.01
+## Sigma                      |             |                |       |     |        |            |                   |    1.00
+```
+
+```r
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
+result
+```
+
+```
+## # TOST-test for Practical Equivalence
+## 
+##   ROPE: [-0.10 0.10]
+## 
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-4.56 -3.22]
+##                 time.deploy Undecided     52.64 % [-0.19  0.00]
+##                  flash [IR] Undecided     12.20 % [-0.83  0.81]
+##                flash [wLED] Undecided     11.54 % [-1.55  0.18]
+##    time.deploy * flash [IR] Undecided     65.12 % [-0.06  0.19]
+##  time.deploy * flash [wLED]  Rejected      0.00 % [ 0.10  0.36]
+```
+
+```r
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         15
+## 2 wLED       16
+## 3 Control     8
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
+
+library(cowplot) # to make grid-plots
+library(magick)
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
+
+p_grid <- cowplot::plot_grid(p_dens,
+                             jpg,
+                             p_eq,
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
+                   labels="auto"
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+```
+
+![](glmm_sp_files/figure-html/hjort2-1.png)<!-- -->
+
+```r
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
+
+```r
+# Model
+m_hjort    = m_sp
+# ggpredict 
+p_hjort    = p_sp
+# report-object
+r_hjort    = r_sp
+# parameters refit
+para_hjort = para_sp  
+# SGPV
+res_hjort = result$ROPE_Percentage
+```
+
+
+
+```r
+knitr::knit_exit()
+# Exita knitting process here instead of at the document end
+# Perfect for doing a test run, checking if the code works for at least two different species
+# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
+```
+
+# Carnivora
+
+## Badger
+
+
+Now, sp contains grevling.
+
+
+```r
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 48
+```
+
+```r
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
 # Summary, report, model
 summary(m_sp)
 ```
@@ -1335,7 +1810,7 @@ summary(r_sp)
 ```
 
 ```r
-as.report_table(r_sp)
+as.report_table(r_sp) 
 ```
 
 ```
@@ -1357,12 +1832,16 @@ as.report_table(r_sp)
 
 ```r
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -1412,30 +1891,64 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         31
+## 2 wLED       33
+## 3 Control    17
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -1445,13 +1958,19 @@ jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                             p_sp1,
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -1477,1189 +1996,6 @@ res_grvl = result$ROPE_Percentage
 ```
 
 
-## Moose
-
-
-Now, sp contains elg.
-
-
-```r
-# sp ="raadyr"  #(shortcut for when editing)
-# n locations that detected the species
-n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-# subsetting data for species, and the locations where it was detected
-time_sp <- filter(time.dep4,       #.dep4 = trimmed data
-                  species %in% sp, # filtering species
-                  loc %in% n_loc)  # filtering locations
-# Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week),                # random effects
-            data   = time_sp,       # subset data
-            family = poisson) # poisson family of distributions because of count data
-
-# ggeffect calls effects::Effect - for plotting marginal effects 
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
-# Summary, report, model
-summary(m_sp)
-```
-
-```
-## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
-##  Family: poisson  ( log )
-## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-##    Data: time_sp
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##   2956.3   3015.4  -1470.2   2940.3    11943 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.4229 -0.1843 -0.1363 -0.1026 17.4246 
-## 
-## Random effects:
-##  Groups Name        Variance Std.Dev.
-##  week   (Intercept) 0.5270   0.7260  
-##  loc    (Intercept) 0.4014   0.6335  
-## Number of obs: 11951, groups:  week, 52; loc, 41
-## 
-## Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -4.153451   0.302125 -13.747   <2e-16 ***
-## time.deploy            0.006304   0.045516   0.138    0.890    
-## flashIR               -0.081991   0.349354  -0.235    0.814    
-## flashwLED              0.301856   0.338919   0.891    0.373    
-## time.deploy:flashIR    0.050860   0.059004   0.862    0.389    
-## time.deploy:flashwLED -0.006982   0.056859  -0.123    0.902    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.626                            
-## flashIR     -0.680  0.462                     
-## flashwLED   -0.712  0.485  0.746              
-## tm.dply:fIR  0.372 -0.629 -0.670 -0.357       
-## tm.dply:LED  0.431 -0.703 -0.384 -0.655  0.529
-```
-
-```r
-r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
-saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
-```
-
-### Plot
-
-
-```r
-summary(r_sp)
-```
-
-```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 3.72e-03. The model's intercept is at -4.15 (95% CI [-4.75, -3.56]). Within this model:
-## 
-##   - The effect of time.deploy is non-significantly positive (beta = 6.30e-03, 95% CI [-0.08, 0.10], p = 0.890, Std. beta = 0.01)
-##   - The effect of flash [IR] is non-significantly negative (beta = -0.08, 95% CI [-0.77, 0.60], p = 0.814, Std. beta = 0.12)
-##   - The effect of flash [wLED] is non-significantly positive (beta = 0.30, 95% CI [-0.36, 0.97], p = 0.373, Std. beta = 0.27)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.05, 95% CI [-0.06, 0.17], p = 0.389, Std. beta = 0.12)
-##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -6.98e-03, 95% CI [-0.12, 0.10], p = 0.902, Std. beta = -0.02)
-```
-
-```r
-as.report_table(r_sp)
-```
-
-```
-## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## -----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -4.15 | [-4.75, -3.56] | -13.75 | Inf | < .001 |      -4.13 |    [-4.59, -3.67] |         
-## time.deploy                |    6.30e-03 | [-0.08,  0.10] |   0.14 | Inf | 0.890  |       0.01 |    [-0.20,  0.23] |         
-## flash [IR]                 |       -0.08 | [-0.77,  0.60] |  -0.23 | Inf | 0.814  |       0.12 |    [-0.39,  0.62] |         
-## flash [wLED]               |        0.30 | [-0.36,  0.97] |   0.89 | Inf | 0.373  |       0.27 |    [-0.23,  0.78] |         
-## time.deploy * flash [IR]   |        0.05 | [-0.06,  0.17] |   0.86 | Inf | 0.389  |       0.12 |    [-0.15,  0.39] |         
-## time.deploy * flash [wLED] |   -6.98e-03 | [-0.12,  0.10] |  -0.12 | Inf | 0.902  |      -0.02 |    [-0.28,  0.25] |         
-##                            |             |                |        |     |        |            |                   |         
-## AIC                        |             |                |        |     |        |            |                   |  2956.30
-## BIC                        |             |                |        |     |        |            |                   |  3015.41
-## R2 (conditional)           |             |                |        |     |        |            |                   |     0.19
-## R2 (marginal)              |             |                |        |     |        |            |                   | 3.72e-03
-## Sigma                      |             |                |        |     |        |            |                   |     1.00
-```
-
-```r
-# ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() +
-  theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
-
-# standardized plots aren't very different, other than on the scale
-#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-#                                    subtitle = 'standardize  = "refit" ')
-
-# Equivalence test
-result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
-                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
-result
-```
-
-```
-## # TOST-test for Practical Equivalence
-## 
-##   ROPE: [-0.10 0.10]
-## 
-##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-4.65 -3.66]
-##                 time.deploy  Accepted    100.00 % [-0.07  0.08]
-##                  flash [IR] Undecided     17.40 % [-0.66  0.49]
-##                flash [wLED] Undecided     17.94 % [-0.26  0.86]
-##    time.deploy * flash [IR] Undecided     75.32 % [-0.05  0.15]
-##  time.deploy * flash [wLED] Undecided     99.73 % [-0.10  0.09]
-```
-
-```r
-# labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
-par_lab <- par_lab[5:1]
-# Equivalence plot
-p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-        legend.position = "top") +#,  
-        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-        #                          margin = margin(l = 10, r = -55)),
-        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
-                                 title.theme = element_text( 
-                                   size=10, #adjusting legend appearance
-                                   face="italic"))) 
-```
-
-```
-## Scale for 'x' is already present. Adding another scale for 'x', which will
-## replace the existing scale.
-```
-
-```r
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
-
-library(cowplot) # to make grid-plots
-library(magick)
-
-sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file, halign = 1)
-
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
-                             p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
-                   labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-```
-
-![](glmm_sp_files/figure-html/elg2-1.png)<!-- -->
-
-```r
-       #  hjust = 1, halign = 1, valign = 0)
-```
-
-
-
-```r
-# Model
-m_elg    = m_sp
-# ggpredict 
-p_elg    = p_sp
-# report-object
-r_elg    = r_sp
-# parameters refit
-para_elg = para_sp  
-# SGPV
-res_elg = result$ROPE_Percentage
-```
-
-## Red deer
-
-
-Now, sp contains hjort.
-
-
-```r
-# sp ="raadyr"  #(shortcut for when editing)
-# n locations that detected the species
-n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-# subsetting data for species, and the locations where it was detected
-time_sp <- filter(time.dep4,       #.dep4 = trimmed data
-                  species %in% sp, # filtering species
-                  loc %in% n_loc)  # filtering locations
-# Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week),                # random effects
-            data   = time_sp,       # subset data
-            family = poisson) # poisson family of distributions because of count data
-
-# ggeffect calls effects::Effect - for plotting marginal effects 
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
-# Summary, report, model
-summary(m_sp)
-```
-
-```
-## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
-##  Family: poisson  ( log )
-## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-##    Data: time_sp
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##   1743.4   1798.6   -863.7   1727.4     7336 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.4840 -0.1774 -0.1283 -0.0927 16.1188 
-## 
-## Random effects:
-##  Groups Name        Variance Std.Dev.
-##  week   (Intercept) 0.2568   0.5067  
-##  loc    (Intercept) 0.7147   0.8454  
-## Number of obs: 7344, groups:  week, 52; loc, 26
-## 
-## Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -3.891154   0.407582  -9.547  < 2e-16 ***
-## time.deploy           -0.094938   0.058353  -1.627  0.10374    
-## flashIR               -0.009873   0.498299  -0.020  0.98419    
-## flashwLED             -0.687348   0.526986  -1.304  0.19213    
-## time.deploy:flashIR    0.061810   0.076779   0.805  0.42080    
-## time.deploy:flashwLED  0.231225   0.078062   2.962  0.00306 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.509                            
-## flashIR     -0.759  0.386                     
-## flashwLED   -0.738  0.388  0.767              
-## tm.dply:fIR  0.344 -0.687 -0.555 -0.289       
-## tm.dply:LED  0.373 -0.713 -0.302 -0.609  0.531
-```
-
-```r
-r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
-saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
-```
-
-### Plot
-
-
-```r
-summary(r_sp)
-```
-
-```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.20) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -3.89 (95% CI [-4.69, -3.09]). Within this model:
-## 
-##   - The effect of time.deploy is non-significantly negative (beta = -0.09, 95% CI [-0.21, 0.02], p = 0.104, Std. beta = -0.22)
-##   - The effect of flash [IR] is non-significantly negative (beta = -9.87e-03, 95% CI [-0.99, 0.97], p = 0.984, Std. beta = 0.23)
-##   - The effect of flash [wLED] is non-significantly negative (beta = -0.69, 95% CI [-1.72, 0.35], p = 0.192, Std. beta = 0.21)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.06, 95% CI [-0.09, 0.21], p = 0.421, Std. beta = 0.15)
-##   - The interaction effect of flash [wLED] on time.deploy is significantly positive (beta = 0.23, 95% CI [0.08, 0.38], p < .01, Std. beta = 0.55)
-```
-
-```r
-as.report_table(r_sp)
-```
-
-```
-## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
-## ---------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -3.89 | [-4.69, -3.09] | -9.55 | Inf | < .001 |      -4.26 |    [-4.95, -3.57] |        
-## time.deploy                |       -0.09 | [-0.21,  0.02] | -1.63 | Inf | 0.104  |      -0.22 |    [-0.50,  0.05] |        
-## flash [IR]                 |   -9.87e-03 | [-0.99,  0.97] | -0.02 | Inf | 0.984  |       0.23 |    [-0.58,  1.04] |        
-## flash [wLED]               |       -0.69 | [-1.72,  0.35] | -1.30 | Inf | 0.192  |       0.21 |    [-0.61,  1.03] |        
-## time.deploy * flash [IR]   |        0.06 | [-0.09,  0.21] |  0.81 | Inf | 0.421  |       0.15 |    [-0.21,  0.50] |        
-## time.deploy * flash [wLED] |        0.23 | [ 0.08,  0.38] |  2.96 | Inf | 0.003  |       0.55 |    [ 0.19,  0.91] |        
-##                            |             |                |       |     |        |            |                   |        
-## AIC                        |             |                |       |     |        |            |                   | 1743.43
-## BIC                        |             |                |       |     |        |            |                   | 1798.64
-## R2 (conditional)           |             |                |       |     |        |            |                   |    0.20
-## R2 (marginal)              |             |                |       |     |        |            |                   |    0.01
-## Sigma                      |             |                |       |     |        |            |                   |    1.00
-```
-
-```r
-# ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() +
-  theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
-
-# standardized plots aren't very different, other than on the scale
-#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-#                                    subtitle = 'standardize  = "refit" ')
-
-# Equivalence test
-result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
-                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
-result
-```
-
-```
-## # TOST-test for Practical Equivalence
-## 
-##   ROPE: [-0.10 0.10]
-## 
-##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-4.56 -3.22]
-##                 time.deploy Undecided     52.64 % [-0.19  0.00]
-##                  flash [IR] Undecided     12.20 % [-0.83  0.81]
-##                flash [wLED] Undecided     11.54 % [-1.55  0.18]
-##    time.deploy * flash [IR] Undecided     65.12 % [-0.06  0.19]
-##  time.deploy * flash [wLED]  Rejected      0.00 % [ 0.10  0.36]
-```
-
-```r
-# labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
-par_lab <- par_lab[5:1]
-# Equivalence plot
-p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-        legend.position = "top") +#,  
-        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-        #                          margin = margin(l = 10, r = -55)),
-        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
-                                 title.theme = element_text( 
-                                   size=10, #adjusting legend appearance
-                                   face="italic"))) 
-```
-
-```
-## Scale for 'x' is already present. Adding another scale for 'x', which will
-## replace the existing scale.
-```
-
-```r
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
-
-library(cowplot) # to make grid-plots
-library(magick)
-
-sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file, halign = 1)
-
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
-                             p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
-                   labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-```
-
-![](glmm_sp_files/figure-html/hjort2-1.png)<!-- -->
-
-```r
-       #  hjust = 1, halign = 1, valign = 0)
-```
-
-
-
-```r
-# Model
-m_hjort    = m_sp
-# ggpredict 
-p_hjort    = p_sp
-# report-object
-r_hjort    = r_sp
-# parameters refit
-para_hjort = para_sp  
-# SGPV
-res_hjort = result$ROPE_Percentage
-```
-
-
-## Lynx
-
-
-Now, sp contains gaupe.
-
-
-```r
-# sp ="raadyr"  #(shortcut for when editing)
-# n locations that detected the species
-n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-# subsetting data for species, and the locations where it was detected
-time_sp <- filter(time.dep4,       #.dep4 = trimmed data
-                  species %in% sp, # filtering species
-                  loc %in% n_loc)  # filtering locations
-# Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week),                # random effects
-            data   = time_sp,       # subset data
-            family = poisson) # poisson family of distributions because of count data
-
-# ggeffect calls effects::Effect - for plotting marginal effects 
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
-# Summary, report, model
-summary(m_sp)
-```
-
-```
-## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
-##  Family: poisson  ( log )
-## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-##    Data: time_sp
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##    686.2    739.9   -335.1    670.2     6083 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.2932 -0.1020 -0.0814 -0.0654 19.4640 
-## 
-## Random effects:
-##  Groups Name        Variance Std.Dev.
-##  week   (Intercept) 0.2692   0.5188  
-##  loc    (Intercept) 0.4612   0.6791  
-## Number of obs: 6091, groups:  week, 52; loc, 22
-## 
-## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)            -4.8175     0.5848  -8.237   <2e-16 ***
-## time.deploy            -0.2199     0.1389  -1.583    0.113    
-## flashIR                -0.2004     0.7205  -0.278    0.781    
-## flashwLED               0.1454     0.7163   0.203    0.839    
-## time.deploy:flashIR     0.2484     0.1626   1.528    0.127    
-## time.deploy:flashwLED   0.2577     0.1622   1.589    0.112    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.688                            
-## flashIR     -0.750  0.545                     
-## flashwLED   -0.775  0.564  0.703              
-## tm.dply:fIR  0.573 -0.837 -0.717 -0.478       
-## tm.dply:LED  0.587 -0.855 -0.478 -0.724  0.727
-```
-
-```r
-r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
-saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
-```
-
-### Plot
-
-
-```r
-summary(r_sp)
-```
-
-```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.18) and the part related to the fixed effects alone (marginal R2) is of 0.06. The model's intercept is at -4.82 (95% CI [-5.96, -3.67]). Within this model:
-## 
-##   - The effect of time.deploy is non-significantly negative (beta = -0.22, 95% CI [-0.49, 0.05], p = 0.113, Std. beta = -0.52)
-##   - The effect of flash [IR] is non-significantly negative (beta = -0.20, 95% CI [-1.61, 1.21], p = 0.781, Std. beta = 0.76)
-##   - The effect of flash [wLED] is non-significantly positive (beta = 0.15, 95% CI [-1.26, 1.55], p = 0.839, Std. beta = 1.15)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.25, 95% CI [-0.07, 0.57], p = 0.127, Std. beta = 0.59)
-##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 0.26, 95% CI [-0.06, 0.58], p = 0.112, Std. beta = 0.61)
-```
-
-```r
-as.report_table(r_sp)
-```
-
-```
-## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
-## --------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -4.82 | [-5.96, -3.67] | -8.24 | Inf | < .001 |      -5.67 |    [-6.54, -4.80] |       
-## time.deploy                |       -0.22 | [-0.49,  0.05] | -1.58 | Inf | 0.113  |      -0.52 |    [-1.17,  0.12] |       
-## flash [IR]                 |       -0.20 | [-1.61,  1.21] | -0.28 | Inf | 0.781  |       0.76 |    [-0.25,  1.77] |       
-## flash [wLED]               |        0.15 | [-1.26,  1.55] |  0.20 | Inf | 0.839  |       1.15 |    [ 0.15,  2.14] |       
-## time.deploy * flash [IR]   |        0.25 | [-0.07,  0.57] |  1.53 | Inf | 0.127  |       0.59 |    [-0.17,  1.35] |       
-## time.deploy * flash [wLED] |        0.26 | [-0.06,  0.58] |  1.59 | Inf | 0.112  |       0.61 |    [-0.14,  1.37] |       
-##                            |             |                |       |     |        |            |                   |       
-## AIC                        |             |                |       |     |        |            |                   | 686.23
-## BIC                        |             |                |       |     |        |            |                   | 739.94
-## R2 (conditional)           |             |                |       |     |        |            |                   |   0.18
-## R2 (marginal)              |             |                |       |     |        |            |                   |   0.06
-## Sigma                      |             |                |       |     |        |            |                   |   1.00
-```
-
-```r
-# ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() +
-  theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
-
-# standardized plots aren't very different, other than on the scale
-#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-#                                    subtitle = 'standardize  = "refit" ')
-
-# Equivalence test
-result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
-                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
-result
-```
-
-```
-## # TOST-test for Practical Equivalence
-## 
-##   ROPE: [-0.10 0.10]
-## 
-##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-5.78 -3.86]
-##                 time.deploy Undecided     23.76 % [-0.45  0.01]
-##                  flash [IR] Undecided      8.44 % [-1.39  0.98]
-##                flash [wLED] Undecided      8.49 % [-1.03  1.32]
-##    time.deploy * flash [IR] Undecided     22.25 % [-0.02  0.52]
-##  time.deploy * flash [wLED] Undecided     20.45 % [-0.01  0.52]
-```
-
-```r
-# labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
-par_lab <- par_lab[5:1]
-# Equivalence plot
-p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-        legend.position = "top") +#,  
-        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-        #                          margin = margin(l = 10, r = -55)),
-        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
-                                 title.theme = element_text( 
-                                   size=10, #adjusting legend appearance
-                                   face="italic"))) 
-```
-
-```
-## Scale for 'x' is already present. Adding another scale for 'x', which will
-## replace the existing scale.
-```
-
-```r
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
-
-library(cowplot) # to make grid-plots
-library(magick)
-
-sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file, halign = 1)
-
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
-                             p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
-                   labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-```
-
-![](glmm_sp_files/figure-html/gaupe2-1.png)<!-- -->
-
-```r
-       #  hjust = 1, halign = 1, valign = 0)
-```
-
-
-
-```r
-# Model
-m_gaup    = m_sp
-# ggpredict 
-p_gaup    = p_sp
-# report-object
-r_gaup    = r_sp
-# parameters refit
-para_gaup = para_sp
-# SGPV
-res_gaup = result$ROPE_Percentage
-```
-
-
-# Small species
-
-Added late, because I was unsure about whether it made sense to include them or not.
-After having learned about random effects in mixed effect models, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
-
-## Hare
-
-
-Now, sp contains hare.
-
-
-```r
-# sp ="raadyr"  #(shortcut for when editing)
-# n locations that detected the species
-n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
-# subsetting data for species, and the locations where it was detected
-time_sp <- filter(time.dep4,       #.dep4 = trimmed data
-                  species %in% sp, # filtering species
-                  loc %in% n_loc)  # filtering locations
-# Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week),                # random effects
-            data   = time_sp,       # subset data
-            family = poisson) # poisson family of distributions because of count data
-
-# ggeffect calls effects::Effect - for plotting marginal effects 
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
-# Summary, report, model
-summary(m_sp)
-```
-
-```
-## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
-##  Family: poisson  ( log )
-## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-##    Data: time_sp
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##   4925.0   4984.8  -2454.5   4909.0    12941 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.8564 -0.2406 -0.1523 -0.0946 19.4163 
-## 
-## Random effects:
-##  Groups Name        Variance Std.Dev.
-##  week   (Intercept) 0.4966   0.7047  
-##  loc    (Intercept) 1.3168   1.1475  
-## Number of obs: 12949, groups:  week, 52; loc, 45
-## 
-## Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -3.906298   0.356946 -10.944   <2e-16 ***
-## time.deploy            0.035417   0.031660   1.119    0.263    
-## flashIR                0.382756   0.420738   0.910    0.363    
-## flashwLED              0.249284   0.422826   0.590    0.555    
-## time.deploy:flashIR   -0.050236   0.039998  -1.256    0.209    
-## time.deploy:flashwLED  0.001273   0.041318   0.031    0.975    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.378                            
-## flashIR     -0.759  0.268                     
-## flashwLED   -0.760  0.288  0.906              
-## tm.dply:fIR  0.243 -0.622 -0.395 -0.216       
-## tm.dply:LED  0.250 -0.655 -0.225 -0.410  0.510
-```
-
-```r
-r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
-saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
-```
-
-### Plot
-
-
-```r
-summary(r_sp)
-```
-
-```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.33) and the part related to the fixed effects alone (marginal R2) is of 3.02e-03. The model's intercept is at -3.91 (95% CI [-4.61, -3.21]). Within this model:
-## 
-##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.03, 0.10], p = 0.263, Std. beta = 0.08)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.38, 95% CI [-0.44, 1.21], p = 0.363, Std. beta = 0.19)
-##   - The effect of flash [wLED] is non-significantly positive (beta = 0.25, 95% CI [-0.58, 1.08], p = 0.555, Std. beta = 0.25)
-##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.13, 0.03], p = 0.209, Std. beta = -0.12)
-##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.08, 0.08], p = 0.975, Std. beta = 3.03e-03)
-```
-
-```r
-as.report_table(r_sp)
-```
-
-```
-## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## -----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -3.91 | [-4.61, -3.21] | -10.94 | Inf | < .001 |      -3.77 |    [-4.42, -3.12] |         
-## time.deploy                |        0.04 | [-0.03,  0.10] |   1.12 | Inf | 0.263  |       0.08 |    [-0.06,  0.23] |         
-## flash [IR]                 |        0.38 | [-0.44,  1.21] |   0.91 | Inf | 0.363  |       0.19 |    [-0.57,  0.95] |         
-## flash [wLED]               |        0.25 | [-0.58,  1.08] |   0.59 | Inf | 0.555  |       0.25 |    [-0.50,  1.01] |         
-## time.deploy * flash [IR]   |       -0.05 | [-0.13,  0.03] |  -1.26 | Inf | 0.209  |      -0.12 |    [-0.30,  0.07] |         
-## time.deploy * flash [wLED] |    1.27e-03 | [-0.08,  0.08] |   0.03 | Inf | 0.975  |   3.03e-03 |    [-0.19,  0.19] |         
-##                            |             |                |        |     |        |            |                   |         
-## AIC                        |             |                |        |     |        |            |                   |  4925.04
-## BIC                        |             |                |        |     |        |            |                   |  4984.79
-## R2 (conditional)           |             |                |        |     |        |            |                   |     0.33
-## R2 (marginal)              |             |                |        |     |        |            |                   | 3.02e-03
-## Sigma                      |             |                |        |     |        |            |                   |     1.00
-```
-
-```r
-# ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() +
-  theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
-
-# standardized plots aren't very different, other than on the scale
-#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-#                                    subtitle = 'standardize  = "refit" ')
-
-# Equivalence test
-result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
-                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
-result
-```
-
-```
-## # TOST-test for Practical Equivalence
-## 
-##   ROPE: [-0.10 0.10]
-## 
-##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-4.49 -3.32]
-##                 time.deploy  Accepted    100.00 % [-0.02  0.09]
-##                  flash [IR] Undecided     14.45 % [-0.31  1.07]
-##                flash [wLED] Undecided     14.38 % [-0.45  0.94]
-##    time.deploy * flash [IR] Undecided     87.82 % [-0.12  0.02]
-##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.07]
-```
-
-```r
-# labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
-par_lab <- par_lab[5:1]
-# Equivalence plot
-p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-        legend.position = "top") +#,  
-        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-        #                          margin = margin(l = 10, r = -55)),
-        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
-                                 title.theme = element_text( 
-                                   size=10, #adjusting legend appearance
-                                   face="italic"))) 
-```
-
-```
-## Scale for 'x' is already present. Adding another scale for 'x', which will
-## replace the existing scale.
-```
-
-```r
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
-
-library(cowplot) # to make grid-plots
-library(magick)
-
-sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file, halign = 1)
-
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
-                             p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
-                   labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-```
-
-![](glmm_sp_files/figure-html/hare2-1.png)<!-- -->
-
-```r
-       #  hjust = 1, halign = 1, valign = 0)
-```
-
-
-
-```r
-# Model
-m_hare    = m_sp
-# ggpredict 
-p_hare    = p_sp
-# report-object
-r_hare    = r_sp
-# parameters refit
-para_hare = para_sp  
-# SGPV
-res_hare = result$ROPE_Percentage
-```
-
-
-## Red squirrel
-
-
-Now, sp contains ekorn.
-
-
-```r
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
-# Model
-m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
-            (1 | loc) + (1 | week), # random effects
-            data   = time_sp,
-            family = poisson,
-            nAGQ = 0) # change optimizer to oenalized iteratively reweighted least squares step
-# ggeffect calls effects::Effect
-p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
-# Diagnostics
-assumpt <- performance::check_model(m_sp) # check assumptions
-va_r <- insight::get_variance(m_sp)
-```
-
-```
-## Warning: mu of 0.0 is too close to zero, estimate of random effect variances may
-## be unreliable.
-```
-
-
-
-```r
-# Summary, report, model
-summary(m_sp)
-```
-
-```
-## Generalized linear mixed model fit by maximum likelihood (Adaptive
-##   Gauss-Hermite Quadrature, nAGQ = 0) [glmerMod]
-##  Family: poisson  ( log )
-## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
-##    Data: time_sp
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##   2965.2   3026.2  -1474.6   2949.2    15241 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -1.2422 -0.1461 -0.0804 -0.0448 24.4439 
-## 
-## Random effects:
-##  Groups Name        Variance Std.Dev.
-##  loc    (Intercept) 2.7175   1.6485  
-##  week   (Intercept) 0.6661   0.8162  
-## Number of obs: 15249, groups:  loc, 53; week, 52
-## 
-## Fixed effects:
-##                       Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)           -5.41726    0.51635 -10.491  < 2e-16 ***
-## time.deploy            0.08142    0.05059   1.609  0.10757    
-## flashIR                0.82010    0.60332   1.359  0.17405    
-## flashwLED              0.50022    0.60747   0.823  0.41026    
-## time.deploy:flashIR   -0.17665    0.06337  -2.787  0.00531 ** 
-## time.deploy:flashwLED -0.01604    0.06216  -0.258  0.79639    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Correlation of Fixed Effects:
-##             (Intr) tm.dpl flshIR flsLED tm.:IR
-## time.deploy -0.457                            
-## flashIR     -0.801  0.371                     
-## flashwLED   -0.788  0.355  0.925              
-## tm.dply:fIR  0.339 -0.745 -0.435 -0.291       
-## tm.dply:LED  0.326 -0.719 -0.307 -0.456  0.588
-```
-
-```r
-r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
-para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
-saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
-```
-
-### Plot
-
-
-```r
-summary(r_sp)
-```
-
-```
-## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.41) and the part related to the fixed effects alone (marginal R2) is of 8.18e-03. The model's intercept is at -5.42 (95% CI [-6.43, -4.41]). Within this model:
-## 
-##   - The effect of time.deploy is non-significantly positive (beta = 0.08, 95% CI [-0.02, 0.18], p = 0.108, Std. beta = 0.19)
-##   - The effect of flash [IR] is non-significantly positive (beta = 0.82, 95% CI [-0.36, 2.00], p = 0.174, Std. beta = 0.13)
-##   - The effect of flash [wLED] is non-significantly positive (beta = 0.50, 95% CI [-0.69, 1.69], p = 0.410, Std. beta = 0.44)
-##   - The interaction effect of flash [IR] on time.deploy is significantly negative (beta = -0.18, 95% CI [-0.30, -0.05], p < .01, Std. beta = -0.42)
-##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.14, 0.11], p = 0.796, Std. beta = -0.04)
-```
-
-```r
-as.report_table(r_sp)
-```
-
-```
-## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
-## -----------------------------------------------------------------------------------------------------------------------------
-## (Intercept)                |       -5.42 | [-6.43, -4.41] | -10.49 | Inf | < .001 |      -5.10 |    [-6.00, -4.20] |         
-## time.deploy                |        0.08 | [-0.02,  0.18] |   1.61 | Inf | 0.108  |       0.19 |    [-0.04,  0.43] |         
-## flash [IR]                 |        0.82 | [-0.36,  2.00] |   1.36 | Inf | 0.174  |       0.13 |    [-0.93,  1.20] |         
-## flash [wLED]               |        0.50 | [-0.69,  1.69] |   0.82 | Inf | 0.410  |       0.44 |    [-0.62,  1.50] |         
-## time.deploy * flash [IR]   |       -0.18 | [-0.30, -0.05] |  -2.79 | Inf | 0.005  |      -0.42 |    [-0.71, -0.12] |         
-## time.deploy * flash [wLED] |       -0.02 | [-0.14,  0.11] |  -0.26 | Inf | 0.796  |      -0.04 |    [-0.33,  0.25] |         
-##                            |             |                |        |     |        |            |                   |         
-## AIC                        |             |                |        |     |        |            |                   |  2965.19
-## BIC                        |             |                |        |     |        |            |                   |  3026.25
-## R2 (conditional)           |             |                |        |     |        |            |                   |     0.41
-## R2 (marginal)              |             |                |        |     |        |            |                   | 8.18e-03
-## Sigma                      |             |                |        |     |        |            |                   |     1.00
-```
-
-```r
-# ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
-   ggpubr::theme_classic2() +
-  theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
-
-# standardized plots aren't very different, other than on the scale
-#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
-#                                    subtitle = 'standardize  = "refit" ')
-
-# Equivalence test
-result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
-                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
-result
-```
-
-```
-## # TOST-test for Practical Equivalence
-## 
-##   ROPE: [-0.10 0.10]
-## 
-##                   Parameter        H0 inside ROPE        90% CI
-##                 (Intercept)  Rejected      0.00 % [-6.27 -4.57]
-##                 time.deploy Undecided     61.17 % [-0.00  0.16]
-##                  flash [IR] Undecided     10.08 % [-0.17  1.81]
-##                flash [wLED] Undecided     10.01 % [-0.50  1.50]
-##    time.deploy * flash [IR]  Rejected     13.23 % [-0.28 -0.07]
-##  time.deploy * flash [wLED] Undecided     91.06 % [-0.12  0.09]
-```
-
-```r
-# labels for equivalence test - prettier to the human eye
-par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
-par_lab <- par_lab[5:1]
-# Equivalence plot
-p_eq <- plot(result) + labs(y = "Log-Mean") + 
-    scale_x_discrete(labels = par_lab) + # new axis names
-    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
-        legend.position = "top") +#,  
-        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
-        #                          margin = margin(l = 10, r = -55)),
-        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
-    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
-                                 title.theme = element_text( 
-                                   size=10, #adjusting legend appearance
-                                   face="italic"))) 
-```
-
-```
-## Scale for 'x' is already present. Adding another scale for 'x', which will
-## replace the existing scale.
-```
-
-```r
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
-
-library(cowplot) # to make grid-plots
-library(magick)
-
-sp_file <- paste0("jpg/",sp,".JPG")
-jpg <- ggdraw() + draw_image(sp_file, halign = 1)
-
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
-                             p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
-                   labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-```
-
-![](glmm_sp_files/figure-html/ekorn2-1.png)<!-- -->
-
-```r
-       #  hjust = 1, halign = 1, valign = 0)
-```
-
-
-
-```r
-# Model
-m_ekorn    = m_sp
-# ggpredict 
-p_ekorn    = p_sp
-# report-object
-r_ekorn    = r_sp
-# parameters refit
-para_ekorn = para_sp  
-# SGPV
-res_ekorn = result$ROPE_Percentage
-```
-
-
 
 ## European Pine marten
 
@@ -2671,6 +2007,14 @@ Now, sp contains maar.
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 42
+```
+
+```r
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -2685,7 +2029,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 ```
@@ -2754,7 +2097,7 @@ summary(r_sp)
 ```
 
 ```r
-as.report_table(r_sp)
+as.report_table(r_sp) 
 ```
 
 ```
@@ -2776,12 +2119,16 @@ as.report_table(r_sp)
 
 ```r
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -2831,30 +2178,64 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
 ```
 
 ```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         24
+## 2 wLED       22
+## 3 Control    15
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
 
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -2864,13 +2245,19 @@ jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                             p_sp1,
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 ```
 
@@ -2896,6 +2283,1173 @@ res_maar = result$ROPE_Percentage
 ```
 
 
+## Red Fox
+
+ 
+This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
+
+Now, sp contains rev.
+
+
+```r
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 53
+```
+
+```r
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+# Summary, report, model
+summary(m_sp)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: poisson  ( log )
+## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
+##    Data: time_sp
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   5740.1   5801.2  -2862.1   5724.1    15241 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.6332 -0.2445 -0.1816 -0.1298 13.0526 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  loc    (Intercept) 0.74933  0.8656  
+##  week   (Intercept) 0.07133  0.2671  
+## Number of obs: 15249, groups:  loc, 53; week, 52
+## 
+## Fixed effects:
+##                         Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.4391866  0.2565890 -13.403   <2e-16 ***
+## time.deploy           -0.0005472  0.0282401  -0.019    0.985    
+## flashIR                0.0294434  0.3151412   0.093    0.926    
+## flashwLED              0.1764789  0.3136447   0.563    0.574    
+## time.deploy:flashIR   -0.0024082  0.0378228  -0.064    0.949    
+## time.deploy:flashwLED -0.0111628  0.0370606  -0.301    0.763    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) tm.dpl flshIR flsLED tm.:IR
+## time.deploy -0.442                            
+## flashIR     -0.776  0.326                     
+## flashwLED   -0.782  0.335  0.860              
+## tm.dply:fIR  0.289 -0.653 -0.472 -0.244       
+## tm.dply:LED  0.302 -0.682 -0.248 -0.467  0.504
+```
+
+```r
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
+```
+### Plot
+
+
+```r
+summary(r_sp)
+```
+
+```
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.19) and the part related to the fixed effects alone (marginal R2) is of 8.63e-04. The model's intercept is at -3.44 (95% CI [-3.94, -2.94]). Within this model:
+## 
+##   - The effect of time.deploy is non-significantly negative (beta = -5.47e-04, 95% CI [-0.06, 0.05], p = 0.985, Std. beta = -1.29e-03)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.03, 95% CI [-0.59, 0.65], p = 0.926, Std. beta = 0.02)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.18, 95% CI [-0.44, 0.79], p = 0.574, Std. beta = 0.13)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -2.41e-03, 95% CI [-0.08, 0.07], p = 0.949, Std. beta = -5.69e-03)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.01, 95% CI [-0.08, 0.06], p = 0.763, Std. beta = -0.03)
+```
+
+```r
+as.report_table(r_sp) 
+```
+
+```
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.44 | [-3.94, -2.94] | -13.40 | Inf | < .001 |      -3.44 |    [-3.89, -2.99] |         
+## time.deploy                |   -5.47e-04 | [-0.06,  0.05] |  -0.02 | Inf | 0.985  |  -1.29e-03 |    [-0.13,  0.13] |         
+## flash [IR]                 |        0.03 | [-0.59,  0.65] |   0.09 | Inf | 0.926  |       0.02 |    [-0.52,  0.56] |         
+## flash [wLED]               |        0.18 | [-0.44,  0.79] |   0.56 | Inf | 0.574  |       0.13 |    [-0.41,  0.68] |         
+## time.deploy * flash [IR]   |   -2.41e-03 | [-0.08,  0.07] |  -0.06 | Inf | 0.949  |  -5.69e-03 |    [-0.18,  0.17] |         
+## time.deploy * flash [wLED] |       -0.01 | [-0.08,  0.06] |  -0.30 | Inf | 0.763  |      -0.03 |    [-0.20,  0.15] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  5740.11
+## BIC                        |             |                |        |     |        |            |                   |  5801.17
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.19
+## R2 (marginal)              |             |                |        |     |        |            |                   | 8.63e-04
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
+```
+
+```r
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
+result
+```
+
+```
+## # TOST-test for Practical Equivalence
+## 
+##   ROPE: [-0.10 0.10]
+## 
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-3.86 -3.02]
+##                 time.deploy  Accepted    100.00 % [-0.05  0.05]
+##                  flash [IR] Undecided     19.29 % [-0.49  0.55]
+##                flash [wLED] Undecided     19.38 % [-0.34  0.69]
+##    time.deploy * flash [IR]  Accepted    100.00 % [-0.06  0.06]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.05]
+```
+
+```r
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         34
+## 2 wLED       36
+## 3 Control    19
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
+
+library(cowplot) # to make grid-plots
+library(magick)
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
+
+p_grid <- cowplot::plot_grid(p_dens,
+                             jpg,
+                             p_eq,
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
+                   labels="auto"
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+```
+
+![](glmm_sp_files/figure-html/rev2-1.png)<!-- -->
+
+```r
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
+
+```r
+# Model
+m_rev    = m_sp
+# ggpredict 
+p_rev    = p_sp
+# report-object
+r_rev    = r_sp
+# parameters refit
+para_rev = para_sp 
+# SGPV
+res_rev = result$ROPE_Percentage
+```
+
+## Lynx
+
+
+Now, sp contains gaupe.
+
+
+```r
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 22
+```
+
+```r
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+# Summary, report, model
+summary(m_sp)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: poisson  ( log )
+## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
+##    Data: time_sp
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    686.2    739.9   -335.1    670.2     6083 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.2932 -0.1020 -0.0814 -0.0654 19.4640 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  week   (Intercept) 0.2692   0.5188  
+##  loc    (Intercept) 0.4612   0.6791  
+## Number of obs: 6091, groups:  week, 52; loc, 22
+## 
+## Fixed effects:
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)            -4.8175     0.5848  -8.237   <2e-16 ***
+## time.deploy            -0.2199     0.1389  -1.583    0.113    
+## flashIR                -0.2004     0.7205  -0.278    0.781    
+## flashwLED               0.1454     0.7163   0.203    0.839    
+## time.deploy:flashIR     0.2484     0.1626   1.528    0.127    
+## time.deploy:flashwLED   0.2577     0.1622   1.589    0.112    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) tm.dpl flshIR flsLED tm.:IR
+## time.deploy -0.688                            
+## flashIR     -0.750  0.545                     
+## flashwLED   -0.775  0.564  0.703              
+## tm.dply:fIR  0.573 -0.837 -0.717 -0.478       
+## tm.dply:LED  0.587 -0.855 -0.478 -0.724  0.727
+```
+
+```r
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
+```
+
+### Plot
+
+
+```r
+summary(r_sp)
+```
+
+```
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is moderate (conditional R2 = 0.18) and the part related to the fixed effects alone (marginal R2) is of 0.06. The model's intercept is at -4.82 (95% CI [-5.96, -3.67]). Within this model:
+## 
+##   - The effect of time.deploy is non-significantly negative (beta = -0.22, 95% CI [-0.49, 0.05], p = 0.113, Std. beta = -0.52)
+##   - The effect of flash [IR] is non-significantly negative (beta = -0.20, 95% CI [-1.61, 1.21], p = 0.781, Std. beta = 0.76)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.15, 95% CI [-1.26, 1.55], p = 0.839, Std. beta = 1.15)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly positive (beta = 0.25, 95% CI [-0.07, 0.57], p = 0.127, Std. beta = 0.59)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 0.26, 95% CI [-0.06, 0.58], p = 0.112, Std. beta = 0.61)
+```
+
+```r
+as.report_table(r_sp) 
+```
+
+```
+## Parameter                  | Coefficient |         95% CI |     z |  df |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
+## --------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -4.82 | [-5.96, -3.67] | -8.24 | Inf | < .001 |      -5.67 |    [-6.54, -4.80] |       
+## time.deploy                |       -0.22 | [-0.49,  0.05] | -1.58 | Inf | 0.113  |      -0.52 |    [-1.17,  0.12] |       
+## flash [IR]                 |       -0.20 | [-1.61,  1.21] | -0.28 | Inf | 0.781  |       0.76 |    [-0.25,  1.77] |       
+## flash [wLED]               |        0.15 | [-1.26,  1.55] |  0.20 | Inf | 0.839  |       1.15 |    [ 0.15,  2.14] |       
+## time.deploy * flash [IR]   |        0.25 | [-0.07,  0.57] |  1.53 | Inf | 0.127  |       0.59 |    [-0.17,  1.35] |       
+## time.deploy * flash [wLED] |        0.26 | [-0.06,  0.58] |  1.59 | Inf | 0.112  |       0.61 |    [-0.14,  1.37] |       
+##                            |             |                |       |     |        |            |                   |       
+## AIC                        |             |                |       |     |        |            |                   | 686.23
+## BIC                        |             |                |       |     |        |            |                   | 739.94
+## R2 (conditional)           |             |                |       |     |        |            |                   |   0.18
+## R2 (marginal)              |             |                |       |     |        |            |                   |   0.06
+## Sigma                      |             |                |       |     |        |            |                   |   1.00
+```
+
+```r
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
+result
+```
+
+```
+## # TOST-test for Practical Equivalence
+## 
+##   ROPE: [-0.10 0.10]
+## 
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-5.78 -3.86]
+##                 time.deploy Undecided     23.76 % [-0.45  0.01]
+##                  flash [IR] Undecided      8.44 % [-1.39  0.98]
+##                flash [wLED] Undecided      8.49 % [-1.03  1.32]
+##    time.deploy * flash [IR] Undecided     22.25 % [-0.02  0.52]
+##  time.deploy * flash [wLED] Undecided     20.45 % [-0.01  0.52]
+```
+
+```r
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR          9
+## 2 wLED       12
+## 3 Control     8
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
+
+library(cowplot) # to make grid-plots
+library(magick)
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
+
+p_grid <- cowplot::plot_grid(p_dens,
+                             jpg,
+                             p_eq,
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
+                   labels="auto"
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+```
+
+![](glmm_sp_files/figure-html/gaupe2-1.png)<!-- -->
+
+```r
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
+
+```r
+# Model
+m_gaup    = m_sp
+# ggpredict 
+p_gaup    = p_sp
+# report-object
+r_gaup    = r_sp
+# parameters refit
+para_gaup = para_sp
+# SGPV
+res_gaup = result$ROPE_Percentage
+```
+
+
+
+# Glires
+
+## Hare
+
+
+Now, sp contains hare.
+
+
+```r
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 45
+```
+
+```r
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+# Summary, report, model
+summary(m_sp)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: poisson  ( log )
+## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
+##    Data: time_sp
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   4925.0   4984.8  -2454.5   4909.0    12941 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.8564 -0.2406 -0.1523 -0.0946 19.4163 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  week   (Intercept) 0.4966   0.7047  
+##  loc    (Intercept) 1.3168   1.1475  
+## Number of obs: 12949, groups:  week, 52; loc, 45
+## 
+## Fixed effects:
+##                        Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -3.906298   0.356946 -10.944   <2e-16 ***
+## time.deploy            0.035417   0.031660   1.119    0.263    
+## flashIR                0.382756   0.420738   0.910    0.363    
+## flashwLED              0.249284   0.422826   0.590    0.555    
+## time.deploy:flashIR   -0.050236   0.039998  -1.256    0.209    
+## time.deploy:flashwLED  0.001273   0.041318   0.031    0.975    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) tm.dpl flshIR flsLED tm.:IR
+## time.deploy -0.378                            
+## flashIR     -0.759  0.268                     
+## flashwLED   -0.760  0.288  0.906              
+## tm.dply:fIR  0.243 -0.622 -0.395 -0.216       
+## tm.dply:LED  0.250 -0.655 -0.225 -0.410  0.510
+```
+
+```r
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
+```
+
+### Plot
+
+
+```r
+summary(r_sp)
+```
+
+```
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.33) and the part related to the fixed effects alone (marginal R2) is of 3.02e-03. The model's intercept is at -3.91 (95% CI [-4.61, -3.21]). Within this model:
+## 
+##   - The effect of time.deploy is non-significantly positive (beta = 0.04, 95% CI [-0.03, 0.10], p = 0.263, Std. beta = 0.08)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.38, 95% CI [-0.44, 1.21], p = 0.363, Std. beta = 0.19)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.25, 95% CI [-0.58, 1.08], p = 0.555, Std. beta = 0.25)
+##   - The interaction effect of flash [IR] on time.deploy is non-significantly negative (beta = -0.05, 95% CI [-0.13, 0.03], p = 0.209, Std. beta = -0.12)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly positive (beta = 1.27e-03, 95% CI [-0.08, 0.08], p = 0.975, Std. beta = 3.03e-03)
+```
+
+```r
+as.report_table(r_sp) 
+```
+
+```
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |      Fit
+## -----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -3.91 | [-4.61, -3.21] | -10.94 | Inf | < .001 |      -3.77 |    [-4.42, -3.12] |         
+## time.deploy                |        0.04 | [-0.03,  0.10] |   1.12 | Inf | 0.263  |       0.08 |    [-0.06,  0.23] |         
+## flash [IR]                 |        0.38 | [-0.44,  1.21] |   0.91 | Inf | 0.363  |       0.19 |    [-0.57,  0.95] |         
+## flash [wLED]               |        0.25 | [-0.58,  1.08] |   0.59 | Inf | 0.555  |       0.25 |    [-0.50,  1.01] |         
+## time.deploy * flash [IR]   |       -0.05 | [-0.13,  0.03] |  -1.26 | Inf | 0.209  |      -0.12 |    [-0.30,  0.07] |         
+## time.deploy * flash [wLED] |    1.27e-03 | [-0.08,  0.08] |   0.03 | Inf | 0.975  |   3.03e-03 |    [-0.19,  0.19] |         
+##                            |             |                |        |     |        |            |                   |         
+## AIC                        |             |                |        |     |        |            |                   |  4925.04
+## BIC                        |             |                |        |     |        |            |                   |  4984.79
+## R2 (conditional)           |             |                |        |     |        |            |                   |     0.33
+## R2 (marginal)              |             |                |        |     |        |            |                   | 3.02e-03
+## Sigma                      |             |                |        |     |        |            |                   |     1.00
+```
+
+```r
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
+result
+```
+
+```
+## # TOST-test for Practical Equivalence
+## 
+##   ROPE: [-0.10 0.10]
+## 
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-4.49 -3.32]
+##                 time.deploy  Accepted    100.00 % [-0.02  0.09]
+##                  flash [IR] Undecided     14.45 % [-0.31  1.07]
+##                flash [wLED] Undecided     14.38 % [-0.45  0.94]
+##    time.deploy * flash [IR] Undecided     87.82 % [-0.12  0.02]
+##  time.deploy * flash [wLED]  Accepted    100.00 % [-0.07  0.07]
+```
+
+```r
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         28
+## 2 wLED       30
+## 3 Control    17
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
+
+library(cowplot) # to make grid-plots
+library(magick)
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
+
+p_grid <- cowplot::plot_grid(p_dens,
+                             jpg,
+                             p_eq,
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
+                   labels="auto"
+) 
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+```r
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+```
+
+![](glmm_sp_files/figure-html/hare2-1.png)<!-- -->
+
+```r
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
+
+```r
+# Model
+m_hare    = m_sp
+# ggpredict 
+p_hare    = p_sp
+# report-object
+r_hare    = r_sp
+# parameters refit
+para_hare = para_sp  
+# SGPV
+res_hare = result$ROPE_Percentage
+```
+
+
+## Red squirrel
+
+
+Now, sp contains ekorn.
+
+
+```r
+#sp = "ekorn"
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week), # random effects
+            data   = time_sp,
+            family = poisson
+            ,nAGQ = 0 # change optimizer to penalized iteratively reweighted least squares step
+)
+# ggeffect calls effects::Effect
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+```
+
+
+```r
+# sp ="raadyr"  #(shortcut for when editing)
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+```
+
+```
+## [1] 37
+```
+
+```r
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
+# Model
+m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
+            (1 | loc) + (1 | week),                # random effects
+            data   = time_sp,       # subset data
+            family = poisson) # poisson family of distributions because of count data
+
+# ggeffect calls effects::Effect - for plotting marginal effects 
+p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
+# Diagnostics
+assumpt <- performance::check_model(m_sp) # check assumptions
+```
+
+
+
+```r
+# Summary, report, model
+summary(m_sp)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Adaptive
+##   Gauss-Hermite Quadrature, nAGQ = 0) [glmerMod]
+##  Family: poisson  ( log )
+## Formula: n.obs ~ time.deploy * flash + (1 | loc) + (1 | week)
+##    Data: time_sp
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   2902.3   2960.5  -1443.2   2886.3    10674 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.2338 -0.1815 -0.1242 -0.0827 18.9450 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  week   (Intercept) 0.6572   0.8107  
+##  loc    (Intercept) 1.0528   1.0260  
+## Number of obs: 10682, groups:  week, 52; loc, 37
+## 
+## Fixed effects:
+##                       Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)           -4.65703    0.41963 -11.098  < 2e-16 ***
+## time.deploy            0.08008    0.05063   1.582  0.11371    
+## flashIR                0.89183    0.48066   1.855  0.06354 .  
+## flashwLED              0.59132    0.48581   1.217  0.22354    
+## time.deploy:flashIR   -0.17242    0.06345  -2.718  0.00657 ** 
+## time.deploy:flashwLED -0.01627    0.06210  -0.262  0.79334    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) tm.dpl flshIR flsLED tm.:IR
+## time.deploy -0.564                            
+## flashIR     -0.790  0.469                     
+## flashwLED   -0.769  0.448  0.882              
+## tm.dply:fIR  0.418 -0.745 -0.545 -0.362       
+## tm.dply:LED  0.402 -0.720 -0.385 -0.569  0.590
+```
+
+```r
+r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
+para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
+saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
+```
+
+### Plot
+
+
+```r
+summary(r_sp)
+```
+
+```
+## We fitted a poisson mixed model to predict n.obs with time.deploy and flash. The model included loc and week as random effects. The model's total explanatory power is substantial (conditional R2 = 0.30) and the part related to the fixed effects alone (marginal R2) is of 0.01. The model's intercept is at -4.66 (95% CI [-5.48, -3.83]). Within this model:
+## 
+##   - The effect of time.deploy is non-significantly positive (beta = 0.08, 95% CI [-0.02, 0.18], p = 0.114, Std. beta = 0.19)
+##   - The effect of flash [IR] is non-significantly positive (beta = 0.89, 95% CI [-0.05, 1.83], p = 0.064, Std. beta = 0.22)
+##   - The effect of flash [wLED] is non-significantly positive (beta = 0.59, 95% CI [-0.36, 1.54], p = 0.224, Std. beta = 0.53)
+##   - The interaction effect of flash [IR] on time.deploy is significantly negative (beta = -0.17, 95% CI [-0.30, -0.05], p < .01, Std. beta = -0.41)
+##   - The interaction effect of flash [wLED] on time.deploy is non-significantly negative (beta = -0.02, 95% CI [-0.14, 0.11], p = 0.793, Std. beta = -0.04)
+```
+
+```r
+as.report_table(r_sp) 
+```
+
+```
+## Parameter                  | Coefficient |         95% CI |      z |  df |      p | Std. Coef. | Std. Coef. 95% CI |     Fit
+## ----------------------------------------------------------------------------------------------------------------------------
+## (Intercept)                |       -4.66 | [-5.48, -3.83] | -11.10 | Inf | < .001 |      -4.35 |    [-5.03, -3.66] |        
+## time.deploy                |        0.08 | [-0.02,  0.18] |   1.58 | Inf | 0.114  |       0.19 |    [-0.05,  0.42] |        
+## flash [IR]                 |        0.89 | [-0.05,  1.83] |   1.86 | Inf | 0.064  |       0.22 |    [-0.57,  1.01] |        
+## flash [wLED]               |        0.59 | [-0.36,  1.54] |   1.22 | Inf | 0.224  |       0.53 |    [-0.26,  1.31] |        
+## time.deploy * flash [IR]   |       -0.17 | [-0.30, -0.05] |  -2.72 | Inf | 0.007  |      -0.41 |    [-0.70, -0.11] |        
+## time.deploy * flash [wLED] |       -0.02 | [-0.14,  0.11] |  -0.26 | Inf | 0.793  |      -0.04 |    [-0.33,  0.25] |        
+##                            |             |                |        |     |        |            |                   |        
+## AIC                        |             |                |        |     |        |            |                   | 2902.33
+## BIC                        |             |                |        |     |        |            |                   | 2960.55
+## R2 (conditional)           |             |                |        |     |        |            |                   |    0.30
+## R2 (marginal)              |             |                |        |     |        |            |                   |    0.01
+## Sigma                      |             |                |        |     |        |            |                   |    1.00
+```
+
+```r
+# ggpredict
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
+
+# standardized plots aren't very different, other than on the scale
+#plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
+#                                    subtitle = 'standardize  = "refit" ')
+
+# Equivalence test
+result <- equivalence_test(m_sp, ci = 0.95, # ci = .95 gives CI of .90 (1 - 2*alpha)
+                           rule = "classic") # conditional equivalence testing, as "classic" behaved strangely on badger-model
+result
+```
+
+```
+## # TOST-test for Practical Equivalence
+## 
+##   ROPE: [-0.10 0.10]
+## 
+##                   Parameter        H0 inside ROPE        90% CI
+##                 (Intercept)  Rejected      0.00 % [-5.50 -4.13]
+##                 time.deploy  Rejected     61.86 % [ 0.00  0.16]
+##                  flash [IR]  Rejected      0.00 % [ 0.13  1.68]
+##                flash [wLED] Undecided     12.75 % [-0.17  1.39]
+##    time.deploy * flash [IR]  Rejected     13.25 % [-0.27 -0.07]
+##  time.deploy * flash [wLED] Undecided     92.16 % [-0.12  0.08]
+```
+
+```r
+# labels for equivalence test - prettier to the human eye
+par_lab <- c("Time", "IR", "wLED", "Time * IR", "Time * wLED")
+par_lab <- par_lab[5:1]
+# Equivalence plot
+p_eq <- plot(result) + labs(y = "Log-Mean") + 
+    scale_x_discrete(labels = par_lab) + # new axis names
+    theme(#legend.position = c(1, .5), legend.justification = c(1, 1),#legend placement
+        legend.position = "top") +#,  
+        # axis.text.y = element_text(vjust = -0.7, hjust = 0, # axis-text inside
+        #                          margin = margin(l = 10, r = -55)),
+        #   axis.ticks.length.y = unit(-1,"mm")) + # inward axis ticks
+    guides(colour = guide_legend(nrow = 2, override.aes = list(size = .5),
+                                 title.theme = element_text( 
+                                   size=10, #adjusting legend appearance
+                                   face="italic"))) 
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+```
+
+```
+## `summarise()` has grouped output by 'loc'. You can override using the `.groups` argument.
+```
+
+```r
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+```
+
+```
+## # A tibble: 3 x 2
+##   flash       n
+##   <fct>   <int>
+## 1 IR         24
+## 2 wLED       23
+## 3 Control    15
+```
+
+```r
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
+# Density plots
+p_dens <- obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*20*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+```
+
+```
+## Scale for 'x' is already present. Adding another scale for 'x', which will
+## replace the existing scale.
+```
+
+```r
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
+
+library(cowplot) # to make grid-plots
+library(magick)
+
+sp_file <- paste0("jpg/",sp,".JPG")
+jpg <- ggdraw() + draw_image(sp_file, halign = 1)
+
+p_grid <- cowplot::plot_grid(p_dens,
+                             jpg,
+                             p_eq,
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
+                   labels="auto"
+) 
+p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
+```
+
+![](glmm_sp_files/figure-html/ekorn2-1.png)<!-- -->
+
+```r
+       #  hjust = 1, halign = 1, valign = 0)
+```
+
+
+
+```r
+# Model
+m_ekorn    = m_sp
+# ggpredict 
+p_ekorn    = p_sp
+# report-object
+r_ekorn    = r_sp
+# parameters refit
+para_ekorn = para_sp  
+# SGPV
+res_ekorn = result$ROPE_Percentage
+```
+
 
 ----------------------------------------------
 
@@ -2920,7 +3474,9 @@ para_maar <- para_maar  %>% add_row(Parameter = "European Pine Marten", .before 
 para_ekorn<- para_ekorn %>% add_row(Parameter = "Red squirrel", .before = 1)
 
 # bind tables together
-para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup,para_hare,para_maar,para_ekorn) %>%
+para_all <- bind_rows(para_raa,para_elg,para_hjort,
+                      para_grvl,para_maar, para_rev,para_gaup,
+                      para_hare,para_ekorn) %>%
   insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
 
@@ -2928,6 +3484,83 @@ para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gau
 print(xtable(para_all, type = "latex"), include.rownames = F,
       file = "../Thesis/tex/tab/parameters.tex")
 xtable(para_all) # output in Rmd
+```
+
+```
+## % latex table generated in R 4.0.4 by xtable 1.8-4 package
+## % Tue Apr 13 02:33:56 2021
+## \begin{table}[ht]
+## \centering
+## \begin{tabular}{rllllll}
+##   \hline
+##  & Parameter & Coefficient & SE & 95\% CI & z & p \\ 
+##   \hline
+## 1 & Roe deer &  &  &  &  &        \\ 
+##   2 & (Intercept) & -3.04 & 0.37 & (-3.76, -2.32) & -8.32 & $<$ .001 \\ 
+##   3 & time.deploy & -0.12 & 0.05 & (-0.22, -0.02) & -2.24 & 0.025  \\ 
+##   4 & flash [IR] & -0.18 & 0.43 & (-1.02,  0.66) & -0.42 & 0.674  \\ 
+##   5 & flash [wLED] & -0.12 & 0.43 & (-0.96,  0.72) & -0.28 & 0.778  \\ 
+##   6 & time.deploy * flash [IR] & 0.05 & 0.07 & (-0.08,  0.18) & 0.71 & 0.476  \\ 
+##   7 & time.deploy * flash [wLED] & 7.96e-03 & 0.06 & (-0.12,  0.13) & 0.12 & 0.901  \\ 
+##   8 & Moose &  &  &  &  &        \\ 
+##   9 & (Intercept) & -4.13 & 0.24 & (-4.59, -3.67) & -17.50 & $<$ .001 \\ 
+##   10 & time.deploy & 0.01 & 0.11 & (-0.20,  0.23) & 0.14 & 0.890  \\ 
+##   11 & flashIR & 0.12 & 0.26 & (-0.39,  0.62) & 0.45 & 0.655  \\ 
+##   12 & flashwLED & 0.27 & 0.26 & (-0.23,  0.78) & 1.07 & 0.284  \\ 
+##   13 & time.deploy:flashIR & 0.12 & 0.14 & (-0.15,  0.39) & 0.86 & 0.389  \\ 
+##   14 & time.deploy:flashwLED & -0.02 & 0.13 & (-0.28,  0.25) & -0.12 & 0.902  \\ 
+##   15 & Red deer &  &  &  &  &        \\ 
+##   16 & (Intercept) & -4.26 & 0.35 & (-4.95, -3.57) & -12.12 & $<$ .001 \\ 
+##   17 & time.deploy & -0.22 & 0.14 & (-0.50,  0.05) & -1.63 & 0.104  \\ 
+##   18 & flashIR & 0.23 & 0.42 & (-0.58,  1.04) & 0.55 & 0.581  \\ 
+##   19 & flashwLED & 0.21 & 0.42 & (-0.61,  1.03) & 0.50 & 0.619  \\ 
+##   20 & time.deploy:flashIR & 0.15 & 0.18 & (-0.21,  0.50) & 0.81 & 0.421  \\ 
+##   21 & time.deploy:flashwLED & 0.55 & 0.18 & ( 0.19,  0.91) & 2.96 & 0.003  \\ 
+##   22 & Badger &  &  &  &  &        \\ 
+##   23 & (Intercept) & -4.24 & 0.34 & (-4.90, -3.58) & -12.57 & $<$ .001 \\ 
+##   24 & time.deploy & 0.15 & 0.08 & (-0.01,  0.31) & 1.85 & 0.064  \\ 
+##   25 & flashIR & 0.22 & 0.34 & (-0.45,  0.88) & 0.64 & 0.525  \\ 
+##   26 & flashwLED & 0.26 & 0.34 & (-0.40,  0.93) & 0.77 & 0.440  \\ 
+##   27 & time.deploy:flashIR & 0.03 & 0.10 & (-0.17,  0.22) & 0.27 & 0.783  \\ 
+##   28 & time.deploy:flashwLED & 0.01 & 0.09 & (-0.18,  0.20) & 0.11 & 0.913  \\ 
+##   29 & European Pine Marten &  &  &  &  &        \\ 
+##   30 & (Intercept) & -5.59 & 0.33 & (-6.23, -4.95) & -17.09 & $<$ .001 \\ 
+##   31 & time.deploy & 0.22 & 0.22 & (-0.22,  0.66) & 0.97 & 0.331  \\ 
+##   32 & flashIR & 1.25 & 0.35 & ( 0.56,  1.95) & 3.56 & $<$ .001 \\ 
+##   33 & flashwLED & 0.89 & 0.36 & ( 0.18,  1.59) & 2.46 & 0.014  \\ 
+##   34 & time.deploy:flashIR & -0.26 & 0.25 & (-0.75,  0.22) & -1.07 & 0.286  \\ 
+##   35 & time.deploy:flashwLED & 0.08 & 0.26 & (-0.43,  0.58) & 0.30 & 0.768  \\ 
+##   36 & Red fox &  &  &  &  &        \\ 
+##   37 & (Intercept) & -3.44 & 0.23 & (-3.89, -2.99) & -14.95 & $<$ .001 \\ 
+##   38 & time.deploy & -1.29e-03 & 0.07 & (-0.13,  0.13) & -0.02 & 0.985  \\ 
+##   39 & flashIR & 0.02 & 0.28 & (-0.52,  0.56) & 0.07 & 0.942  \\ 
+##   40 & flashwLED & 0.13 & 0.28 & (-0.41,  0.68) & 0.48 & 0.631  \\ 
+##   41 & time.deploy:flashIR & -5.69e-03 & 0.09 & (-0.18,  0.17) & -0.06 & 0.949  \\ 
+##   42 & time.deploy:flashwLED & -0.03 & 0.09 & (-0.20,  0.15) & -0.30 & 0.763  \\ 
+##   43 & Lynx &  &  &  &  &        \\ 
+##   44 & (Intercept) & -5.67 & 0.45 & (-6.54, -4.80) & -12.72 & $<$ .001 \\ 
+##   45 & time.deploy & -0.52 & 0.33 & (-1.17,  0.12) & -1.58 & 0.113  \\ 
+##   46 & flashIR & 0.76 & 0.51 & (-0.25,  1.77) & 1.48 & 0.138  \\ 
+##   47 & flashwLED & 1.15 & 0.51 & ( 0.15,  2.14) & 2.26 & 0.024  \\ 
+##   48 & time.deploy:flashIR & 0.59 & 0.39 & (-0.17,  1.35) & 1.53 & 0.127  \\ 
+##   49 & time.deploy:flashwLED & 0.61 & 0.38 & (-0.14,  1.37) & 1.59 & 0.112  \\ 
+##   50 & Hare &  &  &  &  &        \\ 
+##   51 & (Intercept) & -3.77 & 0.33 & (-4.42, -3.12) & -11.40 & $<$ .001 \\ 
+##   52 & time.deploy & 0.08 & 0.08 & (-0.06,  0.23) & 1.12 & 0.263  \\ 
+##   53 & flashIR & 0.19 & 0.39 & (-0.57,  0.95) & 0.48 & 0.628  \\ 
+##   54 & flashwLED & 0.25 & 0.39 & (-0.50,  1.01) & 0.66 & 0.510  \\ 
+##   55 & time.deploy:flashIR & -0.12 & 0.09 & (-0.30,  0.07) & -1.26 & 0.209  \\ 
+##   56 & time.deploy:flashwLED & 3.03e-03 & 0.10 & (-0.19,  0.19) & 0.03 & 0.975  \\ 
+##   57 & Red squirrel &  &  &  &  &        \\ 
+##   58 & (Intercept) & -4.35 & 0.35 & (-5.03, -3.66) & -12.46 & $<$ .001 \\ 
+##   59 & time.deploy & 0.19 & 0.12 & (-0.05,  0.42) & 1.58 & 0.114  \\ 
+##   60 & flashIR & 0.22 & 0.40 & (-0.57,  1.01) & 0.55 & 0.580  \\ 
+##   61 & flashwLED & 0.53 & 0.40 & (-0.26,  1.31) & 1.32 & 0.188  \\ 
+##   62 & time.deploy:flashIR & -0.41 & 0.15 & (-0.70, -0.11) & -2.72 & 0.007  \\ 
+##   63 & time.deploy:flashwLED & -0.04 & 0.15 & (-0.33,  0.25) & -0.26 & 0.793  \\ 
+##    \hline
+## \end{tabular}
+## \end{table}
 ```
 
 
@@ -2951,23 +3584,26 @@ m_ekorn<- readRDS("m_ekorn.rds")
 # not standardized
 para_all2 <- bind_rows(
 model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",    rep("",5)), .before = 1),
-model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
-model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
-model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
-model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1),
-model_parameters(m_elg)   %>% add_column(Species = c("Moose",       rep("",5)), .before = 1),
+model_parameters(m_elg)   %>% add_column(Species = c("Moose",         rep("",5)), .before = 1),
 model_parameters(m_hjort) %>% add_column(Species = c("Red deer",    rep("",5)), .before = 1),
+model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
 model_parameters(m_maar)  %>% add_column(Species = c("Pine Marten", rep("",5)), .before = 1), 
-model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1)
+model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
+model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1),
+model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
+model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1)
 ) %>% 
  insight::format_table(ci_brackets = c("(", ")"), digits = 2) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
 para_all2$Parameter <- rep(c("Intercept","Time","IR","wLED", "Time * IR", "Time * wLED"), times=9)
-para_all2$SGPV <- round(c(res_raa,res_rev,res_grvl,res_hare,res_ekorn,res_elg,res_hjort,res_maar,res_gaup),2)
+para_all2$SGPV <- round(c(res_raa,res_elg,res_hjort,           #cervids
+                          res_grvl,res_maar,res_rev,res_gaup, # carnivores
+                          res_hare,res_ekorn                  #glires
+                                        ),2) #round to 2 digits
 
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
-      file = "../Thesis/tex/tab/parameters2.tex")
+      file = "../Thesis/tex/tab/parameters.tex")
 # gather all models
 m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
 #sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
@@ -3014,15 +3650,15 @@ m_compare[c(1  ,5,6)]
 ## 
 ## Name    | R2 (cond.) | R2 (marg.)
 ## ---------------------------------
-## m_ekorn |      0.428 |      0.008
-## m_gaup  |      0.183 |      0.060
-## m_maar  |      0.223 |      0.052
-## m_grvl  |      0.354 |      0.005
-## m_hjort |      0.177 |      0.011
-## m_elg   |      0.164 |      0.003
-## m_hare  |      0.275 |      0.002
-## m_raa   |      0.293 |      0.002
-## m_rev   |      0.146 |  6.490e-04
+## m_gaup  |      0.203 |      0.066
+## m_maar  |      0.245 |      0.057
+## m_grvl  |      0.384 |      0.006
+## m_ekorn |      0.296 |      0.014
+## m_hjort |      0.196 |      0.012
+## m_hare  |      0.301 |      0.003
+## m_elg   |      0.182 |      0.004
+## m_raa   |      0.320 |      0.002
+## m_rev   |      0.163 |  7.231e-04
 ```
 
 ```r
@@ -3108,6 +3744,7 @@ __Assumption 4:__ The mean and variance of the model are equal. This is a result
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -3122,7 +3759,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 # Summary, report, model
 summary(m_sp)
 r_sp <- report::report(m_sp) # text-summary of my model, to include in a report
@@ -3132,14 +3768,18 @@ saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut fo
 
 ```r
 summary(r_sp)
-as.report_table(r_sp)
+as.report_table(r_sp) 
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -3165,30 +3805,38 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
+
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -3198,13 +3846,12 @@ jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
 p_grid <- cowplot::plot_grid(p_dens,
                              jpg,
-                             p_sp1,
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
+) 
 p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
        #  hjust = 1, halign = 1, valign = 0)
 ```
@@ -3269,10 +3916,10 @@ sessionInfo()
 ## [21] sjmisc_2.8.6       jsonlite_1.7.2     nloptr_1.2.2.2     broom_0.7.5       
 ## [25] dbplyr_2.1.0       effectsize_0.4.3-1 compiler_4.0.4     httr_1.4.2        
 ## [29] sjstats_0.18.1     emmeans_1.5.4      backports_1.2.1    assertthat_0.2.1  
-## [33] survey_4.0         cli_2.3.1          htmltools_0.5.1.1  tools_4.0.4       
+## [33] survey_4.0         cli_2.4.0          htmltools_0.5.1.1  tools_4.0.4       
 ## [37] coda_0.19-4        gtable_0.3.0       glue_1.4.2         reshape2_1.4.4    
 ## [41] Rcpp_1.0.6         carData_3.0-4      cellranger_1.1.0   jquerylib_0.1.3   
-## [45] vctrs_0.3.6        nlme_3.1-152       insight_0.13.1.1   xfun_0.22         
+## [45] vctrs_0.3.7        nlme_3.1-152       insight_0.13.1.1   xfun_0.22         
 ## [49] openxlsx_4.2.3     rvest_1.0.0        lifecycle_1.0.0    statmod_1.4.35    
 ## [53] rstatix_0.7.0      MASS_7.3-53.1      scales_1.1.1       hms_1.0.0         
 ## [57] RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3           sass_0.3.1        
@@ -3282,7 +3929,7 @@ sessionInfo()
 ## [73] magrittr_2.0.1     R6_2.5.0           generics_0.1.0     DBI_1.1.1         
 ## [77] pillar_1.5.1       haven_2.3.1        foreign_0.8-81     withr_2.4.1       
 ## [81] mgcv_1.8-34        survival_3.2-7     nnet_7.3-15        abind_1.4-5       
-## [85] modelr_0.1.8       crayon_1.4.1       car_3.0-10         utf8_1.1.4        
+## [85] modelr_0.1.8       crayon_1.4.1       car_3.0-10         utf8_1.2.1        
 ## [89] rmarkdown_2.7.3    grid_4.0.4         readxl_1.3.1       data.table_1.14.0 
 ## [93] reprex_1.0.0       digest_0.6.27      munsell_0.5.0      bslib_0.2.4.9002  
 ## [97] mitools_2.4

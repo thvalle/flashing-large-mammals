@@ -196,18 +196,22 @@ p_count <- ggplot(sp_count, aes(reorder(species, count, FUN = mean),count)) +
    theme(legend.box.background = element_rect(),axis.title.y = element_blank(),
                 legend.position = c(.8, .3),legend.justification = c("left", "top"))
  
+sp_eng2 <- c("Roe deer", "Hare", "Badger", "Red fox", "Red squirrel", "Moose", "Red deer", "Pine marten","Lynx")
+sp_eng2 <- sp_eng2[9:1] # reverse order
 # data without flash-grouping
 sp_count_trim <- time.dep4 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
   summarise(count = sum(n.obs))
 sp_count_full <- time.dep3 %>% group_by(species) %>% filter(n.obs > 0, species %in% sp_focus) %>% 
   summarise(count = sum(n.obs))
 # plot full and trimmed on top of each other
-ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
-  labs(x= "Species", y = "Events") +
-  scale_y_continuous(n.breaks = 10) + 
-  geom_col() +
-  geom_col(data=sp_count_trim, fill="blue") +
+p_events <- ggplot(sp_count_full, aes(reorder(species, count, FUN = mean),count)) +
+  labs(x= "", y = "Total number of events") + ylim(0,1750) +
+  scale_y_continuous(n.breaks = 5) + scale_x_discrete(labels = sp_eng2) +
+  geom_col(col="black",fill="white") +
+  geom_col(data=sp_count_trim, col="black", 
+           fill="darkgrey") +
   geom_label(aes(x=species,y=count,label = count))
+p_events
 ```
 
 
@@ -246,26 +250,41 @@ ggplot(active_p,aes(period,value,fill=variable)) +
 p_days <- active_p %>% mutate(period = fct_rev(period)) %>% 
 ggplot(aes(flash,value,fill=flash,col=period)) +
   geom_col() +
-  scale_fill_bluebrown(reverse = T) + #flash fill colours
+  scale_fill_grey(start = .8, end = 1) + #flash fill colours
   scale_color_grey(start = 0, end = 0) + #black surrounding colour
-  labs(x= "Period group", y= "Active camera trapping days") +
-  geom_text(aes(label = period), position = position_stack(vjust = 0.5)) + # ,show.legend = F) +
+  labs(x= "Period group", y= "Total camera trapping days") +
+  geom_text(aes(label = period), position = position_stack(vjust = 0.5),
+            angle=90, size = 3.33) + # ,show.legend = F) +
   facet_wrap(~variable) +
   theme(legend.position = "none", axis.title.x = element_blank())
 p_days
 
+total_days <- active_trimmed %>% group_by(period, flash) %>% 
+  summarise(Trimmed = sum(days_trim * 10), # rescaling to true n days
+            Full = sum(period_length * 10) )
+total_days$Full %>% sum()
 ```
 
 
-```{r days-count, eval=FALSE}
-plot_grid(p_count +
-            scale_y_continuous(breaks = c(100,300,500,700,900,1100,1300),
-                               sec.axis = dup_axis(name = element_blank())) ,
-          p_days + 
-            scale_y_continuous(#n.breaks = 7,
-                               sec.axis = dup_axis(name = element_blank()) ),
-          nrow = 2,
-          rel_heights = c(2,3))
+```{r days-count, eval=TRUE}
+cowplot::plot_grid(p_events + ylim(0,1800), #ylim to prevent cutting of "1709"
+                   p_days,
+  nrow = 2,
+  labels = "auto",
+  label_size = 12,
+  align = "v"
+)
+cowplot::plot_grid(p_events + coord_flip() + ylim(0,1800), #ylim to prevent cutting of "1709"
+                   p_days,
+  nrow = 1,
+  labels = "auto",
+  label_size = 12,
+  align = "h"
+)
+
+
+
+
 ```
 
 # Yearly activity
@@ -273,8 +292,8 @@ plot_grid(p_count +
 ```{r year-activity}
 sp_focus <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")
 sp_carnivora <- c("rev", "grevling", "maar", "gaupe")
-sp_ruminata <- c("raadyr", "elg", "hjort")
-sp_rodenta <- c("hare", "ekorn") # I know they're not both rodents
+sp_cervidae <- c("raadyr", "elg", "hjort")
+sp_glires <- c("hare", "ekorn") # I know they're not both rodents
 
 obs_activity <- obs %>% filter(species %in% sp_focus) %>% 
   mutate(flash = fct_shift(flash,-1), #reordering flash-factor
@@ -282,8 +301,8 @@ obs_activity <- obs %>% filter(species %in% sp_focus) %>%
          month = lubridate::month(date),
          year = lubridate::year(date))
 obs_activity$order[obs_activity$species %in% sp_carnivora] <- "Carnivora"
-obs_activity$order[obs_activity$species %in% sp_ruminata] <- "Ruminata"
-obs_activity$order[obs_activity$species %in% sp_rodenta] <- "Rodenta"
+obs_activity$order[obs_activity$species %in% sp_cervidae] <- "Cervidae"
+obs_activity$order[obs_activity$species %in% sp_glires] <- "Glires"
 obs_activity %>% 
 ggplot(aes(week)) +
   #geom_bar(col="black", fill="white") +
@@ -321,6 +340,7 @@ The following code chunks are written in a modular fashion, so that everything w
 # sp ="raadyr"  #(shortcut for when editing)
 # n locations that detected the species
 n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
 # subsetting data for species, and the locations where it was detected
 time_sp <- filter(time.dep4,       #.dep4 = trimmed data
                   species %in% sp, # filtering species
@@ -335,7 +355,6 @@ m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-# va_r <- insight::get_variance(m_sp)
 ```
 
 
@@ -349,6 +368,7 @@ para_sp  <- model_parameters(m_sp,   standardize = "refit") # model parameters
 saveRDS(m_sp, file = paste0("m_",sp,".rds")) # save model objects as shortcut for when editing etc.
 ```
 
+# Cervids
 
 ## Roe deer
 
@@ -376,30 +396,13 @@ va_r <- insight::get_variance(m_sp)
 
 ```{r density, eval=FALSE}
 # trying to include total counts in labels:
-c <- obs %>% filter(species %in% sp) %>% 
-  group_by(flash) %>% 
-  summarise(count = n())
-lab_ctrl <- paste0("Control (",c[3,2],")")
-lab_IR   <- paste0("IR \    (",c[1,2],")")
-lab_LED  <- paste0("wLED \   (",c[2,2],")")
+# c <- obs %>% filter(species %in% sp) %>% 
+#   group_by(flash) %>% 
+#   summarise(count = n())
+# lab_ctrl <- paste0("Control (",c[3,2],")")
+# lab_IR   <- paste0("IR \    (",c[1,2],")")
+# lab_LED  <- paste0("wLED \   (",c[2,2],")")
 
-
-# Density plots
-p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
-  ggplot(aes(Hour)) +
-  geom_bar(col="black", fill="white") +
-  geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
-  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
-  scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
 #TODO få inn n_loc i plottet, kanskje per periode
 
 
@@ -434,6 +437,39 @@ p_dens <- obs %>% filter(species %in% sp) %>%
 # 
 # overlap::sunTime()
 
+# Density plots
+# p_dens <- obs %>% filter(species %in% sp) %>% 
+#   mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+#   ggplot(aes(Hour)) +
+#   geom_bar(col="black", fill="white") +
+#   geom_density(aes(y=..density..*20*count, #scaling density with the count
+#                    fill=flash, alpha=.1),
+#                show.legend = c(alpha = F), bw=1.2) +
+#   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+#   scale_y_continuous(n.breaks = 6) + # n y-ticks
+#   theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
+#         legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+#         legend.box.just = "right")+ 
+#   scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
+#                     #labels=c(lab_ctrl, lab_IR, lab_LED)
+#                     )
+# p_dens <-
+  obs %>% filter(species %in% sp) %>% 
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
+  ggplot(aes(Hour)) +
+  geom_bar(col="black", fill="white") +
+  geom_density(aes(y=..density..*30*count, #scaling density with the count
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
+  scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
+  scale_y_continuous(n.breaks = 6) + # n y-ticks
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
+        legend.box.just = "right") + 
+ # scale_fill_bluebrown(reverse = T, labels = c("Winter", "Spring", "Summer","Fall"))
+ scale_fill_manual(values = c("#1f78b4","white","#33a02c","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
 
 #yearly activity
 
@@ -455,12 +491,16 @@ ggplot(aes(week)) +
 
 ```{r parameters}
 # ggpredict
-p_sp1 <- plot(p_sp, ci.style = c("ribbon"), line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
-               colors = c("#8c510a","#d6604d","#377eb8")) +
-   labs(title="", x="Time since deployment (per 10 days) \ ", y="Detection rate") +
+p_sp1 <- plot(p_sp, ci.style = "dot", line.size = 1, #ci.styles: “ribbon”, “errorbar”, “dash”, “dot”
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
    ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
   theme(legend.position = "top", legend.title = element_blank(),
-        axis.title = element_text(size = 11)) 
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")  #dashed confidence intervals
+
 
 # standardized plots aren't very different, other than on the scale
 #plot(para_sp, size_text = 3) + labs(title = paste0(sp, " GLMM parameters") ,
@@ -486,30 +526,38 @@ p_eq <- plot(result) + labs(y = "Log-Mean") +
                                  title.theme = element_text( 
                                    size=10, #adjusting legend appearance
                                    face="italic"))) 
+
+# Labels with period type and n sites
+n <- obs %>% filter(species %in% sp) %>% 
+  group_by(loc,flash) %>% 
+  summarise(n = n())
+n <- n %>% filter(n > 0) %>% 
+  group_by(flash) %>% 
+  summarise(n=n())
+n
+lab_IR   <- paste0("IR (", n[1,2],")")
+lab_LED  <- paste0("wLED (",n[2,2],")")
+lab_ctrl <- paste0("Control (", n[3,2],")")
+
 # Density plots
 p_dens <- obs %>% filter(species %in% sp) %>% 
-  mutate(flash = fct_shift(flash,-1)) %>% #reordering flash-factor
+  mutate(season = factor(lubridate::quarter(date, fiscal_start = 12)),
+         month = lubridate::month(date)) %>% #reordering flash-factor
   ggplot(aes(Hour)) +
   geom_bar(col="black", fill="white") +
   geom_density(aes(y=..density..*20*count, #scaling density with the count
-                   fill=flash, alpha=.1),
-               show.legend = c(alpha = F), bw=1.2) +
+                   fill=season, linetype = season, alpha=.1),
+               show.legend = c(alpha = F, linetype =F), bw=1.2) +
   scale_x_continuous(breaks = seq(0,23, by=4)) + # which x-ticks
   scale_y_continuous(n.breaks = 6) + # n y-ticks
-  theme(legend.position = c(1, 1), legend.justification = c(.1, 2), #legend placement
-        legend.title = element_blank(), legend.key.size = unit(2, 'mm'), #size
-        legend.box.just = "right")+ 
-  scale_fill_bluebrown(reverse = T, breaks = c("Control", "IR", "wLED")
-                    #labels=c(lab_ctrl, lab_IR, lab_LED)
-                    )
-
-# cowplot::plot_grid(NULL,NULL,p_dens,NULL,
-#                    #nrow = 2,
-#                    # rel_widths = c(3,4,6,1),
-#                    # rel_heights = c(3,2),
-#                    labels="auto",
-#                    axis = "r"
-# ) 
+  theme(legend.position = "top", #legend placement
+        legend.title = element_blank(), legend.key.size = unit(3, 'mm'), #size
+        legend.box.just = "right") + 
+  xlim(0,23) + # to prevent squirrel-plot from zooming away the edges
+ scale_fill_manual(values = c("#1f78b4","white","#b2df8a","#a6cee3"), 
+                   labels = c("Winter", "Spring", "Summer","Fall"))
+                    # labels=c(lab_ctrl, lab_IR, lab_LED)
+ #labs(title = paste0(sp, " present at ",n_loc," sites."))
 
 library(cowplot) # to make grid-plots
 library(magick)
@@ -517,17 +565,15 @@ library(magick)
 sp_file <- paste0("jpg/",sp,".JPG")
 jpg <- ggdraw() + draw_image(sp_file, halign = 1)
 
-p_grid <- cowplot::plot_grid(p_dens,
-                             jpg,
-                             p_sp1,
+p_grid <- cowplot::plot_grid(p_dens, #cowplot:: must be specified, as sjPlot has "the same" function
+                             jpg,                          #ie. masks the function
                              p_eq,
-                   # rel_widths = c(3,4),
-                   rel_heights = c(2,3),
+                             p_sp1,
+                   rel_widths = c(3.8,3),
+                   rel_heights = c(3,4),
                    labels="auto"
-                   #align = "h"
-) + labs(title = paste0(sp, " present at ",n_loc," sites."))
-p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
-       #  hjust = 1, halign = 1, valign = 0)
+) 
+p_grid
 ```
 
 
@@ -535,7 +581,7 @@ p_grid #+ draw_image(sp_file, scale = .4, x = 0.9,
 
 ```{r sp-report2}
 summary(r_sp)
-as.report_table(r_sp)
+as.report_table(r_sp) 
 ```
 
 Finally, storing all objects as species specific objects, for summary stuff at the end of the document.
@@ -560,71 +606,6 @@ __Chunk order:__
 1. sp-report2
 1. parameters
 1. objects
-
-
-## Red Fox
-
-`r sp = "rev"` 
-This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
-
-Now, sp contains `r sp`.
-
-```{r rev, ref.label=c('sp','sp-report'), cache=TRUE}
-```
-### Plot
-
-```{r rev2, ref.label=c('sp-report2','parameters')}
-```
-
-
-```{r rev-objects}
-# Model
-m_rev    = m_sp
-# ggpredict 
-p_rev    = p_sp
-# report-object
-r_rev    = r_sp
-# parameters refit
-para_rev = para_sp 
-# SGPV
-res_rev = result$ROPE_Percentage
-```
-
-
-```{r knit-exit, eval=FALSE}
-knitr::knit_exit()
-# Exita knitting process here instead of at the document end
-# Perfect for doing a test run, checking if the code works for at least two different species
-# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
-```
-
-
-## Badger
-
-`r sp = "grevling"`
-Now, sp contains `r sp`.
-
-```{r grevling, ref.label=c('sp','sp-report'), cache=TRUE}
-```
-
-### Plot
-
-```{r grevling2, ref.label=c('sp-report2','parameters')}
-```
-
-
-```{r grevling-objects}
-# Model
-m_grvl    = m_sp
-# ggpredict 
-p_grvl    = p_sp
-# report-object
-r_grvl    = r_sp
-# parameters refit
-para_grvl = para_sp  
-# SGPV
-res_grvl = result$ROPE_Percentage
-```
 
 
 ## Moose
@@ -682,6 +663,100 @@ res_hjort = result$ROPE_Percentage
 ```
 
 
+```{r knit-exit, eval=FALSE}
+knitr::knit_exit()
+# Exita knitting process here instead of at the document end
+# Perfect for doing a test run, checking if the code works for at least two different species
+# Set to eval=FALSE as default, needs to be adjusted to TRUE before a test run.
+```
+
+# Carnivora
+
+## Badger
+
+`r sp = "grevling"`
+Now, sp contains `r sp`.
+
+```{r grevling, ref.label=c('sp','sp-report'), cache=TRUE}
+```
+
+### Plot
+
+```{r grevling2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r grevling-objects}
+# Model
+m_grvl    = m_sp
+# ggpredict 
+p_grvl    = p_sp
+# report-object
+r_grvl    = r_sp
+# parameters refit
+para_grvl = para_sp  
+# SGPV
+res_grvl = result$ROPE_Percentage
+```
+
+
+
+## European Pine marten
+
+`r sp = "maar"`
+Now, sp contains `r sp`.
+
+```{r maar, ref.label=c('sp','sp-report'), cache=TRUE}
+```
+
+### Plot
+
+```{r maar2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r maar-objects}
+# Model
+m_maar    = m_sp
+# ggpredict 
+p_maar    = p_sp
+# report-object
+r_maar    = r_sp
+# parameters refit
+para_maar = para_sp 
+# SGPV
+res_maar = result$ROPE_Percentage
+```
+
+
+## Red Fox
+
+`r sp = "rev"` 
+This is where I change the content of the species object 'sp'. I have to do it before calling the pre-defined code chunks.
+
+Now, sp contains `r sp`.
+
+```{r rev, ref.label=c('sp','sp-report'), cache=TRUE}
+```
+### Plot
+
+```{r rev2, ref.label=c('sp-report2','parameters')}
+```
+
+
+```{r rev-objects}
+# Model
+m_rev    = m_sp
+# ggpredict 
+p_rev    = p_sp
+# report-object
+r_rev    = r_sp
+# parameters refit
+para_rev = para_sp 
+# SGPV
+res_rev = result$ROPE_Percentage
+```
+
 ## Lynx
 
 `r sp = "gaupe"`
@@ -710,10 +785,8 @@ res_gaup = result$ROPE_Percentage
 ```
 
 
-# Small species
 
-Added late, because I was unsure about whether it made sense to include them or not.
-After having learned about random effects in mixed effect models, I think it does make sense, even though the cameras in my study were set up with the original aim of photo capturing lynx.
+# Glires
 
 ## Hare
 
@@ -748,19 +821,30 @@ res_hare = result$ROPE_Percentage
 `r sp = "ekorn"`
 Now, sp contains `r sp`.
 
-```{r ekorn1}
-time_sp <- filter(time.dep4, species %in% sp) #.dep4 = trimmed data
+```{r ekorn1, eval=FALSE}
+#sp = "ekorn"
+# n locations that detected the species
+n_loc <- time.dep4$loc[time.dep4$n.obs > 0 & time.dep4$species %in% sp] %>% unique()
+n_loc %>% length() # number of locations
+# subsetting data for species, and the locations where it was detected
+time_sp <- filter(time.dep4,       #.dep4 = trimmed data
+                  species %in% sp, # filtering species
+                  loc %in% n_loc)  # filtering locations
 # Model
 m_sp  <- lme4::glmer(n.obs ~ time.deploy * flash + # fixed effects
             (1 | loc) + (1 | week), # random effects
             data   = time_sp,
-            family = poisson,
-            nAGQ = 0) # change optimizer to oenalized iteratively reweighted least squares step
+            family = poisson
+            ,nAGQ = 0 # change optimizer to penalized iteratively reweighted least squares step
+)
 # ggeffect calls effects::Effect
 p_sp    <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 # Diagnostics
 assumpt <- performance::check_model(m_sp) # check assumptions
-va_r <- insight::get_variance(m_sp)
+```
+
+```{r ekorn0, ref.label='sp', eval=TRUE}
+
 ```
 
 
@@ -788,36 +872,6 @@ res_ekorn = result$ROPE_Percentage
 ```
 
 
-
-## European Pine marten
-
-`r sp = "maar"`
-Now, sp contains `r sp`.
-
-```{r maar, ref.label=c('sp','sp-report'), cache=TRUE}
-```
-
-### Plot
-
-```{r maar2, ref.label=c('sp-report2','parameters')}
-```
-
-
-```{r maar-objects}
-# Model
-m_maar    = m_sp
-# ggpredict 
-p_maar    = p_sp
-# report-object
-r_maar    = r_sp
-# parameters refit
-para_maar = para_sp 
-# SGPV
-res_maar = result$ROPE_Percentage
-```
-
-
-
 ----------------------------------------------
 
 # All models
@@ -827,7 +881,7 @@ res_maar = result$ROPE_Percentage
 
 Making parameter-tables to include in my thesis. The first one contains standardized parameters, but since that differs from the format they are presented in the equivalence test, I will using the second one, which is not standardized
 
-```{r model-report, eval=FALSE}
+```{r model-report, eval=TRUE}
 para_raa  <- para_raa %>% 
   add_row(Parameter = "Roe deer", .before = 1) # adds a row for species name in the resulting table
 para_rev  <- para_rev   %>% add_row(Parameter = "Red fox",  .before = 1)
@@ -840,7 +894,9 @@ para_maar <- para_maar  %>% add_row(Parameter = "European Pine Marten", .before 
 para_ekorn<- para_ekorn %>% add_row(Parameter = "Red squirrel", .before = 1)
 
 # bind tables together
-para_all <- bind_rows(para_raa, para_rev, para_grvl,para_elg,para_hjort,para_gaup,para_hare,para_maar,para_ekorn) %>%
+para_all <- bind_rows(para_raa,para_elg,para_hjort,
+                      para_grvl,para_maar, para_rev,para_gaup,
+                      para_hare,para_ekorn) %>%
   insight::format_table(ci_brackets = c("(", ")")) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
 
@@ -865,27 +921,30 @@ m_ekorn<- readRDS("m_ekorn.rds")
 ```
 
 
-```{r model-report2, eval=F}
+```{r model-report2, eval=T}
 # not standardized
 para_all2 <- bind_rows(
 model_parameters(m_raa)   %>% add_column(Species = c("Roe deer",    rep("",5)), .before = 1),
-model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
-model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
-model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
-model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1),
-model_parameters(m_elg)   %>% add_column(Species = c("Moose",       rep("",5)), .before = 1),
+model_parameters(m_elg)   %>% add_column(Species = c("Moose",         rep("",5)), .before = 1),
 model_parameters(m_hjort) %>% add_column(Species = c("Red deer",    rep("",5)), .before = 1),
+model_parameters(m_grvl)  %>% add_column(Species = c("Badger",      rep("",5)), .before = 1),
 model_parameters(m_maar)  %>% add_column(Species = c("Pine Marten", rep("",5)), .before = 1), 
-model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1)
+model_parameters(m_rev)   %>% add_column(Species = c("Red fox",     rep("",5)), .before = 1),
+model_parameters(m_gaup)  %>% add_column(Species = c("Lynx",        rep("",5)), .before = 1),
+model_parameters(m_hare)  %>% add_column(Species = c("Hare",        rep("",5)), .before = 1),
+model_parameters(m_ekorn) %>% add_column(Species = c("Red squirrel",rep("",5)), .before = 1)
 ) %>% 
  insight::format_table(ci_brackets = c("(", ")"), digits = 2) %>% #prettier ci-brackets
   select(!df) # remove the df-column, containing "Inf" for every species
 para_all2$Parameter <- rep(c("Intercept","Time","IR","wLED", "Time * IR", "Time * wLED"), times=9)
-para_all2$SGPV <- round(c(res_raa,res_rev,res_grvl,res_hare,res_ekorn,res_elg,res_hjort,res_maar,res_gaup),2)
+para_all2$SGPV <- round(c(res_raa,res_elg,res_hjort,           #cervids
+                          res_grvl,res_maar,res_rev,res_gaup, # carnivores
+                          res_hare,res_ekorn                  #glires
+                                        ),2) #round to 2 digits
 
 # save as latex-table in the Thesis folder
 print(xtable(para_all2, type = "latex"), include.rownames = F,
-      file = "../Thesis/tex/tab/parameters2.tex")
+      file = "../Thesis/tex/tab/parameters.tex")
 # gather all models
 m_all <- list(m_raa, m_rev ,m_grvl, m_hare, m_ekorn, m_elg, m_hjort, m_maar, m_gaup)
 #sp <- c("raadyr", "rev", "grevling", "hare", "ekorn", "elg", "hjort", "maar", "gaupe")

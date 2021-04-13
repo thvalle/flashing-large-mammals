@@ -1,7 +1,7 @@
 Flashing Large Mammals - exploring the data
 ================
 Torgeir Holmgard Valle
-25 mars, 2021
+08 april, 2021
 
 ``` r
 library(tidyverse)
@@ -130,28 +130,71 @@ stations %>% group_by(cam_mod) %>% count() %>% pander::pander()
 
 ## Timeseries plot of periods from the troubleshooting and organisation with Neri
 
+    ##     loc       date timeserie_id image_id dataset    captured_at_exif
+    ## 1  1254 2019-04-14       308526  1972038    2600 2019:04:14 04:39:44
+    ## 2  1254 2019-05-03       308522  1971502    2600 2019:05:03 05:21:12
+    ## 3  1254 2019-05-06       308486  1971805    2600 2019:05:06 05:30:01
+    ## 4  1254 2019-05-29       308520  1971365    2600 2019:05:29 04:26:04
+    ## 5  1254 2019-08-25       534413  3692706    4444 2019:08:25 05:49:40
+    ## 6    15 2019-08-12       482569  3171229    3910 2019:08:12 04:17:41
+    ## 7    15 2019-09-17       519314  3411930    4156 2019:09:17 05:48:00
+    ## 8   257 2019-04-25       302328  1935752    2531 2019:04:25 05:41:40
+    ## 9   257 2019-05-08       302308  1935770    2531 2019:05:08 04:26:39
+    ## 10  835 2019-06-26       450345  2945631    3646 2019:06:26 03:41:37
+    ## 11  842 2019-05-21       303309  1946977    2540 2019:05:21 03:10:04
+    ## 12  843 2019-04-06       286407  1847469    2404 2019:04:06 04:57:50
+    ## 13  848 2019-05-17       304291  1952097    2549 2019:05:17 04:06:31
+    ##        predicted_species distance num_animals            datetime
+    ## 1         {"nothing": 1}     <NA>           1 2019-04-14 04:39:44
+    ## 2  {"ekorn": 0.97147983}     <NA>           1 2019-05-03 05:21:12
+    ## 3         {"nothing": 1}     <NA>           1 2019-05-06 05:30:01
+    ## 4         {"nothing": 1}     <NA>           1 2019-05-29 04:26:04
+    ## 5         {"nothing": 1}     <NA>           1 2019-08-25 05:49:40
+    ## 6         {"nothing": 1}        1           1 2019-08-12 04:17:41
+    ## 7         {"nothing": 1}        2           1 2019-09-17 05:48:00
+    ## 8         {"nothing": 1}        3           1 2019-04-25 05:41:40
+    ## 9         {"nothing": 1}        2           1 2019-05-08 04:26:39
+    ## 10 {"ekorn": 0.99724966}     <NA>           1 2019-06-26 03:41:37
+    ## 11        {"nothing": 1}     <NA>           1 2019-05-21 03:10:04
+    ## 12        {"nothing": 1}     <NA>           1 2019-04-06 04:57:50
+    ## 13        {"nothing": 1}     <NA>           1 2019-05-17 04:06:31
+    ##    Kam.nr. til blitskamera validated_species flash period species hour
+    ## 1                     3173             ekorn     1    1_1   ekorn    4
+    ## 2                     3173             ekorn     1    1_1   ekorn    5
+    ## 3                     3173             ekorn     1    1_1   ekorn    5
+    ## 4                     3173             ekorn     1    1_1   ekorn    4
+    ## 5                     3173             ekorn     1    1_2   ekorn    5
+    ## 6                     3201             ekorn     1    1_2   ekorn    4
+    ## 7                     3201             ekorn     1    1_2   ekorn    5
+    ## 8                     3211             ekorn     1    1_1   ekorn    5
+    ## 9                     3211             ekorn     1    1_1   ekorn    4
+    ## 10                    3186             ekorn     1    1_1   ekorn    3
+    ## 11                    3197             ekorn     1    1_1   ekorn    3
+    ## 12                    3185             ekorn     1    1_1   ekorn    4
+    ## 13                    3196             ekorn     1    1_1   ekorn    4
+
 ``` r
 p_eff <- effort %>%
   mutate(trt_gr = ifelse(period %in% ctrl, "Control", "Treatment"), # faceting factor
          # renaming control-groups in order to extract period-breaks, and not confuse with ctrl_1,2,3,4
          flash = factor(ifelse(period %in% ctrl[c(2,4)], 4, flash), ordered = T,
-                      levels = c(1,4,2,3),
-                      labels = c("Control", "period splits added during analysis","IR", "White LED"))) %>% 
+                      levels = c(2,3,1,4),
+                      labels = c("IR", "White LED","Control","period splits added for analysis"))) %>% 
 ggplot() +
   facet_grid(rows = "trt_gr", scales = "free_y", space = "free_y") +
   geom_point(aes(date, as.factor(loc), col=flash), size = 0.9) +
   theme_classic() + labs(y = "Location") +
   theme(axis.ticks.y = element_blank(), axis.text.y = element_blank(),
         legend.position = "top")+
-  scale_color_manual(values = c("#fdae61","#f46d43",     # ctrl-col
-                                 "#abd9e9","#4575b4")) + # trt-col
+  scale_color_manual(values = c("#abd9e9","#4575b4",     # ctrl-col
+                                 "#fdae61","#f46d43")) + # trt-col
   scale_x_date(NULL, breaks = f_work, date_labels = "%d-%b",
                sec.axis = sec_axis(~., breaks = c(c$c,f_work[10]), labels = scales::date_format("%d-%b %y") ) ) +
   geom_vline(xintercept = f_work, linetype = "dashed",  alpha =.5) +
   geom_rect(data = rects, aes(xmin = xstart, xmax = xend, ymin = -Inf, ymax = Inf),
             alpha = 0.1 )
 p_eff +   theme(legend.title = element_blank()) +
-  guides(colour = guide_legend(override.aes = list(size = 2), ncol = 2, 
+  guides(colour = guide_legend(override.aes = list(size = 2), #ncol = 2, 
                                reverse = F, byrow = T), #adjust rows of legend
                 x = guide_axis(n.dodge = 2)) # dodge axis text into n rows
 ```
@@ -249,19 +292,20 @@ ggplot() +
 ![](FLM_notebook_files/figure-gfm/maps-scandi-2.png)<!-- -->
 
 ``` r
-# ggplot(Viken) +
-#   stat_sf_coordinates()
+# ggmap(Norge1) + 
+#   theme_void() +
+#   theme(
+#     plot.title = element_text(colour = "orange"), 
+#     panel.border = element_rect(colour = "grey", fill=NA, size=2)
+#   ) +   annotate(geom="rect", xmin = 9.28, xmax = 11.4, # i samsvar med excel-
+#             ymin = 59.2, ymax = 60.5,              # kjørearket mitt
+#             alpha = .5, col = "black")
 ```
 
 ``` r
-# library(tmap)
-# tmap_mode("plot")
-# tm_basemap() + 
-#   tm_polygons(Viken) + #will only draw polygon, not additional layers
-#   tm_shape(loc_sf) + tm_bubbles(col = "red")
-
-
 # Library
+library(sf)
+library(ggspatial)
 library(ggmap)
 ```
 
@@ -270,7 +314,6 @@ library(ggmap)
     ## Please cite ggmap if you use it! See citation("ggmap") for details.
 
 ``` r
-#register_google(key = "your code")
 library(gridExtra)
 ```
 
@@ -282,45 +325,80 @@ library(gridExtra)
     ##     combine
 
 ``` r
-# For stamen map, you have to give the extremity of the window you are looking at. here is an example with the watercolor background (Around brisbane)
-Norge1 <- get_stamenmap( bbox = c(left = 0, bottom = 57, right = 25, top = 71), zoom = 4)
+library(cowplot)
 ```
 
-    ## Source : http://tile.stamen.com/terrain/4/8/3.png
+    ## 
+    ## Attaching package: 'cowplot'
 
-    ## Source : http://tile.stamen.com/terrain/4/9/3.png
+    ## The following object is masked from 'package:ggmap':
+    ## 
+    ##     theme_nothing
 
-    ## Source : http://tile.stamen.com/terrain/4/8/4.png
-
-    ## Source : http://tile.stamen.com/terrain/4/9/4.png
+    ## The following object is masked from 'package:lubridate':
+    ## 
+    ##     stamp
 
 ``` r
-Norge2 <- get_stamenmap( bbox = c(left = 0, bottom = 57, right = 25, top = 71), zoom = 4, maptype = "toner")
+p_norge <- ggplot() +
+  geom_sf(data = Norge) + #fill= "antiquewhite"
+#  geom_sf(data = Viken, fill = "blue", alpha = .02) +  # Viken polygon
+#  geom_sf(data = loc_sf, fill = "blue", alpha = .2) +  # loc range
+   annotate(geom="rect", xmin = 9.3, xmax = 11.5, # i samsvar med excel-
+                         ymin = 59.3, ymax = 60.5,# kjørearket mitt
+                         col = "black", #alpha = .5, 
+                         fill = NA) +
+  coord_sf(xlim = c(0.7,31), ylim = c(57,71)) +
+  theme_void()
+
+# mysite <- c(11.5, 60.5, 9.3, 59.3)
+# mysite2 <- c(11, 60, 9, 59)
+
+p <-
+  get_googlemap(center = c(lon = 10.3, lat = 59.9), #location =  mysite ,
+                    zoom = 8, 
+                    scale = 2, #size = c(2000, 1500),
+                    maptype ='hybrid',
+                   source = "google",
+                   style = c(feature = "all", element = "labels", visibility = "off"),
+                  # crop=F
+           ) %>% ggmap( extent = "device")  + theme_void() + theme(legend.position = "none") +
+          geom_point(aes(x = lon, y = lat,  colour = cam_mod), 
+               data = stations, size = 2.2)
 ```
 
-    ## Source : http://tile.stamen.com/toner/4/8/3.png
-
-    ## Source : http://tile.stamen.com/toner/4/9/3.png
-
-    ## Source : http://tile.stamen.com/toner/4/8/4.png
-
-    ## Source : http://tile.stamen.com/toner/4/9/4.png
+    ## Source : https://maps.googleapis.com/maps/api/staticmap?center=59.9,10.3&zoom=8&size=640x640&scale=2&maptype=hybrid&style=feature:all%7Celement:labels%7Cvisibility:off&key=xxx
 
 ``` r
-Viken1 <- get_stamenmap( bbox = c(left = 9.28, bottom = 59.2, right = 11.4, top =  60.5), zoom = 4, maptype = "toner")
-
-
-ggmap(Norge1) + 
-  theme_void() +
-  theme(
-    plot.title = element_text(colour = "orange"), 
-    panel.border = element_rect(colour = "grey", fill=NA, size=2)
-  ) +   annotate(geom="rect", xmin = 9.28, xmax = 11.4, # i samsvar med excel-
-            ymin = 59.2, ymax = 60.5,              # kjørearket mitt
-            alpha = .5, col = "black")
+p1 <- p  + scale_color_manual(values = c("#d73027","#4575b4", "white")) +  
+  geom_point(aes(x=lon, y=lat, colour = "white LED "), 
+             data = filter(stations, !abc  %in% "C"), size = .7 )
 ```
 
-![](FLM_notebook_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+``` r
+ggdraw(p_norge, xlim = c(0.325,1)) +
+  draw_plot(
+    {
+      p1 + 
+        theme(legend.position = c(.85, .95), legend.justification = c(.5, 1), #legend placement
+        legend.title = element_blank(), #legend.key.size = unit(2, 'mm'),
+        legend.background = element_rect(fill="darkgray", size=.5))
+      },
+    # The distance along a (0,1) x-axis to draw the left edge of the plot
+    x = 0.55, 
+    # The distance along a (0,1) y-axis to draw the bottom edge of the plot
+    y = 0.02,
+    # The width and height of the plot expressed as proportion of the entire ggdraw object
+    width = 0.5, 
+    height = 0.85)+
+  draw_line(
+    x = c(.44, 0.596, 0.596, 0.44),
+    y = c(0.196, 0.02, 0.87, 0.27),
+    color = "black", size = .5, linetype = "dashed",
+  ) + theme(legend.position = c(1,1))
+```
+
+![](FLM_notebook_files/figure-gfm/study-map-1.png)<!-- -->
 
 ``` r
 loc_brown <- filter(loc_sf, cam_mod %in% "Browning")
@@ -360,6 +438,26 @@ passes %>%
 ```
 
 ![](FLM_notebook_files/figure-gfm/sp_focus-1.png)<!-- -->
+
+``` r
+passes %>% filter(!species %in% c("nothing","null") ) %>% 
+  summary(n = n())
+```
+
+    ##    species              count          abc               period         
+    ##  Length:10600       Min.   :   1   Length:10600       Length:10600      
+    ##  Class :character   1st Qu.: 578   Class :character   Class :character  
+    ##  Mode  :character   Median :1031   Mode  :character   Mode  :character  
+    ##                     Mean   :1115                                        
+    ##                     3rd Qu.:1557                                        
+    ##                     Max.   :2049                                        
+    ##      flash       
+    ##  Min.   :0.0000  
+    ##  1st Qu.:0.0000  
+    ##  Median :0.0000  
+    ##  Mean   :0.3094  
+    ##  3rd Qu.:1.0000  
+    ##  Max.   :1.0000
 
 ``` r
 # most datapoints on ekorn, elg, grevling, hare, raadyr, rev, 
@@ -563,6 +661,117 @@ setDT(obs)[, event_id := 1L + cumsum(c(0L, diff(datetime) > 720)), by=.(loc, spe
 names(obs)
 ```
 
+------------------------------------------------------------------------
+
+# Models with spatial covariates
+
+## Summary of spatial variables
+
+``` r
+obs$house_d2 %>% summary()
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##   111.8   269.3   495.0   632.9   813.9  2961.8    1336
+
+## Transforming the variables, and looking at correlations
+
+``` r
+obs$forestroad_d2_ln<-ifelse(obs$forestroad_d2>0,log(obs$forestroad_d2), 0)
+obs$forestroad_d2_io <- ifelse(obs$forestroad_d2>10, 0, 1)
+obs$house_d2_ln<-ifelse(obs$house_d2>0,log(obs$house_d2), 0)
+# plotting distances
+qplot(forestroad_d2_io, loc, data =obs)
+```
+
+    ## Warning: Removed 1336 rows containing missing values (geom_point).
+
+![](FLM_notebook_files/figure-gfm/transform-1.png)<!-- -->
+
+``` r
+qplot(house_d2, loc, data =obs)
+```
+
+    ## Warning: Removed 1336 rows containing missing values (geom_point).
+
+![](FLM_notebook_files/figure-gfm/transform-2.png)<!-- -->
+
+``` r
+library(reshape2) # for melt function
+```
+
+    ## 
+    ## Attaching package: 'reshape2'
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     smiths
+
+``` r
+p_theme <- theme(
+  panel.grid.major.x = element_blank(),panel.grid.minor.x = element_blank(),
+  panel.grid.minor.y = element_blank(),axis.text.x = element_blank())   
+  #theme(panel.background = element_rect(fill = "white", colour = "grey50"))
+
+obs %>% melt(id = "loc", measure = c("forestroad_d2", "house_d2")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  labs(title = "Distance") + p_theme 
+```
+
+    ## Warning: Removed 2672 rows containing missing values (geom_point).
+
+![](FLM_notebook_files/figure-gfm/transform-3.png)<!-- -->
+
+``` r
+obs %>% melt(id = "loc", measure = c("forestroad_d2_ln", "house_d2_ln")) %>% 
+  ggplot(aes(as.factor(loc), value)) + geom_point(aes(col=variable)) + 
+  geom_smooth(span = 0.7) + labs(title = "Log-transformed distance") +
+  p_theme #+ theme(legend.position = "top")
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 2672 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 2672 rows containing missing values (geom_point).
+
+![](FLM_notebook_files/figure-gfm/transform-4.png)<!-- -->
+
+``` r
+ggplot(obs, aes(forestroad_d2, house_d2)) + geom_point() + 
+  geom_smooth(method = "glm", formula = y ~ x, se = T) +
+  labs(title = "Distance correlation")
+```
+
+    ## Warning: Removed 1336 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 1336 rows containing missing values (geom_point).
+
+![](FLM_notebook_files/figure-gfm/transform-5.png)<!-- -->
+
+``` r
+  #geom_smooth(span =.5)
+library(corrplot)
+```
+
+    ## corrplot 0.84 loaded
+
+``` r
+covs %>% select(!c(1,3,4)) %>% cor() %>% 
+corrplot(type = "upper", method = "number")
+```
+
+![](FLM_notebook_files/figure-gfm/transform-6.png)<!-- -->
+
+``` r
+names(covs)
+```
+
+    ##  [1] "LokalitetID"   "Latitude"      "Longitude"     "geometry"     
+    ##  [5] "elev"          "slope"         "house_dens"    "build_dens"   
+    ##  [9] "field_dens"    "house_d2"      "build_d2"      "field_d2"     
+    ## [13] "forestroad_d2" "publicroad_d2"
+
 # Session Info
 
 ``` r
@@ -586,40 +795,43 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] gridExtra_2.3    ggmap_3.0.0      tmap_3.3         maps_3.3.0      
-    ##  [5] sf_0.9-8         overlap_0.3.3    lubridate_1.7.10 forcats_0.5.1   
-    ##  [9] stringr_1.4.0    dplyr_1.0.5      purrr_0.3.4      readr_1.4.0     
-    ## [13] tidyr_1.1.3      tibble_3.1.0     ggplot2_3.3.3    tidyverse_1.3.0 
+    ##  [1] corrplot_0.84    reshape2_1.4.4   cowplot_1.1.1    gridExtra_2.3   
+    ##  [5] ggmap_3.0.0      ggspatial_1.1.5  tmap_3.3         maps_3.3.0      
+    ##  [9] sf_0.9-8         overlap_0.3.3    lubridate_1.7.10 forcats_0.5.1   
+    ## [13] stringr_1.4.0    dplyr_1.0.5      purrr_0.3.4      readr_1.4.0     
+    ## [17] tidyr_1.1.3      tibble_3.1.0     ggplot2_3.3.3    tidyverse_1.3.0 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bitops_1.0-6        fs_1.5.0            RColorBrewer_1.1-2 
-    ##  [4] httr_1.4.2          tools_4.0.4         backports_1.2.1    
-    ##  [7] utf8_1.1.4          R6_2.5.0            KernSmooth_2.23-18 
-    ## [10] DBI_1.1.1           colorspace_2.0-0    raster_3.4-5       
-    ## [13] withr_2.4.1         sp_1.4-5            tidyselect_1.1.0   
-    ## [16] leaflet_2.0.4.1     curl_4.3            compiler_4.0.4     
-    ## [19] leafem_0.1.3        cli_2.3.1           rvest_1.0.0        
-    ## [22] xml2_1.3.2          labeling_0.4.2      scales_1.1.1       
-    ## [25] classInt_0.4-3      digest_0.6.27       rmarkdown_2.7.3    
-    ## [28] jpeg_0.1-8.1        base64enc_0.1-3     dichromat_2.0-0    
-    ## [31] pkgconfig_2.0.3     htmltools_0.5.1.1   dbplyr_2.1.0       
-    ## [34] highr_0.8           htmlwidgets_1.5.3   rlang_0.4.10       
-    ## [37] readxl_1.3.1        rstudioapi_0.13     farver_2.1.0       
-    ## [40] generics_0.1.0      jsonlite_1.7.2      crosstalk_1.1.1    
-    ## [43] magrittr_2.0.1      Rcpp_1.0.6          munsell_0.5.0      
-    ## [46] fansi_0.4.2         abind_1.4-5         lifecycle_1.0.0    
-    ## [49] stringi_1.5.3       leafsync_0.1.0      yaml_2.2.1         
-    ## [52] plyr_1.8.6          tmaptools_3.1-1     grid_4.0.4         
-    ## [55] parallel_4.0.4      crayon_1.4.1        lattice_0.20-41    
-    ## [58] stars_0.5-1         haven_2.3.1         pander_0.6.3       
-    ## [61] hms_1.0.0           knitr_1.31          pillar_1.5.1       
-    ## [64] rjson_0.2.20        codetools_0.2-18    reprex_1.0.0       
-    ## [67] XML_3.99-0.5        glue_1.4.2          evaluate_0.14      
-    ## [70] modelr_0.1.8        vctrs_0.3.6         png_0.1-7          
-    ## [73] RgoogleMaps_1.4.5.3 cellranger_1.1.0    gtable_0.3.0       
-    ## [76] assertthat_0.2.1    xfun_0.22           lwgeom_0.2-5       
-    ## [79] broom_0.7.5         e1071_1.7-4         class_7.3-18       
-    ## [82] viridisLite_0.3.0   units_0.7-0         ellipsis_0.3.1
+    ##  [1] nlme_3.1-152        bitops_1.0-6        fs_1.5.0           
+    ##  [4] RColorBrewer_1.1-2  httr_1.4.2          tools_4.0.4        
+    ##  [7] backports_1.2.1     utf8_1.1.4          R6_2.5.0           
+    ## [10] KernSmooth_2.23-18  mgcv_1.8-34         DBI_1.1.1          
+    ## [13] colorspace_2.0-0    raster_3.4-5        withr_2.4.1        
+    ## [16] sp_1.4-5            tidyselect_1.1.0    leaflet_2.0.4.1    
+    ## [19] curl_4.3            compiler_4.0.4      leafem_0.1.3       
+    ## [22] cli_2.3.1           rvest_1.0.0         xml2_1.3.2         
+    ## [25] labeling_0.4.2      scales_1.1.1        classInt_0.4-3     
+    ## [28] digest_0.6.27       rmarkdown_2.7.3     jpeg_0.1-8.1       
+    ## [31] base64enc_0.1-3     dichromat_2.0-0     pkgconfig_2.0.3    
+    ## [34] htmltools_0.5.1.1   dbplyr_2.1.0        highr_0.8          
+    ## [37] htmlwidgets_1.5.3   rlang_0.4.10        readxl_1.3.1       
+    ## [40] rstudioapi_0.13     farver_2.1.0        generics_0.1.0     
+    ## [43] jsonlite_1.7.2      crosstalk_1.1.1     magrittr_2.0.1     
+    ## [46] Matrix_1.3-2        Rcpp_1.0.6          munsell_0.5.0      
+    ## [49] fansi_0.4.2         abind_1.4-5         lifecycle_1.0.0    
+    ## [52] stringi_1.5.3       leafsync_0.1.0      yaml_2.2.1         
+    ## [55] plyr_1.8.6          tmaptools_3.1-1     grid_4.0.4         
+    ## [58] parallel_4.0.4      crayon_1.4.1        lattice_0.20-41    
+    ## [61] splines_4.0.4       stars_0.5-1         haven_2.3.1        
+    ## [64] pander_0.6.3        hms_1.0.0           knitr_1.31         
+    ## [67] pillar_1.5.1        rjson_0.2.20        codetools_0.2-18   
+    ## [70] reprex_1.0.0        XML_3.99-0.5        glue_1.4.2         
+    ## [73] evaluate_0.14       modelr_0.1.8        vctrs_0.3.6        
+    ## [76] png_0.1-7           RgoogleMaps_1.4.5.3 cellranger_1.1.0   
+    ## [79] gtable_0.3.0        assertthat_0.2.1    xfun_0.22          
+    ## [82] lwgeom_0.2-5        broom_0.7.5         e1071_1.7-4        
+    ## [85] class_7.3-18        viridisLite_0.3.0   units_0.7-0        
+    ## [88] ellipsis_0.3.1
 
 ``` r
 # packrat

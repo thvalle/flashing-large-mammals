@@ -67,6 +67,44 @@
       \verb{url}
       \verb https://github.com/lme4/lme4/
       \endverb
+      \keyw{R}
+    \endentry
+    \entry{Beddari2019}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b38a2360f33417a7682250d13dba0837}{%
+           family={Beddari},
+           familyi={B\bibinitperiod},
+           given={Benedicte\bibnamedelima Lissner},
+           giveni={B\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b38a2360f33417a7682250d13dba0837}
+      \strng{fullhash}{b38a2360f33417a7682250d13dba0837}
+      \strng{bibnamehash}{b38a2360f33417a7682250d13dba0837}
+      \strng{authorbibnamehash}{b38a2360f33417a7682250d13dba0837}
+      \strng{authornamehash}{b38a2360f33417a7682250d13dba0837}
+      \strng{authorfullhash}{b38a2360f33417a7682250d13dba0837}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In ecology, camera trapping is commonly used as a non-invasive technique to collect ecological observation data and to monitor populations. The technique is used to address a variety of research questions worldwide. Despite being widely used, few studies have evaluated the potential effects of camera traps on animals, and to my knowledge no studies have quantified to what extent and under which conditions such effects occur. In this thesis, I have assessed the behavior of two large carnivores in Norway, Eurasian lynx (Lynx lynx) and wolf (Canis lupus), using still images captured by camera traps. The aim of the study was to investigate whether the presence of camera traps can cause behavioral changes in wildlife. I recorded behaviors that indicated apparent detection of cameras by visual and/or acoustic contact. Furthermore, other distinct behaviors towards camera was assessed, in addition to the orientation of the animal in a given visit, to detect distinct changes in direction caused by the trap. Finally, I compared behavioral scores between species and camera-specific factors like flash type. Lynx and wolves both apparently detected cameras (eyes and/or ears pointed directly at the camera) in approximately 11$\backslash${\%} of the visits, and altered their behavior in response to them. Two different categories of responses were discovered: Responses directly related to an apparent detection (approach, flight, observe and startle) and responses related to the presence camera traps (physical contact, olfactory sensing and squinting). I detected species-specific and camera-specific differences in behavioral impacts. Lynx were more likely to approach the camera, compare to wolves who expressed flight and startle response more pronounced. Flash and different flash types influenced the species differently in how they responded to the presence of camera traps. Both species were found to have pronounced change in orientation when expressing apparent detection responses to camera. My study revealed clear evidence of camera traps being low-invasive, but not non-invasive wildlife monitoring tools. This suggests that camera trap studies should quantify their impact on study species and its effect on inferences.}
+      \field{journaltitle}{Master of Sciences in Natural resource Management}
+      \field{title}{{Behavioral responses to camera traps : a study on two large carnivores in Norway}}
+      \field{year}{2019}
+      \field{pages}{52}
+      \range{pages}{1}
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Beddari - 2019 - Behavioral responses to camera traps a study on two large carnivores in Norway.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://nmbu.brage.unit.no/nmbu-xmlui/handle/11250/2608534
+      \endverb
+      \verb{url}
+      \verb https://nmbu.brage.unit.no/nmbu-xmlui/handle/11250/2608534
+      \endverb
     \endentry
     \entry{Burton2015}{article}{}
       \name{author}{8}{}{%
@@ -148,6 +186,283 @@
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
     \endentry
+    \entry{Dryja2005}{article}{}
+      \name{author}{8}{}{%
+        {{un=0,uniquepart=base,hash=e0e2ee3ae5dff822eb2e65cbdb38805c}{%
+           family={Dryja},
+           familyi={D\bibinitperiod},
+           given={Thaddeus\bibnamedelima P.},
+           giveni={T\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=da62cd3060ea6ca96fd0188d0d3afe1d}{%
+           family={McGee},
+           familyi={M\bibinitperiod},
+           given={Terri\bibnamedelima L.},
+           giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bf07bf0826a8c503e63d862be73f21e6}{%
+           family={Berson},
+           familyi={B\bibinitperiod},
+           given={Eliot\bibnamedelima L.},
+           giveni={E\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=aab047eba9ba680cafe956e08f8badce}{%
+           family={Fishman},
+           familyi={F\bibinitperiod},
+           given={Gerald\bibnamedelima A.},
+           giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=47c629aa2437cf15d016dfa46349c353}{%
+           family={Sandberg},
+           familyi={S\bibinitperiod},
+           given={Michael\bibnamedelima A.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f5a3738e032d2245678764b0b57693aa}{%
+           family={Alexander},
+           familyi={A\bibinitperiod},
+           given={Kenneth\bibnamedelima R.},
+           giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4e9185f29a7f198d4b733750fdc4e80c}{%
+           family={Derlacki},
+           familyi={D\bibinitperiod},
+           given={Deborah\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6aba33a85a37cffda3029d5a3c6d2833}{%
+           family={Rajagopalan},
+           familyi={R\bibinitperiod},
+           given={Aruna\bibnamedelima S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {National Academy of Sciences}%
+      }
+      \strng{namehash}{1b6cb6383527a57bbc8be0a1e9c7b7a5}
+      \strng{fullhash}{ccbaa7ada7e1e27559109c3bb0af695e}
+      \strng{bibnamehash}{ccbaa7ada7e1e27559109c3bb0af695e}
+      \strng{authorbibnamehash}{ccbaa7ada7e1e27559109c3bb0af695e}
+      \strng{authornamehash}{1b6cb6383527a57bbc8be0a1e9c7b7a5}
+      \strng{authorfullhash}{ccbaa7ada7e1e27559109c3bb0af695e}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We report three unrelated patients with mutations in the GRM6 gene that normally encodes the glutamate receptor mGluR6. This neurotransmitter receptor has been shown previously to be present only in the synapses of the ON bipolar cell dendrites, and it mediates synaptic transmission from rod and cone photoreceptors to this type of second-order neuron. Despite the synaptic defect, best visual acuities were normal or only moderately reduced (20/15 to 20/40). The patients were night blind from an early age, and when maximally dark-adapted, they could perceive lights only with an intensity equal to or slightly dimmer than that normally detected by the cone system (i.e., 2-3 log units above normal). Electroretinograms (ERGs) in response to single brief flashes of light had clearly detectable a-waves, which are derived from photoreceptors, and greatly reduced b-waves, which are derived from the second-order inner retinal neurons. ERGs in response to sawtooth flickering light indicated a markedly reduced ON response and a nearly normal OFF response. There was no subjective delay in the perception of suddenly appearing white vs. black objects on a gray background. These patients exemplify a previously unrecognized, autosomal recessive form of congenital night blindness associated with a negative ERG waveform. {©} 2005 by The National Academy of Sciences of the USA.}
+      \field{issn}{00278424}
+      \field{journaltitle}{Proceedings of the National Academy of Sciences of the United States of America}
+      \field{month}{3}
+      \field{number}{13}
+      \field{title}{{Night blindness and abnormal cone electroretinogram ON responses in patients with mutations in the GRM6 gene encoding mGluR6}}
+      \field{volume}{102}
+      \field{year}{2005}
+      \field{pages}{4884\bibrangedash 4889}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1073/pnas.0501233102
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Dryja et al. - 2005 - Night blindness and abnormal cone electroretinogram ON responses in patients with mutations in the GRM6 gene encod.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb www.pnas.orgcgidoi10.1073pnas.0501233102
+      \endverb
+      \verb{url}
+      \verb www.pnas.orgcgidoi10.1073pnas.0501233102
+      \endverb
+      \keyw{Bipolar cell,Glutamate receptor,Retina}
+    \endentry
+    \entry{Gaynor2018}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=5ae0c3b03bf7c9cfaf7117f037a465e8}{%
+           family={Gaynor},
+           familyi={G\bibinitperiod},
+           given={Kaitlyn\bibnamedelima M.},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88c57bd254ab237ca40f4f3286b4cf0e}{%
+           family={Hojnowski},
+           familyi={H\bibinitperiod},
+           given={Cheryl\bibnamedelima E.},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=08590026db3162546632fd3876d3c252}{%
+           family={Carter},
+           familyi={C\bibinitperiod},
+           given={Neil\bibnamedelima H.},
+           giveni={N\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=35a0fb588f7243159814b56c2864cd7a}{%
+           family={Brashares},
+           familyi={B\bibinitperiod},
+           given={Justin\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d904127063afab91f7908845f4719cbc}
+      \strng{fullhash}{ee98530843e916266964b7092383bf75}
+      \strng{bibnamehash}{ee98530843e916266964b7092383bf75}
+      \strng{authorbibnamehash}{ee98530843e916266964b7092383bf75}
+      \strng{authornamehash}{d904127063afab91f7908845f4719cbc}
+      \strng{authorfullhash}{ee98530843e916266964b7092383bf75}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Rapid expansion of human activity has driven well-documented shifts in the spatial distribution of wildlife, but the cumulative effect of human disturbance on the temporal dynamics of animals has not been quantified. We examined anthropogenic effects on mammal diel activity patterns, conducting a meta-analysis of 76 studies of 62 species from six continents. Our global study revealed a strong effect of humans on daily patterns of wildlife activity. Animals increased their nocturnality by an average factor of 1.36 in response to human disturbance. This finding was consistent across continents, habitats, taxa, and human activities. As the global human footprint expands, temporal avoidance of humans may facilitate human-wildlife coexistence. However, such responses can result in marked shifts away from natural patterns of activity, with consequences for fitness, population persistence, community interactions, and evolution.}
+      \field{issn}{10959203}
+      \field{journaltitle}{Science}
+      \field{number}{6394}
+      \field{title}{{The influence of human disturbance on wildlife nocturnality}}
+      \field{volume}{360}
+      \field{year}{2018}
+      \field{pages}{1232\bibrangedash 1235}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1126/science.aar7121
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Gaynor2018.pdf:pdf
+      \endverb
+    \endentry
+    \entry{Glen2013a}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=d259677fe3f8737557eb7078c7f77bef}{%
+           family={Glen},
+           familyi={G\bibinitperiod},
+           given={Alistair\bibnamedelima S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=74ed43f3bebeaee24f53b95e912a025f}{%
+           family={Cockburn},
+           familyi={C\bibinitperiod},
+           given={Stuart},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=86dc1bba04c5e53c42005ebd4c896254}{%
+           family={Nichols},
+           familyi={N\bibinitperiod},
+           given={Margaret},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a50f6225dfca7a713f341f7094cd2a4a}{%
+           family={Ekanayake},
+           familyi={E\bibinitperiod},
+           given={Jagath},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=752497f097090135aad223abbac224a7}{%
+           family={Warburton},
+           familyi={W\bibinitperiod},
+           given={Bruce},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=b1e2e6b67c0ffef700bba5201edf1d7d}{%
+           family={Deschner},
+           familyi={D\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science}%
+      }
+      \strng{namehash}{d03440279ba54a9d50676721d9273f70}
+      \strng{fullhash}{0a50a7074facec2cd48b24697a630a50}
+      \strng{bibnamehash}{0a50a7074facec2cd48b24697a630a50}
+      \strng{authorbibnamehash}{0a50a7074facec2cd48b24697a630a50}
+      \strng{authornamehash}{d03440279ba54a9d50676721d9273f70}
+      \strng{authorfullhash}{0a50a7074facec2cd48b24697a630a50}
+      \strng{editorbibnamehash}{b1e2e6b67c0ffef700bba5201edf1d7d}
+      \strng{editornamehash}{b1e2e6b67c0ffef700bba5201edf1d7d}
+      \strng{editorfullhash}{b1e2e6b67c0ffef700bba5201edf1d7d}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Practical techniques are required to monitor invasive animals, which are often cryptic and occur at low density. Camera traps have potential for this purpose, but may have problems detecting and identifying small species. A further challenge is how to standardise the size of each camera's field of view so capture rates are comparable between different places and times. We investigated the optimal specifications for a low-cost camera trap for small mammals. The factors tested were 1) trigger speed, 2) passive infrared vs. microwave sensor, 3) white vs. infrared flash, and 4) still photographs vs. video. We also tested a new approach to standardise each camera's field of view. We compared the success rates of four camera trap designs in detecting and taking recognisable photographs of captive stoats (Mustela erminea), feral cats (Felis catus) and hedgehogs (Erinaceus europaeus). Trigger speeds of 0.2-2.1 s captured photographs of all three target species unless the animal was running at high speed. The camera with a microwave sensor was prone to false triggers, and often failed to trigger when an animal moved in front of it. A white flash produced photographs that were more readily identified to species than those obtained under infrared light. However, a white flash may be more likely to frighten target animals, potentially affecting detection probabilities. Video footage achieved similar success rates to still cameras but required more processing time and computer memory. Placing two camera traps side by side achieved a higher success rate than using a single camera. Camera traps show considerable promise for monitoring invasive mammal control operations. Further research should address how best to standardise the size of each camera's field of view, maximise the probability that an animal encountering a camera trap will be detected, and eliminate visible or audible cues emitted by camera traps. {©} 2013 Glen et al.}
+      \field{issn}{1932-6203}
+      \field{journaltitle}{PLoS ONE}
+      \field{month}{6}
+      \field{number}{6}
+      \field{title}{{Optimising Camera Traps for Monitoring Small Mammals}}
+      \field{volume}{8}
+      \field{year}{2013}
+      \field{pages}{e67940}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0067940
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Glen et al. - 2013 - Optimising Camera Traps for Monitoring Small Mammals(2).pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://dx.plos.org/10.1371/journal.pone.0067940
+      \endverb
+      \verb{url}
+      \verb https://dx.plos.org/10.1371/journal.pone.0067940
+      \endverb
+      \keyw{Animal behavior,Cameras,Cats,Hedgehogs,Infrared radiation,Invasive species,Mammals,Microwave radiation}
+    \endentry
+    \entry{Hall2012}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=48c4985b148a02ce63fdeefe84414412}{%
+           family={Hall},
+           familyi={H\bibinitperiod},
+           given={Margaret\bibnamedelima I.},
+           giveni={M\bibinitperiod\bibinitdelim I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0f02ca1bc78ae57dc8d7fae17713c2f8}{%
+           family={Kamilar},
+           familyi={K\bibinitperiod},
+           given={Jason\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fa6fe520f29ec1ea7cc195609e2c6754}{%
+           family={{Christopher Kirk}},
+           familyi={C\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{723603f1590800b74f258172e855db01}
+      \strng{fullhash}{9b1370747d0468c62d82411b74fb353c}
+      \strng{bibnamehash}{9b1370747d0468c62d82411b74fb353c}
+      \strng{authorbibnamehash}{9b1370747d0468c62d82411b74fb353c}
+      \strng{authornamehash}{723603f1590800b74f258172e855db01}
+      \strng{authorfullhash}{9b1370747d0468c62d82411b74fb353c}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Most vertebrate groups exhibit eye shapes that vary predictably with activity pattern. Nocturnal vertebrates typically have large corneas relative to eye size as an adaptation for increased visual sensitivity. Conversely, diurnal vertebrates generally demonstrate smaller corneas relative to eye size as an adaptation for increased visual acuity. By contrast, several studies have concluded that many mammals exhibit typical nocturnal eye shapes, regardless of activity pattern. However, a recent study has argued that new statistical methods allow eye shape to accurately predict activity patterns of mammals, including cathemeral species (animals that are equally likely to be awake and active at any time of day or night). Here, we conduct a detailed analysis of eye shape and activity pattern in mammals, using a broad comparative sample of 266 species. We find that the eye shapes of cathemeral mammals completely overlap with nocturnal and diurnal species. Additionally, most diurnal and cathemeral mammals have eye shapes that are most similar to those of nocturnal birds and lizards. The only mammalian clade that diverges from this pattern is anthropoids, which have convergently evolved eye shapes similar to those of diurnal birds and lizards. Our results provide additional evidence for a nocturnal 'bottleneck' in the early evolution of crown mammals. {©} 2012 The Royal Society.}
+      \field{issn}{14712954}
+      \field{journaltitle}{Proceedings of the Royal Society B: Biological Sciences}
+      \field{number}{1749}
+      \field{title}{{Eye shape and the nocturnal bottleneck of mammals}}
+      \field{volume}{279}
+      \field{year}{2012}
+      \field{pages}{4962\bibrangedash 4968}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1098/rspb.2012.2258
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Hall2012.pdf:pdf
+      \endverb
+      \keyw{Functional morphology,Mammals,Vision}
+    \endentry
     \entry{Henrich2020}{article}{}
       \name{author}{7}{}{%
         {{un=0,uniquepart=base,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
@@ -223,73 +538,160 @@
       \endverb
       \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
     \endentry
-    \entry{Hofmeester2019}{article}{}
-      \name{author}{6}{}{%
-        {{un=0,uniquepart=base,hash=68180ab55823180a458118c16d26784d}{%
-           family={Hofmeester},
-           familyi={H\bibinitperiod},
-           given={Tim\bibnamedelima R.},
-           giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+    \entry{Ikeda2016}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=5ba63850455300afb68656b75297e20a}{%
+           family={Ikeda},
+           familyi={I\bibinitperiod},
+           given={Takashi},
+           giveni={T\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=95daebf350763e538def960ec85297dc}{%
-           family={Cromsigt},
-           familyi={C\bibinitperiod},
-           given={Joris\bibnamedelima P.G.M.},
-           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod},
+        {{un=0,uniquepart=base,hash=4f4fab507d2864b08dd78ceec6ecdb4f}{%
+           family={Uchida},
+           familyi={U\bibinitperiod},
+           given={Kenta},
+           giveni={K\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
-           family={Odden},
-           familyi={O\bibinitperiod},
-           given={John},
-           giveni={J\bibinitperiod},
+        {{un=0,uniquepart=base,hash=60d3ae9e7a10c490a66a44f75f8976a2}{%
+           family={Matsuura},
+           familyi={M\bibinitperiod},
+           given={Yukiko},
+           giveni={Y\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=5561a94b48a2745b41e40d539c7d7e45}{%
-           family={Andrén},
-           familyi={A\bibinitperiod},
-           given={Henrik},
+        {{un=0,uniquepart=base,hash=b5162983ff1d05ce590c09fb78cdc3cd}{%
+           family={Takahashi},
+           familyi={T\bibinitperiod},
+           given={Hiroshi},
            giveni={H\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=0cfb18adf8b2e542b1e94d0721b247ea}{%
-           family={Kindberg},
-           familyi={K\bibinitperiod},
-           given={Jonas},
-           giveni={J\bibinitperiod},
+        {{un=0,uniquepart=base,hash=45741bc08d733f818086a1897e72f9e0}{%
+           family={Yoshida},
+           familyi={Y\bibinitperiod},
+           given={Tsuyoshi},
+           giveni={T\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=af97da4ff2947a446a5f22d59453067a}{%
-           family={Linnell},
-           familyi={L\bibinitperiod},
-           given={John\bibnamedelima D.C.},
-           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+        {{un=0,uniquepart=base,hash=a3c3d0ef187be8747c71079a6ddecd59}{%
+           family={Kaji},
+           familyi={K\bibinitperiod},
+           given={Koichi},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bdf03ffc6c1ec009d5a20b44c5b4fc62}{%
+           family={Koizumi},
+           familyi={K\bibinitperiod},
+           given={Itsuro},
+           giveni={I\bibinitperiod},
            givenun=0}}%
       }
-      \strng{namehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
-      \strng{fullhash}{979ef48584fe4c248f3772648e3ea5eb}
-      \strng{bibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
-      \strng{authorbibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
-      \strng{authornamehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
-      \strng{authorfullhash}{979ef48584fe4c248f3772648e3ea5eb}
-      \field{sortinit}{H}
-      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \strng{namehash}{b50cbc4f937dfeff112ca8db117d5067}
+      \strng{fullhash}{12d1127dcb1ab77bc23c99f033ec2e0a}
+      \strng{bibnamehash}{12d1127dcb1ab77bc23c99f033ec2e0a}
+      \strng{authorbibnamehash}{12d1127dcb1ab77bc23c99f033ec2e0a}
+      \strng{authornamehash}{b50cbc4f937dfeff112ca8db117d5067}
+      \strng{authorfullhash}{12d1127dcb1ab77bc23c99f033ec2e0a}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Obtaining reliable species observations is of great importance in animal ecology and wildlife conservation. An increasing number of studies use camera traps (CTs) to study wildlife communities, and an increasing effort is made to make better use and reuse of the large amounts of data that are produced. It is in these circumstances that it becomes paramount to correct for the species- and study-specific variation in imperfect detection within CTs. We reviewed the literature and used our own experience to compile a list of factors that affect CT detection of animals. We did this within a conceptual framework of six distinct scales separating out the influences of (a) animal characteristics, (b) CT specifications, (c) CT set-up protocols, and (d) environmental variables. We identified 40 factors that can potentially influence the detection of animals by CTs at these six scales. Many of these factors were related to only a few overarching parameters. Most of the animal characteristics scale with body mass and diet type, and most environmental characteristics differ with season or latitude such that remote sensing products like NDVI could be used as a proxy index to capture this variation. Factors that influence detection at the microsite and camera scales are probably the most important in determining CT detection of animals. The type of study and specific research question will determine which factors should be corrected. Corrections can be done by directly adjusting the CT metric of interest or by using covariates in a statistical framework. Our conceptual framework can be used to design better CT studies and help when analyzing CT data. Furthermore, it provides an overview of which factors should be reported in CT studies to make them repeatable, comparable, and their data reusable. This should greatly improve the possibilities for global scale analyses of (reused) CT data.}
-      \field{issn}{20457758}
-      \field{journaltitle}{Ecology and Evolution}
-      \field{number}{4}
-      \field{title}{{Framing pictures: A conceptual framework to identify and correct for biases in detection probability of camera traps enabling multi-species comparison}}
-      \field{volume}{9}
-      \field{year}{2019}
-      \field{pages}{2320\bibrangedash 2336}
-      \range{pages}{17}
+      \field{abstract}{The activity patterns of mammals are generally categorized as nocturnal, diurnal, crepuscular (active at twilight), and cathemeral (active throughout the day). These patterns are highly variable across regions and seasons even within the same species. However, quantitative data is still lacking, particularly for sympatric species. We monitored the seasonal and diel activity patterns of terrestrial mammals in Hokkaido, Japan. Through an intensive camera-trap survey a total of 13,279 capture events were recorded from eight mammals over 20,344 camera-trap days, i.e., two years. Diel activity patterns were clearly divided into four categories: diurnal (Eurasian red squirrels), nocturnal (raccoon dogs and raccoons), crepuscular (sika deer and mountain hares), and cathemeral (Japanese martens, red foxes, and brown bears). Some crepuscular and cathemeral mammals shifted activity peaks across seasons. Particularly, sika deer changed peaks from twilight during spring-autumn to day-time in winter, possibly because of thermal constraints. Japanese martens were cathemeral during winter-summer, but nocturnal in autumn. We found no clear indication of predator-prey and competitive interactions, suggesting that animal densities are not very high or temporal niche partitioning is absent among the target species. This long-term camera-trap survey was highly cost-effective and provided one of the most detailed seasonal and diel activity patterns in multiple sympatric mammals under natural conditions.}
+      \field{issn}{19326203}
+      \field{journaltitle}{PLoS ONE}
+      \field{number}{10}
+      \field{title}{{Seasonal and diel activity patterns of eight sympatric mammals in northern Japan revealed by an intensive camera-trap survey}}
+      \field{volume}{11}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 16}
+      \range{pages}{16}
       \verb{doi}
-      \verb 10.1002/ece3.4878
+      \verb 10.1371/journal.pone.0163602
       \endverb
       \verb{file}
-      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Hofmeester et al. - 2019 - Framing pictures A conceptual framework to identify and correct for biases in detection probability of camera.pdf:pdf
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Ikeda et al. - 2016 - Seasonal and diel activity patterns of eight sympatric mammals in northern Japan revealed by an intensive camera-t.pdf:pdf
       \endverb
-      \keyw{animal characteristics,detectability,environmental variables,mammal monitoring,reuse of data,trail camera}
+    \endentry
+    \entry{Kamler2007}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=595d0e30ec8964970d0677989c794dff}{%
+           family={Kamler},
+           familyi={K\bibinitperiod},
+           given={Jan\bibnamedelima F.},
+           giveni={J\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ededdb9f863c734c5dd37f67f04232de}{%
+           family={Jedrzejewska},
+           familyi={J\bibinitperiod},
+           given={Bogumi{ł}a},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bb743aa67fdfbc827612cb9969170ea0}{%
+           family={Jedrzejewski},
+           familyi={J\bibinitperiod},
+           given={W{ł}odzimierz},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{da59ac6c960233558dbbcb6a64f5fa0e}
+      \strng{fullhash}{17da2a3e4edc7372b51a6c51c8f8b47a}
+      \strng{bibnamehash}{17da2a3e4edc7372b51a6c51c8f8b47a}
+      \strng{authorbibnamehash}{17da2a3e4edc7372b51a6c51c8f8b47a}
+      \strng{authornamehash}{da59ac6c960233558dbbcb6a64f5fa0e}
+      \strng{authorfullhash}{17da2a3e4edc7372b51a6c51c8f8b47a}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We studied daily activity patterns of 19 (7 males and 12 females) adult red deer (Cervus elaphus) by using continuous tracking sessions in Bia{ł}owieza National Park (BNP), Poland, from 2001 to 2004. Male and female red deer were active throughout the day and night during all seasons, with several peaks in activity during the 24-h period, although both sexes tended to be more active during the day in winter. There were no significant differences between males and females in mean time active (8 h/day for both sexes), mean length of activity bouts (42 min), and mean number of activity bouts (12 bouts/day). Additionally, neither sex showed seasonal differences in hours active, bout length, or number of bouts per day. However, rainfall affected activity of males, whereas ambient temperature and snowfall affected activity of females. Although red deer are sexually dimorphic, which often leads to differences in movements and social groupings, our results suggest that their general activity patterns are influenced less by these sexual differences and more by the constraints of feeding and rumination, daily abiotic factors, and possibly predation risk from wolves (Canis lupus). Red deer in BNP did not exhibit strong bimodal peaks in activity at dawn and dusk as shown in previous studies, likely because strict limits on human activities in BNP allowed red deer to base their activity more on natural factors than on human-related factors. {©} 2007 American Society of Mammalogists.}
+      \field{issn}{00222372}
+      \field{journaltitle}{Journal of Mammalogy}
+      \field{number}{2}
+      \field{title}{{Activity patterns of red deer in Bia{ł}owieża National Park, Poland}}
+      \field{volume}{88}
+      \field{year}{2007}
+      \field{pages}{508\bibrangedash 514}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1644/06-MAMM-A-169R.1
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Kamler{\_}2007{\_}JMamm{\_}activity red deer.pdf:pdf
+      \endverb
+      \keyw{Activity,Cervus elaphus,National park,Poland,Red deer,Strict nature reserve}
+    \endentry
+    \entry{R-sjPlot}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e064e4ae54988e12b214c315997070d0}{%
+           family={Lüdecke},
+           familyi={L\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e064e4ae54988e12b214c315997070d0}
+      \strng{fullhash}{e064e4ae54988e12b214c315997070d0}
+      \strng{bibnamehash}{e064e4ae54988e12b214c315997070d0}
+      \strng{authorbibnamehash}{e064e4ae54988e12b214c315997070d0}
+      \strng{authornamehash}{e064e4ae54988e12b214c315997070d0}
+      \strng{authorfullhash}{e064e4ae54988e12b214c315997070d0}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 2.8.7}
+      \field{title}{{sjPlot: Data Visualization for Statistics in Social Science}}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://strengejacke.github.io/sjPlot/
+      \endverb
+      \verb{url}
+      \verb https://strengejacke.github.io/sjPlot/
+      \endverb
+      \keyw{R}
     \endentry
     \entry{R-parameters}{manual}{}
       \name{author}{5}{}{%
@@ -330,8 +732,10 @@
       \strng{authorbibnamehash}{5334f4b425de371521a777f3bbad50d0}
       \strng{authornamehash}{07312856bfcec88454643821234f1dd3}
       \strng{authorfullhash}{5334f4b425de371521a777f3bbad50d0}
+      \field{extraname}{1}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{1}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
@@ -345,6 +749,69 @@
       \verb{url}
       \verb https://easystats.github.io/parameters/
       \endverb
+      \keyw{R}
+    \endentry
+    \entry{R-performance}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=e064e4ae54988e12b214c315997070d0}{%
+           family={Lüdecke},
+           familyi={L\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b21f8d3c6be7a2d1ab8d1b8cb84f1268}{%
+           family={Makowski},
+           familyi={M\bibinitperiod},
+           given={Dominique},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=10374357b27e60327e1678af1893667b}{%
+           family={Waggoner},
+           familyi={W\bibinitperiod},
+           given={Philip},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1d33f4a49d999a220aa925dd7fa59e0d}{%
+           family={Patil},
+           familyi={P\bibinitperiod},
+           given={Indrajeet},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6757054e1a50517507422c9958756a00}{%
+           family={Ben-Shachar},
+           familyi={B\bibinithyphendelim S\bibinitperiod},
+           given={Mattan\bibnamedelima S},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{07312856bfcec88454643821234f1dd3}
+      \strng{fullhash}{ecba933ea97d302dc59cb7702bf84abb}
+      \strng{bibnamehash}{ecba933ea97d302dc59cb7702bf84abb}
+      \strng{authorbibnamehash}{ecba933ea97d302dc59cb7702bf84abb}
+      \strng{authornamehash}{07312856bfcec88454643821234f1dd3}
+      \strng{authorfullhash}{ecba933ea97d302dc59cb7702bf84abb}
+      \field{extraname}{2}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{From Duplicate 1 (performance: Assessment of Regression Models Performance - Lüdecke, Daniel; Makowski, Dominique; Waggoner, Philip; Patil, Indrajeet) R package From Duplicate 2 (performance: Assessment of Regression Models Performance - Lüdecke, Daniel; Makowski, Dominique; Waggoner, Philip; Patil, Indrajeet; Ben-Shachar, Mattan S) R package version 0.7.0.1}
+      \field{journaltitle}{CRAN}
+      \field{title}{{performance: Assessment of Regression Models Performance}}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.5281/zenodo.3952174
+      \endverb
+      \verb{urlraw}
+      \verb https://easystats.github.io/performance/
+      \endverb
+      \verb{url}
+      \verb https://easystats.github.io/performance/
+      \endverb
+      \keyw{R}
     \endentry
     \entry{easystats}{article}{}
       \name{author}{3}{}{%
@@ -388,226 +855,134 @@
       \verb{url}
       \verb https://github.com/easystats/easystats
       \endverb
+      \keyw{R}
     \endentry
-    \entry{Meek2014}{article}{}
-      \name{author}{11}{}{%
-        {{un=0,uniquepart=base,hash=407f42d942b1b796e74ea763e931bcb2}{%
+    \entry{Meek2016}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=813b8e88e68b3f2f60d21455ae7a32ac}{%
            family={Meek},
            familyi={M\bibinitperiod},
-           given={P.\bibnamedelimi D.},
+           given={Paul\bibnamedelima D.},
            giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=88fc2343abc98a03245365a672ccfa74}{%
+        {{un=0,uniquepart=base,hash=72decffa54fd2e5aa24d3cd96354771a}{%
            family={Ballard},
            familyi={B\bibinitperiod},
-           given={G.},
+           given={Guy},
            giveni={G\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=b0c8db360bca8b3e9a9825e766faf745}{%
-           family={Claridge},
-           familyi={C\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod},
+        {{un=0,uniquepart=base,hash=f983a98f19f604fe7327b01f69c57e30}{%
+           family={Fleming},
+           familyi={F\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=38f8dc9844be9cb8740e0c02db7cb122}{%
-           family={Kays},
-           familyi={K\bibinitperiod},
-           given={R.},
-           giveni={R\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=3b34d6d30bf982f1beab0a7397c98260}{%
-           family={Moseby},
-           familyi={M\bibinitperiod},
-           given={K.},
-           giveni={K\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=3d4a580493351270964b5f71c9119e56}{%
-           family={O'Brien},
-           familyi={O\bibinitperiod},
-           given={T.},
-           giveni={T\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=6290d34b64d894f117013116f9625bf3}{%
-           family={O'Connell},
-           familyi={O\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=8fb495513ab0d2badf1af7cec781fe60}{%
-           family={Sanderson},
-           familyi={S\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=dac5cae1804c8504b91b6d020cfc7377}{%
-           family={Swann},
-           familyi={S\bibinitperiod},
-           given={D.\bibnamedelimi E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=9669c2a0220727c38c65cf9503dd6a52}{%
-           family={Tobler},
-           familyi={T\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=38393490b9d66a58de82bcabd0a0203f}{%
-           family={Townsend},
-           familyi={T\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod},
+        {{un=0,uniquepart=base,hash=c55cc39ffc299c525e644fb82698d631}{%
+           family={Falzon},
+           familyi={F\bibinitperiod},
+           given={Greg},
+           giveni={G\bibinitperiod},
            givenun=0}}%
       }
-      \strng{namehash}{d35fe9e342542766e089531e41f679a0}
-      \strng{fullhash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
-      \strng{bibnamehash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
-      \strng{authorbibnamehash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
-      \strng{authornamehash}{d35fe9e342542766e089531e41f679a0}
-      \strng{authorfullhash}{8acfb6bfa7b9a4c48f4836ee9e71cd10}
+      \strng{namehash}{b543bbbd5e6bb30ae3962fd43cb77424}
+      \strng{fullhash}{9187754cdfe16f7126d7b93eda9468d1}
+      \strng{bibnamehash}{9187754cdfe16f7126d7b93eda9468d1}
+      \strng{authorbibnamehash}{9187754cdfe16f7126d7b93eda9468d1}
+      \strng{authornamehash}{b543bbbd5e6bb30ae3962fd43cb77424}
+      \strng{authorfullhash}{9187754cdfe16f7126d7b93eda9468d1}
+      \field{extraname}{1}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Camera traps are used by scientists and natural resource managers to acquire ecological data, and the rapidly increasing camera trapping literature highlights how popular this technique has become. Nevertheless, the methodological information reported in camera trap publications can vary widely, making replication of the study difficult. Here we propose a series of guiding principles for reporting methods and results obtained using camera traps. Attributes of camera trapping we cover include: (i) specifying the model(s) of camera traps(s) used, (ii) mode of deployment, (iii) camera settings, and (iv) study design. In addition to suggestions regarding best practice data coding and analysis, we present minimum principles for standardizing information that we believe should be reported in all peer-reviewed papers. Standardised reporting enables more robust comparisons among studies, facilitates national and global reviews, enables greater ease of study replication, and leads to improved wildlife research and management outcomes. {©} 2014 Her majesty the Queen in Right of Australia.}
-      \field{issn}{15729710}
-      \field{journaltitle}{Biodiversity and Conservation}
-      \field{number}{9}
-      \field{title}{{Recommended guiding principles for reporting on camera trapping research}}
-      \field{volume}{23}
-      \field{year}{2014}
-      \field{pages}{2321\bibrangedash 2343}
-      \range{pages}{23}
-      \verb{doi}
-      \verb 10.1007/s10531-014-0712-8
-      \endverb
-      \verb{file}
-      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Meek et al. - 2014 - Recommended guiding principles for reporting on camera trapping research.pdf:pdf
-      \endverb
-      \keyw{Camera trap guidelines,Camera trap methodology,Ecological monitoring,Remote cameras,Trail cameras}
-    \endentry
-    \entry{Henrich2020}{article}{}
-      \name{author}{7}{}{%
-        {{uniquename=0,hash=9b13e84fbc5e2bc5fd85f8fa70f4a687}{%
-           family={Henrich},
-           family_i={H\bibinitperiod},
-           given={Maik},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=5e98a26a9acbe53cba1caed564152b5a}{%
-           family={Niederlechner},
-           family_i={N\bibinitperiod},
-           given={Sandra},
-           given_i={S\bibinitperiod}}}%
-        {{uniquename=0,hash=7acec411e8fcb58e39fb4cd3b43fbae4}{%
-           family={Kröschel},
-           family_i={K\bibinitperiod},
-           given={Max},
-           given_i={M\bibinitperiod}}}%
-        {{uniquename=0,hash=885f933da6c42bf36e8c6c406d6550d6}{%
-           family={Thoma},
-           family_i={T\bibinitperiod},
-           given={Stefanie},
-           given_i={S\bibinitperiod}}}%
-        {{uniquename=0,hash=8efbcfda15d6816970d81361c26d0804}{%
-           family={Dormann},
-           family_i={D\bibinitperiod},
-           given={Carsten\bibnamedelima F.},
-           given_i={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
-        {{uniquename=0,hash=f2023df7507c5721104bd31350623c8c}{%
-           family={Hartig},
-           family_i={H\bibinitperiod},
-           given={Florian},
-           given_i={F\bibinitperiod}}}%
-        {{uniquename=0,hash=7a3b2c1ad75a363dbd62c7140aaee6c0}{%
-           family={Heurich},
-           family_i={H\bibinitperiod},
-           given={Marco},
-           given_i={M\bibinitperiod}}}%
-      }
-      \strng{namehash}{1158d5f33e7af81b7ff00614d53248b9}
-      \strng{fullhash}{eb5173b7a87e8bdde475e2eb1f572e36}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2020}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Camera traps have become an important tool in wildlife monitoring. However, an issue in interpreting their data in statistical analyses of population densities, demography or behaviour is that the probability of detecting the target animals and their behaviours may vary depending on environmental and methodological factors. A specific problem is the type of flash used in the camera trap, as animals may react differently to different flash types and change their avoidance or habituation behaviour accordingly over time. Here, we provide the first systematic test of the impact of flash type in studies of red deer (Cervus elaphus) and roe deer (Capreolus capreolus), based on an analysis of behavioural responses to white, standard infrared and black flashes during 900 camera trap deployments in the Bavarian Forest National Park and the Northern Black Forest. The results revealed that both deer species were more likely to react to standard infrared than to black flash, but trigger delays prevented comparisons to white flash. Red deer reacted more frequently to camera traps than did roe deer, and responses were more common in the Northern Black Forest than in the Bavarian Forest National Park, where hunting is severely restricted. Contrary to our expectations, camera trapping rates of free-ranging deer did not significantly decline over time for any flash type or species. Despite the lack of evidence for avoidance behaviour, we recommend the use of black flash for behavioural studies of deer populations to minimize the risk of introducing a source of disturbance whereas infrared and white flash are equally suitable for determinations of demographic parameters.}
-      \field{annotation}{Studien såg på forskjeller mellom svart, infrar{ø}d og kvit blits, men kvit blei ekskludert frå ein del analyser grunna forsinkelser i trigger, samt fråvêr av rapidfire-funksjon (blitsen måtte ladast mellom kvar fyring). Hjort viste st{ø}rre grad av påverknad frå kamera (i snitt), mens rådyr i vinterinnhegning såg ut til å unngå kameraene. Monge individ: vanskelig å skilne endringer i visitt-rate Naturleg låg gjenvisitt-rate: lite sannsynleg med unnviking av kamera}
-      \field{issn}{20563485}
-      \field{journaltitle}{Remote Sensing in Ecology and Conservation}
-      \field{number}{3}
-      \field{title}{{The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer}}
-      \field{volume}{6}
-      \field{year}{2020}
-      \field{pages}{399\bibrangedash 410}
-      \range{pages}{12}
-      \verb{doi}
-      \verb 10.1002/rse2.150
-      \endverb
-      \verb{file}
-      \verb :home/torgeir/Documents/Papers/Henrich{\_}2020 --- The influence of camera trap flash type on the behavioural reactions and trapping rates of red deer and roe deer.pdf:pdf
-      \endverb
-      \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
-    \endentry
-    \entry{Hofmeester2019}{article}{}
-      \name{author}{6}{}{%
-        {{uniquename=0,hash=bdd49e81d1eee2c9edfcc47209a29921}{%
-           family={Hofmeester},
-           family_i={H\bibinitperiod},
-           given={Tim\bibnamedelima R.},
-           given_i={T\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
-        {{uniquename=0,hash=fbbfc850b5adbae047705f0eccc4ec1b}{%
-           family={Cromsigt},
-           family_i={C\bibinitperiod},
-           given={Joris\bibnamedelima P.G.M.},
-           given_i={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
-        {{uniquename=0,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
-           family={Odden},
-           family_i={O\bibinitperiod},
-           given={John},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=5561a94b48a2745b41e40d539c7d7e45}{%
-           family={Andrén},
-           family_i={A\bibinitperiod},
-           given={Henrik},
-           given_i={H\bibinitperiod}}}%
-        {{uniquename=0,hash=0cfb18adf8b2e542b1e94d0721b247ea}{%
-           family={Kindberg},
-           family_i={K\bibinitperiod},
-           given={Jonas},
-           given_i={J\bibinitperiod}}}%
-        {{uniquename=0,hash=34ea6866526f38c42b1aa363b3b8b8e7}{%
-           family={Linnell},
-           family_i={L\bibinitperiod},
-           given={John\bibnamedelima D.C.},
-           given_i={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-      }
-      \strng{namehash}{33f4eac0a08145a84b063471dd33dc76}
-      \strng{fullhash}{bb12c94823b1f115c47e1b0ba9fed90f}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelyear}{2019}
-      \field{datelabelsource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Obtaining reliable species observations is of great importance in animal ecology and wildlife conservation. An increasing number of studies use camera traps (CTs) to study wildlife communities, and an increasing effort is made to make better use and reuse of the large amounts of data that are produced. It is in these circumstances that it becomes paramount to correct for the species- and study-specific variation in imperfect detection within CTs. We reviewed the literature and used our own experience to compile a list of factors that affect CT detection of animals. We did this within a conceptual framework of six distinct scales separating out the influences of (a) animal characteristics, (b) CT specifications, (c) CT set-up protocols, and (d) environmental variables. We identified 40 factors that can potentially influence the detection of animals by CTs at these six scales. Many of these factors were related to only a few overarching parameters. Most of the animal characteristics scale with body mass and diet type, and most environmental characteristics differ with season or latitude such that remote sensing products like NDVI could be used as a proxy index to capture this variation. Factors that influence detection at the microsite and camera scales are probably the most important in determining CT detection of animals. The type of study and specific research question will determine which factors should be corrected. Corrections can be done by directly adjusting the CT metric of interest or by using covariates in a statistical framework. Our conceptual framework can be used to design better CT studies and help when analyzing CT data. Furthermore, it provides an overview of which factors should be reported in CT studies to make them repeatable, comparable, and their data reusable. This should greatly improve the possibilities for global scale analyses of (reused) CT data.}
+      \field{abstract}{Camera trapping is widely used in ecological studies. It is often considered nonintrusive simply because animals are not captured or handled. However, the emission of light and sound from camera traps can be intrusive. We evaluated the daytime and nighttime behavioral responses of four mammalian predators to camera traps in road-based, passive (no bait) surveys, in order to determine how this might affect ecological investigations. Wild dogs, European red foxes, feral cats, and spotted-tailed quolls all exhibited behaviors indicating they noticed camera traps. Their recognition of camera traps was more likely when animals were approaching the device than if they were walking away from it. Some individuals of each species retreated from camera traps and some moved toward them, with negative behaviors slightly more common during the daytime. There was no consistent response to camera traps within species; both attraction and repulsion were observed. Camera trapping is clearly an intrusive sampling method for some individuals of some species. This may limit the utility of conclusions about animal behavior obtained from camera trapping. Similarly, it is possible that behavioral responses to camera traps could affect detection probabilities, introducing as yet unmeasured biases into camera trapping abundance surveys. These effects demand consideration when utilizing camera traps in ecological research and will ideally prompt further work to quantify associated biases in detection probabilities.}
       \field{issn}{20457758}
       \field{journaltitle}{Ecology and Evolution}
-      \field{number}{4}
-      \field{title}{{Framing pictures: A conceptual framework to identify and correct for biases in detection probability of camera traps enabling multi-species comparison}}
-      \field{volume}{9}
-      \field{year}{2019}
-      \field{pages}{2320\bibrangedash 2336}
-      \range{pages}{17}
+      \field{number}{10}
+      \field{title}{{Are we getting the full picture? Animal responses to camera traps and implications for predator studies}}
+      \field{volume}{6}
+      \field{year}{2016}
+      \field{pages}{3216\bibrangedash 3225}
+      \range{pages}{10}
       \verb{doi}
-      \verb 10.1002/ece3.4878
+      \verb 10.1002/ece3.2111
       \endverb
       \verb{file}
-      \verb :home/torgeir/Documents/Papers/ece3.4878.pdf:pdf
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Meek et al. - 2016 - Are we getting the full picture Animal responses to camera traps and implications for predator studies.pdf:pdf
       \endverb
-      \keyw{animal characteristics,detectability,environmental variables,mammal monitoring,reuse of data,trail camera}
+      \keyw{Behavior,Dingo,Feral cat,Red fox,Remote camera,Wild dog,Wildlife monitoring}
+    \endentry
+    \entry{Meek2014a}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=813b8e88e68b3f2f60d21455ae7a32ac}{%
+           family={Meek},
+           familyi={M\bibinitperiod},
+           given={Paul\bibnamedelima D.},
+           giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cbf4deeb8d69aa85aaa431a09825921d}{%
+           family={Ballard},
+           familyi={B\bibinitperiod},
+           given={Guy\bibnamedelima A.},
+           giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9a3cb41efd16abe69ef83c35f5ed2f78}{%
+           family={Fleming},
+           familyi={F\bibinitperiod},
+           given={Peter\bibnamedelima J.S.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=31e2617f23aaa99f05482bbb0612bb34}{%
+           family={Schaefer},
+           familyi={S\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=77a44d0ddb267df50a47f5cc5a76b38c}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={Warwick},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c55cc39ffc299c525e644fb82698d631}{%
+           family={Falzon},
+           familyi={F\bibinitperiod},
+           given={Greg},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science}%
+      }
+      \strng{namehash}{b543bbbd5e6bb30ae3962fd43cb77424}
+      \strng{fullhash}{8634e6f7b46c2d07d3292d8f925e474b}
+      \strng{bibnamehash}{8634e6f7b46c2d07d3292d8f925e474b}
+      \strng{authorbibnamehash}{8634e6f7b46c2d07d3292d8f925e474b}
+      \strng{authornamehash}{b543bbbd5e6bb30ae3962fd43cb77424}
+      \strng{authorfullhash}{8634e6f7b46c2d07d3292d8f925e474b}
+      \field{extraname}{2}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera traps are electrical instruments that emit sounds and light. In recent decades they have become a tool of choice in wildlife research and monitoring. The variability between camera trap models and the methods used are considerable, and little is known about how animals respond to camera trap emissions. It has been reported that some animals show a response to camera traps, and in research this is often undesirable so it is important to understand why the animals are disturbed. We conducted laboratory based investigations to test the audio and infrared optical outputs of 12 camera trap models. Camera traps were measured for audio outputs in an anechoic chamber; we also measured ultrasonic (n = 5) and infrared illumination outputs (n = 7) of a subset of the camera trap models. We then compared the perceptive hearing range (n = 21) and assessed the vision ranges (n = 3) of mammals species (where data existed) to determine if animals can see and hear camera traps. We report that camera traps produce sounds that are well within the perceptive range of most mammals' hearing and produce illumination that can be seen by many species.}
+      \field{issn}{19326203}
+      \field{journaltitle}{PLoS ONE}
+      \field{month}{10}
+      \field{number}{10}
+      \field{title}{{Camera traps can be heard and seen by animals}}
+      \field{volume}{9}
+      \field{year}{2014}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0110832
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Meek et al. - 2014 - Camera traps can be heard and seen by animals.pdf:pdf
+      \endverb
     \endentry
     \entry{Moen1999}{book}{}
       \name{author}{1}{}{%
@@ -659,6 +1034,118 @@
       \endverb
       \keyw{Norway,alpine,artic,biodiversity,boreal,ecology,flora,plant geography,vegetation,vegetation region,vegetation section,vegetation zone}
     \endentry
+    \entry{morellet2011}{inbook}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=a22c3381e877043dcf94898502f0a726}{%
+           family={Morellet},
+           familyi={M\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5050de38b160c13efb913bfd4154de28}{%
+           family={Klein},
+           familyi={K\bibinitperiod},
+           given={François},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1c5a0afe5427e72284a1ee5d38e3dfdd}{%
+           family={Solberg},
+           familyi={S\bibinitperiod},
+           given={Erling},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8f03a6aaedf0572b9b0f9c30db29de28}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Reidar},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{3}{}{%
+        {{hash=b192ff3e54c30a6cb8a6db7cd5e9219a}{%
+           family={Putman},
+           familyi={P\bibinitperiod},
+           given={Rory},
+           giveni={R\bibinitperiod}}}%
+        {{hash=145250204e63d750dc122b5853550d06}{%
+           family={Apollonio},
+           familyi={A\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1f91f403c43fd3b7bef01e0a11d73773}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={ReidarEditors},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{1b58b5ee8ed033b9faff36a3566e8ba4}
+      \strng{fullhash}{47741c799a78bb28dc63e403082e239f}
+      \strng{bibnamehash}{47741c799a78bb28dc63e403082e239f}
+      \strng{authorbibnamehash}{47741c799a78bb28dc63e403082e239f}
+      \strng{authornamehash}{1b58b5ee8ed033b9faff36a3566e8ba4}
+      \strng{authorfullhash}{47741c799a78bb28dc63e403082e239f}
+      \strng{editorbibnamehash}{fb907692581720388fe861d83e0efec3}
+      \strng{editornamehash}{be2a3556126fdd44a76a10517ae47079}
+      \strng{editorfullhash}{fb907692581720388fe861d83e0efec3}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Ungulate Management in Europe: Problems and Practices}
+      \field{chapter}{5}
+      \field{title}{{The census and management of populations of ungulates in Europe}}
+      \field{year}{2011}
+      \field{pages}{106\bibrangedash 143}
+      \range{pages}{38}
+      \verb{doi}
+      \verb 10.1017/CBO9780511974137.006
+      \endverb
+    \endentry
+    \entry{Nakagawara2001}{report}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=57527e24c2cb27cd005fec024f460fa1}{%
+           family={Nakagawara},
+           familyi={N\bibinitperiod},
+           given={Van\bibnamedelima B},
+           giveni={V\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f30feb6df0cc0658fe16413af04dda98}{%
+           family={Montgomery},
+           familyi={M\bibinitperiod},
+           given={Ronald\bibnamedelima W},
+           giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Federal Aviation Administration}%
+      }
+      \list{location}{1}{%
+        {Oklahoma City}%
+      }
+      \strng{namehash}{5e583502afb1da6fd0b9e10814e4e191}
+      \strng{fullhash}{5e583502afb1da6fd0b9e10814e4e191}
+      \strng{bibnamehash}{5e583502afb1da6fd0b9e10814e4e191}
+      \strng{authorbibnamehash}{5e583502afb1da6fd0b9e10814e4e191}
+      \strng{authornamehash}{5e583502afb1da6fd0b9e10814e4e191}
+      \strng{authorfullhash}{5e583502afb1da6fd0b9e10814e4e191}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Laser Pointers: Their Potential Affects on Vision and Aviation Safety}}
+      \field{type}{techreport}
+      \field{year}{2001}
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Nakagawara, Montgomery - 2001 - Laser Pointers Their Potential Affects on Vision and Aviation Safety.pdf:pdf
+      \endverb
+    \endentry
     \entry{Odden2015}{report}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
@@ -704,6 +1191,134 @@
       \endverb
       \keyw{Eurasian lynx,Lynx lynx,Norway,camera trap,method development,monitoring}
     \endentry
+    \entry{Ogurtsov2018}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=34399021c40d57339a52d6ecee44ce61}{%
+           family={Ogurtsov},
+           familyi={O\bibinitperiod},
+           given={Sergey\bibnamedelima S.},
+           giveni={S\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fa5aff1e66a6082d2ac63d69c053031f}{%
+           family={Zheltukhin},
+           familyi={Z\bibinitperiod},
+           given={Anatoliy\bibnamedelima S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=283b117a50a270635671430bd3d0e860}{%
+           family={Kotlov},
+           familyi={K\bibinitperiod},
+           given={Ivan\bibnamedelima P.},
+           giveni={I\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{be4fc4f3a78e8e1a796979b8385bb1e9}
+      \strng{fullhash}{f009be176cdf43fc0474a5ca1197fcb6}
+      \strng{bibnamehash}{f009be176cdf43fc0474a5ca1197fcb6}
+      \strng{authorbibnamehash}{f009be176cdf43fc0474a5ca1197fcb6}
+      \strng{authornamehash}{be4fc4f3a78e8e1a796979b8385bb1e9}
+      \strng{authorfullhash}{f009be176cdf43fc0474a5ca1197fcb6}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Here are presented the results of the analysis of daily activity patterns obtained from the data of camera traps for five large mammals (elk Alces alces, wild boar Sus scrofa, brown bear Ursus arctos, grey Wolf Canis lupus, Eurasian lynx Lynx lynx) and three medium ones (European badger Meles meles, raccoon dog Nyctereutes procyonoides, mountain hare Lepus timidus) for the territory of the Central Forest Nature Reserve, Valdai Upland, Russia. Data were collected in the period 2010-2017 and the trap effort was 30 158 camera days from 21 locations. Most of the mammals surveyed showed activity at night and twilight hours (71{\%} of the pictures). The hare was most active among all and dominant at night. In many respects it is similar to the activity of a raccoon dog, which type can be defined as nocturnal too. Unlike a hare, a raccoon dog has a weak peak in the daytime and less activity in the night. Badgers movements are confined to the twilight and nighttime. The share of nocturnal activity of large ungulates such as elk and wild boar was approximately the same and amounted to about 45{\%} of all registrations. The wild boar is slightly more active during the day and in the evening and is not active at all in the morning. The elk is active in the morning, and in the daytime and to a lesser extent in the evening. The lynx and the bear have similar cathemeral activity patterns: Almost half of all their meetings occurred at daylight hours and only slightly - less than 40{\%} - at night. The brown bear had the maximum number of registrations in the daytime among all the studied species. Despite the fact that the main object of lynx feeding in the reserve is the hare, there was no high degree of overlap between them ($\Delta$= 0.75). In the group of large carnivores, the Wolf was noticeably distinguished, more than half of its registrations were at night, and a third - on daytime. Daily activities of the Wolf and its main prey elk showed a large overlap ($\Delta$= 0.89). The seasonal variations of daily activity of all species were also shown. According to the results of factor analysis, each of the studied species was divided into one of three separate groups. The first group included species with a tendency to nocturnal activity (Wolf, elk, hare, badger, and raccoon dog), the second group - cathemeral animals (bear and lynx). In the third group was only the wild boar, whose activity was associated with the evening hours. This is the first long-term continuous camera trap survey in Russia and it provides detailed daily activity patterns for multiple large and medium-sized sympatric mammals.}
+      \field{issn}{2500008X}
+      \field{journaltitle}{Nature Conservation Research}
+      \field{number}{2}
+      \field{title}{{Daily activity patterns of large and medium-sized mammals based on camera traps data in the central forest nature reserve, Valdai Upland, Russia}}
+      \field{volume}{3}
+      \field{year}{2018}
+      \field{pages}{68\bibrangedash 88}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.24189/ncr.2018.031
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Ogurtsov, Zheltukhin, Kotlov - 2018 - Daily activity patterns of large and medium-sized mammals based on camera traps data in the centra.pdf:pdf
+      \endverb
+      \keyw{Central Forest Nature Reserve,activity patterns,camera traps,daily activity,large carnivores,noninvasive methods}
+    \endentry
+    \entry{Ollivier2004}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=b353b07072945f3e4877732aa08b4cf7}{%
+           family={Ollivier},
+           familyi={O\bibinitperiod},
+           given={F.\bibnamedelimi J.},
+           giveni={F\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de5f78c10cfc59639451c3fd64ecc10f}{%
+           family={Samuelson},
+           familyi={S\bibinitperiod},
+           given={D.\bibnamedelimi A.},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=943c0b90c76b07b057112f651ee20069}{%
+           family={Brooks},
+           familyi={B\bibinitperiod},
+           given={D.\bibnamedelimi E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e61706190a7d591f99d15c3e03455fff}{%
+           family={Lewis},
+           familyi={L\bibinitperiod},
+           given={P.\bibnamedelimi A.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=efbd6b999f8becd6c3d378717cc5bf2f}{%
+           family={Kallberg},
+           familyi={K\bibinitperiod},
+           given={M.\bibnamedelimi E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4951fc88ac398d179a8a5dfe97ac160e}{%
+           family={Komaromy},
+           familyi={K\bibinitperiod},
+           given={A.\bibnamedelimi M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley {\&} Sons, Ltd}%
+      }
+      \strng{namehash}{d68f83c4fe6695e563365cf83d13670c}
+      \strng{fullhash}{bef1b8df6a0cb1d9eb4ae8dd6187f02e}
+      \strng{bibnamehash}{bef1b8df6a0cb1d9eb4ae8dd6187f02e}
+      \strng{authorbibnamehash}{bef1b8df6a0cb1d9eb4ae8dd6187f02e}
+      \strng{authornamehash}{d68f83c4fe6695e563365cf83d13670c}
+      \strng{authorfullhash}{bef1b8df6a0cb1d9eb4ae8dd6187f02e}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Objectives: The phenomenon of 'eye-shine' is seen in a variety of animal species, and is generally thought to be related to the presence of an intraocular reflecting structure, the tapetum lucidum. The tapetum lucidum is a biologic reflector system that is a common feature in the eyes of vertebrates. It normally functions to provide the light-sensitive retinal cells with a second opportunity for photon-photoreceptor stimulation, thereby enhancing visual sensitivity at low light levels. The tapetum lucidum is presented here according to a classification based on the location, as well as the composition, of this reflective layer. Finally, the physical and chemical properties, as well as the origins of the different tapeta lucida, are discussed and compared. Methods: The anatomic and biochemical aspects of the tapetum lucidum in various vertebrates are examined. Morphologic observations were made from paraffin and plastic embedded specimens. Specimens were treated with traditional stains and observed by light and transmission electron microscopy. Results: Some species (primates, squirrels, birds, red kangaroo and pig) do not have this structure and they usually are diurnal animals. In vertebrates, the tapetum lucidum exhibits diverse structure, organization and composition. Therefore, the retinal tapetum (teleosts, crocodilians, marsupials, fruit bat), the choroidal guanine tapetum (elasmobranchs), the choroidal tapetum cellulosum (carnivores, rodents, cetacea), and the choroidal tapetum fibrosum (cow, sheep, goat, horse) are described. Conclusions: The tapetum lucidum represents a remarkable example of neural cell and tissue specialization as an adaptation to a dim light environment and, despite these differences, all tapetal variants act to increase retinal sensitivity by reflecting light back through the photoreceptor layer. These variations regarding both its location and structure, as well as the choice of reflective material, may represent selective visual adaptations associated with their feeding behavior, in response to the use of specific wavelengths and amount of reflectance required.}
+      \field{issn}{1463-5216}
+      \field{journaltitle}{Veterinary Ophthalmology}
+      \field{month}{1}
+      \field{number}{1}
+      \field{title}{{Comparative morphology of the tapetum lucidum (among selected species)}}
+      \field{volume}{7}
+      \field{year}{2004}
+      \field{pages}{11\bibrangedash 22}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1111/j.1463-5224.2004.00318.x
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Ollivier2004.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://doi.wiley.com/10.1111/j.1463-5224.2004.00318.x
+      \endverb
+      \verb{url}
+      \verb http://doi.wiley.com/10.1111/j.1463-5224.2004.00318.x
+      \endverb
+      \keyw{Morphology,Tapetum lucidum,Vertebrates}
+    \endentry
     \entry{R-base}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=dcdebb6b35bff7c0568bf8c50ef8626d}{%
@@ -736,6 +1351,69 @@
       \verb{url}
       \verb https://www.r-project.org/
       \endverb
+      \keyw{R}
+    \endentry
+    \entry{Rovero2013}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=df1489ef9142cb313cae67584fcf5edd}{%
+           family={Rovero},
+           familyi={R\bibinitperiod},
+           given={Francesco},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=770469c102ec640f4cd75afb908312d8}{%
+           family={Zimmermann},
+           familyi={Z\bibinitperiod},
+           given={Fridolin},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6ad0266832f6f0b8dceafaaa9075028e}{%
+           family={Berzi},
+           familyi={B\bibinitperiod},
+           given={Duccio},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ebf67c78a1225f344a677725586cefaa}{%
+           family={Meek},
+           familyi={M\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{caa6942ed20437c3571a102692491187}
+      \strng{fullhash}{96b7d123c181931bf3ceea57aa3324ee}
+      \strng{bibnamehash}{96b7d123c181931bf3ceea57aa3324ee}
+      \strng{authorbibnamehash}{96b7d123c181931bf3ceea57aa3324ee}
+      \strng{authornamehash}{caa6942ed20437c3571a102692491187}
+      \strng{authorfullhash}{96b7d123c181931bf3ceea57aa3324ee}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Automatically triggered cameras taking photographs or videos of passing animals (camera traps) have emerged over the last decade as one of the most powerful tool for wildlife research. In parallel, a wealth of camera trap systems and models has become commercially available, a phenomenon mainly driven by the increased use of camera traps by sport hunters. This has raised the need for developing criteria to choose the suitable camera trap model in relation to a range of factors, primarily the study aim, but also target species, habitat, trapping site, climate and any other aspect that affects camera performance. There is also fragmented information on the fundamentals of sampling designs that deploy camera trapping, such as number of sampling sites, spatial arrangement and sampling duration. In this review, we describe the relevant technological features of camera traps and propose a set of the key ones to be evaluated when choosing camera models. These features are camera specifications such as trigger speed, sensor sensitivity, detection zone, flash type and flash intensity, power autonomy, and related specifications. We then outline sampling design and camera features for the implementation of major camera trapping applications, specifically: (1) faunal inventories, (2) occupancy studies, (3) density estimation through Capture-Mark-Recapture and (4) density estimation through the Random Encounter Model. We also review a range of currently available models and stress the need for standardized testing of camera models that should be frequently updated and widely distributed. Finally we summarize the ultimate camera trap, as desired by wildlife biologists, and the current technological limitations of camera traps in relation to their potential for a number of emerging applications.}
+      \field{issn}{0394-1914}
+      \field{journaltitle}{Hystrix, the Italian Journal of Mammalogy}
+      \field{number}{2}
+      \field{title}{{Which camera trap type and how many do I need? A review of camera features and study designs for a range of wildlife research applications}}
+      \field{volume}{24}
+      \field{year}{2013}
+      \field{pages}{148\bibrangedash 156}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.4404/hystrix-24.2-8789
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Which camera trap type.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.4404/hystrix-24.2-8789
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.4404/hystrix-24.2-8789
+      \endverb
+      \keyw{camera trapping,capture-mark-recapture,density estimation,occupancy,photo trapping,random encounter model,remote cameras,wildlife cameras}
     \endentry
     \entry{RStudio}{misc}{}
       \name{author}{1}{}{%
@@ -769,6 +1447,279 @@
       \verb{url}
       \verb http://www.rstudio.com/
       \endverb
+      \keyw{R}
+    \endentry
+    \entry{Schmitz2010}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=0df8d9c0f1b0617a1e18ac9d58370564}{%
+           family={Schmitz},
+           familyi={S\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5a69cd7d249723c18b084a90e46e7c7e}{%
+           family={Motani},
+           familyi={M\bibinitperiod},
+           given={Ryosuke},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Pergamon}%
+      }
+      \strng{namehash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \strng{fullhash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \strng{bibnamehash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \strng{authorbibnamehash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \strng{authornamehash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \strng{authorfullhash}{7fb0af7be181ef1ae68b0a232112cabb}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Eyes are expected to be adapted to the physical characteristics of the visual environment, yet previous analyses failed to corroborate this observation. We demonstrate that nocturnal, crepuscular/cathemeral, and diurnal activity patterns occupy distinct areas in morphospace and are identified with high accuracies based on a discriminant analysis of visual performance features. Not only nocturnal and diurnal diel activity patterns are reflected in macroscopic morphology of the eyeball, but also the crepuscular/cathemeral patterns. The eyeball morphology of the latter was believed to be undistinguishable between diurnal and nocturnal types. We show that all three categories can be delineated with high accuracies. {©} 2010 Elsevier Ltd.}
+      \field{issn}{00426989}
+      \field{journaltitle}{Vision Research}
+      \field{month}{5}
+      \field{number}{10}
+      \field{title}{{Morphological differences between the eyeballs of nocturnal and diurnal amniotes revisited from optical perspectives of visual environments}}
+      \field{volume}{50}
+      \field{year}{2010}
+      \field{pages}{936\bibrangedash 946}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1016/j.visres.2010.03.009
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Schmitz, Motani - 2010 - Morphological differences between the eyeballs of nocturnal and diurnal amniotes revisited from optical perspec.pdf:pdf
+      \endverb
+      \keyw{Amniotes,Diurnal vision,Eyeball morphology,Nocturnal vision,Scleral ring,Sensitivity}
+    \endentry
+    \entry{Solovei2009}{article}{}
+      \name{author}{8}{}{%
+        {{un=0,uniquepart=base,hash=5ad9ee44e85d4628282a11ea0add935a}{%
+           family={Solovei},
+           familyi={S\bibinitperiod},
+           given={Irina},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e1905e76d3e9236c883f70a33f1878f1}{%
+           family={Kreysing},
+           familyi={K\bibinitperiod},
+           given={Moritz},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=69f62983246d0d4ba70acfb691f57dfe}{%
+           family={Lanctôt},
+           familyi={L\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=41c55d3f9079c80504c64c27bf3e1b50}{%
+           family={Kösem},
+           familyi={K\bibinitperiod},
+           given={Süleyman},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=465af5bb850b82142294c104f4073045}{%
+           family={Peichl},
+           familyi={P\bibinitperiod},
+           given={Leo},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d3e025d06f4a40bbe91887902f7c6409}{%
+           family={Cremer},
+           familyi={C\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=651d3faafb3d52f68131b9c9afb0c205}{%
+           family={Guck},
+           familyi={G\bibinitperiod},
+           given={Jochen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=27042345eb69372bbd755abbe2b4ce27}{%
+           family={Joffe},
+           familyi={J\bibinitperiod},
+           given={Boris},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier B.V.}%
+      }
+      \strng{namehash}{6bc047ad4dfa15c12bd0ff781a0614b7}
+      \strng{fullhash}{db1424200d2a47a7a119fdb2afa0619c}
+      \strng{bibnamehash}{db1424200d2a47a7a119fdb2afa0619c}
+      \strng{authorbibnamehash}{db1424200d2a47a7a119fdb2afa0619c}
+      \strng{authornamehash}{6bc047ad4dfa15c12bd0ff781a0614b7}
+      \strng{authorfullhash}{db1424200d2a47a7a119fdb2afa0619c}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We show that the nuclear architecture of rod photoreceptor cells differs fundamentally in nocturnal and diurnal mammals. The rods of diurnal retinas possess the conventional architecture found in nearly all eukaryotic cells, with most heterochromatin situated at the nuclear periphery and euchromatin residing toward the nuclear interior. The rods of nocturnal retinas have a unique inverted pattern, where heterochromatin localizes in the nuclear center, whereas euchromatin, as well as nascent transcripts and splicing machinery, line the nuclear border. The inverted pattern forms by remodeling of the conventional one during terminal differentiation of rods. The inverted rod nuclei act as collecting lenses, and computer simulations indicate that columns of such nuclei channel light efficiently toward the light-sensing rod outer segments. Comparison of the two patterns suggests that the conventional architecture prevails in eukaryotic nuclei because it results in more flexible chromosome arrangements, facilitating positional regulation of nuclear functions. {©} 2009 Elsevier Inc. All rights reserved.}
+      \field{annotation}{The eyes are windows to the soul. Om ikkje den frasen blir brukt i denne artikkelen blir eg overraska, og f{å}r lyst til {å} bruke den sj{ø}lv istadenfor.}
+      \field{issn}{00928674}
+      \field{journaltitle}{Cell}
+      \field{month}{4}
+      \field{number}{2}
+      \field{title}{{Nuclear Architecture of Rod Photoreceptor Cells Adapts to Vision in Mammalian Evolution}}
+      \field{volume}{137}
+      \field{year}{2009}
+      \field{pages}{356\bibrangedash 368}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1016/j.cell.2009.01.052
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Solovei et al. - 2009 - Nuclear Architecture of Rod Photoreceptor Cells Adapts to Vision in Mammalian Evolution.pdf:pdf
+      \endverb
+      \keyw{CELLBIO,DNA,EVO{\_}ECOL}
+    \endentry
+    \entry{R-lubridate}{manual}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=ac149bcd683a561a218e8dc1c1529489}{%
+           family={Spinu},
+           familyi={S\bibinitperiod},
+           given={Vitalie},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de759ef99fad34b8426e26035eb4a20b}{%
+           family={Grolemund},
+           familyi={G\bibinitperiod},
+           given={Garrett},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           familyi={W\bibinitperiod},
+           given={Hadley},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{32f72e4d76465f2eabe99da61aa6b267}
+      \strng{fullhash}{1b0cccec2d5efe70a1b12d1e4debef61}
+      \strng{bibnamehash}{1b0cccec2d5efe70a1b12d1e4debef61}
+      \strng{authorbibnamehash}{1b0cccec2d5efe70a1b12d1e4debef61}
+      \strng{authornamehash}{32f72e4d76465f2eabe99da61aa6b267}
+      \strng{authorfullhash}{1b0cccec2d5efe70a1b12d1e4debef61}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{R package version 1.7.10}
+      \field{title}{{lubridate: Make Dealing with Dates a Little Easier}}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://cran.r-project.org/package=lubridate
+      \endverb
+      \verb{url}
+      \verb https://cran.r-project.org/package=lubridate
+      \endverb
+      \keyw{R}
+    \endentry
+    \entry{Taggart2020}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=c6ab0e20d64db798a4ecd5635b57edaa}{%
+           family={Taggart},
+           familyi={T\bibinitperiod},
+           given={Patrick\bibnamedelima L.},
+           giveni={P\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=08708cf3857f3356f657185a5be01d00}{%
+           family={Peacock},
+           familyi={P\bibinitperiod},
+           given={David\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6636d63d4687e785785845446009185e}{%
+           family={Fancourt},
+           familyi={F\bibinitperiod},
+           given={Bronwyn\bibnamedelima A.},
+           giveni={B\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {CSIRO}%
+      }
+      \strng{namehash}{347fd923c6280a9f3d6c64baa0c8a55f}
+      \strng{fullhash}{8b2e45103f714880638baf7d9f5a9681}
+      \strng{bibnamehash}{8b2e45103f714880638baf7d9f5a9681}
+      \strng{authorbibnamehash}{8b2e45103f714880638baf7d9f5a9681}
+      \strng{authornamehash}{347fd923c6280a9f3d6c64baa0c8a55f}
+      \strng{authorfullhash}{8b2e45103f714880638baf7d9f5a9681}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera traps are now the most commonly used technique for indexing feral cat (Felis catus) and predator populations. Camera flash-type has been suggested to influence an animal's behaviour and their redetection by similar cameras, with white-flash cameras being shown to reduce the probability of redetecting some species. We investigated the influence of camera flash-type on the behaviour of feral cats by categorising their behavioural response to white-flash and infrared-flash cameras and assessing the frequency with which individual cats were redetected by the same white-flash camera or a different white-flash camera at the same site following their initial detection. We found no evidence that flash type had any influence on the cats' observed behavioural responses towards cameras, or that cats captured by white-flash cameras avoided redetection. Our findings suggest that white-flash cameras are suitable for the detection and redetection of cats, and provide better-quality images from which to identify individual cats.}
+      \field{issn}{0310-0049}
+      \field{journaltitle}{Australian Mammalogy}
+      \field{month}{5}
+      \field{number}{2}
+      \field{title}{{Camera trap flash-type does not influence the behaviour of feral cats (Felis catus)}}
+      \field{volume}{42}
+      \field{year}{2020}
+      \field{pages}{220}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1071/AM18056
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Taggartetal2019Cameratrapflashtypedoesnotinfluencethebehaviourofferalcats.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://www.publish.csiro.au/?paper=AM18056
+      \endverb
+      \verb{url}
+      \verb http://www.publish.csiro.au/?paper=AM18056
+      \endverb
+      \keyw{avoidance,detect,feline,invasive species,monitor,pest}
+    \endentry
+    \entry{ggplot2}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           familyi={W\bibinitperiod},
+           given={Hadley},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag New York}%
+      }
+      \strng{namehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{fullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{bibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorbibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authornamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorfullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-319-24277-4}
+      \field{title}{{ggplot2: Elegant Graphics for Data Analysis}}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://ggplot2.tidyverse.org
+      \endverb
+      \verb{url}
+      \verb https://ggplot2.tidyverse.org
+      \endverb
+      \keyw{R}
     \endentry
     \entry{tidyverse}{article}{}
       \name{author}{24}{}{%
@@ -939,6 +1890,47 @@
       \verb{doi}
       \verb 10.21105/joss.01686
       \endverb
+      \keyw{R}
+    \endentry
+    \entry{knitr2015}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=25ce25b9d444076e0963bcf9fa3a6f92}{%
+           family={Xie},
+           familyi={X\bibinitperiod},
+           given={Yihui},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {Boca Raton, Florida}%
+      }
+      \list{publisher}{2}{%
+        {Chapman}%
+        {Hall/CRC}%
+      }
+      \strng{namehash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \strng{fullhash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \strng{bibnamehash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \strng{authorbibnamehash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \strng{authornamehash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \strng{authorfullhash}{25ce25b9d444076e0963bcf9fa3a6f92}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{ISBN 978-1498716963}
+      \field{edition}{2nd}
+      \field{title}{{Dynamic Documents with {\{}R{\}} and knitr}}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://yihui.org/knitr/
+      \endverb
+      \verb{url}
+      \verb https://yihui.org/knitr/
+      \endverb
+      \keyw{R}
     \endentry
   \enddatalist
 \endrefsection

@@ -1,54 +1,151 @@
 \chapter{Introduction}
-%Usually, the lynx has been counted using snow tracks in the winter (Odden 2015). However, lately there has been a variable lenght of the snow season, which has made the snow track counts unpredictable and difficult to conduct at a consistent time of year (Odden 2015).
+%Bakgrunn
+Estimating the number of animals is central in population ecology, and census methods have always been under development in order to get accurate, reliable ways of conducting surveys \autocite{morellet2011}.
+%Estimeringstrøbbel
+Direct observations are prone to undercounting, as many species are elusive and dwindling concentration by observers over time. Telemetry studies can provide very detailed knowledge, but studies are usually limited in extent, as they are costly and invasive in nature \autocite{Ikeda2016}. %TODO Seier han dette om telemetry?
+Distribution of medium sized and large mammals are therefore often based on proxy data such as harvest statistics, but such methods tend to be quite unreliable due to variable hunter effort. In particular for large carnivores, harvest may also be low or absent for periods where management targets are not obtained \autocite{morellet2011}.
+ %AM: hele avsnittet må få på referanser
+
+
+In recent years, automated camera traps (CT) have been developing fast, and become quite affordable \autocite{Burton2015}. 
+CTs offer a consistent, standardised sampling method, and provide information about the presence, demography and behaviour of multiple species with a high temporal resolution (Rovero et al. 2016) %TODO Rovero '16 \autocite{Rovero2016}. 
+CTs are traditionally used to study a single species in a specific study site, but they are increasingly seen as a tool for investigating multiple sympatric species, their interactions and diel patterns (Ikeda et al. 2016). %TODO Delisle '21
+The underlying assumption is that CTs are unselective in which species they capture, or that biases in capture rates can be corrected for by using covariates in a statistical framework \autocite{Rovero2013}. %TODO hofmester'18. 
+
+%%% Diel patterns %%%%%%%%%%%%%%%%%%%%%%%%% 
+%TODO må flette det meir elegant inn
+In general, terrestrial mammalian diel patterns can be categorized into diurnal, nocturnal, crepuscular (active at twilight), and cathemeral (active throughout the day) \autocite{Ikeda2016}.  
+However, even within species, these patterns vary along with seasons, geographic distribution and human disturbance \autocite{Kamler2007, Gaynor2018}.
+Lacking quantitative data on the activity patterns of sympatric mammal species, camera traps provide a perfe studies\autocite{Ikeda2016}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Camera traps have been considered non-invasive, but can affect animal behaviour in several ways \cite{Meek2014a}, for example through detecting sounds from triggering camera, scents from human operators, the unfamiliar shape of the camera itself or the flash used in night-time \autocite{Meek2014a, Burton2015, Beddari2019}. %Add Wegge'04?
+
+
+% IR and why white flash
+During night time, CTs normally use infra-red (IR) light from an array of light-emitting diodes (LED) to photo capture animals, which is invisible to most human eyes, but has been shown to be visible to several other mammals \autocite{Meek2014a, Meek2016}. 
+However, the lack of sharpness and detail from IR photos limit the information we can retrieve from them, as for example individual variation in coat patterns (e.g. tigers (\textit{Panthera tigris}), jaguars (\textit{Panthera onca}) and lynx) which can be used in capture-mark-recapture models to accurately estimate population numbers \cite{Meek2014a,Rovero2013}. 
+
+The need for more photographic detail has brought back interest in the original white xenon flashes, as well as white LED flashes \autocite{Rovero2013}.
+Xenon provides the sharpest photos due to a more powerful light \cite{Rovero2013}, but has the disadvantage of requiring long cool downs after each photo \autocite{Henrich2020}.
+The white light could also increase the chance of causing flash blindness in the passing animal \cite{Dryja2005}.
+
+Naturally, white light is highly visible to all land dwelling mammals, and can therefore increase the number of CT aware animals \autocite{Glen2013a}.
+That could be detrimental, as studies using indices and capture-mark-recapture estimators must avoid altering animal behaviour during or between monitoring sessions, not to affect their detectability \autocite{Meek2014a}.
+Therefore, there is a need to determine which species are influenced, and to what extent their detection rates are altered in comparison to IR flash CTs.
+%flash and diel pattern
+A CT's flash is used whenever natural light gets scarce. 
+The darker it is, the stronger the white flash stimulus will be (because of dark habituated eyes).
+Thus, white and IR flash CTs should in theory only differ in effect during night, and animal responses will depend on the species activity patterns (see below). 
+
+
+% Eye morphology %%%%%%%%%%%%%%%%%
+
+White light affects all photoreceptors in an animals retina \autocite{Dryja2005}, whereas IR flash only would affect those that are sensitive to IR wavelengths. 
+A white flash can therefore increase the total number of CT aware animals.
+The white light could be associated to human presence in the form of artificial light at night, and could trigger a response depending on the animal's relationship to humans.
+Scavengers could be attracted to the light in search for garbage (food).
+High conflict species, like the grey wolf (\textit{Canis lupus}), could be scared off, as high hunting pressure could select for shy and elusive individuals.
+
+% Examples moved to discussion
+
+However, a quantification of the effects white flash CTs have on species detectability is still lacking, to the best of my knowledge.
+
+
+
+%%%%% Morphological studies %%%%%%%%%%%%%%%%%%%%%%%%%%%
+As the saying goes, eyes are the window to the soul.
+It turns out this statement also holds for animals, as nocturnal vertebrates have different eye morphology than diurnal ones \autocite{Schmitz2010}. Most mammals have less variation in eye morphology than other amniotes (birds and reptiles) \autocite{Schmitz2010, Hall2012}, but they have other adaptations to increase light sensitivity\autocite{Ollivier2004,Solovei2009}. 
+%I probably don't need to overkill like i do in the following part?
+
+Eye characteristics governing nocturnal behaviour could also affect a species' response to the white flash. More light sensitive eyes will react stronger to the white flash, especially considering that rod cells (low-light sensitivity) take longer to depolarize than cone cells (visual acuity and color distinction) \autocite{Dryja2005}, and thus nocturnal mammals could experience glare or flash blindness.
+Flash blindness can cause spatial disorientation or loss of situation awareness in humans \autocite{Nakagawara2001}, but as most mammals rely less on optical senses than humans, they might not react as strongly.
+
+%% Flytta til diskusjon %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%In the supplementary material, \textcite{Hall2012} provided data on the species they had analysed, with eye measurement data and classification of diel pattern. Three of the species in my study were represented in their dataset, whilst most other were represented by the same genus (except for roe deer), as seen in table \ref{eye}.
+%\textcite{Hall2012} defined cathemeral species as awake and active both during day and night.
 %
-Estimating number of animals are central in population ecology, and census methods has always been under development in order to get accurate, reliable ways of conducting surveys (REF!). %TODO
-Counting mammals directly is often difficult, as many species are shy, elusive, and mainly nocturnal.
-Some methods involve walking one or several persons in a row, scaring up animals, and counting them as they flee.
-Still, any such method is prone to undercounting, due to low visibility in dense forests and lack of focus from observers after a while.
-There are other, indirect methods, like counting tracks or calls during the mating season, but these work best on densily populated species. %AMkomm: hele avsnittet må få på referanser
-
-In northern areas, like Norway, counting animal tracks in snow has been a popular method. %TODO ref!
-Snow track counts has the advantage of highly visible tracks, and a somewhat accurate dating of the tracks to the last snowfall, as old tracks vanish.
-However, lately the snow season in southern Norway has been variable, which makes snow track counts unpredictable and difficult to conduct at a consistent time of year (\cite{Odden2015}).
-
-Therefore, the Norwegian Institute of Nature Research (NINA) has started to use camera traps %IMRkomm: når? %TODO
-(CTs) as a substitute method to monitor family groups of Eurasian lynx (\textit{Lynx lynx}) in southeastern Norway  (\cite{Odden2015}). The surveys are integrated in a coordinated Scandinavian science project on lynx, called Scandlynx. % Beddari siterte SCANDLYNX2017  
-
-CTs have been developing fast, and become quite affordable (\cite{Burton2015}).
-They offer a consistent, standardised sampling method which also records date, hour and, in some instances, temperature.
-CTs normally use infra-red (IR) light to photo-capture animals, which is invisible to the human eye, but has been shown to be visible to several other mammals (\cite{Meek2014}).
-However, the lack of sharpness and detail from IR photos limit the information we can retrieve from them, e.g. individual variation in coat patterns which can be used in capture-recapture models to accurately estimate population numbers. 
-
-The need for more detail has led to the usage of white light flashes.
-CTs with white light flash comes with either white xenon or white light-emitting diode (LED) technology, where xenon provides the sharpest photos, but has the disadvantage of requiring long cool downs after each photo (minimum of 22 seconds %TODO 
-in \cite{Henrich2020}).
-
-Naturally, white light is highly visible to all land dwelling mammals, and will likely affect the animals to some extent (e.g. startle, stress) which in turn could bias the data we collect. Problems related to CT awareness and behavioural changes have already been discussed by many (\cite{Meek2014}, \cite{Burton2015}, \cite{Hofmeester2019}). %TODO read their citings and replace for papers that actually discuss this theme, not just refers to it.
-Beddari (2019) showed that grey wolfs (\textit{Canis lupus}) in Norway tend to shy away from sites where a white LED CT was used, whilst the  lynx  seemed less bothered. %AMkomm: not to be affected? how was this done?
-Henrich (2020) studied roe deer (\textit{Capreolus capreolus}) and red deer's (\textit{Cervus elaphus}) responses to IR, black and white flash, but they used a xenon white flash, which has a long cool down, and hindered any meaningful comparisons of deer detection rates with the other flash types.
-
-%\cite{}
+%However, in their CT study of seasonal and diel activity patterns, \textcite{Ikeda2016} strictly defined a species as cathemeral when no differences were observed in the photographic frequencies among day, night and twilight.
+%Since this also is a CT study, I will do the same. Therefore, I expect some contradictions with the species categorized as cathemeral in the supplementary material of \textcite{Hall2012}.
 %
-%Capture Recapture models are only available for naturally marked species (e.g. tigers \textit{Panthera tigris}, leopards \textit{Panthera pardus}). 
-Nevertheless, the majority of wildlife species are not easily individually identifiable from photos, rendering capture-recapture approaches difficult and leading to widespread interest in alternate analytical approaches for ‘unmarked’ species (\cite{Burton2015}). %Dette vil eg ha inn i samanheng med årsaken til LED-bruk
+%As stated in \textcite{Hall2012}:
+%"The ratio of corneal diameter to axial length of the eye is a useful measure of relative sensitivity and relative visual acuity that has been used in previous studies as a way to compare animals of disparate size."
+%Relative acuity is given in table 1.1 as axial length divided by corneal diameter.
+%The higher the value of relative acuity, the higher the hypothetical importance of sight for each species.
 
 
-
-In this study, I will quantify how the usage of white LED flash affects the detection rate of the most common large mammal species in an area in Southern Norway.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In this study, I will quantify how the usage of white LED flash affects the detection rate of the most common large mammal species in an area in Southeastern Norway.
+White LED CTs have similar recovery speeds to that of regular IR CTs, as both utilize LED flashes, which makes them well fit for meaningful comparison.
+A subgoal is to quantify the species' activity patterns, providing data on nine sympatric mammalian species at high northern latitudes, and how their diel patters change along the seasons. 
 I have restricted the analysis to all wild species observed at least 50 independent times during my survey, which totaled nine species.
-Namely roe deer, red fox (\textit{Vulpes vulpes}), badger (\textit{Meles meles}), moose (\textit{Alces alces}), red deer, red squirrel (\textit{Sqiurus vulgaris}), hare (\textit{Lepus timidus}), European pine marten (\textit{Martes martes}) and lynx. 
+There were three cervids (roe deer (\textit{Capreolus capreolus}), moose (\textit{Alces alces}) and red deer (\textit{Cervus elaphus})),
+four carnivores, of which two were mustelids (badger (\textit{Meles meles}), European pine marten (\textit{Martes martes})), one was canid (red fox (\textit{Vulpes vulpes})), one was felid (lynx), 
+and two were members of the clade Glires; one rodent (red squirrel (\textit{Sqiurus vulgaris})), and one lagomorph (mountain hare (\textit{Lepus timidus})).
+The species will be grouped by taxonomic relationships in results and discussion, assuming closely related species to have similar sensory anatomy and therefore similar experiences of being exposed to a white flash during night time. 
+Squirrels and hares are more distantly related than the two other groupings I've presented, and as such should be expected to have larger differences in their sensory anatomy. 
+Relative visual acuity is correlated with visual importance, and has been used in previous studies as a way to compare animals of disparate size \autocite{Hall2012}. I will use data from the supplementary material of Hall et al. (2012) to discuss the relevance visual acuity can have on mammals reaction to white flashes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-White LED CTs have similar recovery speeds to that of regular IR CTs, as both utilize LEDs as flashes, which makes them well fit for meaningful comparisons.
-
-\subparagraph{Hypotheses} 
-%AMkomm: Du kunne selvsagt også tatt med noe om biologi her. Hva du forventer hvis CT gir et godt bilde av aktiviteten
-
-(H0): Usage of white LED flash will have no effect on the detection rate of any species.
-
-(HA): Usage of white LED flash will stress one or more species in general, and therefore lower the detection rate of the stressed species. The effect will likely vary in extent between species. %AMkomm: Vær spesifikk     I expect a stronger effect on night-active than day-active species - (ha arter i parantes)
+I predict usage of white LED flash will alter the detection rate of nocturnal and crepuscular species.
+%I will use data from the supplementary material of Hall et al. (2012) to discuss the appearant relevance of visual acuity (eller berre kutte heilt, og kun diskutere?)
 
 
+
+
+%\subsubsection*{Hypotheses} 
+%AM: Du kunne selvsagt også tatt med noe om biologi her. Hva du forventer hvis CT gir et godt bilde av aktiviteten
+
+%(H0): Usage of white LED flash will have no effect on the detection rate of any species.
+
+%(HA): Usage of white LED flash will alter the detection rate of nocturnal and crepuscular species.
+%I expect a weaker effect on species with low visual acuity, as they are less reliant on their eyes.
+
+
+%I expect a stronger effect on nocturnal (badger, red fox) and crepuscular (mountain hare) species. 
+%AM: Vær spesifikk     I expect a stronger effect on night-active than day-active species - (ha arter i parantes)
+
+
+%__________________________________
 %* Hypothesis 2: The effect of the white LED will correlate with urbanisation-factors, as individuals that live closer to urban areas are habituated to Artificial Light At Night (ALAN), and thus will have a weaker response to the white LED
+%__________________________________
+
+
+%%%%% Cut from the morphology part %%%%%%%%%%%%%
+%Nocturnal mammals have a higher rod/cone\footnote{Rod and cone cells are photoreceptors in the eyes retina. Rod cells are highly light sensitive, and work well at low light levels, whilst cone cells work best in high light levels provide visual acuity and distinguish colours.}
+%proportion than diurnal ones, their rod cells are more efficient \autocite{Solovei2009}, and they have a tapetum lucidum which acts as a light amplifyer \autocite{Ollivier2004,Dryja2005}.
+%The eyes of crepuscular and cathemeral mammals are more similar to those of nocturnal than diurnal mammals, possibly due to the highly developed senses of hearing, smell and their tactile vibrissae, minimizing the evolutionary pressure of eyes that work well during daylight \autocite{Hall2012}. %TODO and Solovei2009? At least she talked about the plasticity of re-evolving rod cell structure to the normal diurnal structure.
+
+
+
+
+
+%%%%%% Maybe wait with this until the discussion? %%%%%%%%%%%%%%%%%%
+%For example, badgers live underground during daylight, and comes out at night \autocite{dosan2010}. They rely heavily on their other sensory adaptations, like smell, sound and tactile vibrissae, %which are excellently developed in mammals in general \autocite{Hall2012}.
+%and their poor eyesight could therefore lead to a lesser effect from the white LED
+
+%A crepuscular species that has been shifted to a more nocturnal activity pattern, have better sight than a typical nocturnal/underground species, and will experience the stimuli more strongly. Species shifting their diel patterns due to human activity also tend to be more vulnerable in general \autocite{Gaynor2018}, and could therefore react more strongly to the white light.
+
+% Mammals have less variation in eye morphology than other amniotes (e.g. reptiles and birds), and in general point towards nocturnal to crepuscular eyes (with the exception of anthropoid mammals, like humans and apes). \textcite{Hall2012} had difficulty in correctly predicting diurnal and cathemeral species, whereas nocturnal species were easier with 92\% success rate.
+%However, squirrels are known to be diurnal (Solovei2009?)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%Evolutionary sacrifices
+%Species with stronger sense of smell and hearing tend to have lower visual sensitivity and vice versa. Cats are known to have strong sight, and could be expected to react strongly to white light. However, much of their visual sensitivity stems from a strong tapetum lucidum which amplifyes the light 8-fold, and is retractable. In other words, they can adjust their sensitivity quick, and won't necessarily experience a blinding effect like us humans.
+%They might also be better at this than many other mammals, like the fox, as canines have less developed tapetum lucidums (?).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% Utkast:
+%
+% I expect species with more light sensitive eyes to react stronger to the white flash, ie. reaction to correlate with light sensitivity.
+% However, I lack data and knowledge on the visual capabilities / anatomy of each species, and will therefore be unable to answer this question.
+% The supplementary material in Hall2012 provides a list of eye morphological data, but not for all species in my study. However, I could use it as for the species I have, and as a proxy for related species. If time.
+
+
 
 
 

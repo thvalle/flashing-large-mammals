@@ -1,57 +1,21 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {UKenglish}{}
-\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {0.1}Abstract}{ii}{}%
 \contentsline {chapter}{\numberline {1}Introduction}{2}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Hypotheses}{3}{}%
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {2}Method and materials}{4}{}%
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.1}Study area}{4}{}%
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.2}Study design}{4}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Data Collection}{5}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Data processing}{7}{}%
-\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.3}Data Collection}{6}{}%
+\contentsline {section}{\numberline {2.4}Data processing}{8}{}%
 \contentsline {section}{\numberline {2.5}Statistical analysis}{8}{}%
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Results}{12}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Roe deer}{15}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Red fox}{16}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Badger}{17}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.4}Hare}{18}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.5}Red squirrel}{19}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.6}Moose}{20}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.7}Red deer}{21}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.8}Pine marten}{22}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.9}Lynx}{23}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Discussion}{24}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}Overall activity pattern of the mammal community}{24}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}The effect of CT flashes on large carnivores}{24}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Activity pattern of cervids using CTs}{24}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Methodological considerations}{25}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{CT setup}{25}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Study design}{25}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Estimation issues}{25}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.5}Model performance}{25}{}%
-\contentsfinish 
+\contentsline {section}{\numberline {3.1}Cervidae}{15}{}%
+\contentsline {section}{\numberline {3.2}Carnivora}{17}{}%
+\contentsline {section}{\numberline {3.3}Glires}{19}{}%
+\contentsline {chapter}{\numberline {4}Discussion}{21}{}%
+\contentsline {section}{\numberline {4.1}The effect of CT flashes on carnivores}{21}{}%
+\contentsline {section}{\numberline {4.2}The effect of CT flashes on cervids}{21}{}%
+\contentsline {section}{\numberline {4.3}The effect of CT flashes on Glires species}{22}{}%
+\contentsline {section}{\numberline {4.4}Eye morphology}{22}{}%
+\contentsline {section}{\numberline {4.5}Second Generation P-Values}{23}{}%
+\contentsline {chapter}{\numberline {5}Conclusion}{25}{}%
