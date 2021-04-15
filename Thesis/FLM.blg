@@ -1,25 +1,28 @@
 [0] Config.pm:311> INFO - This is Biber 2.16
 [1] Config.pm:314> INFO - Logfile is 'FLM.blg'
-[243] biber-MSWIN64:340> INFO - === 
-[319] Biber.pm:415> INFO - Reading 'FLM.bcf'
-[556] Biber.pm:952> INFO - Found 32 citekeys in bib section 0
-[587] Biber.pm:4340> INFO - Processing section 0
-[613] Biber.pm:4531> INFO - Looking for bibtex format file 'tex/library.bib' for section 0
-[793] bibtex.pm:1689> INFO - LaTeX decoding ...
-[1333] bibtex.pm:1494> INFO - Found BibTeX data source 'tex/library.bib'
-[1355] Utils.pm:395> WARN - Duplicate entry key: 'Odden2018a' in file 'tex/library.bib', skipping ...
-[1518] Utils.pm:395> WARN - legacy month field 'oct' in entry 'Meek2014a' is not an integer - this will probably not sort properly.
-[1570] Utils.pm:395> WARN - legacy month field 'mar' in entry 'Dryja2005' is not an integer - this will probably not sort properly.
-[1587] Utils.pm:395> WARN - legacy month field 'jun' in entry 'Glen2013a' is not an integer - this will probably not sort properly.
-[1595] Utils.pm:395> WARN - legacy month field 'may' in entry 'Schmitz2010' is not an integer - this will probably not sort properly.
-[1620] Utils.pm:395> WARN - legacy month field 'jan' in entry 'Ollivier2004' is not an integer - this will probably not sort properly.
-[1639] Utils.pm:395> WARN - legacy month field 'apr' in entry 'Solovei2009' is not an integer - this will probably not sort properly.
-[1827] Utils.pm:395> WARN - legacy month field 'may' in entry 'Taggart2020' is not an integer - this will probably not sort properly.
-[1845] Utils.pm:395> WARN - BibTeX subsystem: C:\Users\NORA~1.FAM\AppData\Local\Temp\biber_tmp_xwCA\7f56027f9015dc497dc7645faffbdd71_12736.utf8, line 6, warning: 172 characters of junk seen at toplevel
-[1958] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1958] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1958] Biber.pm:4168> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
-[1958] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-UK'
-[2056] bbl.pm:654> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
-[2117] bbl.pm:757> INFO - Output to FLM.bbl
-[2118] Biber.pm:128> INFO - WARNINGS: 9
+[266] biber-MSWIN64:340> INFO - === 
+[331] Biber.pm:415> INFO - Reading 'FLM.bcf'
+[552] Biber.pm:952> INFO - Found 39 citekeys in bib section 0
+[584] Biber.pm:4340> INFO - Processing section 0
+[609] Biber.pm:4531> INFO - Looking for bibtex format file 'tex/library1.bib' for section 0
+[752] bibtex.pm:1689> INFO - LaTeX decoding ...
+[1319] bibtex.pm:1494> INFO - Found BibTeX data source 'tex/library1.bib'
+[1361] Utils.pm:395> WARN - Duplicate entry key: 'Odden2018a' in file 'tex/library1.bib', skipping ...
+[1501] Utils.pm:395> WARN - legacy month field 'oct' in entry 'Meek2014a' is not an integer - this will probably not sort properly.
+[1512] Utils.pm:395> WARN - legacy month field 'aug' in entry 'Wegge2004' is not an integer - this will probably not sort properly.
+[1577] Utils.pm:395> WARN - legacy month field 'jun' in entry 'Glen2013a' is not an integer - this will probably not sort properly.
+[1596] Utils.pm:395> WARN - legacy month field 'mar' in entry 'Dryja2005' is not an integer - this will probably not sort properly.
+[1605] Utils.pm:395> WARN - legacy month field 'may' in entry 'Schmitz2010' is not an integer - this will probably not sort properly.
+[1630] Utils.pm:395> WARN - legacy month field 'jan' in entry 'Ollivier2004' is not an integer - this will probably not sort properly.
+[1650] Utils.pm:395> WARN - legacy month field 'apr' in entry 'Solovei2009' is not an integer - this will probably not sort properly.
+[1846] Utils.pm:395> WARN - legacy month field 'may' in entry 'Taggart2020' is not an integer - this will probably not sort properly.
+[1869] Utils.pm:395> WARN - legacy month field 'aug' in entry 'Zalewski2000' is not an integer - this will probably not sort properly.
+[1903] Utils.pm:395> WARN - legacy month field 'mar' in entry 'Godvik2009' is not an integer - this will probably not sort properly.
+[1921] Utils.pm:395> WARN - BibTeX subsystem: C:\Users\NORA~1.FAM\AppData\Local\Temp\biber_tmp_bMF6\50ddfed0af2949acbec4d53035d97454_232.utf8, line 6, warning: 172 characters of junk seen at toplevel
+[2068] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2069] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2069] Biber.pm:4168> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
+[2069] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-UK'
+[2229] bbl.pm:654> INFO - Writing 'FLM.bbl' with encoding 'UTF-8'
+[2334] bbl.pm:757> INFO - Output to FLM.bbl
+[2334] Biber.pm:128> INFO - WARNINGS: 12

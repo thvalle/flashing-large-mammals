@@ -1,7 +1,8 @@
-\documentclass[11pt,UKenglish,a4paper,twoside]{report}
+\documentclass[12pt,UKenglish,a4paper,twoside,margin=2.5cm]{report}
 \usepackage{graphicx}
 \usepackage{mystyle}
-\addbibresource{tex/library.bib}
+
+\addbibresource{tex/library1.bib}
 %\bibliography{tex/library} %don't know the difference
 %\graphicspath{ {img/} } %bruker heile paths sidan pandoc ikkje støtter \graphicspath{}
 
@@ -9,29 +10,29 @@
 
 
 
+\renewcommand{\baselinestretch}{1.3}
 
 %\includeonly{tex/intro, tex/method, tex/results}
 \begin{document}
 
-%\maketitle
-\include{tex/titlepage}
-
 \pagenumbering{roman}
 
-\newpage
+\include{tex/titlepage}
+\include{tex/postitle}
 
-
+\include{tex/acknowledge}
 \include{tex/abstract}
-%\include{tex/dedication}
-%\include{tex/acknowledge}
+
 
 \tableofcontents
 %\listoffigures
 %\listoftables
 
+\clearpage
+\pagenumbering{arabic} % Start normal pagenumbering
 
-\pagenumbering{arabic}
-
+\setlength{\parindent}{0em} % no indentation, but
+\setlength{\parskip}{0.5em} % a small paragraph skip
 % -- intro --
 \include{tex/intro}
 
@@ -49,20 +50,6 @@
 
 
 
-% -- appendix --
-%\appendix
-%\section*{Appendices}
-%\addcontentsline{toc}{section}{Appendices}
-%\renewcommand{\thesubsection}{\Alph{subsection}}
-%
-%\subsection{R Session Info}
-\label{app:sessinfo}
-
-%\input{tex/sessinfo.tex}
-
-%\subsection{\\Another Appendix}
-
-%\include{tex/appendix} %maybe forget about this one
 
 \clearpage
 \printbibliography[title={References}, notkeyword=R]

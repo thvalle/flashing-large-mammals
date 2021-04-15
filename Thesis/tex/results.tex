@@ -24,7 +24,7 @@ I here present detailed results of all the nine mammalian species included in my
 Each species is presented with a photo taken by a white LED CT, 
 a figure showing seasonal varitation in activity across time of day, 
 a plot of the marginal means of the fixed effects in the GLMM model, showing the detection rates of all three types of periods (Control, IR and white LED) along a time axis,
-and effect sizes in an equivalence test, 
+and effect sizes in an equivalence test.
 
 %%% Figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -32,15 +32,16 @@ and effect sizes in an equivalence test,
 	\centering
 	\includegraphics[width=\textwidth]{../R/glmm_sp_files/figure-html/days-count-2.png} 
 		\caption[Camera trapping days and number of events]%
-	{Trapping days and events, before and after trimming the data. a) Total number of events per species. Grey area marks the number of events that were included in the modelling. b) Total number of active camera days per period type. Trimming the data evened out the disproportions between period types.}\label{fig:events}
+	{\scriptsize Trapping days and events, before and after trimming the data. a) Total number of events per species. Grey area marks the number of events that were included in the modelling. b) Total number of active camera days per period type. Trimming the data evened out the disproportions between period types.}\label{fig:events}
 \end{figure}
 
 
 \begin{table}[h]
 	\centering
 	\caption[Model performance]%AM: for hvilken modell?
-	{Performance of species specific models \footnotesize \\
-	Conditional R2 is a measure of how much variation was explained by both random and fixed effects, ranging from 0 to 1. Marginal R2 is for the fixed effects alone, and somewhere between 0.10 and 0.01 is considered good. Week of the year and site ID were used as random effects. The larger their standard deviations, the more variation in the data they can explain. Only sites that observed a species at least once were included in the model of said species.}\label{r2}
+	{\scriptsize Performance of species specific models. Conditional R2 is a measure of how much variation was explained by both random and fixed effects, ranging from 0 to 1. Marginal R2 is for the fixed effects alone, and somewhere between 0.10 and 0.01 is considered good. Week of the year and site ID were used as random effects. The larger their standard deviations, the more variation in the data they can explain. Only sites that observed a species at least once were included in the model of said species.}
+\label{r2}
+\footnotesize 
 \begin{tabular}{lccccc}
 	\toprule
 	&\multicolumn{2}{c}{\bfseries Explained variation} & \multicolumn{3}{l}{\bfseries Standard deviations of random effects }	\\
@@ -67,16 +68,12 @@ Species & R2 (marg.) & R2 (cond.) & Week of the year & Site ID & N sites \\
 
 \begin{table}[ht]  % må inn for å fjerna begin{table} kvar gong tabellen oppdaterast!
 \caption[Model results]
-{ \footnotesize 
-Results of Poisson mixed effects models on detection rate of species at 56 different locations in southeastern Norway, with three different treatment levels interacting with time since deployment (Time); periods from control sites (Intercept), periods with only IR camera (IR), periods with an additional white LED camera (wLED). Second Generation P-Values (SGPV) is identical to the proportion of a parameter that is inside the Region of Practical Equivalence (ROPE) in an equivalence test. Random effects were location ID and week of year. %TODO random effects st.dev.
-%95\% Confidence Intervals and p-values were computed using the Wald approximation.
+{ \scriptsize \renewcommand{\baselinestretch}{1} 
+Results of Poisson mixed effects models on detection rate of species at 56 different locations in southeastern Norway, with three different treatment levels interacting with time since deployment (Time); periods from control sites (Intercept), periods with only IR camera (IR), periods with an additional white LED camera (wLED). Second Generation P-Values (SGPV) is identical to the proportion of a parameter that is inside the Region of Practical Equivalence (ROPE) in an equivalence test. Random effects were location ID and week of year.
 }
 \label{tab:param}
-\footnotesize
 \input{tex/tab/parameters2.tex}
 %IMR:
-% Få med hvilke random effects du har brukt, og før opp stdev for disse. 
-%Kanskje markere signifikante effekter med bold eller kursiv, for å lette lesingen?
 \end{table}
 
 \pagestyle{empty} %to remove page numbers from table page
@@ -96,7 +93,6 @@ Roe deer had the highest detection rates in the study. Moose and red deer had si
 Roe deer and red deer had significant responses to any model parameters in a standard null hypothesis significance test (NHST). During white LED periods there was a significant increase in red deer detection rates along the time axis (p = 0.003). However, white LED periods weren't significantly different from IR periods, as they had a large overlap of confidence intervals. 
 
 For roe deer, the control period had a significantly negative trend along the time axis. However, the equivalence test deemed it practically equivalent to having no effect, as it was completely inside the ROPE. The slopes of the IR periods and white LED periods were also found practically equivalent to zero effect (ie. Second Generation P-Value of 100\%).
-
 The moose also had no trend along the time axis during control periods, but although the SGPV for Time * wLED were 100\%, the equivalence test failed to decide %NHT: Failed to decide? Kunne ikke testen avgjøre om H0 skulle beholdes eller forkastes?
 on the parameter’s practical equivalence. %foreløpig løysing på NHT sitt spørsmål  
 
@@ -104,11 +100,11 @@ on the parameter’s practical equivalence. %foreløpig løysing på NHT sitt sp
 %%% Figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[b]
 \centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/parameters-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/parameters-1.png}
 \caption[Roe deer]
-{\footnotesize %\par
+{\scriptsize %\par
 a) Bars represent the raw count of total roe deer detections per hour of the day, and density curves show the diel pattern for each season.
-b) LED-CT photograph of a roe deer. This deer passed the camera repeatedly and often stopped in front of the flashing light.
+b) LED-CT photograph of a roe deer. This deer foraged near the flashing CTs for a while.
 c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
 d) The predicted detection rate of roe deer for each period type. 95\% confidence intervals are represented by dotted lines.}
 \label{raadyr}
@@ -116,9 +112,9 @@ d) The predicted detection rate of roe deer for each period type. 95\% confidenc
 
 \begin{figure}
 		  \centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/elg2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/elg2-1.png}
 \caption[Moose]
-{\footnotesize
+{\scriptsize
 	a) Bars represent the raw count of total moose detections per hour of the day, and density curves show the diel pattern for each season.
 	b) LED-CT photograph of a moose. This bull foraged in front of the flash for a minute.
 	c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
@@ -126,20 +122,20 @@ d) The predicted detection rate of roe deer for each period type. 95\% confidenc
 \label{elg}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[t]
 		  \centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/hjort2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/hjort2-1.png}
 \caption[Red deer]
-{\footnotesize
+{\scriptsize
 	a) Bars represent the raw count of total red deer detections per hour of the day, and density curves show the diel pattern for each season.
-	b) LED-CT photograph of a red deer. This stag stopped in front of the flash for a minute, observing the CTs intently, before moving on. Red deer were subsequently redetected several times during the same period.
+	b) LED-CT photograph of a red deer. This stag stopped in front of the flash for a minute, observing the CTs intently, before moving on.
 	c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
 	d) The predicted detection rate of red deer for each period type. 95\% confidence intervals are represented by dotted lines.}
 \label{hjort}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\clearpage
+
 \section{Carnivora}
 Four of the most commonly detected species were from the order Carnivora, split by the three families Mustelidae, Canidae and Felidae. 
 Badgers showed a clear nocturnal activity pattern, and was most active during spring, as seen in figure \ref{grevling}a. 
@@ -161,9 +157,9 @@ For both badger and red fox, the treatment groups' trends along the time axis we
 %%% Figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[b]
 	\centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/grevling2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/grevling2-1.png}
 	\caption[Badger]
-	{\footnotesize
+	{\scriptsize
 		a) Bars represent the raw count of total badger detections per hour of the day, and density curves show the diel pattern for each season.
 		b) LED-CT photograph of a badger. This badger was foraging during rain weather, and showed no reaction to the white flash.
 		c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
@@ -173,9 +169,9 @@ For both badger and red fox, the treatment groups' trends along the time axis we
 
 \begin{figure}
 	\centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/maar2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/maar2-1.png}
 	\caption[Pine marten]
-	{\footnotesize
+	{\scriptsize
 		a) Bars represent the raw count of total pine marten detections per hour of the day, and density curves show the diel pattern for each season.
 		b) LED-CT photograph of a pine marten. This marten defecated while observing the camera traps, then went on inspecting the area.
 		c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
@@ -185,9 +181,9 @@ For both badger and red fox, the treatment groups' trends along the time axis we
 
 \begin{figure}
 		  \centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/rev2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/rev2-1.png}
 \caption[Red fox]
-{\footnotesize
+{\scriptsize
 	a) Bars represent the raw count of total fox detections per hour of the day, and density curves show the diel pattern for each season.
 	b) LED-CT photograph of a red fox. This fox stopped in front of the flashing camera and scratched its ear, before moving on. A second fox followed right behind.
 	c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean).
@@ -197,9 +193,9 @@ For both badger and red fox, the treatment groups' trends along the time axis we
 
 \begin{figure}
 	\centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/gaupe2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/gaupe2-1.png}
 	\caption[Lynx]
-	{\footnotesize
+	{\scriptsize
 		a) Bars represent the raw count of total lynx detections per hour of the day, and density curves show the diel pattern for each season.
 		b) LED-CT photograph of a lynx. This lynx stopped to observe the CTs, before moving on.
 		c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean). 
@@ -211,7 +207,7 @@ For both badger and red fox, the treatment groups' trends along the time axis we
 
 
 \section{Glires}
-The final two species in study both belong to the clade Glires, which consists of the two orders Rodentia (red squirrel) and lagomorphs (mountain hare). %wiki/Leporidae
+The final two species in study both belong to the clade Glires, which consists of the two orders Rodentia (red squirrel) and lagomorphs (mountain hare). 
 %Diel patterns for seasons
 The two Glires species were polar opposites in their diel patterns. Hares showed a nocturnal to crepuscular pattern, whereas squirrels were diurnal, and were never observed around midnight.
 Like badgers, mountain hares were markedly more active during during the spring.
@@ -222,10 +218,9 @@ Therefore, out of these two species, only the hare was subject to white light du
 % Detection rates (short)
 Mountain hares had the second highest detection rates in the study, whilst red squirrels had similar detection rates to that of moose.
 % Significance test
-Nevertheless, the squirrel was the only Glires species that had any significant parameters in the standard NHST. IR periods had a significantly negative slope along the time axis than that of the control periods (p = 0.003), but they were not significantly different from the white LED periods. %AM: Som betyr?
+Nevertheless, the squirrel was the only Glires species that had any significant parameters in the standard NHST. IR periods had a significantly negative slope compared to the control periods (p = 0.003), but they were not significantly different from the white LED periods.
 % Equivalence test
-The same was true for the equivalence test. Although IR periods were rejected as practically identical to the control periods, they weren't significantly different from white LED periods.
-In other words, for squirrels, there seems to have been differences between the control sites and the treatment sites, but there were no significant differences between white LED and IR periods.
+In other words, white LED had no effect on the trapping rates of neither red squirrels nor mountain hares.
 
 
 
@@ -233,9 +228,9 @@ In other words, for squirrels, there seems to have been differences between the 
 
 \begin{figure}[b]
 	\centering
-	\includegraphics[width=13cm]{../R/glmm_sp_files/figure-html/hare2-1.png}
+	\includegraphics[width=12cm]{../R/glmm_sp_files/figure-html/hare2-1.png}
 	\caption[Mountain hare]
-	{\footnotesize
+	{\scriptsize
 		a) Bars represent the raw count of total hare detections per hour of the day, and density curves show the diel pattern for each season.
 		b) LED-CT photograph of a mountain hare in winter coat. This camera had repeated hare detections at night.
 		c) Equivalence test of model parameters. 90\% confidence intervals are tested against the Region of Practical Equivalence (set to $\pm$0.1 Log-Mean). 

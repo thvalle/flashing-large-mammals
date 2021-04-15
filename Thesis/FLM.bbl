@@ -19,6 +19,45 @@
 
 \refsection{0}
   \datalist[entry]{nyt/global//global/global}
+    \entry{LauraCab2020}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d90b427fd298aa7bc7a49e452ce38a00}{%
+           family={{Bartra Cabré}},
+           familyi={B\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Norwegian University of Life Sciences, {Å}s}%
+      }
+      \strng{namehash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \strng{fullhash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \strng{bibnamehash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \strng{authorbibnamehash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \strng{authornamehash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \strng{authorfullhash}{d90b427fd298aa7bc7a49e452ce38a00}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Animals shape their activity in response to several processes that take place at different timescales. It stands to reason that the assessment of activity at multiple temporal scales will enhance the understanding of its patterns and determinants than studies that focus on a single scale. This thesis aimed to explore the patterns and drivers of the activity of the European badger (Meles meles) at three temporal scales: annual, seasonal and diel. I fitted occupancy models to data from camera traps collected continuously from different latitudes in Norway between 2015 and 2018. The results showed that activity patterns of the badgers were influenced by seasonality more significantly than by photoperiod, revealing plasticity in their temporal patterns to variation in environmental conditions. Season, temperature and time of the day had the strongest effect on activity levels, with badgers being more active in spring, during cold but not freezing days, and during night-time. Further, badgers in this study selected sites at lower latitude an altitude, and also closer to fields and human settlements. Overall, this study showed that scale is important for understanding the activity of species both in the long and short term. Further development of models considering both multiple temporal and spatial scales would offer more opportunities for enhancing the knowledge related to management and conservation of species.}
+      \field{journaltitle}{Master of Sciences in Natural resource Management}
+      \field{title}{{Disentangling the drivers of European badger (\textit{Meles meles}) activity at multiple temporal scales}}
+      \field{year}{2020}
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/MasterThesis{\_}LauraBartraCabr{\'{e}}.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://hdl.handle.net/11250/2681949
+      \endverb
+      \verb{url}
+      \verb https://hdl.handle.net/11250/2681949
+      \endverb
+      \keyw{Camera trap}
+    \endentry
     \entry{R-lme4}{manual}{}
       \name{author}{4}{}{%
         {{un=0,uniquepart=base,hash=291c4bc67cf41a2019405a2328a9b75e}{%
@@ -94,8 +133,6 @@
       \field{journaltitle}{Master of Sciences in Natural resource Management}
       \field{title}{{Behavioral responses to camera traps : a study on two large carnivores in Norway}}
       \field{year}{2019}
-      \field{pages}{52}
-      \range{pages}{1}
       \verb{file}
       \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Beddari - 2019 - Behavioral responses to camera traps a study on two large carnivores in Norway.pdf:pdf
       \endverb
@@ -186,6 +223,38 @@
       \endverb
       \keyw{Animal movement,Camera trap,Capture-recapture,Density estimation,Imperfect detection,Mammal monitoring,Occupancy model,Relative abundance,Sampling error,Wildlife survey methodology}
     \endentry
+    \entry{Cederlund1989}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f027ffb9d8d57213ab4870b67cbc7e66}{%
+           family={Cederlund},
+           familyi={C\bibinitperiod},
+           given={Göran},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \strng{fullhash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \strng{bibnamehash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \strng{authorbibnamehash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \strng{authornamehash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \strng{authorfullhash}{f027ffb9d8d57213ab4870b67cbc7e66}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Holarctic Ecology}
+      \field{number}{1}
+      \field{title}{{Activity Patterns in Moose and Roe Deer in a North Boreal Forest}}
+      \field{volume}{12}
+      \field{year}{1989}
+      \field{pages}{39\bibrangedash 45}
+      \range{pages}{7}
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Cederlund{\_}1989{\_}HolEcol{\_}activity patterns in moose and roe deer in a north boreal forest.pdf:pdf
+      \endverb
+    \endentry
     \entry{Dryja2005}{article}{}
       \name{author}{8}{}{%
         {{un=0,uniquepart=base,hash=e0e2ee3ae5dff822eb2e65cbdb38805c}{%
@@ -266,7 +335,7 @@
       \verb 10.1073/pnas.0501233102
       \endverb
       \verb{file}
-      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Dryja et al. - 2005 - Night blindness and abnormal cone electroretinogram ON responses in patients with mutations in the GRM6 gene encod.pdf:pdf
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Dryja et al. - 2005 - Night blindness and abnormal cone electroretinogram on responses in patients with mutations in the GRM6 gene encod.pdf:pdf
       \endverb
       \verb{urlraw}
       \verb www.pnas.orgcgidoi10.1073pnas.0501233102
@@ -394,11 +463,9 @@
       \field{journaltitle}{PLoS ONE}
       \field{month}{6}
       \field{number}{6}
-      \field{title}{{Optimising Camera Traps for Monitoring Small Mammals}}
+      \field{title}{{Optimising camera traps for monitoring small mammals}}
       \field{volume}{8}
       \field{year}{2013}
-      \field{pages}{e67940}
-      \range{pages}{-1}
       \verb{doi}
       \verb 10.1371/journal.pone.0067940
       \endverb
@@ -412,6 +479,84 @@
       \verb https://dx.plos.org/10.1371/journal.pone.0067940
       \endverb
       \keyw{Animal behavior,Cameras,Cats,Hedgehogs,Infrared radiation,Invasive species,Mammals,Microwave radiation}
+    \endentry
+    \entry{Godvik2009}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=6f2811c2b5d36e81131b3f7e7d2ac6eb}{%
+           family={Godvik},
+           familyi={G\bibinitperiod},
+           given={Inger\bibnamedelimb Maren\bibnamedelima Rivrud},
+           giveni={I\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5fce2f395fb9a35c0a5ff767c3efaeb1}{%
+           family={Loe},
+           familyi={L\bibinitperiod},
+           given={Leif\bibnamedelima Egil},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d8f7ded8207725bbe64f0477affced05}{%
+           family={Vik},
+           familyi={V\bibinitperiod},
+           given={Jon\bibnamedelima Olav},
+           giveni={J\bibinitperiod\bibinitdelim O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2b27ef07d1b76cdfab34c95b3b9326b4}{%
+           family={Veiberg},
+           familyi={V\bibinitperiod},
+           given={Vebj{ø}rn},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5cc770ce293aafd7e6215463a608a875}{%
+           family={Langvatn},
+           familyi={L\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fe5503418a455ca127560a1613ee190f}{%
+           family={Mysterud},
+           familyi={M\bibinitperiod},
+           given={Atle},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Ecology}%
+      }
+      \strng{namehash}{1c130a2474939466479274354a37a70e}
+      \strng{fullhash}{6ccb1e4120c1382e06bc873fcaba2e27}
+      \strng{bibnamehash}{6ccb1e4120c1382e06bc873fcaba2e27}
+      \strng{authorbibnamehash}{6ccb1e4120c1382e06bc873fcaba2e27}
+      \strng{authornamehash}{1c130a2474939466479274354a37a70e}
+      \strng{authorfullhash}{6ccb1e4120c1382e06bc873fcaba2e27}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Animals selecting habitats often have to consider many factors, e.g., food and cover for safety. However, each habitat type often lacks an adequate mixture of these factors. Analyses of habitat selection using resource selection functions (RSFs) for animal radiotelemetry data typically ignore trade-offs, and the fact that these may change during an animal's daily foraging and resting rhythm on a short-term basis. This may lead to changes in the relative use of habitat types if availability differs among individual home ranges, called functional responses in habitat selection. Here, we identify such functional responses and their underlying behavioral mechanisms by estimating RSFs through mixed-effects logistic regression of telemetry data on 62 female red deer (Cervus elaphus) in Norway. Habitat selection changed with time of day and activity, suggesting a trade-off in habitat selection related to forage quantity or quality vs. shelter. Red deer frequently used pastures offering abundant forage and little canopy cover during nighttime when actively foraging, while spending much of their time in forested habitats with less forage but more cover during daytime when they are more often inactive. Selection for pastures was higher when availability was low and decreased with increasing availability. Moreover, we show for the first time that in the real world with forest habitats also containing some forage, there was both increasing selection of pastures (i.e., not proportional use) and reduced time spent in pastures (i.e., not constant time use) with lowered availability of pastures within the home range. Our study demonstrates that landscape-level habitat composition modifies the trade-off between food and cover for large herbivorous mammals. Consequently, landscapes are likely to differ in their vulnerability to crop damage and threat to biodiversity from grazing. {©} 2009 by the Ecological Society of America.}
+      \field{issn}{00129658}
+      \field{journaltitle}{Ecology}
+      \field{month}{3}
+      \field{number}{3}
+      \field{title}{{Temporal scales, trade-offs, and functional responses in red deer habitat selection}}
+      \field{volume}{90}
+      \field{year}{2009}
+      \field{pages}{699\bibrangedash 710}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1890/08-0576.1
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/IMR2009.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://pubmed.ncbi.nlm.nih.gov/19341140/ https://pubmed.ncbi.nlm.nih.gov/19341140/?otool=bibsys
+      \endverb
+      \verb{url}
+      \verb https://pubmed.ncbi.nlm.nih.gov/19341140/%20https://pubmed.ncbi.nlm.nih.gov/19341140/?otool=bibsys
+      \endverb
+      \keyw{Cervus elaphus,Habitat selection,Large mammals,Mixed-effects logistic regression,Norway,Red deer,Resource selection functions,Resource use,Trade-offs,Ungulates}
     \endentry
     \entry{Hall2012}{article}{}
       \name{author}{3}{}{%
@@ -538,6 +683,74 @@
       \endverb
       \keyw{Animal behaviour,camera trap shyness,monitoring bias,night-time photography}
     \endentry
+    \entry{Hofmeester2019}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=68180ab55823180a458118c16d26784d}{%
+           family={Hofmeester},
+           familyi={H\bibinitperiod},
+           given={Tim\bibnamedelima R.},
+           giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=95daebf350763e538def960ec85297dc}{%
+           family={Cromsigt},
+           familyi={C\bibinitperiod},
+           given={Joris\bibnamedelima P.G.M.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=264aa2e2a54350f344718a34cfcdb4dd}{%
+           family={Odden},
+           familyi={O\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5561a94b48a2745b41e40d539c7d7e45}{%
+           family={Andrén},
+           familyi={A\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cfb18adf8b2e542b1e94d0721b247ea}{%
+           family={Kindberg},
+           familyi={K\bibinitperiod},
+           given={Jonas},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=af97da4ff2947a446a5f22d59453067a}{%
+           family={Linnell},
+           familyi={L\bibinitperiod},
+           given={John\bibnamedelima D.C.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
+      \strng{fullhash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{bibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{authorbibnamehash}{979ef48584fe4c248f3772648e3ea5eb}
+      \strng{authornamehash}{c45e3d63a0f53eb9263e10ceafe2a6b9}
+      \strng{authorfullhash}{979ef48584fe4c248f3772648e3ea5eb}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Obtaining reliable species observations is of great importance in animal ecology and wildlife conservation. An increasing number of studies use camera traps (CTs) to study wildlife communities, and an increasing effort is made to make better use and reuse of the large amounts of data that are produced. It is in these circumstances that it becomes paramount to correct for the species- and study-specific variation in imperfect detection within CTs. We reviewed the literature and used our own experience to compile a list of factors that affect CT detection of animals. We did this within a conceptual framework of six distinct scales separating out the influences of (a) animal characteristics, (b) CT specifications, (c) CT set-up protocols, and (d) environmental variables. We identified 40 factors that can potentially influence the detection of animals by CTs at these six scales. Many of these factors were related to only a few overarching parameters. Most of the animal characteristics scale with body mass and diet type, and most environmental characteristics differ with season or latitude such that remote sensing products like NDVI could be used as a proxy index to capture this variation. Factors that influence detection at the microsite and camera scales are probably the most important in determining CT detection of animals. The type of study and specific research question will determine which factors should be corrected. Corrections can be done by directly adjusting the CT metric of interest or by using covariates in a statistical framework. Our conceptual framework can be used to design better CT studies and help when analyzing CT data. Furthermore, it provides an overview of which factors should be reported in CT studies to make them repeatable, comparable, and their data reusable. This should greatly improve the possibilities for global scale analyses of (reused) CT data.}
+      \field{issn}{20457758}
+      \field{journaltitle}{Ecology and Evolution}
+      \field{number}{4}
+      \field{title}{{Framing pictures: A conceptual framework to identify and correct for biases in detection probability of camera traps enabling multi-species comparison}}
+      \field{volume}{9}
+      \field{year}{2019}
+      \field{pages}{2320\bibrangedash 2336}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/ece3.4878
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Hofmeester et al. - 2019 - Framing pictures A conceptual framework to identify and correct for biases in detection probability of camera.pdf:pdf
+      \endverb
+      \keyw{animal characteristics,detectability,environmental variables,mammal monitoring,reuse of data,trail camera}
+    \endentry
     \entry{Ikeda2016}{article}{}
       \name{author}{7}{}{%
         {{un=0,uniquepart=base,hash=5ba63850455300afb68656b75297e20a}{%
@@ -610,6 +823,55 @@
       \verb{file}
       \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Ikeda et al. - 2016 - Seasonal and diel activity patterns of eight sympatric mammals in northern Japan revealed by an intensive camera-t.pdf:pdf
       \endverb
+    \endentry
+    \entry{R-ggmap}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b772d85b4513b45500546f78b30a353d}{%
+           family={Kahle},
+           familyi={K\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           familyi={W\bibinitperiod},
+           given={Hadley},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a9f7ad81d8a84096d4120921dbb5455d}{%
+           family={Jackson},
+           familyi={J\bibinitperiod},
+           given={Scott},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{bde14f443408f948d3ad93eed1e31214}
+      \strng{fullhash}{a82880425753e5dc968a365a7a3d9d3e}
+      \strng{bibnamehash}{a82880425753e5dc968a365a7a3d9d3e}
+      \strng{authorbibnamehash}{a82880425753e5dc968a365a7a3d9d3e}
+      \strng{authornamehash}{bde14f443408f948d3ad93eed1e31214}
+      \strng{authorfullhash}{a82880425753e5dc968a365a7a3d9d3e}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{annotation}{From Duplicate 2 (ggmap: Spatial Visualization with ggplot2 - Kahle, David; Wickham, Hadley; Jackson, Scott) R package version 3.0.0}
+      \field{journaltitle}{The R Journal}
+      \field{number}{1}
+      \field{title}{{ggmap: Spatial Visualization with ggplot2}}
+      \field{volume}{5}
+      \field{year}{2019}
+      \field{pages}{144\bibrangedash 161}
+      \range{pages}{18}
+      \verb{urlraw}
+      \verb https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf https://github.com/dkahle/ggmap
+      \endverb
+      \verb{url}
+      \verb https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf%20https://github.com/dkahle/ggmap
+      \endverb
+      \keyw{R}
     \endentry
     \entry{Kamler2007}{article}{}
       \name{author}{3}{}{%
@@ -1139,7 +1401,7 @@
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{Laser Pointers: Their Potential Affects on Vision and Aviation Safety}}
+      \field{title}{{Laser pointers: Their potential affects on vision and aviation safety}}
       \field{type}{techreport}
       \field{year}{2001}
       \verb{file}
@@ -1300,7 +1562,7 @@
       \field{journaltitle}{Veterinary Ophthalmology}
       \field{month}{1}
       \field{number}{1}
-      \field{title}{{Comparative morphology of the tapetum lucidum (among selected species)}}
+      \field{title}{{Comparative morphology of the \textit{tapetum lucidum} (among selected species)}}
       \field{volume}{7}
       \field{year}{2004}
       \field{pages}{11\bibrangedash 22}
@@ -1686,6 +1948,56 @@
       \endverb
       \keyw{avoidance,detect,feline,invasive species,monitor,pest}
     \endentry
+    \entry{Wegge2004}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=9ae9484423279eeb1085fa7dc16a7b5d}{%
+           family={Wegge},
+           familyi={W\bibinitperiod},
+           given={Per},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d0882cf306cad0c36a545984811e9e76}{%
+           family={Pokheral},
+           familyi={P\bibinitperiod},
+           given={Chiranjibi\bibnamedelima Pd},
+           giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=997f59547668eb49c301d0423a8acf9f}{%
+           family={Jnawali},
+           familyi={J\bibinitperiod},
+           given={Shant\bibnamedelima Raj},
+           giveni={S\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{806c44eac0740c86d518b0036c3f2e64}
+      \strng{fullhash}{b70a51f112e401fadfd61e995820ba8d}
+      \strng{bibnamehash}{b70a51f112e401fadfd61e995820ba8d}
+      \strng{authorbibnamehash}{b70a51f112e401fadfd61e995820ba8d}
+      \strng{authornamehash}{806c44eac0740c86d518b0036c3f2e64}
+      \strng{authorfullhash}{b70a51f112e401fadfd61e995820ba8d}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Camera trapping has recently been introduced as an unbiased and practical method for monitoring tiger abundance. In a high density area in the Royal Bardia National Park in lowland Nepal, we tested this method by trapping very intensively within a 25 km2 area to determine the true number of animals in that area. We then tested the effect of study design by sub-sampling the data set using varying distances between trap stations and by reducing the number of trapping nights at each station. We compared these numbers with the density estimates generated by the capture-recapture models of the program CAPTURE. Both distance between traps and trapping duration greatly influenced the results. For example, increasing the inter-trap distance from 1 to 2.1 km and reducing the trapping duration per station from 15 to 10 nights reduced the number of tigers captured by 25{\%}. A significant decrease in trapping rates during successive 5-night periods suggested that our tigers became trap-shy, probably because of the photo flash and because they detected the camera traps from cues from impression pads 50 m from the traps. A significant behavioural response was also confirmed by the program CAPTURE. The best capture-recapture model selected by the computer program (Mbh) gave precise estimates from data collected by the initial 1 km spacing of traps. However, when we omitted data from half the number of traps, thus decreasing the sampling effort to a more realistic level for monitoring purposes, the program CAPTURE underestimated the true number of tigers. Most probably, this was due to a combination of trap shyness and the way the study was designed. Within larger protected areas, total count from intensive, stratified subsampling is suggested as a complementary technique to the capture-recapture method, since it circumvents the problem of trap shyness. {©} 2004 The Zoological Society of London.}
+      \field{issn}{13679430}
+      \field{journaltitle}{Animal Conservation}
+      \field{month}{8}
+      \field{number}{3}
+      \field{title}{{Effects of trapping effort and trap shyness on estimates of tiger abundance from camera trap studies}}
+      \field{volume}{7}
+      \field{year}{2004}
+      \field{pages}{251\bibrangedash 256}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1017/S1367943004001441
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/Documents/TorgeiR/Papers/Wegge2004.pdf:pdf
+      \endverb
+    \endentry
     \entry{ggplot2}{book}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
@@ -1931,6 +2243,54 @@
       \verb https://yihui.org/knitr/
       \endverb
       \keyw{R}
+    \endentry
+    \entry{Zalewski2000}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=08a5655606b7a76cc48c8c2dc00df868}{%
+           family={Zalewski},
+           familyi={Z\bibinitperiod},
+           given={Andrzej},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{08a5655606b7a76cc48c8c2dc00df868}
+      \strng{fullhash}{08a5655606b7a76cc48c8c2dc00df868}
+      \strng{bibnamehash}{08a5655606b7a76cc48c8c2dc00df868}
+      \strng{authorbibnamehash}{08a5655606b7a76cc48c8c2dc00df868}
+      \strng{authornamehash}{08a5655606b7a76cc48c8c2dc00df868}
+      \strng{authorfullhash}{08a5655606b7a76cc48c8c2dc00df868}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The duration of activity bouts by pine martens Martes martes was studied in the pristine deciduous forests in Bia{ł}owieża National Park (north-eastern Poland). From 1991 to 1996, 14 martens were monitored by radio-tracking throughout 5823 h. On average, male martens were active for 9 h/day and females for 8.5 h/day. The duration of the martens' diel activity varied greatly among bimonthly periods (from 2.8 h/day in February–March to 12 h/day in June–July). Martens decreased their activity from 13 h/day on warm days to 2.5 h/day on cooler days. In the winter months, when martens curtailed their activity, they often hunted larger prey or scavenged ungulate carcasses. On average, 69{\%} of the martens' active time was during the night. The number of activity bouts per day varied from one to six (mean 2.6) and increased with growing ambient temperature. Activity bouts of males were significantly longer (4 h, on average) than those of females (3 h) and were not related to ambient temperature. The duration of short inactive bouts increased in the cold season and inactivity lasted longer in females than in males.}
+      \field{issn}{09528369}
+      \field{journaltitle}{Journal of Zoology}
+      \field{month}{8}
+      \field{number}{4}
+      \field{title}{{Factors affecting the duration of activity by pine martens (\textit{Martes martes}) in the Bia{ł}owieża National Park, Poland}}
+      \field{volume}{251}
+      \field{year}{2000}
+      \field{pages}{439\bibrangedash 447}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1111/j.1469-7998.2000.tb00799.x
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/Nora.Familie-PC/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Zalewski - 2000 - Factors affecting the duration of activity by pine martens ( iMartes martesi ) in the Bia{\l}owie{\.{z}}a National Park, Poland.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://doi.wiley.com/10.1111/j.1469-7998.2000.tb00799.x
+      \endverb
+      \verb{url}
+      \verb http://doi.wiley.com/10.1111/j.1469-7998.2000.tb00799.x
+      \endverb
+      \keyw{Martes martes,activity duration,behavioural thermoregulation,diet,pine marten,temperate forests}
     \endentry
   \enddatalist
 \endrefsection

@@ -12,6 +12,9 @@
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{subcaption} % caption under subfigures?
 %\usepackage{wrapfig} % wrap text around figures
+\usepackage[document]{ragged2e} %for venstrejustert tekst (betre leselighet)
+\usepackage[subtle]{savetrees} %tries to use less pages (subtle, moderate, extreme)
+
 
 %biblatex example setup
 %\usepackage[
@@ -26,11 +29,14 @@
 %backend=biber
 %]{biblatex}
 %[authordate,backend=biber,maxnames=1,]maxcitenames=1,mincitenames=1,maxbibnames=30,
-\usepackage[style=authoryear-comp,maxbibnames=30,maxcitenames=2,uniquelist=false,firstinits=true,url=false,isbn=false,backend=biber]{biblatex}
+%\usepackage[style=authoryear-comp,maxbibnames=30,maxcitenames=2,uniquelist=true,firstinits=true,url=false,isbn=false,backend=biber]{biblatex}
+\usepackage[style=authoryear-comp,citestyle=authoryear-comp,maxbibnames=30,maxcitenames=2,uniquelist=false,firstinits=true,url=false,isbn=false,backend=biber]{biblatex}
+%\DefineBibliographyStrings{english}{% defining et al
+%	andothers = {\textit{et al}\adddot}
+%}
 \urlstyle{sf} %change url to sans serif for better linebreaking
 %\usepackage{hyperref} % to get clickable links
 
-\usepackage[subtle]{savetrees} %tries to use less pages (subtle, moderate, extreme)
 
 \usepackage[style=english]{csquotes} %provides international handling of quote marks and should always be included when you use the biblatex package.
 
@@ -46,8 +52,8 @@
 \fancyhead{}
 \fancyhead[RO,LE]{Flashing Large Mammals}
 \fancyfoot{} % remove pagenumber
-\fancyfoot[RO,LE]{\thepage} %pagenumber left and right
-\fancyfoot[CO,CE]{\leftmark}
+\fancyfoot[CO,CE]{\thepage} %pagenumber left and right
+\fancyfoot[RO,LE]{\leftmark}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 

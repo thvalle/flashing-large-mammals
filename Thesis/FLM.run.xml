@@ -41,7 +41,7 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="0">
+  <internal package="biblatex" priority="9" active="1">
     <generic>latex</generic>
     <provides type="dynamic">
       <file>FLM.bcf</file>
@@ -82,7 +82,7 @@
       <file>FLM.bcf</file>
     </requires>
     <requires type="editable">
-      <file>tex/library.bib</file>
+      <file>tex/library1.bib</file>
     </requires>
   </external>
 </requests>

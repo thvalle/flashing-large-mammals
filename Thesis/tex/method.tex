@@ -12,9 +12,9 @@ The climate has a continental character due to rain shadows of the mountain ridg
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../R/FLM_notebook_files/figure-gfm/study-map-1.png}
+\includegraphics[width=.8\textwidth]{../R/FLM_notebook_files/figure-gfm/study-map-1.png}
 	\caption[Map of study area]
-	{Map of study area  \small %\par
+	{\small
 	60 sites in Southeastern Norway were included in the survey. Point colouration represents camera brand, and white dots represent sites that had periods with an additional white LED camera trap.}
 \label{fig:map}
 \end{figure}
@@ -48,20 +48,8 @@ The installation of the cameras did not follow a strict protocol, nor were their
 Then there was a deliberately-biased placement of the CTs put up in areas where the NINA employees or local volunteers deemed it most likely to photograph lynx, and hence, based on a combination of site accessibility and expectations of animal occurrence. % slik som \autocite{Burton2015} seier skal formidlast. 
 
 
-\begin{figure}
-    \begin{center}
-    	\includegraphics[width=\textwidth]{./img/cam_example/experiment_setup.jpg} %insert figure of groups     
-    \end{center}
-\caption[The experimental setup]
-    	{The experimental setup.  \small %\par
-    	 60 sites with preinstalled Infrared Camera Traps (IR CTs) that was divided into three groups, where the first group remained unchanged (control group), and the two other alternated on having additional white LED CTs present or not (treatment groups).}
-    \label{fig:exp_set}
-\end{figure} 
-
-
 I divided the sites randomly into three groups of 20 sites.
 The first group remained unchanged as a control, and the other two groups (hereby referred to as the \emph{treatment groups}) were equipped with an additional white LED camera (hereby referred to as the \emph{white LED CTs}) in alternating 3 month-periods, as illustrated in figure\vref{fig:exp_set}.
-
 Periods when an additional white LED CT was present (and operational), I will refer to as \emph{white LED periods}.
 Periods when the white LED was absent (or inactive), I will refer to as \emph{IR periods}.
 All periods from the control group, I will refer to as \emph{control periods}.
@@ -74,6 +62,15 @@ Vegetation obstructing the view of any camera was removed at setup, or when noti
 At one site the IR camera had been installed so far above ground level that I chose to position the white LED CT below the IR CT. %Atle fjerna kryssref til bildet
 The metal cases containing the white LED CTs remained at each site until the end of the survey. Note that the second treatment group had no additional metal case before the start of their first white LED period in May 2019.
 
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{./img/cam_example/experiment_setup.jpg} %insert figure of groups     
+	\end{center}
+	\caption[The experimental setup]
+	{The experimental setup.  \small %\par
+		60 sites with preinstalled Infrared Camera Traps (IR CTs) that was divided into three groups, where the first group remained unchanged (control group), and the two other alternated on having additional white LED CTs present or not (treatment groups).}
+	\label{fig:exp_set}
+\end{figure} 
 
 \begin{figure}
 			\centering
@@ -157,9 +154,7 @@ NINA's goal is for the FRA to automatically and reliably delete pictures of huma
 
 Third, NINA provided me with a data frame containing time stamps for every triggering of each IR CT, including all metadata from the CTs, coupled with predicted species (FRA output, with a confidence number), verified species (by human sorters), number of animals and distance from camera.
 Thus, if a moose ruminated in front of a camera for 30 minutes, the data frame would include an entry for each time the moose triggered the IR CT. 
-
-Finally, I extracted metadata from all pictures taken by the white LED CTs, %joined it to the species ID-data frame,  
-and used that to define the duration of each white LED period.
+Finally, I extracted metadata from all pictures taken by the white LED CTs, and used that to define the duration of each white LED period.
 
 Four times a site's white LED CT stopped working (eg. due to full SD card or empty batteries) before the day I came to relocate it, which can be seen as the dark blue lines transitioning to light blue outside of a field work period in figure \ref{fig:timeseries}.
 Time lapse photos from the white LED CTs made dating of these stops in treatment accurate, keeping the transition to IR periods reliable. 
@@ -174,7 +169,7 @@ Ergo, I counted the number of independent times a species was observed, not the 
 My predictor variable of interest was the three different types of periods, namely IR, white LED and control periods, and how they interacted with time since deployment (ie. time since the start of each period).
 
 
-When modelling the detection rates, periods of similar lengths were required. %TODO NHT: jeg ville vurdert å flytte denne til der du forklarer hvordan du modellerte deteksjonsrater
+When modelling the detection rates, periods of similar lengths were required.
 White LED and IR periods were clearly defined, but control periods lacked a common definition for period splits, as I visited control sites less frequently than the treatment sites.
 Therefore, I divided the control sites into four periods of similar lengths to that of the IR- and white LED-periods (see figure \ref{fig:timeseries}). 
 %Describing in brief how coding is undertaken is useful for readers to understand the methods used in relation to the results.(Meek etal 2014)
@@ -195,7 +190,7 @@ To test for effects of the white LED flash I used the R programming language \au
 Ensuring that all species were modelled equally (and reducing workload), I wrote code in an RMarkdown-file, using the R package knitr \cite{knitr2015}, which iteratively (re)ran all processes on subsets for each species, and stored updated plots and tables to include in the final manuscript. 
 Dates were handled using the R package lubridate \autocite{R-lubridate}, and for the plots of diel patterns, I defined winter as December - February, spring as March - May, and so on. 
 Plots were produced using the R packages ggplot2 \autocite{ggplot2} and sjPlot \autocite{R-sjPlot}.
-
+The map was produced using the R package ggmap \autocite{R-ggmap}.
 
 	\subsection*{Exploring the effect of LED flash on detection rates}
 I used Generalised Linear Mixed Models (GLMM) with the glmer function from the R package lme4 \autocite{R-lme4}.
@@ -225,30 +220,9 @@ The control periods should stay horizontal, representing a baseline detection ra
 If there were any effect of the white LED, and detection rates were altered, I expect the IR period to show a regression to the norm, ie. counteracting the trend during the white LED periods.
 Thus, if the white LED had a negative slope along the time axis, the IR should have a positive slope. %Further, the detection rate at the start of each period, should correspond somewhat to the detection rate at the end of the previous period. Still, that pattern could be skewed to some extent due to my visitation of each location at the start of all IR and white LED periods.
 To prove an effect, white LED and IR periods have to be significantly different from each other, rather than just significantly different from the control group.
-
 Using the R package performance \autocite{R-performance} I checked the model for overdispersion, zero-inflation and singularity, which held up in every model.
 
-%%%% Figurene bør havne på same side for å minimere antall fargesider
 
-\begin{figure}
-		\centering
-		\includegraphics[width=\textwidth]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}	
-\caption[An overview of active camera days]
-{An overview of active camera days for each camera throughout the whole study period.  \small %\par 
-Colours indicate the different periods for each site. White spaces indicate gaps where the IR CTs were inactive. Control camera periods were defined in similar lengths to that of the treatment group during analysis. As a result, the first day of control periods are often set at dates far from when I actually visited a site. Shaded areas represent my field work periods.}
-\label{fig:timeseries}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{../R/glmm_sp_files/figure-html/period-length-wControl-1.png}
-	\caption[Period lengths]
-	{Period lengths for each camera.  \small %\par 
-	Vertical line represents the median IR period length, which was shorter than the median of the other groups. Data superseding the median were trimmed away for the GLMM.} 
-	\label{fig:median_period}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \subsection*{Equivalence test and Second Generation P-Values}
@@ -258,7 +232,6 @@ In an equivalence test, model parameters are tested against a Region of Practica
 Thus, rather than saying that a parameter's effect was significantly different (or not) from 0, the \emph{effect size} is also considered.
 If the parameter estimate and confidence interval (CI) lies outside the ROPE, the effect is significantly and practically different from 0, and the null hypothesis is rejected.
 However, if the CI is inside the ROPE, H0 is accepted, no matter if a NHST would have deemed it significantly different, because the difference is so small that there is practically no effect.
-
 The percentage of the CI inside the ROPE is identical to the Second Generation P-Value (SGPV), which was proposed %TODO by who?
  as a way to account for all the empirical data supporting null hypotheses. %TODO Språkvask.
 
@@ -270,7 +243,27 @@ Hence, I used the default ROPE range which corresponds to a negligible effect si
 %In the TOST procedure, the null hypothesis is the presence of a true effect of DL or DU, and the alternative hypothesis is an effect that falls within the equivalence bounds or the absence of an effect that is worthwhile to examine. \autocite{Lakens2017}
 
 
+%%%% Figurene bør havne på same side for å minimere antall fargesider
 
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=.8\textwidth]{../R/FLM_notebook_files/figure-gfm/effort-facet-1.png}	
+	\caption[An overview of active camera days]
+	{\small Overview of active camera days for each camera throughout the whole study period.  
+		Colours indicate the different periods for each site. White spaces indicate gaps where the IR CTs were inactive. Control camera periods were defined in similar lengths to that of the treatment group during analysis. As a result, the first day of control periods are often set at dates far from when I actually visited a site. Shaded areas represent my field work periods.}
+	\label{fig:timeseries}
+\end{figure}
+
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=.8\textwidth]{../R/glmm_sp_files/figure-html/period-length-wControl-1.png}
+	\caption[Period lengths]
+	{\small Period lengths for each camera.
+		Vertical line represents the median IR period length, which was shorter than the median of the other groups. Data superseding the median were trimmed away for the GLMM.} 
+	\label{fig:median_period}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
