@@ -393,6 +393,35 @@ m_sp <- readRDS("m_raadyr.rds")
 p_sp <- ggeffects::ggeffect(m_sp, terms = c("time.deploy [all]", "flash"))
 va_r <- insight::get_variance(m_sp)
 ```
+--------------
+
+```{r, eval=FALSE}
+plot(p_sp, add.data = T,
+     ci.style = "dot", line.size = 1, 
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")
+              
+plot(p_sp, ci.style = "dot", line.size = 1, 
+               colors = c("black","#d6604d","#377eb8") ) + #col =c("#8c510a","#d6604d","#377eb8")
+   labs(title="", x="Time since deployment in days \ ", y="Detection rate") +
+   ggpubr::theme_classic2() +
+  scale_x_continuous(labels = c(0,20,40,60,80)) + #add scaled labels 
+  theme(legend.position = "top", legend.title = element_blank(),
+        axis.title = element_text(size = 11)) +
+  geom_ribbon(aes(ymin =p_sp$conf.low, ymax=p_sp$conf.high), #both ribbon and
+              alpha = .05, linetype = "dotted")
+
+```
+
+-----------
+
+
 
 ```{r density, eval=FALSE}
 # trying to include total counts in labels:

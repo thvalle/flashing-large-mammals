@@ -222,6 +222,10 @@ p <-
 p1 <- p  + scale_color_manual(values = c("#d73027","#4575b4", "white")) +  
   geom_point(aes(x=lon, y=lat, colour = "white LED "), 
              data = filter(stations, !abc  %in% "C"), size = .7 )
+
+p1 + theme(legend.position = c(.85, .95), legend.justification = c(.5, 1), #legend placement
+        legend.title = element_blank(), #legend.key.size = unit(2, 'mm'),
+        legend.background = element_rect(fill="darkgray", size=.5))
 ```
 
 

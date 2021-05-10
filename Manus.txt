@@ -1,0 +1,31 @@
+I økologien har det alltid vore viktig å måla antall dyr i eit gitt område, vanskelig grunna at dei fleste pattedyr er sky og nattaktive.
+Direkte observasjon vanskelig.
+Indirekte metoder, som sportelling, omgår problemet med sky dyr, men fungerer best på populasjoner med høg tettleik.
+Capt-mark-recapt er mest treffsikkert, men invasivt.
+GPS-merking gir også masse verdifull data;
+Desverre er GPS-merking dyrt og derfor ofte begrensa i kor store områder som kan undersøkast. 
+Men fanging av dyr er invasivt, som bringer meg inn på eit sentralt problem i alle vitskaper:
+
+Observatøreffekten!
+Når man observerer ein ting eller eit system, vil man samstundes forstyrre det. (ta med 'måle lufttrykk i eit dekk'?)
+For eksempel, når du ser eit rådyr i skogen skremmer du som oftast rådyret i same slengen. 
+Når du jakter ei gaupe frå helikopter (for å fange og GPS-merke) vil gaupa trulig oppføre seg litt annleis enn den pleier.
+
+Viltkamera har blitt sett på som "non-invasive". (Flue på veggen)
+I seinere år har kamerafeller blitt eit populært verktøy. 
+Dei har blitt betre og billigere med åra, og er derfor viden brukt innan vitskapen om fritt vilt. 
+Det gir oss høve til å innhente informasjon om ville dyr på ein mindre invasiv måte, og i større omfang. 
+Nå får me plutseleg informasjon om 50 gauper, ikkje berre 1, og me får den utan å skremme dyra så sterkt - og me får den på ein standardisert måte. 
+Altså at samanlikna med to personer som prøver å telle rådyr, så vil kameraene sin telling av dei same rådyra likne meir på kvarandre.
+Det gir oss potensielt litt meir pålitelig data.
+ men den oppfattelsen har blitt motbevist!
+Dyra kan både se, høyre og lukte viltkamera, til tross for bruk av Infraraud blits. 
+
+
+Inkluder noko om nattaktive og blits, utvikling av "usynlig" IR blits,
+
+
+Så då blir sjølvsagt spørsmålet:  Påverker denne blitsen dyra?
+
+I så fall burde me ta hensyn til det når me tolker dataene våre. Me ønskjer jo å finne ut korleis dyr er til vanleg.
+Me ønskjer for eksempel å kunne anslå kor monge hjort som befinner i Nordmarka. Det blir feil anslått om hjorten unngår treet han veit det står eit blinkande kvitt lys på. Då ser me han ikkje lenger.
